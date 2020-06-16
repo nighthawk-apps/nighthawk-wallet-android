@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_home">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingStart="32dp"
+        android:paddingTop="32dp"
+        android:text="Restoring from a backup"
+        android:textColor="@color/text_light"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingBottom="32dp"
+        android:paddingStart="32dp"
+        android:paddingTop="18dp"
+        android:text="You will need to enter all 24 seed words.\nDon't worry, we will find them as you type."
+        android:textColor="@color/text_light_dimmed"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_title" />
+
+    <com.tylersuehr.chips.ChipsInputLayout
+        android:id="@+id/chips_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/zcashBlack_54"
+        android:hint="Enter the 1st seed word..."
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:textColor="@color/text_light"
+        android:textColorHint="#757575"
+        app:hideKeyboardOnChipClick="false"
+        app:allowCustomChips="false"
+        app:chip_showDelete="false"
+        app:chip_showDetails="true"
+        app:chip_textColor="@color/text_light_dimmed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_subtitle" />
+
+
+    <View
+        android:id="@+id/divider_top"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_light_dimmed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chips_input" />
+
+    <View
+        android:id="@+id/divider_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_light_dimmed"
+        app:layout_constraintBottom_toBottomOf="@id/chips_input"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_layout_birthdate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Enter wallet birthday height (recommended)"
+        android:theme="@style/Nighthawk.Overlay.TextInputLayout"
+        app:helperText="e.g. 419,200. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_bottom"
+        app:layout_constraintWidth_percent="0.84">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_birthdate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="6"
+            android:singleLine="true"
+            android:textColor="@color/text_light"
+            android:textColorHint="@color/text_light_dimmed" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Import"
+        android:textColor="@color/text_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_layout_birthdate" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="W,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33333"
+        app:layout_constraintWidth_percent="0.4053398058"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/lottie_success" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/icon_success"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:tint="#00FF00"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintDimensionRatio="W,1:1"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.33333"-->
+<!--        app:layout_constraintWidth_percent="0.4053398058"-->
+<!--        app:srcCompat="@drawable/ic_check_shield" />-->
+
+    <TextView
+        android:id="@+id/text_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:text="Success"
+        android:textColor="@color/text_light"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lottie_success" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="View Wallet"
+        android:textColor="@color/text_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_success"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="lottie_success, text_success, button_success" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="button_done, text_layout_birthdate" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="text_title, text_subtitle, chips_input, divider_bottom, divider_top" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

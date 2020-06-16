@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tint="@color/text_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.065"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
+    <View
+        android:id="@+id/back_button_hit_area"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_content_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_content_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9" />
+
+            <TextView
+                android:id="@+id/text_feedback_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please rank your experience"
+                android:textColor="@color/text_light"
+                android:textSize="22sp"
+                app:layout_constraintStart_toEndOf="@id/guideline_content_start"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_feedback_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="We improve and iterate with YOUR feedback"
+                android:textColor="@color/text_light"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/guideline_content_start"
+                app:layout_constraintTop_toBottomOf="@id/text_feedback_title" />
+
+            <View
+                android:id="@+id/background_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/zcashBlack_54"
+                app:layout_constraintTop_toBottomOf="@id/text_feedback_subtitle" />
+
+            <TextView
+                android:id="@+id/feedback_exp_1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/background_circle"
+                android:backgroundTint="@color/selector_feedback_button"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/text_dark"
+                android:textSize="30dp"
+                app:layout_constraintBottom_toBottomOf="@id/background_buttons"
+                app:layout_constraintEnd_toStartOf="@id/feedback_exp_2"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+                app:layout_constraintTop_toTopOf="@id/background_buttons" />
+
+            <TextView
+                android:id="@+id/feedback_exp_2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/background_circle"
+                android:backgroundTint="@color/selector_feedback_button"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/text_dark"
+                android:textSize="30dp"
+                app:layout_constraintBottom_toBottomOf="@id/background_buttons"
+                app:layout_constraintEnd_toStartOf="@id/feedback_exp_3"
+                app:layout_constraintStart_toEndOf="@id/feedback_exp_1"
+                app:layout_constraintTop_toTopOf="@id/background_buttons" />
+
+            <TextView
+                android:id="@+id/feedback_exp_3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/background_circle"
+                android:backgroundTint="@color/selector_feedback_button"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/text_dark"
+                android:textSize="30dp"
+                app:layout_constraintBottom_toBottomOf="@id/background_buttons"
+                app:layout_constraintEnd_toStartOf="@id/feedback_exp_4"
+                app:layout_constraintStart_toEndOf="@id/feedback_exp_2"
+                app:layout_constraintTop_toTopOf="@id/background_buttons" />
+
+            <TextView
+                android:id="@+id/feedback_exp_4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/background_circle"
+                android:backgroundTint="@color/selector_feedback_button"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/text_dark"
+                android:textSize="30dp"
+                app:layout_constraintBottom_toBottomOf="@id/background_buttons"
+                app:layout_constraintEnd_toStartOf="@id/feedback_exp_5"
+                app:layout_constraintStart_toEndOf="@id/feedback_exp_3"
+                app:layout_constraintTop_toTopOf="@id/background_buttons" />
+
+            <TextView
+                android:id="@+id/feedback_exp_5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/background_circle"
+                android:backgroundTint="@color/selector_feedback_button"
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/text_dark"
+                android:textSize="30dp"
+                app:layout_constraintBottom_toBottomOf="@id/background_buttons"
+                app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+                app:layout_constraintStart_toEndOf="@id/feedback_exp_4"
+                app:layout_constraintTop_toTopOf="@id/background_buttons" />
+
+            <TextView
+                android:id="@+id/text_question_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/feedback_question_1"
+                android:textColor="@color/text_light"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+                app:layout_constraintTop_toBottomOf="@id/background_buttons" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_question_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/feedback_hint_1"
+                app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+                app:layout_constraintTop_toBottomOf="@id/text_question_1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:lines="3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/text_question_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/feedback_question_2"
+                android:textColor="@color/text_light"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+                app:layout_constraintTop_toBottomOf="@id/input_question_1" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_question_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/feedback_hint_2"
+                app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+                app:layout_constraintTop_toBottomOf="@id/text_question_2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:lines="3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/text_question_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/feedback_question_3"
+                android:textColor="@color/text_light"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+                app:layout_constraintTop_toBottomOf="@id/input_question_2" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_question_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/feedback_hint_3"
+                app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+                app:layout_constraintTop_toBottomOf="@id/text_question_3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:lines="3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                style="@style/Nighthawk.Button"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="Send Feedback"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+                app:layout_constraintTop_toBottomOf="@id/input_question_3" />
+
+            <Space
+                android:id="@+id/extra_padding_for_scrolling"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_submit" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

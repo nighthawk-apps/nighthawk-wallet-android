@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="buttonCornerRadius">0dp</dimen>
+
+    <!-- Floats -->
+
+    <item name="ratio_golden_small" format="float" type="dimen">0.381966</item>
+    <item name="ratio_golden_large" format="float" type="dimen">0.618034</item>
+    <item name="calculator_button_width_percent" format="float" type="dimen">0.145631068</item>
+</resources>

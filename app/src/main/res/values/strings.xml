@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Nighthawk</string>
+    <string name="app_name_full">Nighthawk Wallet</string>
+    <string name="app_version">1.0</string>
+
+    <string name="receive_address_title">Your Shielded Address</string>
+
+    <string name="mixpanel_project">0</string>
+
+    <!-- Send Flow -->
+    <string name="send_hint_input_zcash_address">Enter a shielded Zcash address</string>
+    <string name="send_hint_input_zcash_amount">Enter an amount to send</string>
+    <string name="send_memo_excluded_message">Your transaction is shielded and your address is not available to the recipient</string>
+    <string name="send_memo_included_message">Your transaction is shielded but your address will be sent to the recipient via the memo</string>
+
+    <!-- Feedback -->
+    <string name="feedback_question_1">Any details you\'d like to share?</string>
+    <string name="feedback_question_2">Was your balance clear?</string>
+    <string name="feedback_question_3">What feature would you like to see next?</string>
+    <string name="feedback_hint_1">My experience was . . .</string>
+    <string name="feedback_hint_2">My balance was . . .</string>
+    <string name="feedback_hint_3">I\'d like . . .</string>
+
+</resources>

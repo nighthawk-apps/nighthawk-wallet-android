@@ -1,0 +1,93 @@
+<resources>
+
+    <!-- Application theme -->
+
+    <style name="NighthawkBaseTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/Nighthawk.ShapeAppearance.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/Nighthawk.ShapeAppearance.MediumComponent</item>
+
+    </style>
+
+    <style name="NighthawkTheme" parent="NighthawkBaseTheme"/>
+
+    <style name="NighthawkTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Widgets -->
+
+    <style name="Nighthawk.TextView.NumberPad" parent="Widget.AppCompat.TextView">
+        <item name="android:textAppearance">@style/Nighthawk.TextAppearance.NumberPad</item>
+        <item name="android:background">@drawable/selector_pressed_ripple_circle</item>
+    </style>
+
+    <style name="Nighthawk.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+    <style name="Nighthawk.Button.White">
+        <item name="backgroundTint">@android:color/white</item>
+    </style>
+
+    <style name="Nighthawk.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/zcashWhite</item>
+    </style>
+
+    <!-- Text Appearances -->
+
+    <style name="Nighthawk.TextAppearance.NumberPad" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">30dp</item>
+        <item name="android:textColor">@color/selector_button_text_light</item>
+    </style>
+
+    <style name="Nighthawk.TextAppearance.AddressPart" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/inconsolata</item>
+        <item name="fontFamily">@font/inconsolata</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/text_light</item>
+    </style>
+
+    <style name="Nighthawk.TextAppearance.Zec" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/zboto</item>
+        <item name="fontFamily">@font/zboto</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/text_light</item>
+    </style>
+
+    <style name="Nighthawk.TextAppearance.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <!-- Shape Appearances -->
+
+    <!-- General: buttons -->
+    <style name="Nighthawk.ShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <!-- General: dialogs -->
+    <style name="Nighthawk.ShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <!-- Component -->
+    <style name="Nighthawk.ShapeAppearance.TextInputLayout" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">0dp</item>
+    </style>
+    
+    <!-- Theme Overlays -->
+    <style name="Nighthawk.Overlay.TextInputLayout" parent="ThemeOverlay.MaterialComponents">
+        <item name="shapeAppearanceSmallComponent">@style/Nighthawk.ShapeAppearance.TextInputLayout</item>
+    </style>
+</resources>

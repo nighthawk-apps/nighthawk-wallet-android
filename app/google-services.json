@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "0",
+    "firebase_url": "https://a.b.com",
+    "project_id": "dummy",
+    "storage_bucket": "dummy"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:8888888888888888888888",
+        "android_client_info": {
+          "package_name": "com.nighthawkapps.wallet.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "dummy.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "dummy"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "dummy.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:8888888888888888888888",
+        "android_client_info": {
+          "package_name": "com.nighthawkapps.wallet.android.testnet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "dummy.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "dummy"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "dummy.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,49 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nighthawkapps.wallet.android">
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name="com.nighthawkapps.wallet.android.NighthawkWalletApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/NighthawkTheme">
+        <activity android:name=".ui.MainActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.nighthawkapps.wallet.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:writePermission="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- Firebase options -->
+        <meta-data android:name="com.google.firebase.ml.vision.DEPENDENCIES" android:value="barcode" />
+        <!-- All reporting is opt-in, only -->
+        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
+
+        <!-- Mixpanel options -->
+        <meta-data android:name="com.mixpanel.android.MPConfig.AutoShowMixpanelUpdates" android:value="false" />
+        <meta-data android:name="com.mixpanel.android.MPConfig.EnableDebugLogging" android:value="false" />
+        <meta-data android:name="com.mixpanel.android.MPConfig.DisableDecideChecker" android:value="true" />
+        <meta-data android:name="com.mixpanel.android.MPConfig.DisableEmulatorBindingUI" android:value="true" />
+        <meta-data android:name="com.mixpanel.android.MPConfig.DisableGestureBindingUI" android:value="true" />
+        <meta-data android:name="com.mixpanel.android.MPConfig.DisableViewCrawler" android:value="true" />
+        <meta-data android:name="com.mixpanel.android.MPConfig.IgnoreInvisibleViewsVisualEditor" android:value="true" />
+
+    </application>
+</manifest>

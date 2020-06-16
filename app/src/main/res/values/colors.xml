@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--                  -->
+    <!-- palette: Android -->
+    <!--                  -->
+
+    <!-- colors here should map to a material design value -->
+
+    <color name="colorPrimary">@color/zcashYellow</color>
+    <color name="colorPrimaryMedium">#805E08</color>
+    <color name="colorPrimaryDark">#4D3805</color>
+    <color name="colorAccent">#A1A1A1</color>
+    <color name="colorSurface">@color/text_light</color>
+    <color name="colorOnSurface">@color/background_banner</color>
+
+
+    <!--                  -->
+    <!-- palette: Zcash   -->
+    <!--                  -->
+
+    <!-- colors here should have a hex value and a generic name, prefixed with zcash -->
+    <!-- This palette should be kept as small as possible
+     and should map directly to the design style guide -->
+
+    <color name="zcashWhite">#F5F5F5</color>
+    <color name="zcashGray">#616161</color>
+    <color name="zcashWhite_12">#1FFFFFFF</color>
+    <color name="zcashWhite_24">#3DFFFFFF</color>
+    <color name="zcashWhite_40">#66FFFFFF</color>
+    <color name="zcashWhite_50">#80FFFFFF</color>
+    <color name="zcashWhite_60">#A3FFFFFF</color>
+    <color name="zcashWhite_87">#BFFFFFFF</color>
+    <color name="zcashWhite_light">#EDEDED</color>
+    <color name="zcashBlack_light">#2B2B2B</color>
+    <color name="zcashBlack_12">#1F000000</color>
+    <color name="zcashBlack_40">#66000000</color>
+    <color name="zcashBlack_54">#8A000000</color>
+    <color name="zcashBlack_87">#DD000000</color>
+    <color name="zcashBlack_dark">#171717</color>
+    <color name="zcashBlack_0">#00000000</color>
+
+    <color name="zcashGreen">#66BB6A</color>
+    <color name="zcashRed">#BB666A</color>
+    <color name="zcashBlue">#26DAB6</color>
+
+    <!-- yellows -->
+    <color name="zcashYellow_light">#FFCF4A</color>
+    <color name="zcashYellow">#FFB900</color>
+    <color name="zcashYellow_dark">#FFAA17</color>
+
+
+    <!--                  -->
+    <!-- named colors     -->
+    <!--                  -->
+
+    <!-- every color here should be a reference to a palette color
+    but have a more useful name for use in code -->
+
+    <color name="background_banner">@color/zcashBlack_dark</color>
+    <color name="background_banner_stroke">#282828</color>
+    <color name="scan_overlay_background">@color/zcashBlack_87</color>
+    <color name="spacer">#1FBB666A</color>
+    <color name="text_send_amount_disabled">@color/text_light</color>
+
+    <!-- text -->
+    <color name="text_light">#FFFFFF</color>
+    <color name="text_light_dimmed">@color/zcashWhite_50</color>
+    <color name="text_dark">@color/zcashBlack_87</color>
+    <color name="text_dark_dimmed">@color/zcashBlack_54</color>
+    <color name="text_shadow">@color/zcashBlack_40</color>
+
+</resources>

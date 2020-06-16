@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Guidelines -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_overlay_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.136" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_overlay_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.864" />
+
+    <!-- Spacers -->
+
+
+    <Space
+        android:id="@+id/spacer_bottom_left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.116"
+        tools:background="@color/zcashRed" />
+
+    <Space
+        android:id="@+id/spacer_bottom_right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.116"
+        tools:background="@color/zcashRed" />
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Overlays -->
+
+    <View
+        android:id="@+id/overlay_bottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/scan_overlay_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spacer_overlay" />
+
+    <View
+        android:id="@+id/overlay_end"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/scan_overlay_background"
+        app:layout_constraintBottom_toBottomOf="@id/spacer_overlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/spacer_overlay"
+        app:layout_constraintTop_toTopOf="@id/spacer_overlay" />
+
+    <View
+        android:id="@+id/overlay_start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/scan_overlay_background"
+        app:layout_constraintBottom_toBottomOf="@id/spacer_overlay"
+        app:layout_constraintEnd_toStartOf="@id/spacer_overlay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/spacer_overlay" />
+
+    <View
+        android:id="@+id/overlay_top"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/scan_overlay_background"
+        app:layout_constraintBottom_toTopOf="@id/spacer_overlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- being anal with these -->
+    <View
+        android:id="@+id/overlay_top_left_notch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/scan_overlay_background"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toEndOf="@id/overlay_start"
+        app:layout_constraintTop_toBottomOf="@id/overlay_top"
+        app:layout_constraintWidth_percent="0.02" />
+
+    <View
+        android:id="@+id/overlay_top_right_notch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/scan_overlay_background"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@id/overlay_end"
+        app:layout_constraintTop_toBottomOf="@id/overlay_top"
+        app:layout_constraintWidth_percent="0.02" />
+
+    <View
+        android:id="@+id/overlay_bottom_left_notch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/scan_overlay_background"
+        app:layout_constraintBottom_toTopOf="@id/overlay_bottom"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toEndOf="@id/overlay_start"
+        app:layout_constraintWidth_percent="0.02" />
+
+    <View
+        android:id="@+id/overlay_bottom_right_notch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/scan_overlay_background"
+        app:layout_constraintBottom_toTopOf="@id/overlay_bottom"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@id/overlay_end"
+        app:layout_constraintWidth_percent="0.02" />
+
+    <ImageView
+        android:id="@+id/scan_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_scan_frame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@id/spacer_bottom_right"
+        app:layout_constraintStart_toEndOf="@id/spacer_bottom_left"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_receive"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/Nighthawk.Button.White"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="Switch to Your Address"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/spacer_bottom_right"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toEndOf="@id/spacer_bottom_left"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9226" />
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/text_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.065"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+    <View
+        android:id="@+id/back_button_hit_area"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:text="Scan Recipient Address"
+        android:textColor="@color/text_light"
+        app:layout_constraintBottom_toBottomOf="@id/back_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/back_button_hit_area"
+        app:layout_constraintTop_toTopOf="@id/back_button" />
+
+    <Space
+        android:id="@+id/spacer_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@id/guideline_overlay_end"
+        app:layout_constraintStart_toEndOf="@id/guideline_overlay_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.305"
+        tools:background="#60ff0000" />
+</androidx.constraintlayout.widget.ConstraintLayout>

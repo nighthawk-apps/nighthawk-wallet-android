@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_transaction"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_banner"
+    android:elevation="1dp"
+    tools:ignore="RtlSymmetry">
+
+    <!--         -->
+    <!-- Borders -->
+    <!--         -->
+
+    <View
+        android:id="@+id/divider_top"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_light_dimmed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider_left"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/text_light_dimmed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <View
+        android:id="@+id/divider_right"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/text_light_dimmed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <View
+        android:id="@+id/indicator"
+        android:layout_width="3dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_indicator_inbound"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_shield"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_check_shield"
+        app:layout_constraintBottom_toTopOf="@id/text_transaction_bottom"
+        app:layout_constraintStart_toEndOf="@id/indicator"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/image_shield_invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_check_shield"
+        android:tint="@color/zcashRed"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/text_transaction_bottom"
+        app:layout_constraintStart_toEndOf="@id/indicator"
+        app:layout_constraintTop_toTopOf="@id/indicator"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/text_transaction_top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/text_light"
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/image_shield_invisible"
+        app:layout_constraintStart_toEndOf="@id/image_shield"
+        app:layout_constraintEnd_toStartOf="@id/text_transaction_amount"
+        app:layout_constraintTop_toTopOf="@id/image_shield_invisible"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_goneMarginStart="16dp"
+        tools:text="This is a very long sentence and it better not messup the UI" />
+
+    <TextView
+        android:id="@+id/text_transaction_bottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingEnd="16dp"
+        android:autoSizeTextType="uniform"
+        android:text="This is a very long sentence and it better not messup the UI"
+        android:textColor="@color/text_light_dimmed"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/indicator"
+        app:layout_constraintEnd_toStartOf="@id/text_transaction_amount"
+        app:layout_constraintStart_toEndOf="@id/indicator"
+        app:layout_constraintTop_toBottomOf="@id/image_shield_invisible" />
+
+    <TextView
+        android:id="@+id/text_transaction_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:paddingStart="12dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/indicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/indicator"
+        app:layout_constraintWidth_percent="0.25"
+        tools:text="+ 434.2444234" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

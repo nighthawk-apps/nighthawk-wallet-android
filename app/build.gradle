@@ -1,0 +1,162 @@
+import com.nighthawkapps.wallet.android.Deps
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'com.github.ben-manes.versions'
+
+archivesBaseName = 'nighthawk-android-wallet'
+group = 'com.nighthawkapps.wallet.android'
+version = '1.0.0'
+
+android {
+    ndkVersion "21.1.6352462"
+    compileSdkVersion Deps.compileSdkVersion
+    buildToolsVersion Deps.buildToolsVersion
+    viewBinding.enabled = true
+    defaultConfig {
+        applicationId 'com.nighthawkapps.wallet.android'
+        minSdkVersion Deps.minSdkVersion
+        targetSdkVersion Deps.targetSdkVersion
+        versionCode = 1_00_00_031
+        // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX) dev(9XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+        versionName = "$version"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+        multiDexEnabled true
+    }
+    flavorDimensions 'network'
+    productFlavors {
+        // would rather name them "testnet" and "mainnet" but product flavor names cannot start with the word "test"
+        zcashtestnet {
+            dimension 'network'
+            applicationId 'com.nighthawkapps.wallet.android.testnet'
+            matchingFallbacks = ['zcashtestnet', 'debug']
+        }
+
+        zcashmainnet {
+            dimension 'network'
+            matchingFallbacks = ['zcashmainnet', 'release']
+        }
+    }
+    signingConfigs {
+        placeholder {
+            storeFile file("${rootProject.projectDir}/placeholder.keystore")
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storePassword "android"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.placeholder
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+//        mock {
+//            initWith debug
+//            matchingFallbacks = ['debug', 'release', 'zcashtestnet']
+//        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    kapt {
+        arguments {
+            arg 'dagger.fastInit', 'enabled'
+            arg 'dagger.fullBindingGraphValidation', 'ERROR'
+            arg 'dagger.gradle.incremental'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "$archivesBaseName-v${defaultConfig.versionName}-${variant.buildType.name}.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':qrecycler')
+    implementation project(':feedback')
+    implementation project(':mnemonic')
+    implementation project(':lockbox')
+
+    // Zcash
+    implementation Deps.Zcash.ANDROID_WALLET_PLUGINS
+    zcashtestnetImplementation Deps.Zcash.Sdk.TESTNET
+    zcashmainnetImplementation Deps.Zcash.Sdk.MAINNET
+
+    //  Kotlin
+    implementation Deps.Kotlin.STDLIB
+
+    // Android
+    implementation Deps.AndroidX.ANNOTATION
+    implementation Deps.AndroidX.APPCOMPAT
+    implementation Deps.AndroidX.CONSTRAINT_LAYOUT
+    implementation Deps.AndroidX.CORE_KTX
+    implementation Deps.AndroidX.FRAGMENT_KTX
+    implementation Deps.AndroidX.LEGACY
+    implementation Deps.AndroidX.PAGING
+    implementation Deps.AndroidX.CameraX.CAMERA2
+    implementation Deps.AndroidX.CameraX.CORE
+    implementation Deps.AndroidX.CameraX.LIFECYCLE
+    implementation Deps.AndroidX.CameraX.View.EXT
+    implementation Deps.AndroidX.CameraX.View.VIEW
+    implementation Deps.AndroidX.Lifecycle.LIFECYCLE_EXTENSIONS
+    implementation Deps.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_KTX
+    implementation Deps.AndroidX.Navigation.FRAGMENT_KTX
+    implementation Deps.AndroidX.Navigation.UI_KTX
+    implementation Deps.AndroidX.Room.ROOM_KTX
+    kapt Deps.AndroidX.Room.ROOM_COMPILER
+
+    // Google
+    implementation Deps.Google.GUAVA
+    implementation Deps.Google.MATERIAL
+    implementation Deps.Google.ML_VISION // QR Scanner
+
+    // Dagger
+    implementation Deps.Dagger.ANDROID_SUPPORT
+    kapt Deps.Dagger.ANDROID_PROCESSOR
+    kapt Deps.Dagger.COMPILER
+
+    // grpc-java
+    implementation Deps.Grpc.ANDROID
+    implementation Deps.Grpc.OKHTTP
+    implementation Deps.Grpc.PROTOBUG
+    implementation Deps.Grpc.STUB
+    implementation Deps.JavaX.JAVA_ANNOTATION
+
+    // Analytics (for dogfooding/crash-reporting/feedback only on internal team builds)
+    implementation Deps.Analytics.CRASHLYTICS
+    implementation Deps.Analytics.MIXPANEL
+
+    // Misc.
+    implementation Deps.Misc.LOTTIE
+    implementation Deps.Misc.CHIPS
+
+    // Tests
+    testImplementation Deps.Test.COROUTINES_TEST
+    testImplementation Deps.Test.JUNIT
+    testImplementation Deps.Test.MOKITO
+    androidTestImplementation Deps.Test.Android.JUNIT
+    androidTestImplementation Deps.Test.Android.ESPRESSO
+}
+
+defaultTasks 'clean', 'installZcashmainnetRelease'

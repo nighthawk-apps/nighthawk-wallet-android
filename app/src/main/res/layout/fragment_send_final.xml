@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_send_final"
+    android:animateLayoutChanges="true"
+    >
+
+    <View
+        android:id="@+id/guide_keys"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.3"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.38196601125"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.58"
+        app:layout_constraintWidth_percent="0.7475728155" />
+
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.065"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+    <View
+        android:id="@+id/back_button_hit_area"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <TextView
+        android:id="@+id/text_confirmation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline4"
+        android:gravity="center"
+        tools:text="Send 12.345 ZEC to\nzs1g7sqw...mvyzgm?"
+        android:textColor="@color/text_dark"
+        android:maxLines="3"
+        android:autoSizeTextType="uniform"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.21"/>
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_dark"
+        tools:text="Creating transaction..."
+        android:gravity="center"
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@id/radio_include_address"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.1"/>
+
+    <ProgressBar
+        android:id="@+id/progress_horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/text_status"
+        app:layout_constraintEnd_toEndOf="@id/text_status"
+        app:layout_constraintTop_toBottomOf="@id/text_status"
+        android:indeterminate="false"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="150"
+        android:foregroundTint="@color/zcashBlack_87" />
+
+    <RadioButton
+        android:id="@+id/radio_include_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:text="Includes memo"
+        android:enabled="false"
+        android:textColor="@color/text_dark_dimmed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_confirmation" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_retry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        style="@style/Nighthawk.Button.OutlinedButton"
+        app:strokeColor="@color/text_dark"
+        android:padding="12dp"
+        android:text="Retry"
+        android:visibility="gone"
+        android:textColor="@color/text_dark"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintBottom_toTopOf="@id/button_next"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_next"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        style="@style/Nighthawk.Button.OutlinedButton"
+        app:strokeColor="@color/text_dark"
+        android:padding="12dp"
+        android:text="Finished"
+        android:visibility="gone"
+        android:textColor="@color/text_dark"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/guide_keys" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

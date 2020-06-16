@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.nighthawkapps.wallet.android.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_nav_receive"
+            app:destination="@id/nav_receive" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_detail"
+            app:destination="@id/nav_detail"
+            app:enterAnim="@anim/anim_enter_from_bottom" />
+        <action
+            android:id="@+id/action_nav_home_to_create_wallet"
+            app:destination="@id/nav_landing" />
+        <action
+            android:id="@+id/action_nav_home_to_send"
+            app:destination="@id/nav_send_address"
+            app:exitAnim="@anim/anim_exit_to_left"
+            app:enterAnim="@anim/anim_enter_from_right"/>
+        <action
+            android:id="@+id/action_nav_home_to_nav_scan"
+            app:destination="@id/nav_scan" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_profile"
+            app:destination="@id/nav_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_receive"
+        android:name="com.nighthawkapps.wallet.android.ui.receive.ReceiveFragment"
+        tools:layout="@layout/fragment_receive_new" >
+        <action
+            android:id="@+id/action_nav_receive_to_nav_scan"
+            app:destination="@id/nav_scan"
+            app:popUpTo="@id/nav_receive"
+            app:popUpToInclusive="true"
+            app:exitAnim="@anim/anim_fade_out_address"
+            app:enterAnim="@anim/anim_fade_in_scanner"/>
+    </fragment>
+    <fragment
+        android:id="@+id/nav_scan"
+        android:name="com.nighthawkapps.wallet.android.ui.scan.ScanFragment"
+        tools:layout="@layout/fragment_scan">
+        <action
+            android:id="@+id/action_nav_scan_to_nav_send_address"
+            app:destination="@id/nav_send_address"
+            app:popUpTo="@id/nav_scan"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_nav_scan_to_nav_receive"
+            app:popUpTo="@id/nav_scan"
+            app:popUpToInclusive="true"
+            app:destination="@id/nav_receive"
+            app:exitAnim="@anim/anim_fade_out_medium"/>
+    </fragment>
+    <fragment
+        android:id="@+id/nav_detail"
+        android:name="com.nighthawkapps.wallet.android.ui.detail.WalletDetailFragment"
+        tools:layout="@layout/fragment_detail" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.nighthawkapps.wallet.android.ui.profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_nav_backup"
+            app:destination="@id/nav_backup" />
+    </fragment>
+
+    <!--                 -->
+    <!-- Send Navigation -->
+    <!--                 -->
+
+    <fragment
+        android:id="@+id/nav_send_address"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendAddressFragment"
+        tools:layout="@layout/fragment_send_address" >
+        <action
+            android:id="@+id/action_nav_send_address_to_send_memo"
+            app:destination="@id/nav_send_memo"
+            app:exitAnim="@anim/anim_exit_to_left"
+            app:enterAnim="@anim/anim_enter_from_right"/>
+        <action
+            android:id="@+id/action_nav_send_address_to_nav_scan"
+            app:destination="@id/nav_scan" />
+        <action
+            android:id="@+id/action_nav_send_address_to_nav_home"
+            app:destination="@id/nav_home"
+            app:enterAnim="@anim/anim_enter_from_left"
+            app:exitAnim="@anim/anim_exit_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_send_memo"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendMemoFragment"
+        tools:layout="@layout/fragment_send_memo" >
+        <action
+            android:id="@+id/action_nav_send_memo_to_send_confirm"
+            app:destination="@id/nav_send_confirm"
+            app:exitAnim="@anim/anim_exit_to_left"
+            app:enterAnim="@anim/anim_enter_from_right"/>
+        <action
+            android:id="@+id/action_nav_send_memo_to_nav_send_address"
+            app:destination="@id/nav_send_address"
+            app:enterAnim="@anim/anim_enter_from_left"
+            app:exitAnim="@anim/anim_exit_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_send_confirm"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendConfirmFragment"
+        tools:layout="@layout/fragment_send_confirm" >
+        <action
+            android:id="@+id/action_nav_send_confirm_to_send_final"
+            app:destination="@id/nav_send_final"
+            app:popUpTo="@id/nav_send_confirm"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/anim_fade_in"/>
+        <action
+            android:id="@+id/action_nav_send_confirm_to_nav_send_memo"
+            app:destination="@id/nav_send_memo"
+            app:enterAnim="@anim/anim_enter_from_left"
+            app:exitAnim="@anim/anim_exit_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_send_final"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendFinalFragment"
+        tools:layout="@layout/fragment_send_final" >
+        <action
+            android:id="@+id/action_nav_send_final_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+
+    <!--                         -->
+    <!-- Wallet Setup Navigation -->
+    <!--                         -->
+
+    <fragment
+        android:id="@+id/nav_landing"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.LandingFragment"
+        tools:layout="@layout/fragment_landing" >
+        <action
+            android:id="@+id/action_nav_landing_to_nav_backup"
+            app:destination="@id/nav_backup"
+            app:popUpTo="@id/nav_landing"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_nav_landing_to_nav_restore"
+            app:destination="@id/nav_restore" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_backup"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.BackupFragment"
+        tools:layout="@layout/fragment_backup" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_restore"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.RestoreFragment"
+        tools:layout="@layout/fragment_restore" >
+        <action
+            android:id="@+id/action_nav_restore_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_landing"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+
+    <!--                -->
+    <!-- Global actions -->
+    <!--                -->
+
+    <action
+        android:id="@+id/action_global_nav_scan"
+        app:destination="@id/nav_scan"
+        app:popUpTo="@id/nav_scan"
+        app:popUpToInclusive="true" />
+
+</navigation>

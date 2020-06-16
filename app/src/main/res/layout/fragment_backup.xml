@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_home">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.667" />
+
+
+    <!-- Address parts -->
+
+    <!-- Someday, there will be an advanced VirtualLayout that helps us do this without nesting but for now, this seems to be the only clean way to center all the fields -->
+    <!-- its tempting to do this programmatically but for now, it's always 24 words so I'll do it statically. If this ever changes, we'll probably be using Jetpack Compose by then so it will be easier to do in code -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/receive_address_parts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/text_message"
+         >
+
+        <!--          -->
+        <!-- Column 1 -->
+        <!--          -->
+
+        <TextView
+            android:id="@+id/text_address_part_1"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="drum"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/text_address_part_4"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_1"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_1"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_7" />
+        <TextView
+            android:id="@+id/text_address_part_7"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_1"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_4"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_10" />
+        <TextView
+            android:id="@+id/text_address_part_10"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_1"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_7"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_13" />
+        <TextView
+            android:id="@+id/text_address_part_13"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_1"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_10"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_16" />
+        <TextView
+            android:id="@+id/text_address_part_16"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_1"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_13"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_19" />
+        <TextView
+            android:id="@+id/text_address_part_19"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_1"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_16"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_22" />
+        <TextView
+            android:id="@+id/text_address_part_22"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_1"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_19" />
+        
+        <!--          -->
+        <!-- Column 2 -->
+        <!--          -->
+
+        <TextView
+            android:id="@+id/text_address_part_2"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            tools:text="fitness"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_5"
+            app:layout_constraintStart_toEndOf="@id/barrier_left_address_column_1"
+            app:layout_constraintTop_toTopOf="@id/text_address_part_1" />
+
+        <TextView
+            android:id="@+id/text_address_part_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_8"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_2"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_2" />
+
+        <TextView
+            android:id="@+id/text_address_part_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_11"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_2"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_5" />
+
+        <TextView
+            android:id="@+id/text_address_part_11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_14"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_2"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_8" />
+
+        <TextView
+            android:id="@+id/text_address_part_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_17"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_2"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_11" />
+
+        <TextView
+            android:id="@+id/text_address_part_17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_20"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_2"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_14" />
+
+        <TextView
+            android:id="@+id/text_address_part_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_23"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_2"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_17" />
+
+        <TextView
+            android:id="@+id/text_address_part_23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_2"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_20" />
+
+        <!--          -->
+        <!-- Column 3 -->
+        <!--          -->
+
+        <TextView
+            android:id="@+id/text_address_part_3"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            tools:text="goals"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_6"
+            app:layout_constraintStart_toEndOf="@id/barrier_left_address_column_2"
+            app:layout_constraintTop_toTopOf="@id/text_address_part_1" />
+
+        <TextView
+            android:id="@+id/text_address_part_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_9"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_3"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_3" />
+
+        <TextView
+            android:id="@+id/text_address_part_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_12"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_3"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_6" />
+
+        <TextView
+            android:id="@+id/text_address_part_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_15"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_3"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_9" />
+
+        <TextView
+            android:id="@+id/text_address_part_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_18"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_3"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_12" />
+
+        <TextView
+            android:id="@+id/text_address_part_18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_21"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_3"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_15" />
+
+        <TextView
+            android:id="@+id/text_address_part_21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_24"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_3"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_18" />
+
+        <TextView
+            android:id="@+id/text_address_part_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            tools:text="word"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_3"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_21" />
+<!--
+text_address_part_3, text_address_part_6, text_address_part_9, text_address_part_12, text_address_part_15, text_address_part_18, text_address_part_21, text_address_part_24
+-->
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_left_address_column_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="text_address_part_1, text_address_part_4, text_address_part_7, text_address_part_10, text_address_part_13, text_address_part_16, text_address_part_19, text_address_part_22" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_left_address_column_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="text_address_part_2, text_address_part_5, text_address_part_8, text_address_part_11, text_address_part_14, text_address_part_17, text_address_part_20, text_address_part_23" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/text_birtdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Birthday Height: 510,123"
+        android:textSize="20dp"
+        android:fontFamily="@font/inconsolata"
+        app:layout_constraintTop_toBottomOf="@id/receive_address_parts"
+        app:layout_constraintBottom_toTopOf="@id/text_message"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:gravity="center"
+        android:text="empowering\neveryone\nwith\neconomic\nfreedom"
+        android:textColor="@color/zcashWhite_50"
+        android:textSize="56dp"
+        android:alpha="0.03"
+        app:layout_constraintBottom_toBottomOf="@id/icon_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icon_logo" />
+
+    <ImageView
+        android:id="@+id/icon_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="W,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33333"
+        app:layout_constraintWidth_percent="0.4053398058"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_logo_landing" />
+
+    <!-- Choose release names from here https://en.wikipedia.org/wiki/List_of_woods -->
+    <TextView
+        android:id="@+id/text_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:gravity="center"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:text="Store these backup words securely."
+        android:textColor="@color/zcashWhite"
+        app:layout_constraintBottom_toTopOf="@id/guideline_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icon_logo" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_positive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Verify"
+        android:textColor="@color/text_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_buttons" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

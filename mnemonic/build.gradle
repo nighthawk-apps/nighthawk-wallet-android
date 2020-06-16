@@ -1,0 +1,14 @@
+import com.nighthawkapps.wallet.android.Deps
+
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation Deps.JavaX.INJECT
+    implementation Deps.Kotlin.STDLIB
+
+    // Zcash
+    implementation Deps.Zcash.ANDROID_WALLET_PLUGINS
+    implementation Deps.Zcash.KOTLIN_BIP39
+
+    testImplementation Deps.Test.JUNIT
+}
