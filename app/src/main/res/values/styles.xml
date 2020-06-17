@@ -32,10 +32,6 @@
         <item name="android:textColor">@color/text_dark</item>
     </style>
 
-    <style name="Nighthawk.Button.White">
-        <item name="backgroundTint">@android:color/white</item>
-    </style>
-
     <style name="Nighthawk.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/zcashWhite</item>
     </style>

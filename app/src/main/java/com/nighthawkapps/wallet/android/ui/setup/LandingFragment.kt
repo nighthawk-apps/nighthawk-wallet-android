@@ -4,22 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.nighthawkapps.wallet.android.R
-import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.databinding.FragmentLandingBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
-import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Restore
 import com.nighthawkapps.wallet.android.feedback.Report.Tap.*
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITHOUT_BACKUP
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
-import cash.z.ecc.android.sdk.Initializer
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -41,27 +35,6 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 "new" -> onNewWallet().also { tapped(LANDING_NEW) }
                 "backup" -> onBackupWallet().also { tapped(LANDING_BACKUP) }
             }
-        }
-        binding.buttonNegative.setOnLongClickListener {
-            tapped(DEVELOPER_WALLET_PROMPT)
-            if (binding.buttonNegative.text.toString().toLowerCase() == "restore") {
-                MaterialAlertDialogBuilder(activity)
-                    .setMessage("Would you like to import the dev wallet?\n\nIf so, please only send 0.0001 ZEC at a time and return some later so that the account remains funded.")
-                    .setTitle("Import Dev Wallet?")
-                    .setCancelable(true)
-                    .setPositiveButton("Import") { dialog, _ ->
-                        tapped(DEVELOPER_WALLET_IMPORT)
-                        dialog.dismiss()
-                        onUseDevWallet()
-                    }
-                    .setNegativeButton("Cancel") { dialog, _ ->
-                        tapped(DEVELOPER_WALLET_CANCEL)
-                        dialog.dismiss()
-                    }
-                    .show()
-                true
-            }
-            false
         }
         binding.buttonNegative.setOnClickListener {
             when (binding.buttonNegative.text.toString().toLowerCase()) {
@@ -113,23 +86,6 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
 
     private fun onRestoreWallet() {
         mainActivity?.safeNavigate(R.id.action_nav_landing_to_nav_restore)
-    }
-
-    // AKA import wallet
-    private fun onUseDevWallet() {
-        val seedPhrase = "still champion voice habit trend flight survey between bitter process artefact blind carbon truly provide dizzy crush flush breeze blouse charge solid fish spread"
-        val birthday = 663174//626599
-        mainActivity?.apply {
-            lifecycleScope.launch {
-                mainActivity?.startSync(walletSetup.importWallet(seedPhrase, birthday))
-            }
-            binding.buttonPositive.isEnabled = true
-            binding.textMessage.text = "Wallet imported! Congratulations!"
-            binding.buttonNegative.text = "Skip"
-            binding.buttonPositive.text = "Backup"
-            playSound("sound_receive_small.mp3")
-            vibrateSuccess()
-        }
     }
 
     private fun onNewWallet() {
