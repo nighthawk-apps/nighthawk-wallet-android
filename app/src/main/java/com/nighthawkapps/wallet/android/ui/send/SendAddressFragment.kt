@@ -69,10 +69,13 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
 
         binding.inputZcashAddress.apply {
             doAfterTextChanged {
-                val trim = text.toString().trim()
+                val textStr = text.toString()
+                val trim = textStr.trim()
                 if (text.toString() != trim) {
-                    binding.inputZcashAddress
-                        .findViewById<EditText>(R.id.input_zcash_address).setText(trim)
+                    val textView = binding.inputZcashAddress.findViewById<EditText>(R.id.input_zcash_address)
+                    val cursorPosition = textView.selectionEnd;
+                    textView.setText(trim)
+                    textView.setSelection(cursorPosition-(textStr.length-trim.length))
                 }
                 onAddressChanged(trim)
             }
