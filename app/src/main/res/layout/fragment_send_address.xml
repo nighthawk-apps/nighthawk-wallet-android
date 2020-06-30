@@ -96,10 +96,12 @@
             android:layout_height="match_parent"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
+            android:digits="0123456789.,"
             android:maxLength="20"
             android:singleLine="true"
             android:textColor="@color/text_light"
             android:textColorHint="@color/text_light_dimmed" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView

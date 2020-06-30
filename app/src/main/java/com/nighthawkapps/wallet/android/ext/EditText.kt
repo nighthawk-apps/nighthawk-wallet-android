@@ -21,7 +21,7 @@ fun EditText.onEditorActionDone(block: (EditText) -> Unit) {
 
 fun TextView.convertZecToZatoshi(): Long? {
     return try {
-        text.toString().safelyConvertToBigDecimal()?.convertZecToZatoshi() ?: null
+        text.toString().replace(',', '.').safelyConvertToBigDecimal()?.convertZecToZatoshi() ?: null
     } catch (t: Throwable) {
         twig("Failed to convert text to Zatoshi: $text")
         null
