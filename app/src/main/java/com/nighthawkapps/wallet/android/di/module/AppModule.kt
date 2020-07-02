@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import cash.z.ecc.android.sdk.ext.SilentTwig
 import cash.z.ecc.android.sdk.ext.TroubleshootingTwig
 import cash.z.ecc.android.sdk.ext.Twig
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
 import com.nighthawkapps.wallet.android.feedback.*
@@ -50,7 +49,6 @@ class AppModule {
     ): FeedbackCoordinator {
         return preferences.getBoolean(FeedbackCoordinator.ENABLED, false).let { isEnabled ->
             // observe nothing unless feedback is enabled
-            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(isEnabled)
             Twig.plant(if (isEnabled) TroubleshootingTwig() else SilentTwig())
             FeedbackCoordinator(feedback, if (isEnabled) defaultObservers else setOf())
         }
@@ -70,14 +68,4 @@ class AppModule {
     @Singleton
     @IntoSet
     fun provideFeedbackConsole(): FeedbackCoordinator.FeedbackObserver = FeedbackConsole()
-
-    @Provides
-    @Singleton
-    @IntoSet
-    fun provideFeedbackMixpanel(): FeedbackCoordinator.FeedbackObserver = FeedbackMixpanel()
-
-    @Provides
-    @Singleton
-    @IntoSet
-    fun provideFeedbackCrashlytics(): FeedbackCoordinator.FeedbackObserver = FeedbackCrashlytics()
 }

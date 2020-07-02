@@ -31,19 +31,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!-- Firebase options -->
         <meta-data android:name="com.google.firebase.ml.vision.DEPENDENCIES" android:value="barcode" />
-        <!-- All reporting is opt-in, only -->
-        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
-
-        <!-- Mixpanel options -->
-        <meta-data android:name="com.mixpanel.android.MPConfig.AutoShowMixpanelUpdates" android:value="false" />
-        <meta-data android:name="com.mixpanel.android.MPConfig.EnableDebugLogging" android:value="false" />
-        <meta-data android:name="com.mixpanel.android.MPConfig.DisableDecideChecker" android:value="true" />
-        <meta-data android:name="com.mixpanel.android.MPConfig.DisableEmulatorBindingUI" android:value="true" />
-        <meta-data android:name="com.mixpanel.android.MPConfig.DisableGestureBindingUI" android:value="true" />
-        <meta-data android:name="com.mixpanel.android.MPConfig.DisableViewCrawler" android:value="true" />
-        <meta-data android:name="com.mixpanel.android.MPConfig.IgnoreInvisibleViewsVisualEditor" android:value="true" />
 
     </application>
 </manifest>

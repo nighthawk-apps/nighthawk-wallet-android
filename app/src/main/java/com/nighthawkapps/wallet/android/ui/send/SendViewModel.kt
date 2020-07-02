@@ -62,13 +62,15 @@ class SendViewModel @Inject constructor() : ViewModel() {
     fun send(): Flow<PendingTransaction> {
         funnel(SendSelected)
         val memoToSend = createMemoToSend()
-        val keys = initializer.deriveSpendingKeys(
-            lockBox.getBytes(WalletSetupViewModel.LockBoxKey.SEED)!!
-        )
+        val keys = lockBox.getBytes(WalletSetupViewModel.LockBoxKey.SEED)?.let {
+            initializer.deriveSpendingKeys(
+                it
+            )
+        }
         funnel(SpendingKeyFound)
         reportIssues(memoToSend)
         return synchronizer.sendToAddress(
-            keys[0],
+            keys?.get(0) ?: "",
             zatoshiAmount,
             toAddress,
             memoToSend.chunked(ZcashSdk.MAX_MEMO_SIZE).firstOrNull() ?: ""
@@ -155,10 +157,14 @@ class SendViewModel @Inject constructor() : ViewModel() {
                         feedback.report(metric)
 
                         // does this metric complete another metric?
-                        metricId!!.toRelatedMetricId().let { relatedId ->
+                        metricId?.toRelatedMetricId().let { relatedId ->
                             metrics[relatedId]?.let { relatedMetric ->
                                 // then remove the related metric, itself. And the relation.
-                                metrics.remove(relatedMetric.toMetricIdFor(metricId!!.toTxId()))
+                                metrics.remove(metricId?.toTxId()?.let { it1 ->
+                                    relatedMetric.toMetricIdFor(
+                                        it1
+                                    )
+                                })
                                 metrics.remove(relatedId)
                             }
                         }

@@ -113,7 +113,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         val seedPhrase = binding.chipsInput.selectedChips.joinToString(" ") {
             it.title
         }
-        var birthday = binding.root.findViewById<TextView>(R.id.input_birthdate).text.toString()
+        val birthday = binding.root.findViewById<TextView>(R.id.input_birthdate).text.toString()
             .let { birthdateString ->
                 if (birthdateString.isNullOrEmpty()) ZcashSdk.SAPLING_ACTIVATION_HEIGHT else birthdateString.toInt()
             }.coerceAtLeast(ZcashSdk.SAPLING_ACTIVATION_HEIGHT)
@@ -154,8 +154,8 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         }
         setDoneEnabled()
 
-        view!!.postDelayed({
-            mainActivity!!.showKeyboard(seedWordAdapter!!.editText)
+        view?.postDelayed({
+            mainActivity?.showKeyboard(seedWordAdapter?.editText)
             seedWordAdapter?.editText?.requestFocus()
         }, 500L)
     }

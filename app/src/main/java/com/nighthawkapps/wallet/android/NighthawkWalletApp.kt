@@ -7,7 +7,6 @@ import androidx.camera.core.CameraXConfig
 import com.nighthawkapps.wallet.android.di.component.AppComponent
 import com.nighthawkapps.wallet.android.di.component.DaggerAppComponent
 import com.nighthawkapps.wallet.android.feedback.FeedbackCoordinator
-import cash.z.ecc.android.sdk.ext.twig
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -31,10 +30,8 @@ class NighthawkWalletApp : Application(), CameraXConfig.Provider {
     private var feedbackScope: CoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun onCreate() {
-        Thread.setDefaultUncaughtExceptionHandler(ExceptionReporter(Thread.getDefaultUncaughtExceptionHandler()))
         creationTime = System.currentTimeMillis()
         instance = this
-        // Setup handler for uncaught exceptions.
         super.onCreate()
 
         component = DaggerAppComponent.factory().create(this)
@@ -51,27 +48,6 @@ class NighthawkWalletApp : Application(), CameraXConfig.Provider {
     companion object {
         lateinit var instance: NighthawkWalletApp
         lateinit var component: AppComponent
-    }
-
-    /**
-     * @param feedbackCoordinator inject a provider so that if a crash happens before configuration
-     * is complete, we can lazily initialize all the feedback objects at this moment so that we
-     * don't have to add any time to startup.
-     */
-    inner class ExceptionReporter(private val ogHandler: Thread.UncaughtExceptionHandler) : Thread.UncaughtExceptionHandler {
-        override fun uncaughtException(t: Thread?, e: Throwable?) {
-            twig("Uncaught Exception: $e caused by: ${e?.cause}")
-            // these are the only reported crashes that are considered fatal
-            coordinator.feedback.report(e, true)
-            coordinator.flush()
-            // can do this if necessary but first verify that we need it
-            runBlocking {
-                coordinator.await()
-                coordinator.feedback.stop()
-            }
-            ogHandler.uncaughtException(t, e)
-            Thread.sleep(2000L)
-        }
     }
 }
 

@@ -99,20 +99,20 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
         val thinSpace = "\u2005" // 0.25 em space
         textViews.forEachIndexed { index, textView ->
             val numLength = "$index".length
-            val word = words[index]
+            val word = words?.get(index)
             // TODO: work with a charsequence here, rather than constructing a String
-            textView.text = SpannableString("${index + 1}$thinSpace${String(word)}").apply {
+            textView.text = SpannableString("${index + 1}$thinSpace${word?.let { String(it) }}").apply {
                 setSpan(AddressPartNumberSpan(), 0, 1 + numLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
         }
     }
 
-    private suspend fun loadSeedWords(): List<CharArray> = withContext(Dispatchers.IO) {
-        mainActivity!!.feedback.measure(SEED_PHRASE_LOADED) {
+    private suspend fun loadSeedWords(): List<CharArray>? = withContext(Dispatchers.IO) {
+        mainActivity?.feedback?.measure(SEED_PHRASE_LOADED) {
             val lockBox = LockBox(NighthawkWalletApp.instance)
             val mnemonics = Mnemonics()
-            val seedPhrase =  lockBox.getCharsUtf8(LockBoxKey.SEED_PHRASE)!!
-            val result =  mnemonics.toWordList(seedPhrase)
+            val seedPhrase =  lockBox.getCharsUtf8(LockBoxKey.SEED_PHRASE)
+            val result = seedPhrase?.let { mnemonics.toWordList(it) }
             result
         }
     }

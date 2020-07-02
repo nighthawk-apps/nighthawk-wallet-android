@@ -60,10 +60,6 @@ object Deps {
         val PROTOBUG =                      "io.grpc:grpc-protobuf-lite:$version"
         val STUB =                          "io.grpc:grpc-stub:$version"
     }
-    object Analytics { // for dogfooding/crash-reporting/feedback only on internal team builds
-        val CRASHLYTICS =                   "com.google.firebase:firebase-crashlytics:17.0.1"
-        val MIXPANEL =                      "com.mixpanel.android:mixpanel-android:5.6.3"
-    }
     object JavaX {
         const val INJECT =                   "javax.inject:javax.inject:1"
         const val JAVA_ANNOTATION =          "javax.annotation:javax.annotation-api:1.3.2"

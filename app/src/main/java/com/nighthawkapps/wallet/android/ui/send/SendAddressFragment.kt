@@ -192,6 +192,5 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
         return null
     }
 
-    private fun ClipboardManager.text(): CharSequence =
-        primaryClip!!.getItemAt(0).coerceToText(mainActivity)
+    private fun ClipboardManager.text(): CharSequence? = primaryClip?.getItemAt(0)?.coerceToText(mainActivity)
 }

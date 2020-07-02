@@ -23,9 +23,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlin.random.Random
 
 class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
+
     override val screen = Report.Screen.SEND_FINAL
 
-    val sendViewModel: SendViewModel by activityViewModel()
+    private val sendViewModel: SendViewModel by activityViewModel()
 
     override fun inflate(inflater: LayoutInflater): FragmentSendFinalBinding =
         FragmentSendFinalBinding.inflate(inflater)
@@ -53,9 +54,11 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity?.apply {
-            sendViewModel.send().onEach {
-                onPendingTxUpdated(it)
-            }.launchIn(mainActivity?.lifecycleScope!!)
+            mainActivity?.lifecycleScope?.let {
+                sendViewModel.send().onEach {
+                    onPendingTxUpdated(it)
+                }.launchIn(it)
+            }
         }
     }
 
