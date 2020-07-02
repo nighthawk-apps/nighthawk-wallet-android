@@ -5,7 +5,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 
 archivesBaseName = 'nighthawk-android-wallet'
 group = 'com.nighthawkapps.wallet.android'
@@ -141,10 +140,6 @@ dependencies {
     implementation Deps.Grpc.PROTOBUG
     implementation Deps.Grpc.STUB
     implementation Deps.JavaX.JAVA_ANNOTATION
-
-    // Analytics (for dogfooding/crash-reporting/feedback only on internal team builds)
-    implementation Deps.Analytics.CRASHLYTICS
-    implementation Deps.Analytics.MIXPANEL
 
     // Misc.
     implementation Deps.Misc.LOTTIE

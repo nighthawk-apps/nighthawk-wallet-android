@@ -5,8 +5,6 @@
 
     <string name="receive_address_title">Your Shielded Address</string>
 
-    <string name="mixpanel_project">0</string>
-
     <!-- Send Flow -->
     <string name="send_hint_input_zcash_address">Enter a shielded Zcash address</string>
     <string name="send_hint_input_zcash_amount">Enter an amount to send</string>
