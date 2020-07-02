@@ -49,7 +49,7 @@ class Feedback(capacity: Int = 256) {
 
     fun invokeOnCompletion(block: CompletionHandler) {
         ensureScope()
-        scope.coroutineContext[Job]!!.invokeOnCompletion(block)
+        scope.coroutineContext[Job]?.invokeOnCompletion(block)
     }
 
     /**

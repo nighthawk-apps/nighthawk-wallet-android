@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.media.MediaPlayer
@@ -26,8 +27,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.nighthawkapps.wallet.android.R
+import cash.z.ecc.android.sdk.Initializer
+import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
+import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.ext.twig
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.security.ProviderInstaller
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
+import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
 import com.nighthawkapps.wallet.android.di.component.SynchronizerSubcomponent
 import com.nighthawkapps.wallet.android.feedback.Feedback
@@ -38,17 +47,12 @@ import com.nighthawkapps.wallet.android.feedback.Report.Error.NonFatal.Reorg
 import com.nighthawkapps.wallet.android.feedback.Report.NonUserAction.FEEDBACK_STOPPED
 import com.nighthawkapps.wallet.android.feedback.Report.NonUserAction.SYNC_START
 import com.nighthawkapps.wallet.android.feedback.Report.Tap.COPY_ADDRESS
-import cash.z.ecc.android.sdk.Initializer
-import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
-import cash.z.ecc.android.sdk.ext.ZcashSdk
-import cash.z.ecc.android.sdk.ext.twig
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val ERROR_DIALOG_REQUEST_CODE = 1
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListener {
 
     @Inject
     lateinit var feedback: Feedback
@@ -59,6 +63,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var clipboard: ClipboardManager
 
+    private var retryProviderInstall: Boolean = false
     private val mediaPlayer: MediaPlayer = MediaPlayer()
     private var snackbar: Snackbar? = null
     private var dialog: Dialog? = null
@@ -81,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             it.inject(this)
         }
         super.onCreate(savedInstanceState)
+        ProviderInstaller.installIfNeededAsync(this, this)
         setContentView(R.layout.main_activity)
         initNavigation()
 
@@ -118,6 +124,59 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    /**
+     * This method is only called if the provider is successfully updated
+     * (or is already up-to-date).
+     */
+    override fun onProviderInstalled() {
+        // Provider is up-to-date, app can make secure network calls.
+    }
+
+    /**
+     * This method is called if updating fails; the error code indicates
+     * whether the error is recoverable.
+     */
+    override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent) {
+        GoogleApiAvailability.getInstance().apply {
+            if (isUserResolvableError(errorCode)) {
+                // Recoverable error. Show a dialog prompting the user to
+                // install/update/enable Google Play services.
+                showErrorDialogFragment(this@MainActivity, errorCode, ERROR_DIALOG_REQUEST_CODE) {
+                    // The user chose not to take the recovery action
+                    onProviderInstallerNotAvailable()
+                }
+            } else {
+                onProviderInstallerNotAvailable()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ERROR_DIALOG_REQUEST_CODE) {
+            // Adding a fragment via GoogleApiAvailability.showErrorDialogFragment
+            // before the instance state is restored throws an error. So instead,
+            // set a flag here, which will cause the fragment to delay until
+            // onPostResume.
+            retryProviderInstall = true
+        }
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        if (retryProviderInstall) {
+            // We can now safely retry installation.
+            ProviderInstaller.installIfNeededAsync(this, this)
+        }
+        retryProviderInstall = false
+    }
+
+    private fun onProviderInstallerNotAvailable() {
+        // This is reached if the provider cannot be updated for some reason.
+        // App should consider all HTTP communication to be vulnerable, and take
+        // appropriate action.
+    }
+
     private fun setWindowFlag(bits: Int, on: Boolean) {
         val win = window
         val winParams = win.attributes
@@ -131,7 +190,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initNavigation() {
         navController = findNavController(R.id.nav_host_fragment)
-        navController!!.addOnDestinationChangedListener { _, _, _ ->
+        navController?.addOnDestinationChangedListener { _, _, _ ->
             // hide the keyboard anytime we change destinations
             getSystemService<InputMethodManager>()?.hideSoftInputFromWindow(
                 this@MainActivity.window.decorView.rootView.windowToken,
@@ -151,21 +210,30 @@ class MainActivity : AppCompatActivity() {
                 try {
                     navController?.navigate(destination)
                 } catch (t: Throwable) {
-                    twig("WARNING: during callback, did not navigate to destination: R.id.${resources.getResourceEntryName(destination)} due to: $t")
+                    twig(
+                        "WARNING: during callback, did not navigate to destination: R.id.${resources.getResourceEntryName(
+                            destination
+                        )} due to: $t"
+                    )
                 }
             }
         } else {
             try {
                 navController?.navigate(destination)
             } catch (t: Throwable) {
-                twig("WARNING: did not immediately navigate to destination: R.id.${resources.getResourceEntryName(destination)} due to: $t")
+                twig(
+                    "WARNING: did not immediately navigate to destination: R.id.${resources.getResourceEntryName(
+                        destination
+                    )} due to: $t"
+                )
             }
         }
     }
 
     fun startSync(initializer: Initializer) {
         if (!::synchronizerComponent.isInitialized) {
-            synchronizerComponent = NighthawkWalletApp.component.synchronizerSubcomponent().create(initializer)
+            synchronizerComponent =
+                NighthawkWalletApp.component.synchronizerSubcomponent().create(initializer)
             feedback.report(SYNC_START)
             synchronizerComponent.synchronizer().let { synchronizer ->
                 synchronizer.onProcessorErrorHandler = ::onProcessorError
@@ -227,7 +295,8 @@ class MainActivity : AppCompatActivity() {
     suspend fun isValidAddress(address: String): Boolean {
         try {
             return !synchronizerComponent.synchronizer().validateAddress(address).isNotValid
-        } catch (t: Throwable) { }
+        } catch (t: Throwable) {
+        }
         return false
     }
 
@@ -239,7 +308,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun preventBackPress(fragment: Fragment) {
-        onFragmentBackPressed(fragment){}
+        onFragmentBackPressed(fragment) {}
     }
 
     fun onFragmentBackPressed(fragment: Fragment, block: () -> Unit) {
@@ -254,33 +323,39 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun showSnackbar(message: String, action: String = "OK"): Snackbar {
+    fun showSnackbar(message: String, action: String = "OK"): Snackbar? {
         return if (snackbar == null) {
             val view = findViewById<View>(R.id.main_activity_container)
             val snacks = Snackbar
                 .make(view, "$message", Snackbar.LENGTH_INDEFINITE)
                 .setAction(action) { /*auto-close*/ }
 
-                val snackBarView = snacks.view as ViewGroup
-                val navigationBarHeight = resources.getDimensionPixelSize(resources.getIdentifier("navigation_bar_height", "dimen", "android"))
-                val params = snackBarView.getChildAt(0).layoutParams as ViewGroup.MarginLayoutParams
-                params.setMargins(
-                    params.leftMargin,
-                    params.topMargin,
-                    params.rightMargin,
-                    navigationBarHeight
+            val snackBarView = snacks.view as ViewGroup
+            val navigationBarHeight = resources.getDimensionPixelSize(
+                resources.getIdentifier(
+                    "navigation_bar_height",
+                    "dimen",
+                    "android"
                 )
+            )
+            val params = snackBarView.getChildAt(0).layoutParams as ViewGroup.MarginLayoutParams
+            params.setMargins(
+                params.leftMargin,
+                params.topMargin,
+                params.rightMargin,
+                navigationBarHeight
+            )
 
-                snackBarView.getChildAt(0).setLayoutParams(params)
+            snackBarView.getChildAt(0).layoutParams = params
             snacks
         } else {
-            snackbar!!.setText(message).setAction(action) {/*auto-close*/}
+            snackbar?.setText(message)?.setAction(action) {/*auto-close*/ }
         }.also {
-            if (!it.isShownOrQueued) it.show()
+            if (it != null && !it.isShownOrQueued) it.show()
         }
     }
 
-    fun showKeyboard(focusedView: View) {
+    fun showKeyboard(focusedView: View?) {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(focusedView, InputMethodManager.SHOW_FORCED)

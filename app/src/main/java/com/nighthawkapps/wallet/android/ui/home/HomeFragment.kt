@@ -46,17 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
         FragmentHomeBinding.inflate(inflater)
 
-
-    //
-    // LifeCycle
-    //
-
     override fun onAttach(context: Context) {
-        twig("HomeFragment.onAttach")
-        twig("ZZZ")
-        twig("ZZZ")
-        twig("ZZZ")
-        twig("ZZZ   ===================== HOME FRAGMENT CREATED ==================================")
         super.onAttach(context)
 
         // this will call startSync either now or later (after initializing with newly created seed)
@@ -343,19 +333,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_receive)
                     }
                     .show()
-//                MaterialAlertDialogBuilder(activity)
-//                    .setMessage("To make full use of this wallet, deposit funds to your address or tap the faucet to trigger a tiny automatic deposit.\n\nFaucet funds are made available for the community by the community for testing. So please be kind enough to return what you borrow!")
-//                    .setTitle("No Balance")
-//                    .setCancelable(true)
-//                    .setPositiveButton("Tap Faucet") { dialog, _ ->
-//                        dialog.dismiss()
-//                        setBanner("Tapping faucet...", CANCEL)
-//                    }
-//                    .setNegativeButton("View Address") { dialog, _ ->
-//                        dialog.dismiss()
-//                        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_receive)
-//                    }
-//                    .show()
             }
             CANCEL -> {
                 // TODO: trigger banner / balance update
@@ -398,42 +375,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         }
         return this
-    }
-
-
-
-
-    // TODO: remove these troubleshooting logs
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        twig("HomeFragment.onCreate")
-    }
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        twig("HomeFragment.onActivityCreated")
-    }
-    override fun onStart() {
-        super.onStart()
-        twig("HomeFragment.onStart")
-    }
-    override fun onPause() {
-        super.onPause()
-        twig("HomeFragment.onPause  resumeScope.isActive: ${resumedScope.isActive}")
-    }
-    override fun onStop() {
-        super.onStop()
-        twig("HomeFragment.onStop")
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        twig("HomeFragment.onDestroyView")
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        twig("HomeFragment.onDestroy")
-    }
-    override fun onDetach() {
-        super.onDetach()
-        twig("HomeFragment.onDetach")
     }
 }
