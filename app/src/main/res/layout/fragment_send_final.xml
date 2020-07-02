@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_send_final"
-    android:animateLayoutChanges="true"
-    >
+    android:animateLayoutChanges="true">
 
     <View
         android:id="@+id/guide_keys"
@@ -137,12 +136,13 @@
         app:layout_constraintTop_toBottomOf="@id/guide_keys" />
 
     <ImageView
-        android:layout_width="401dp"
-        android:layout_height="343dp"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        app:layout_constraintVertical_bias="1.0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_retry"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintTop_toTopOf="@+id/progress_horizontal"
         app:srcCompat="@drawable/ic_f117_vector_black_no_bg" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

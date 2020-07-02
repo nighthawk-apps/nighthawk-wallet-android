@@ -6,11 +6,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-//apply plugin: 'com.github.ben-manes.versions'
 
 archivesBaseName = 'nighthawk-android-wallet'
 group = 'com.nighthawkapps.wallet.android'
-version = '1.0.0'
+version = '1.0.1'
 
 android {
     ndkVersion "21.1.6352462"
@@ -21,7 +20,7 @@ android {
         applicationId 'com.nighthawkapps.wallet.android'
         minSdkVersion Deps.minSdkVersion
         targetSdkVersion Deps.targetSdkVersion
-        versionCode = 1_00_01_800
+        versionCode = 1_00_01_400
         // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX) dev(9XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
         versionName = "$version"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -75,7 +74,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     kapt {
         arguments {

@@ -72,7 +72,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
             if (seedWordAdapter == null || seedWordAdapter?.itemCount == 1) {
                 onExit()
             } else {
-                MaterialAlertDialogBuilder(activity)
+                MaterialAlertDialogBuilder(requireContext())
                     .setMessage("Are you sure? For security, the words that you have entered will be cleared!")
                     .setTitle("Abort?")
                     .setPositiveButton("Stay") { dialog, _ ->

@@ -333,7 +333,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun onBannerAction(action: BannerAction) {
         when (action) {
             FUND_NOW -> {
-                MaterialAlertDialogBuilder(activity)
+                MaterialAlertDialogBuilder(requireContext())
                     .setMessage("To make full use of this wallet, deposit funds to your address.")
                     .setTitle("No Balance")
                     .setCancelable(true)

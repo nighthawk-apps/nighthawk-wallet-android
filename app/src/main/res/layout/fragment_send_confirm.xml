@@ -73,14 +73,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.84"
-        />
+        app:layout_constraintVertical_bias="0.84" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Tap\nto send ZEC"
+        android:text="Yes\nTap to z2z!'"
         android:padding="12dp"
         android:textColor="@color/text_dark"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,13 +88,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.48" />
+
     <ImageView
-        android:layout_width="401dp"
-        android:layout_height="343dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="174dp"
+        android:layout_height="194dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_retry"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintTop_toBottomOf="@+id/button_next"
         app:srcCompat="@drawable/ic_f117_vector_yellow_no_bg" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
