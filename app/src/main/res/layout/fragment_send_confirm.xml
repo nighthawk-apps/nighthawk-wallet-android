@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Yes\nTap to z2z!'"
+        android:text="Yes\nTap to z2z!"
         android:padding="12dp"
         android:textColor="@color/text_dark"
         app:layout_constraintBottom_toBottomOf="parent"
