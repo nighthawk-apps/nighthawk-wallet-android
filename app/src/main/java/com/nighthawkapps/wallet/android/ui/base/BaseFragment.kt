@@ -10,7 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.ui.MainActivity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 
 abstract class BaseFragment<T : ViewBinding> : Fragment() {
     val mainActivity: MainActivity? get() = activity as MainActivity?
@@ -57,5 +61,4 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
     fun tapped(tap: Report.Tap) {
         mainActivity?.reportTap(tap)
     }
-
 }

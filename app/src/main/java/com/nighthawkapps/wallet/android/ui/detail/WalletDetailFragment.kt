@@ -6,6 +6,12 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import cash.z.ecc.android.sdk.block.CompactBlockProcessor.WalletBalance
+import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
+import cash.z.ecc.android.sdk.ext.collectWith
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
+import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentDetailBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
@@ -15,17 +21,12 @@ import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.feedback.Report.Tap.DETAIL_BACK
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import cash.z.ecc.android.sdk.block.CompactBlockProcessor.WalletBalance
-import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
-import cash.z.ecc.android.sdk.ext.collectWith
-import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
-import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
-import cash.z.ecc.android.sdk.ext.twig
 import kotlinx.coroutines.launch
 
-
 class WalletDetailFragment : BaseFragment<FragmentDetailBinding>() {
+
     override val screen = Report.Screen.DETAIL
+
     private val viewModel: WalletDetailViewModel by viewModel()
 
     private lateinit var adapter: TransactionAdapter<ConfirmedTransaction>
@@ -55,7 +56,8 @@ class WalletDetailFragment : BaseFragment<FragmentDetailBinding>() {
         binding.textBalanceDescription.apply {
             goneIf(change <= 0L)
             val changeString = change.convertZatoshiToZecString()
-            text = "(expecting +$changeString ZEC)".toColoredSpan(R.color.text_light, "+${changeString}")
+            text = "(expecting +$changeString ZEC)".toColoredSpan(R.color.text_light, "+$changeString"
+            )
         }
     }
 
@@ -77,6 +79,7 @@ class WalletDetailFragment : BaseFragment<FragmentDetailBinding>() {
 
     // TODO: maybe implement this for better fade behavior. Or do an actual scroll behavior instead, yeah do that. Or an item decoration.
     fun onLastItemShown(item: ConfirmedTransaction, position: Int) {
-        binding.footerFade.alpha = position.toFloat() / (binding.recyclerTransactions.adapter?.itemCount ?: 1)
+        binding.footerFade.alpha =
+            position.toFloat() / (binding.recyclerTransactions.adapter?.itemCount ?: 1)
     }
 }

@@ -13,6 +13,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import cash.z.ecc.android.sdk.ext.ZcashSdk
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentRestoreBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -20,11 +22,7 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.showInvalidSeedPhraseError
 import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Restore
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.*
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import cash.z.ecc.android.sdk.ext.ZcashSdk
-import cash.z.ecc.android.sdk.ext.twig
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tylersuehr.chips.Chip
 import com.tylersuehr.chips.ChipsAdapter
 import com.tylersuehr.chips.SeedWordAdapter
@@ -45,11 +43,11 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         super.onViewCreated(view, savedInstanceState)
 
         seedWordRecycler = binding.chipsInput.findViewById<RecyclerView>(R.id.chips_recycler)
-        seedWordAdapter = SeedWordAdapter(seedWordRecycler.adapter as ChipsAdapter).onDataSetChanged {
-            onChipsModified()
-        }.also { onChipsModified() }
+        seedWordAdapter =
+            SeedWordAdapter(seedWordRecycler.adapter as ChipsAdapter).onDataSetChanged {
+                onChipsModified()
+            }.also { onChipsModified() }
         seedWordRecycler.adapter = seedWordAdapter
-
 
         binding.chipsInput.apply {
             setFilterableChipList(getChips())
@@ -57,18 +55,17 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         }
 
         binding.buttonDone.setOnClickListener {
-            onDone().also { tapped(RESTORE_DONE) }
+            onDone()
         }
 
         binding.buttonSuccess.setOnClickListener {
-            onEnterWallet().also { tapped(RESTORE_SUCCESS) }
+            onEnterWallet()
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mainActivity?.onFragmentBackPressed(this) {
-            tapped(RESTORE_BACK)
             if (seedWordAdapter == null || seedWordAdapter?.itemCount == 1) {
                 onExit()
             } else {
@@ -93,7 +90,6 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         // Require one less tap to enter the seed words
         touchScreenForUser()
     }
-
 
     private fun onExit() {
         mainActivity?.reportFunnel(Restore.Exit)
@@ -150,7 +146,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         seedWordAdapter?.editText?.apply {
             postDelayed({
                 requestFocus()
-            },40L)
+            }, 40L)
         }
         setDoneEnabled()
 
@@ -190,7 +186,8 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     private fun touchScreenForUser() {
         seedWordAdapter?.editText?.apply {
             postDelayed({
-                seedWordAdapter?.editText?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                seedWordAdapter?.editText?.inputType =
+                    InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                 dispatchTouchEvent(motionEvent(ACTION_DOWN))
                 dispatchTouchEvent(motionEvent(ACTION_UP))
             }, 100L)
@@ -204,11 +201,10 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
         return false
     }
-
 }
 
 class SeedWordChip(val word: String, var index: Int = -1) : Chip() {
-    override fun getSubtitle(): String? = null//"subtitle for $word"
+    override fun getSubtitle(): String? = null // "subtitle for $word"
     override fun getAvatarDrawable(): Drawable? = null
     override fun getId() = index
     override fun getTitle() = word

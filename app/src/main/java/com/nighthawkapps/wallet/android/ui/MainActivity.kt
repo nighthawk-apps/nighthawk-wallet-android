@@ -349,7 +349,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             snackBarView.getChildAt(0).layoutParams = params
             snacks
         } else {
-            snackbar?.setText(message)?.setAction(action) {/*auto-close*/ }
+            snackbar?.setText(message)?.setAction(action) { /*auto-close*/ }
         }.also {
             if (it != null && !it.isShownOrQueued) it.show()
         }
@@ -480,7 +480,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     private fun onChainError(errorHeight: Int, rewindHeight: Int) {
         feedback.report(Reorg(errorHeight, rewindHeight))
     }
-
 
     // TODO: maybe move this quick helper code somewhere general or throttle the dialogs differently (like with a flow and stream operators, instead)
 

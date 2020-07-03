@@ -1,16 +1,18 @@
 package com.nighthawkapps.wallet.android
 
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.scanReduce
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlin.math.round
-import kotlin.math.roundToInt
 
 class ScratchPad {
 
-    val t get()  = System.currentTimeMillis()
+    val t get() = System.currentTimeMillis()
     var t0 = 0L
     val Δt get() = t - t0
 
@@ -23,10 +25,10 @@ class ScratchPad {
                 t0 = t
                 started = true
             }
-            println("$Δt\temitting $it");
+            println("$Δt\temitting $it")
         }
-        val flow2 = flowOf("a", "b", "c", "d", "e", "f").onEach { delay(150); println("$Δt\temitting $it")}
-        val flow3 = flowOf("A", "B").onEach { delay(450); println("$Δt\temitting $it")}
+        val flow2 = flowOf("a", "b", "c", "d", "e", "f").onEach { delay(150); println("$Δt\temitting $it") }
+        val flow3 = flowOf("A", "B").onEach { delay(450); println("$Δt\temitting $it") }
         combine(flow, flow2, flow3) { i, s, t -> "$i$s$t" }.onStart {
             t0 = t
         }.collect {
@@ -50,5 +52,4 @@ class ScratchPad {
             println("got $it")
         }
     }
-
 }

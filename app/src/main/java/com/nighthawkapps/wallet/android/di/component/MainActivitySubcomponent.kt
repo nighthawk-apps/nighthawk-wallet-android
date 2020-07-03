@@ -16,7 +16,8 @@ interface MainActivitySubcomponent {
 
     fun inject(activity: MainActivity)
 
-    @Named("BeforeSynchronizer") fun viewModelFactory(): ViewModelProvider.Factory
+    @Named("BeforeSynchronizer")
+    fun viewModelFactory(): ViewModelProvider.Factory
 
     @Subcomponent.Factory
     interface Factory {

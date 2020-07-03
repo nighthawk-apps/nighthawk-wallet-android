@@ -1,7 +1,6 @@
 package com.nighthawkapps.wallet.android.feedback
 
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
-import com.nighthawkapps.wallet.android.feedback.Feedback
 import okio.Okio
 import java.io.File
 import java.text.SimpleDateFormat

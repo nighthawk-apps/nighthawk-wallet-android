@@ -8,7 +8,10 @@ import cash.z.ecc.android.sdk.ext.TroubleshootingTwig
 import cash.z.ecc.android.sdk.ext.Twig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
-import com.nighthawkapps.wallet.android.feedback.*
+import com.nighthawkapps.wallet.android.feedback.Feedback
+import com.nighthawkapps.wallet.android.feedback.FeedbackConsole
+import com.nighthawkapps.wallet.android.feedback.FeedbackCoordinator
+import com.nighthawkapps.wallet.android.feedback.FeedbackFile
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
@@ -26,15 +29,14 @@ class AppModule {
     fun provideClipboard(context: Context) =
         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-
     //
     // Feedback
     //
 
     @Provides
     @Singleton
-    fun providePreferences(context: Context): SharedPreferences
-            = context.getSharedPreferences("Application", Context.MODE_PRIVATE)
+    fun providePreferences(context: Context): SharedPreferences =
+        context.getSharedPreferences("Application", Context.MODE_PRIVATE)
 
     @Provides
     @Singleton
@@ -53,7 +55,6 @@ class AppModule {
             FeedbackCoordinator(feedback, if (isEnabled) defaultObservers else setOf())
         }
     }
-
 
     //
     // Default Feedback Observer Set

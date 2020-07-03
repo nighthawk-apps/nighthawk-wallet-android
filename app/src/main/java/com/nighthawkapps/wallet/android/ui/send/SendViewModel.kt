@@ -2,6 +2,17 @@ package com.nighthawkapps.wallet.android.ui.send
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cash.z.ecc.android.sdk.Initializer
+import cash.z.ecc.android.sdk.Synchronizer
+import cash.z.ecc.android.sdk.db.entity.isCreated
+import cash.z.ecc.android.sdk.db.entity.isCreating
+import cash.z.ecc.android.sdk.db.entity.isMined
+import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
+import cash.z.ecc.android.sdk.db.entity.PendingTransaction
+import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.ext.twig
+import cash.z.ecc.android.sdk.validate.AddressType
 import com.nighthawkapps.wallet.android.feedback.Feedback
 import com.nighthawkapps.wallet.android.feedback.Feedback.Keyed
 import com.nighthawkapps.wallet.android.feedback.Feedback.TimeMetric
@@ -10,17 +21,13 @@ import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Send.SendSelected
 import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Send.SpendingKeyFound
 import com.nighthawkapps.wallet.android.feedback.Report.Issue
 import com.nighthawkapps.wallet.android.feedback.Report.MetricType
-import com.nighthawkapps.wallet.android.feedback.Report.MetricType.*
+import com.nighthawkapps.wallet.android.feedback.Report.MetricType.TRANSACTION_SUBMITTED
+import com.nighthawkapps.wallet.android.feedback.Report.MetricType.TRANSACTION_MINED
+import com.nighthawkapps.wallet.android.feedback.Report.MetricType.TRANSACTION_CREATED
+import com.nighthawkapps.wallet.android.feedback.Report.MetricType.TRANSACTION_INITIALIZED
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX
-import cash.z.ecc.android.sdk.Initializer
-import cash.z.ecc.android.sdk.Synchronizer
-import cash.z.ecc.android.sdk.db.entity.*
-import cash.z.ecc.android.sdk.ext.ZcashSdk
-import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
-import cash.z.ecc.android.sdk.ext.twig
-import cash.z.ecc.android.sdk.validate.AddressType
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -58,7 +65,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
             field = value
         }
     val isShielded get() = toAddress.startsWith("z")
-    
+
     fun send(): Flow<PendingTransaction> {
         funnel(SendSelected)
         val memoToSend = createMemoToSend()
@@ -79,7 +86,8 @@ class SendViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun createMemoToSend() = if (includeFromAddress) "$memo\n$INCLUDE_MEMO_PREFIX\n$fromAddress" else memo
+    fun createMemoToSend() =
+        if (includeFromAddress) "$memo\n$INCLUDE_MEMO_PREFIX\n$fromAddress" else memo
 
     private fun reportIssues(memoToSend: String) {
         if (toAddress == fromAddress) feedback.report(Issue.SelfSend)
@@ -109,10 +117,10 @@ class SendViewModel @Inject constructor() : ViewModel() {
                 emit("Please enter at least 1 Zatoshi.")
             }
             maxZatoshi != null && zatoshiAmount > maxZatoshi -> {
-                emit( "Please enter no more than ${maxZatoshi.convertZatoshiToZecString(8)} ZEC.")
+                emit("Please enter no more than ${maxZatoshi.convertZatoshiToZecString(8)} ZEC.")
             }
             createMemoToSend().length > ZcashSdk.MAX_MEMO_SIZE -> {
-                emit( "Memo must be less than ${ZcashSdk.MAX_MEMO_SIZE} in length.")
+                emit("Memo must be less than ${ZcashSdk.MAX_MEMO_SIZE} in length.")
             }
             else -> emit(null)
         }
@@ -170,7 +178,9 @@ class SendViewModel @Inject constructor() : ViewModel() {
                         }
 
                         // remove all top-level metrics
-                        if (metric.key == Report.MetricType.TRANSACTION_MINED.key) metrics.remove(metricId)
+                        if (metric.key == Report.MetricType.TRANSACTION_MINED.key) metrics.remove(
+                            metricId
+                        )
                     }
                 }
             }
@@ -182,33 +192,28 @@ class SendViewModel @Inject constructor() : ViewModel() {
         feedback.report(step)
     }
 
-    private operator fun MetricType.unaryPlus(): TimeMetric = TimeMetric(key, description).markTime()
-    private infix fun TimeMetric.by(txId: Long) = this.toMetricIdFor(txId).also { metrics[it] = this }
+    private operator fun MetricType.unaryPlus(): TimeMetric =
+        TimeMetric(key, description).markTime()
+
+    private infix fun TimeMetric.by(txId: Long) =
+        this.toMetricIdFor(txId).also { metrics[it] = this }
+
     private infix fun Pair<MetricType, MetricType>.by(txId: Long): String? {
         val startMetric = first.toMetricIdFor(txId).let { metricId ->
             metrics[metricId].also { if (it == null) println("Warning no start metric for id: $metricId") }
         }
         return startMetric?.endTime?.let { startMetricEndTime ->
-                TimeMetric(second.key, second.description, mutableListOf(startMetricEndTime))
-                    .markTime().let { endMetric ->
-                        endMetric.toMetricIdFor(txId).also { metricId ->
-                            metrics[metricId] = endMetric
-                            metrics[metricId.toRelatedMetricId()] = startMetric
-                        }
+            TimeMetric(second.key, second.description, mutableListOf(startMetricEndTime))
+                .markTime().let { endMetric ->
+                    endMetric.toMetricIdFor(txId).also { metricId ->
+                        metrics[metricId] = endMetric
+                        metrics[metricId.toRelatedMetricId()] = startMetric
                     }
-            }
-
-    }
+                }
+        }
+}
 
     private fun Keyed<String>.toMetricIdFor(id: Long): String = "$id.$key"
     private fun String.toRelatedMetricId(): String = "$this.related"
     private fun String.toTxId(): Long = split('.').first().toLong()
 }
-
-
-
-
-
-
-
-

@@ -5,7 +5,8 @@ import com.nighthawkapps.wallet.android.NighthawkWalletApp
 object Report {
 
     object Funnel {
-        sealed class Send(stepName: String, step: Int, vararg properties: Pair<String, Any>) : Feedback.Funnel("send", stepName, step, *properties) {
+        sealed class Send(stepName: String, step: Int, vararg properties: Pair<String, Any>) :
+            Feedback.Funnel("send", stepName, step, *properties) {
             object AddressPageComplete : Send("addresspagecomplete", 10)
             object MemoPageComplete : Send("memopagecomplete", 20)
             object ConfirmPageComplete : Send("confirmpagecomplete", 30)
@@ -19,22 +20,33 @@ object Report {
             class Mined(minedHeight: Int) : Send("mined", 100, "minedHeight" to minedHeight)
 
             // Errors
-            abstract class Error(stepName: String, step: Int, vararg properties: Pair<String, Any>) : Send("error.$stepName", step, "isError" to true, *properties)
+            abstract class Error(
+                stepName: String,
+                step: Int,
+                vararg properties: Pair<String, Any>
+            ) : Send("error.$stepName", step, "isError" to true, *properties)
+
             object ErrorNotFound : Error("notfound", 51)
-            class ErrorEncoding(errorCode: Int? = null, errorMessage: String? = null) : Error("encode", 71,
+            class ErrorEncoding(errorCode: Int? = null, errorMessage: String? = null) : Error(
+                "encode", 71,
                 "errorCode" to (errorCode ?: -1),
                 "errorMessage" to (errorMessage ?: "None")
             )
-            class ErrorSubmitting(errorCode: Int? = null, errorMessage: String? = null) : Error("submit", 81,
+
+            class ErrorSubmitting(errorCode: Int? = null, errorMessage: String? = null) : Error(
+                "submit", 81,
                 "errorCode" to (errorCode ?: -1),
                 "errorMessage" to (errorMessage ?: "None")
             )
         }
 
-        sealed class Restore(stepName: String, step: Int, vararg properties: Pair<String, Any>) : Feedback.Funnel("restore", stepName, step, *properties) {
+        sealed class Restore(stepName: String, step: Int, vararg properties: Pair<String, Any>) :
+            Feedback.Funnel("restore", stepName, step, *properties) {
             object Initiated : Restore("initiated", 0)
             object SeedWordsStarted : Restore("wordsstarted", 10)
-            class SeedWordCount(wordCount: Int) : Restore("wordsmodified", 15, "seedWordCount" to wordCount)
+            class SeedWordCount(wordCount: Int) :
+                Restore("wordsmodified", 15, "seedWordCount" to wordCount)
+
             object SeedWordsCompleted : Restore("wordscompleted", 20)
             object Stay : Restore("stay", 21)
             object Exit : Restore("stay", 22)
@@ -44,10 +56,22 @@ object Report {
             object Success : Restore("success", 100)
         }
 
-        sealed class UserFeedback(stepName: String, step: Int, vararg properties: Pair<String, Any>) : Feedback.Funnel("feedback", stepName, step, *properties) {
+        sealed class UserFeedback(
+            stepName: String,
+            step: Int,
+            vararg properties: Pair<String, Any>
+        ) : Feedback.Funnel("feedback", stepName, step, *properties) {
             object Started : UserFeedback("started", 0)
             object Cancelled : UserFeedback("cancelled", 1)
-            class Submitted(rating: Int, question1: String, question2: String, question3: String) : UserFeedback("submitted", 100, "rating" to rating, "question1" to question1, "question2" to question2, "question3" to question3)
+            class Submitted(rating: Int, question1: String, question2: String, question3: String) :
+                UserFeedback(
+                    "submitted",
+                    100,
+                    "rating" to rating,
+                    "question1" to question1,
+                    "question2" to question2,
+                    "question3" to question3
+                )
         }
     }
 
@@ -63,6 +87,7 @@ object Report {
                 val errorHeight: Int by propertyMap
                 val rewindHeight: Int by propertyMap
             }
+
             class TxUpdateFailed(t: Throwable) : Feedback.AppError("txupdate", t, false)
         }
     }
@@ -201,9 +226,9 @@ class LaunchMetric private constructor(private val metric: Feedback.TimeMetric) 
         )
             .markTime()
     )
+
     override fun toString(): String = metric.toString()
 }
-
 
 inline fun <T> Feedback.measure(type: Report.MetricType, block: () -> T): T =
     this.measure(type.key, type.description, block)

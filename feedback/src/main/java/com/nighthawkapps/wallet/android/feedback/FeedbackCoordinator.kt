@@ -1,11 +1,14 @@
 package com.nighthawkapps.wallet.android.feedback
 
 import com.nighthawkapps.wallet.android.feedback.util.CompositeJob
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
 
@@ -16,7 +19,10 @@ import kotlin.coroutines.coroutineContext
  * waiting for any in-flight emissions to complete. Lastly, all monitoring will cleanly complete
  * whenever the feedback is stopped or its parent scope is cancelled.
  */
-class FeedbackCoordinator(val feedback: Feedback, defaultObservers: Set<FeedbackObserver> = setOf()) {
+class FeedbackCoordinator(
+    val feedback: Feedback,
+    defaultObservers: Set<FeedbackObserver> = setOf()
+) {
 
     init {
         feedback.apply {
@@ -87,7 +93,7 @@ class FeedbackCoordinator(val feedback: Feedback, defaultObservers: Set<Feedback
         }
     }
 
-    inline fun <reified T: FeedbackObserver> findObserver(): T? {
+    inline fun <reified T : FeedbackObserver> findObserver(): T? {
         return observers.firstOrNull { it::class == T::class } as T
     }
 

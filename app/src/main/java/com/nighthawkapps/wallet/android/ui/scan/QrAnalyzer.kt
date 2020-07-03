@@ -3,7 +3,6 @@ package com.nighthawkapps.wallet.android.ui.scan
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import cash.z.ecc.android.sdk.ext.retrySimple
-import cash.z.ecc.android.sdk.ext.retryUpTo
 import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision

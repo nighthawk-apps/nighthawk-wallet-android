@@ -14,10 +14,10 @@ import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.onEditorActionDone
 import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Send
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.*
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 
 class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
+
     override val screen = Report.Screen.SEND_MEMO
 
     val sendViewModel: SendViewModel by activityViewModel()
@@ -28,29 +28,29 @@ class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonNext.setOnClickListener {
-            onTopButton().also { tapped(SEND_MEMO_NEXT) }
+            onTopButton()
         }
         binding.buttonSkip.setOnClickListener {
-            onBottomButton().also { tapped(SEND_MEMO_SKIP) }
+            onBottomButton()
         }
         binding.clearMemo.setOnClickListener {
-            onClearMemo().also { tapped(SEND_MEMO_CLEAR) }
+            onClearMemo()
         }
 
         R.id.action_nav_send_memo_to_nav_send_address.let {
-            binding.backButtonHitArea.onClickNavTo(it) { tapped(SEND_MEMO_BACK) }
-            onBackPressNavTo(it) { tapped(SEND_MEMO_BACK) }
+            binding.backButtonHitArea.onClickNavTo(it)
+            onBackPressNavTo(it)
         }
 
-        binding.checkIncludeAddress.setOnCheckedChangeListener { _, _->
+        binding.checkIncludeAddress.setOnCheckedChangeListener { _, _ ->
             onIncludeMemo(binding.checkIncludeAddress.isChecked)
         }
 
         binding.inputMemo.let { memo ->
             memo.onEditorActionDone {
-                onTopButton().also { tapped(SEND_MEMO_NEXT) }
+                onTopButton()
             }
-            memo.doAfterTextChanged { 
+            memo.doAfterTextChanged {
                 binding.clearMemo.goneIf(memo.text.isEmpty())
             }
         }
@@ -89,10 +89,8 @@ class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
         binding.textIncludedAddress.goneIf(!checked)
         sendViewModel.includeFromAddress = checked
         binding.textInfoShielded.text = if (checked) {
-            tapped(SEND_MEMO_INCLUDE)
             getString(R.string.send_memo_included_message)
         } else {
-            tapped(SEND_MEMO_EXCLUDE)
             getString(R.string.send_memo_excluded_message)
         }
     }

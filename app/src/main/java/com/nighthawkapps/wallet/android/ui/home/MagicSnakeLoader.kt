@@ -1,7 +1,6 @@
 package com.nighthawkapps.wallet.android.ui.home
 
 import android.animation.ValueAnimator
-import cash.z.ecc.android.sdk.ext.twig
 import com.airbnb.lottie.LottieAnimationView
 
 class MagicSnakeLoader(
@@ -77,7 +76,7 @@ class MagicSnakeLoader(
         }
     }
 
-    private val acceptablePauseFrames = arrayOf(33,34,67,68,99)
+    private val acceptablePauseFrames = arrayOf(33, 34, 67, 68, 99)
     private fun applyScanProgress(frame: Int) {
         // don't hardcode the progress until the loop animation has completed, cleanly
         if (isPaused) {
@@ -110,7 +109,7 @@ class MagicSnakeLoader(
     }
 
     private fun removeLoops() {
-        lottie.frame.let {frame ->
+        lottie.frame.let { frame ->
             if (frame in 33..67) {
                 lottie.frame = frame + 34
             } else if (frame in 0..33) {
@@ -144,4 +143,3 @@ class MagicSnakeLoader(
         return ((animatedValue as Float) * totalFrames).toInt()
     }
 }
-

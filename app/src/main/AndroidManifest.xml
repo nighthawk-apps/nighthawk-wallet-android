@@ -1,8 +1,7 @@
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nighthawkapps.wallet.android">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -13,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/NighthawkTheme">
-        <activity android:name=".ui.MainActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,7 +32,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <meta-data android:name="com.google.firebase.ml.vision.DEPENDENCIES" android:value="barcode" />
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="barcode" />
 
     </application>
 </manifest>

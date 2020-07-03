@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -54,31 +53,31 @@
         android:background="@android:color/transparent"
         android:elevation="6dp"
         android:gravity="top"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="outsideOverlay"
-        tools:text="this\nis\nsome\ntext\nthat\nspans\nmany\nlines"
         android:hint="Add a memo here"
         android:imeActionLabel="add memo"
         android:imeOptions="actionDone"
         android:inputType="textMultiLine"
         android:maxLength="512"
-        android:paddingBottom="8dp"
-        android:paddingEnd="32dp"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
+        android:paddingEnd="32dp"
+        android:paddingBottom="8dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_light"
         app:layout_constraintBottom_toTopOf="@id/text_included_address"
         app:layout_constraintEnd_toEndOf="@id/background_memo"
         app:layout_constraintStart_toStartOf="@id/background_memo"
-        app:layout_constraintTop_toTopOf="@id/background_memo" />
+        app:layout_constraintTop_toTopOf="@id/background_memo"
+        tools:text="this\nis\nsome\ntext\nthat\nspans\nmany\nlines" />
 
     <ImageView
         android:id="@+id/clear_memo"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:elevation="6dp"
         android:src="@drawable/ic_close_black_24dp"
         android:tint="@color/text_light"
@@ -90,9 +89,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="6dp"
-        android:paddingBottom="8dp"
-        android:paddingEnd="16dp"
         android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
         android:textColor="@color/text_light_dimmed"
         app:layout_constraintBottom_toBottomOf="@id/background_memo"
         app:layout_constraintEnd_toEndOf="@id/background_memo"
@@ -113,8 +112,8 @@
         android:id="@+id/check_include_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="0dp"
         android:layout_marginTop="16dp"
+        android:layout_marginRight="0dp"
         android:padding="0dp"
         android:text="Include your sending address in memo"
         app:layout_constraintStart_toStartOf="@+id/background_memo"
@@ -140,8 +139,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_info_24dp"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/ic_info_24dp" />
 
     <TextView
         android:id="@+id/sad_title"
@@ -150,8 +149,8 @@
         android:layout_marginTop="16dp"
         android:drawableTint="@color/text_light_dimmed"
         android:gravity="center"
-        android:paddingEnd="32dp"
         android:paddingStart="32dp"
+        android:paddingEnd="32dp"
         android:text="This recipient is using a transparent address, which does not provide Zcash's privacy protections."
         android:textColor="@color/text_light"
         android:textSize="18dp"
@@ -215,9 +214,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_skip"
+        style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/Nighthawk.Button.OutlinedButton"
         android:padding="12dp"
         android:textColor="@color/text_light"
         app:layout_constraintEnd_toEndOf="@id/button_next"
@@ -229,8 +228,8 @@
         android:id="@+id/group_transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:visibility="visible"
-        app:constraint_referenced_ids="sad_description, sad_icon, sad_title, sad_description2" />
+        app:constraint_referenced_ids="sad_description, sad_icon, sad_title, sad_description2"
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_shielded"

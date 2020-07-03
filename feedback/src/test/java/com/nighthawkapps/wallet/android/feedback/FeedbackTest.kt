@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.feedback
 
-import com.nighthawkapps.wallet.android.feedback.Feedback
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -9,7 +8,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
-import java.lang.RuntimeException
 
 class FeedbackTest {
 
@@ -110,24 +108,25 @@ class FeedbackTest {
         }
     }
 
-    private fun verifyFeedbackCancellation(testBlock: suspend (Feedback, Job) -> Unit) = runBlocking {
-        val feedback = Feedback()
-        var counter = 0
-        val parentJob = launch {
-            feedback.start()
-            feedback.scope.launch {
-                delay(50)
-                counter = 1
+    private fun verifyFeedbackCancellation(testBlock: suspend (Feedback, Job) -> Unit) =
+        runBlocking {
+            val feedback = Feedback()
+            var counter = 0
+            val parentJob = launch {
+                feedback.start()
+                feedback.scope.launch {
+                    delay(50)
+                    counter = 1
+                }
             }
+            // give feedback.start a chance to happen before cancelling
+            delay(25)
+            // stop or cancel things here
+            testBlock(feedback, parentJob)
+            delay(75)
+            feedback.ensureStopped()
+            assertEquals(0, counter)
         }
-        // give feedback.start a chance to happen before cancelling
-        delay(25)
-        // stop or cancel things here
-        testBlock(feedback, parentJob)
-        delay(75)
-        feedback.ensureStopped()
-        assertEquals(0, counter)
-    }
 
     private fun verifyDuration(feedback: Feedback, duration: Long) {
         feedback.metrics.onEach {

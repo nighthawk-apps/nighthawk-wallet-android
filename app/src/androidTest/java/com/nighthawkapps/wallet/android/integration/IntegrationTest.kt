@@ -3,9 +3,9 @@ package com.nighthawkapps.wallet.android.integration
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import cash.z.ecc.android.sdk.Initializer
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
-import cash.z.ecc.android.sdk.Initializer
 import okio.Buffer
 import okio.GzipSink
 import okio.Okio
@@ -70,7 +70,8 @@ class IntegrationTest {
             acceptedSize--
         }
 
-        val maxSeedPhraseLength = 8 * 24 + 23  //215 (max length of each word is 8)
+        // 215 (max length of each word is 8)
+        val maxSeedPhraseLength = 8 * 24 + 23
         assertTrue(
             "LockBox does not support the maximum length seed phrase." +
                     " Expected: $maxSeedPhraseLength but was: $acceptedSize",
@@ -82,7 +83,11 @@ class IntegrationTest {
     fun testAddress() {
         val seed = mnemonics.toSeed(phrase.toCharArray())
         val initializer = Initializer(appContext).apply {
-            new(seed, Initializer.DefaultBirthdayStore(appContext).newWalletBirthday, overwrite = true)
+            new(
+                seed,
+                Initializer.DefaultBirthdayStore(appContext).newWalletBirthday,
+                overwrite = true
+            )
         }
         assertEquals(
             "Generated incorrect z-address!",
@@ -91,7 +96,6 @@ class IntegrationTest {
         )
         initializer.clear()
     }
-
 
     private fun ByteArray.toHex(): String {
         val sb = StringBuilder(size * 2)

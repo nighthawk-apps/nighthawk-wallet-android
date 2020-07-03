@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendConfirmBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -11,10 +13,9 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Send
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.*
+import com.nighthawkapps.wallet.android.feedback.Report.Tap.SEND_CONFIRM_BACK
+import com.nighthawkapps.wallet.android.feedback.Report.Tap.SEND_CONFIRM_NEXT
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
-import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import kotlinx.coroutines.launch
 
 class SendConfirmFragment : BaseFragment<FragmentSendConfirmBinding>() {

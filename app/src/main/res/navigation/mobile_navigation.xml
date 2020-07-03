@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
@@ -23,8 +22,8 @@
         <action
             android:id="@+id/action_nav_home_to_send"
             app:destination="@id/nav_send_address"
-            app:exitAnim="@anim/anim_exit_to_left"
-            app:enterAnim="@anim/anim_enter_from_right"/>
+            app:enterAnim="@anim/anim_enter_from_right"
+            app:exitAnim="@anim/anim_exit_to_left" />
         <action
             android:id="@+id/action_nav_home_to_nav_scan"
             app:destination="@id/nav_scan" />
@@ -36,14 +35,14 @@
     <fragment
         android:id="@+id/nav_receive"
         android:name="com.nighthawkapps.wallet.android.ui.receive.ReceiveFragment"
-        tools:layout="@layout/fragment_receive_new" >
+        tools:layout="@layout/fragment_receive_new">
         <action
             android:id="@+id/action_nav_receive_to_nav_scan"
             app:destination="@id/nav_scan"
-            app:popUpTo="@id/nav_receive"
-            app:popUpToInclusive="true"
+            app:enterAnim="@anim/anim_fade_in_scanner"
             app:exitAnim="@anim/anim_fade_out_address"
-            app:enterAnim="@anim/anim_fade_in_scanner"/>
+            app:popUpTo="@id/nav_receive"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/nav_scan"
@@ -53,13 +52,13 @@
             android:id="@+id/action_nav_scan_to_nav_send_address"
             app:destination="@id/nav_send_address"
             app:popUpTo="@id/nav_scan"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_nav_scan_to_nav_receive"
-            app:popUpTo="@id/nav_scan"
-            app:popUpToInclusive="true"
             app:destination="@id/nav_receive"
-            app:exitAnim="@anim/anim_fade_out_medium"/>
+            app:exitAnim="@anim/anim_fade_out_medium"
+            app:popUpTo="@id/nav_scan"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/nav_detail"
@@ -68,7 +67,7 @@
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.nighthawkapps.wallet.android.ui.profile.ProfileFragment"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_nav_profile_to_nav_backup"
             app:destination="@id/nav_backup" />
@@ -81,12 +80,12 @@
     <fragment
         android:id="@+id/nav_send_address"
         android:name="com.nighthawkapps.wallet.android.ui.send.SendAddressFragment"
-        tools:layout="@layout/fragment_send_address" >
+        tools:layout="@layout/fragment_send_address">
         <action
             android:id="@+id/action_nav_send_address_to_send_memo"
             app:destination="@id/nav_send_memo"
-            app:exitAnim="@anim/anim_exit_to_left"
-            app:enterAnim="@anim/anim_enter_from_right"/>
+            app:enterAnim="@anim/anim_enter_from_right"
+            app:exitAnim="@anim/anim_exit_to_left" />
         <action
             android:id="@+id/action_nav_send_address_to_nav_scan"
             app:destination="@id/nav_scan" />
@@ -94,18 +93,18 @@
             android:id="@+id/action_nav_send_address_to_nav_home"
             app:destination="@id/nav_home"
             app:enterAnim="@anim/anim_enter_from_left"
-            app:exitAnim="@anim/anim_exit_to_right"/>
+            app:exitAnim="@anim/anim_exit_to_right" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_send_memo"
         android:name="com.nighthawkapps.wallet.android.ui.send.SendMemoFragment"
-        tools:layout="@layout/fragment_send_memo" >
+        tools:layout="@layout/fragment_send_memo">
         <action
             android:id="@+id/action_nav_send_memo_to_send_confirm"
             app:destination="@id/nav_send_confirm"
-            app:exitAnim="@anim/anim_exit_to_left"
-            app:enterAnim="@anim/anim_enter_from_right"/>
+            app:enterAnim="@anim/anim_enter_from_right"
+            app:exitAnim="@anim/anim_exit_to_left" />
         <action
             android:id="@+id/action_nav_send_memo_to_nav_send_address"
             app:destination="@id/nav_send_address"
@@ -116,13 +115,13 @@
     <fragment
         android:id="@+id/nav_send_confirm"
         android:name="com.nighthawkapps.wallet.android.ui.send.SendConfirmFragment"
-        tools:layout="@layout/fragment_send_confirm" >
+        tools:layout="@layout/fragment_send_confirm">
         <action
             android:id="@+id/action_nav_send_confirm_to_send_final"
             app:destination="@id/nav_send_final"
+            app:enterAnim="@anim/anim_fade_in"
             app:popUpTo="@id/nav_send_confirm"
-            app:popUpToInclusive="true"
-            app:enterAnim="@anim/anim_fade_in"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_nav_send_confirm_to_nav_send_memo"
             app:destination="@id/nav_send_memo"
@@ -133,14 +132,13 @@
     <fragment
         android:id="@+id/nav_send_final"
         android:name="com.nighthawkapps.wallet.android.ui.send.SendFinalFragment"
-        tools:layout="@layout/fragment_send_final" >
+        tools:layout="@layout/fragment_send_final">
         <action
             android:id="@+id/action_nav_send_final_to_nav_home"
             app:destination="@id/nav_home"
             app:popUpTo="@id/nav_home"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
-
 
     <!--                         -->
     <!-- Wallet Setup Navigation -->
@@ -149,12 +147,12 @@
     <fragment
         android:id="@+id/nav_landing"
         android:name="com.nighthawkapps.wallet.android.ui.setup.LandingFragment"
-        tools:layout="@layout/fragment_landing" >
+        tools:layout="@layout/fragment_landing">
         <action
             android:id="@+id/action_nav_landing_to_nav_backup"
             app:destination="@id/nav_backup"
             app:popUpTo="@id/nav_landing"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_nav_landing_to_nav_restore"
             app:destination="@id/nav_restore" />
@@ -163,20 +161,18 @@
     <fragment
         android:id="@+id/nav_backup"
         android:name="com.nighthawkapps.wallet.android.ui.setup.BackupFragment"
-        tools:layout="@layout/fragment_backup" >
-    </fragment>
+        tools:layout="@layout/fragment_backup"></fragment>
 
     <fragment
         android:id="@+id/nav_restore"
         android:name="com.nighthawkapps.wallet.android.ui.setup.RestoreFragment"
-        tools:layout="@layout/fragment_restore" >
+        tools:layout="@layout/fragment_restore">
         <action
             android:id="@+id/action_nav_restore_to_nav_home"
             app:destination="@id/nav_home"
             app:popUpTo="@id/nav_landing"
             app:popUpToInclusive="true" />
     </fragment>
-
 
     <!--                -->
     <!-- Global actions -->

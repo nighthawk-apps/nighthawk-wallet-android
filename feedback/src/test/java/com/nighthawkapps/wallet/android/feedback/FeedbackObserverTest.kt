@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.feedback
 
-import com.nighthawkapps.wallet.android.feedback.Feedback
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -52,5 +51,4 @@ class FeedbackObserverTest {
     private fun sendAction() {
         feedback.report(simpleAction)
     }
-
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_send_final"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:background="@drawable/background_send_final">
 
     <View
         android:id="@+id/guide_keys"
@@ -27,13 +26,13 @@
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.065"
-        android:visibility="gone"
         app:srcCompat="@drawable/ic_close_black_24dp" />
 
     <View
@@ -50,56 +49,56 @@
 
     <TextView
         android:id="@+id/text_confirmation"
+        style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.MaterialComponents.Headline4"
-        android:gravity="center"
-        tools:text="Send 12.345 ZEC to\nzs1g7sqw...mvyzgm?"
-        android:textColor="@color/text_dark"
-        android:maxLines="3"
         android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:maxLines="3"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:textColor="@color/text_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.21"/>
+        app:layout_constraintVertical_bias="0.21"
+        tools:text="Send 12.345 ZEC to\nzs1g7sqw...mvyzgm?" />
 
     <TextView
         android:id="@+id/text_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_dark"
-        tools:text="Creating transaction..."
         android:gravity="center"
+        android:textColor="@color/text_dark"
         android:textSize="20dp"
-        app:layout_constraintTop_toBottomOf="@id/radio_include_address"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.1"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radio_include_address"
+        app:layout_constraintVertical_bias="0.1"
+        tools:text="Creating transaction..." />
 
     <ProgressBar
         android:id="@+id/progress_horizontal"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="@id/text_status"
-        app:layout_constraintEnd_toEndOf="@id/text_status"
-        app:layout_constraintTop_toBottomOf="@id/text_status"
+        android:foregroundTint="@color/zcashBlack_87"
         android:indeterminate="false"
-        style="?android:attr/progressBarStyleHorizontal"
         android:max="150"
-        android:foregroundTint="@color/zcashBlack_87" />
+        app:layout_constraintEnd_toEndOf="@id/text_status"
+        app:layout_constraintStart_toStartOf="@id/text_status"
+        app:layout_constraintTop_toBottomOf="@id/text_status" />
 
     <RadioButton
         android:id="@+id/radio_include_address"
+        style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.MaterialComponents.Body1"
-        android:text="Includes memo"
         android:enabled="false"
+        android:text="Includes memo"
         android:textColor="@color/text_dark_dimmed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,42 +106,43 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_retry"
+        style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        style="@style/Nighthawk.Button.OutlinedButton"
-        app:strokeColor="@color/text_dark"
         android:padding="12dp"
         android:text="Retry"
-        android:visibility="gone"
         android:textColor="@color/text_dark"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/button_next"
         app:layout_constraintEnd_toEndOf="@id/guide_keys"
         app:layout_constraintStart_toStartOf="@id/guide_keys"
-        app:layout_constraintBottom_toTopOf="@id/button_next"/>
+        app:strokeColor="@color/text_dark" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_next"
+        style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        style="@style/Nighthawk.Button.OutlinedButton"
-        app:strokeColor="@color/text_dark"
         android:padding="12dp"
         android:text="Finished"
-        android:visibility="gone"
         android:textColor="@color/text_dark"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/guide_keys"
         app:layout_constraintStart_toStartOf="@id/guide_keys"
-        app:layout_constraintTop_toBottomOf="@id/guide_keys" />
+        app:layout_constraintTop_toBottomOf="@id/guide_keys"
+        app:strokeColor="@color/text_dark" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        app:layout_constraintVertical_bias="1.0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/progress_horizontal"
+        app:layout_constraintVertical_bias="0.108"
         app:srcCompat="@drawable/ic_f117_vector_black_no_bg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

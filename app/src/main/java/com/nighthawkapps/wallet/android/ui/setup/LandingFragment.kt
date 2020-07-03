@@ -10,7 +10,6 @@ import com.nighthawkapps.wallet.android.databinding.FragmentLandingBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Restore
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.*
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITHOUT_BACKUP
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class LandingFragment : BaseFragment<FragmentLandingBinding>() {
+
     override val screen = Report.Screen.LANDING
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
@@ -32,25 +32,25 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonPositive.setOnClickListener {
             when (binding.buttonPositive.text.toString().toLowerCase()) {
-                "new" -> onNewWallet().also { tapped(LANDING_NEW) }
-                "backup" -> onBackupWallet().also { tapped(LANDING_BACKUP) }
+                "new" -> onNewWallet()
+                "backup" -> onBackupWallet()
             }
         }
         binding.buttonNegative.setOnClickListener {
             when (binding.buttonNegative.text.toString().toLowerCase()) {
                 "restore" -> onRestoreWallet().also {
                     mainActivity?.reportFunnel(Restore.Initiated)
-                    tapped(LANDING_RESTORE)
                 }
                 else -> onSkip(++skipCount)
             }
         }
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         walletSetup.checkSeed().onEach {
-            when(it) {
+            when (it) {
                 SEED_WITHOUT_BACKUP, SEED_WITH_BACKUP -> {
                     mainActivity?.safeNavigate(R.id.nav_backup)
                 }
@@ -66,19 +66,16 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
     private fun onSkip(count: Int) {
         when (count) {
             1 -> {
-                tapped(LANDING_BACKUP_SKIPPED_1)
                 binding.textMessage.text =
                     "Are you sure? Without a backup, funds can be lost FOREVER!"
                 binding.buttonNegative.text = "Later"
             }
             2 -> {
-                tapped(LANDING_BACKUP_SKIPPED_2)
                 binding.textMessage.text =
                     "You can't backup later. You're probably going to lose your funds!"
                 binding.buttonNegative.text = "I've been warned"
             }
             else -> {
-                tapped(LANDING_BACKUP_SKIPPED_3)
                 onEnterWallet()
             }
         }
@@ -90,7 +87,6 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
 
     private fun onNewWallet() {
         lifecycleScope.launch {
-            val ogText = binding.buttonPositive.text
             binding.buttonPositive.text = "creating"
             binding.buttonPositive.isEnabled = false
 

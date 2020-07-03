@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,14 +13,14 @@
         app:layout_constraintGuide_percent="0.667" />
 
     <TextView
+        style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:alpha="0.05"
         android:gravity="center"
         android:text="empowering\neveryone\nwith\neconomic\nfreedom"
         android:textColor="@color/zcashWhite_50"
         android:textSize="56dp"
-        android:alpha="0.05"
         app:layout_constraintBottom_toBottomOf="@id/icon_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,9 +42,9 @@
     <!-- Choose release names from here https://en.wikipedia.org/wiki/List_of_woods -->
     <TextView
         android:id="@+id/text_message"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:gravity="center"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
@@ -58,9 +57,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_negative"
+        style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Nighthawk.Button.OutlinedButton"
         android:text="Restore"
         android:textColor="@color/text_light"
         app:layout_constraintEnd_toStartOf="@id/button_positive"

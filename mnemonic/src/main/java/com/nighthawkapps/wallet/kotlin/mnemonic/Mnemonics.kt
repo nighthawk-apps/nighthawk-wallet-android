@@ -10,6 +10,7 @@ import java.util.*
 import javax.inject.Inject
 
 class Mnemonics @Inject constructor() : MnemonicPlugin {
+
     override fun fullWordList(languageCode: String) = Mnemonics.getCachedWords(Locale.ENGLISH.language)
     override fun nextEntropy(): ByteArray = WordCount.COUNT_24.toEntropy()
     override fun nextMnemonic(): CharArray = MnemonicCode(WordCount.COUNT_24).chars

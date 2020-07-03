@@ -18,7 +18,6 @@ import com.nighthawkapps.wallet.android.feedback.Report.Tap.PROFILE_CLOSE
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.launch
 
-
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override val screen = Report.Screen.PROFILE
 
@@ -30,7 +29,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.hitAreaClose.onClickNavBack() { tapped(PROFILE_CLOSE) }
-        binding.buttonBackup.onClickNavTo(R.id.action_nav_profile_to_nav_backup) { tapped(PROFILE_BACKUP) }
+        binding.buttonBackup.onClickNavTo(R.id.action_nav_profile_to_nav_backup) {
+            tapped(
+                PROFILE_BACKUP
+            )
+        }
         binding.buttonFeedback.setOnClickListener(View.OnClickListener {
             val url = "https://twitter.com/nighthawkwallet"
             val i = Intent(Intent.ACTION_VIEW)

@@ -10,8 +10,8 @@ import java.io.StringWriter
 import kotlin.coroutines.coroutineContext
 
 class Feedback(capacity: Int = 256) {
-    lateinit var scope: CoroutineScope
-        private set
+
+    lateinit var scope: CoroutineScope private set
 
     private val _metrics = BroadcastChannel<Metric>(capacity)
     private val _actions = BroadcastChannel<Action>(capacity)
@@ -34,7 +34,7 @@ class Feedback(capacity: Int = 256) {
      * [actions] channels will remain open unless [stop] is also called on this instance.
      */
     suspend fun start(): Feedback {
-        if(::scope.isInitialized) {
+        if (::scope.isInitialized) {
             return this
         }
         scope = CoroutineScope(Dispatchers.IO + SupervisorJob(coroutineContext[Job]))
@@ -94,7 +94,11 @@ class Feedback(capacity: Int = 256) {
      * will run concurrently--meaning a "happens before" relationship between the measurer and the
      * measured cannot be established and thereby the concurrent action cannot be timed.
      */
-    inline fun <T> measure(key: String = "measurement.generic", description: Any = "measurement", block: () -> T): T {
+    inline fun <T> measure(
+        key: String = "measurement.generic",
+        description: Any = "measurement",
+        block: () -> T
+    ): T {
         ensureScope()
         val metric = TimeMetric(key, description.toString()).markTime()
         val result = block()
@@ -196,7 +200,12 @@ class Feedback(capacity: Int = 256) {
         }
     }
 
-    abstract class Funnel(funnelName: String, stepName: String, step: Int, vararg properties: Pair<String, Any>) : MappedAction(
+    abstract class Funnel(
+        funnelName: String,
+        stepName: String,
+        step: Int,
+        vararg properties: Pair<String, Any>
+    ) : MappedAction(
         "funnelName" to funnelName,
         "stepName" to stepName,
         "step" to step,
@@ -232,7 +241,12 @@ class Feedback(capacity: Int = 256) {
         }
     }
 
-    open class AppError(name: String = "unknown", description: String? = null, isFatal: Boolean = false, vararg properties: Pair<String, Any>) : MappedAction(
+    open class AppError(
+        name: String = "unknown",
+        description: String? = null,
+        isFatal: Boolean = false,
+        vararg properties: Pair<String, Any>
+    ) : MappedAction(
         "isError" to true,
         "isFatal" to isFatal,
         "errorName" to name,
@@ -243,6 +257,7 @@ class Feedback(capacity: Int = 256) {
         val isFatal: Boolean by propertyMap
         val errorName: String by propertyMap
         val description: String by propertyMap
+
         constructor(name: String, exception: Throwable? = null, isFatal: Boolean = false) : this(
             name, exception?.toString(), isFatal,
             "exceptionString" to (exception?.toString() ?: "None"),
@@ -263,10 +278,10 @@ class Feedback(capacity: Int = 256) {
         }
     }
 
-    class Crash(val exception: Throwable? = null) : AppError( "crash", exception, true)
+    class Crash(val exception: Throwable? = null) : AppError("crash", exception, true)
+
     class NonFatal(val exception: Throwable? = null, name: String) : AppError(name, exception, false)
 }
-
 
 
 private fun Throwable?.stacktraceToMap(chunkSize: Int = 250): Map<out String, String> {

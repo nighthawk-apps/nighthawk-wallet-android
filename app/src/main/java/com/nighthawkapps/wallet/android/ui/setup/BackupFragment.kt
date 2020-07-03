@@ -23,7 +23,6 @@ import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.LockBoxKey
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
 import com.nighthawkapps.wallet.android.ui.util.AddressPartNumberSpan
-import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -36,7 +35,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
 
     val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
-    private var hasBackUp: Boolean = true //TODO: implement backup and then check for it here-ish
+    private var hasBackUp: Boolean = true // TODO: implement backup and then check for it here-ish
 
     override fun inflate(inflater: LayoutInflater): FragmentBackupBinding =
         FragmentBackupBinding.inflate(inflater)
@@ -69,10 +68,11 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
             onEnterWallet(false)
         }
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         walletSetup.checkSeed().onEach {
-            when(it) {
+            when (it) {
                 SEED_WITH_BACKUP -> {
                     hasBackUp = true
                 }
@@ -83,7 +83,8 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
     override fun onResume() {
         super.onResume()
         resumedScope.launch {
-            binding.textBirtdate.text = "Birthday Height: %,d".format(walletSetup.loadBirthdayHeight())
+            binding.textBirtdate.text =
+                "Birthday Height: %,d".format(walletSetup.loadBirthdayHeight())
         }
     }
 
@@ -101,9 +102,15 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
             val numLength = "$index".length
             val word = words?.get(index)
             // TODO: work with a charsequence here, rather than constructing a String
-            textView.text = SpannableString("${index + 1}$thinSpace${word?.let { String(it) }}").apply {
-                setSpan(AddressPartNumberSpan(), 0, 1 + numLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
+            textView.text =
+                SpannableString("${index + 1}$thinSpace${word?.let { String(it) }}").apply {
+                    setSpan(
+                        AddressPartNumberSpan(),
+                        0,
+                        1 + numLength,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
         }
     }
 
@@ -111,7 +118,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
         mainActivity?.feedback?.measure(SEED_PHRASE_LOADED) {
             val lockBox = LockBox(NighthawkWalletApp.instance)
             val mnemonics = Mnemonics()
-            val seedPhrase =  lockBox.getCharsUtf8(LockBoxKey.SEED_PHRASE)
+            val seedPhrase = lockBox.getCharsUtf8(LockBoxKey.SEED_PHRASE)
             val result = seedPhrase?.let { mnemonics.toWordList(it) }
             result
         }

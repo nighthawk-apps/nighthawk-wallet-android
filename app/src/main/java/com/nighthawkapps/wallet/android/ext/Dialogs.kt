@@ -3,13 +3,13 @@ package com.nighthawkapps.wallet.android.ext
 import android.app.ActivityManager
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
-import android.provider.Settings
 import androidx.core.content.getSystemService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-
-fun Context.showClearDataConfirmation(onDismiss: () -> Unit = {}, onCancel: () -> Unit = {}): Dialog {
+fun Context.showClearDataConfirmation(
+    onDismiss: () -> Unit = {},
+    onCancel: () -> Unit = {}
+): Dialog {
     return MaterialAlertDialogBuilder(this)
         .setTitle("Nuke Wallet?")
         .setMessage("WARNING: Potential Loss of Funds\n\nClearing all wallet data and can result in a loss of funds, if you cannot locate your correct seed phrase.\n\nPlease confirm that you have your 24-word seed phrase available before proceeding.")
@@ -46,7 +46,10 @@ fun Context.showUninitializedError(error: Throwable? = null, onDismiss: () -> Un
         .show()
 }
 
-fun Context.showInvalidSeedPhraseError(error: Throwable? = null, onDismiss: () -> Unit = {}): Dialog {
+fun Context.showInvalidSeedPhraseError(
+    error: Throwable? = null,
+    onDismiss: () -> Unit = {}
+): Dialog {
     return MaterialAlertDialogBuilder(this)
         .setTitle("Oops! Invalid Seed Phrase")
         .setMessage("That seed phrase appears to be invalid! Please double-check it and try again.\n\n${error?.message ?: ""}")
@@ -58,7 +61,11 @@ fun Context.showInvalidSeedPhraseError(error: Throwable? = null, onDismiss: () -
         .show()
 }
 
-fun Context.showScanFailure(error: Throwable?, onCancel: () -> Unit = {}, onDismiss: () -> Unit = {}): Dialog {
+fun Context.showScanFailure(
+    error: Throwable?,
+    onCancel: () -> Unit = {},
+    onDismiss: () -> Unit = {}
+): Dialog {
     val message = if (error == null) {
         "Unknown error"
     } else {
@@ -91,7 +98,8 @@ fun Context.showCriticalProcessorError(error: Throwable?, onRetry: () -> Unit = 
         }
         .setNegativeButton("Exit") { dialog, _ ->
             dialog.dismiss()
-            throw error ?: RuntimeException("Critical error while processing blocks and the user chose to exit.")
+            throw error
+                ?: RuntimeException("Critical error while processing blocks and the user chose to exit.")
         }
         .show()
 }

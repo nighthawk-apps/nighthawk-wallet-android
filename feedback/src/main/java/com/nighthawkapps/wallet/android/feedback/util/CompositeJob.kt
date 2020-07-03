@@ -30,7 +30,10 @@ class CompositeJob {
                 job.join()
             } else {
                 // prevents an infinite loop in the extreme edge case where the list has a null item
-                try { activeJobs.remove(job) } catch (t: Throwable) {}
+                try {
+                    activeJobs.remove(job)
+                } catch (t: Throwable) {
+                }
             }
         } while (size > 0)
     }

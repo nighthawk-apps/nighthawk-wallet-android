@@ -13,22 +13,26 @@ import com.nighthawkapps.wallet.android.NighthawkWalletApp
  */
 @ColorInt
 internal inline fun @receiver:ColorRes Int.toAppColor(): Int {
-    return ResourcesCompat.getColor(NighthawkWalletApp.instance.resources, this, NighthawkWalletApp.instance.theme)
+    return ResourcesCompat.getColor(
+        NighthawkWalletApp.instance.resources,
+        this,
+        NighthawkWalletApp.instance.theme
+    )
 }
 
 /**
  * Grab a string from the application resources
  */
 internal inline fun @receiver:StringRes Int.toAppString(): String {
-    return NighthawkWalletApp.instance.getString(this)}
-
+    return NighthawkWalletApp.instance.getString(this)
+}
 
 /**
  * Grab an integer from the application resources
  */
 internal inline fun @receiver:IntegerRes Int.toAppInt(): Int {
-    return NighthawkWalletApp.instance.resources.getInteger(this)}
-
+    return NighthawkWalletApp.instance.resources.getInteger(this)
+}
 
 fun Float.toPx() = this * Resources.getSystem().displayMetrics.density
 

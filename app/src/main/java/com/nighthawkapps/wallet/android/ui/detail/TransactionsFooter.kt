@@ -8,7 +8,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.nighthawkapps.wallet.android.R
 
-
 class TransactionsFooter(context: Context) : RecyclerView.ItemDecoration() {
 
     private var footer: Drawable = context.resources.getDrawable(R.drawable.background_footer)

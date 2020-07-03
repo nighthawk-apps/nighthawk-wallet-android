@@ -1,13 +1,15 @@
 package com.nighthawkapps.wallet.android
 
 import android.app.Application
-import android.os.Build
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
 import com.nighthawkapps.wallet.android.di.component.AppComponent
 import com.nighthawkapps.wallet.android.di.component.DaggerAppComponent
 import com.nighthawkapps.wallet.android.feedback.FeedbackCoordinator
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NighthawkWalletApp : Application(), CameraXConfig.Provider {
@@ -49,12 +51,4 @@ class NighthawkWalletApp : Application(), CameraXConfig.Provider {
         lateinit var instance: NighthawkWalletApp
         lateinit var component: AppComponent
     }
-}
-
-
-fun NighthawkWalletApp.isEmulator(): Boolean {
-    val goldfish = Build.HARDWARE.contains("goldfish");
-    val emu = (System.getProperty("ro.kernel.qemu", "")?.length ?: 0) > 0;
-    val sdk = Build.MODEL.toLowerCase().contains("sdk")
-    return goldfish || emu || sdk;
 }
