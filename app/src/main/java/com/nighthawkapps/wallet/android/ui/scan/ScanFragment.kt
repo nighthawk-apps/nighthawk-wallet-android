@@ -13,6 +13,7 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.twig
 import com.google.common.util.concurrent.ListenableFuture
 import com.nighthawkapps.wallet.android.R
@@ -31,7 +32,9 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class ScanFragment : BaseFragment<FragmentScanBinding>() {
+
     override val screen = Report.Screen.SCAN
+
     private val viewModel: ScanViewModel by viewModel()
 
     private val sendViewModel: SendViewModel by activityViewModel()
@@ -132,8 +135,13 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
 
     private fun onQrScanned(qrContent: String, image: ImageProxy) {
         resumedScope.launch {
-            if (viewModel.isNotValid(qrContent)) image.close() // continue scanning
-            else {
+            if (viewModel.isNotValid(qrContent)) {
+                // TODO: use the "NETWORK" constant that will be available in the next SDK build
+                val network = ZcashSdk.DEFAULT_DB_NAME_PREFIX.split("_")[1]
+                binding.textScanError.text = "Invalid Zcash $network address:\n$qrContent"
+                image.close()
+            } else {
+                binding.textScanError.text = ""
                 sendViewModel.toAddress = qrContent
                 mainActivity?.safeNavigate(R.id.action_nav_scan_to_nav_send_address)
             }

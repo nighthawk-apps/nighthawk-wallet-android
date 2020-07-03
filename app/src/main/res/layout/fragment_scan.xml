@@ -23,7 +23,6 @@
 
     <!-- Spacers -->
 
-
     <Space
         android:id="@+id/spacer_bottom_left"
         android:layout_width="0dp"
@@ -149,6 +148,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
+    <TextView
+        android:id="@+id/text_scan_error"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/inconsolata"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
+        android:textColor="@color/text_light_dimmed"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/button_receive"
+        app:layout_constraintEnd_toEndOf="@id/scan_frame"
+        app:layout_constraintStart_toStartOf="@id/scan_frame"
+        app:layout_constraintTop_toBottomOf="@id/scan_frame" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_receive"
         style="@style/Nighthawk.Button"
@@ -216,4 +231,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.305"
         tools:background="#60ff0000" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

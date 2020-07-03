@@ -109,7 +109,7 @@ object Deps {
         const val JUNIT = "junit:junit:4.12"
         const val MOKITO = "junit:junit:4.12"
         const val COROUTINES_TEST = "junit:junit:4.12"
-        const val MOCKITO_KOTLIN = "com.nhaarman.mockitokotlin:mockito-kotlin:2:2.2.0"
+        const val MOCKITO_KOTLIN = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
         object Android {
             const val JUNIT = "androidx.test.ext:junit:1.1.1"

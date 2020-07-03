@@ -19,7 +19,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentSendAddressBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onEditorActionDone
-import com.nighthawkapps.wallet.android.ext.onClickNavTo
+import com.nighthawkapps.wallet.android.ext.onClickNavUp
 import com.nighthawkapps.wallet.android.ext.convertZecToZatoshi
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.feedback.Report
@@ -41,7 +41,7 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.backButtonHitArea.onClickNavTo(R.id.action_nav_send_address_to_nav_home) { }
+        binding.backButtonHitArea.onClickNavUp()
         binding.buttonNext.setOnClickListener {
             onSubmit()
         }
