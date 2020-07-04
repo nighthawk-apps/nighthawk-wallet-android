@@ -31,7 +31,6 @@ import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.twig
-import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -129,7 +128,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
      * (or is already up-to-date).
      */
     override fun onProviderInstalled() {
-        // Provider is up-to-date, app can make secure network calls.
     }
 
     /**
@@ -137,18 +135,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
      * whether the error is recoverable.
      */
     override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent) {
-        GoogleApiAvailability.getInstance().apply {
-            if (isUserResolvableError(errorCode)) {
-                // Recoverable error. Show a dialog prompting the user to
-                // install/update/enable Google Play services.
-                showErrorDialogFragment(this@MainActivity, errorCode, ERROR_DIALOG_REQUEST_CODE) {
-                    // The user chose not to take the recovery action
-                    onProviderInstallerNotAvailable()
-                }
-            } else {
-                onProviderInstallerNotAvailable()
-            }
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -169,12 +155,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             ProviderInstaller.installIfNeededAsync(this, this)
         }
         retryProviderInstall = false
-    }
-
-    private fun onProviderInstallerNotAvailable() {
-        // This is reached if the provider cannot be updated for some reason.
-        // App should consider all HTTP communication to be vulnerable, and take
-        // appropriate action.
     }
 
     private fun setWindowFlag(bits: Int, on: Boolean) {
