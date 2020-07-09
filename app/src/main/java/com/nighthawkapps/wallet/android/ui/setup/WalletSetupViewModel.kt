@@ -80,49 +80,19 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
                     " existing seed and could lead to a loss of funds if the user has no backup!"
         }
 
-//        mnemonics.run {
-//            nextEntropy().let { entropy ->
-//                nextMnemonic(entropy).let { seedPhrase ->
-//                    toSeed(seedPhrase).let { bip39Seed ->
-//                        lockBox.setCharsUtf8(LockBoxKey.SEED_PHRASE, seedPhrase)
-//                        lockBox.setBoolean(LockBoxKey.HAS_SEED_PHRASE, true)
-//                        lockBox.setBytes(LockBoxKey.SEED, bip39Seed)
-//                        lockBox.setBoolean(LockBoxKey.HAS_SEED, true)
-//                        bip39Seed
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-        measure("WALLET_CREATED") {
-            mnemonics.run {
-                measure("ENTROPY_CREATED") { nextEntropy() }.let { entropy ->
-                    measure("SEED_PHRASE_CREATED") { nextMnemonic(entropy) }
-                        .let { seedPhrase ->
-                            measure("SEED_CREATED") { toSeed(seedPhrase) }.let { bip39Seed ->
-
-                                lockBox.setCharsUtf8(LockBoxKey.SEED_PHRASE, seedPhrase)
-                                lockBox.setBoolean(LockBoxKey.HAS_SEED_PHRASE, true)
-
-                                lockBox.setBytes(LockBoxKey.SEED, bip39Seed)
-                                lockBox.setBoolean(LockBoxKey.HAS_SEED, true)
-
-                                bip39Seed
-                            }
-                        }
+        mnemonics.run {
+            nextEntropy().let { entropy ->
+                nextMnemonic(entropy).let { seedPhrase ->
+                    toSeed(seedPhrase).let { bip39Seed ->
+                        lockBox.setCharsUtf8(LockBoxKey.SEED_PHRASE, seedPhrase)
+                        lockBox.setBoolean(LockBoxKey.HAS_SEED_PHRASE, true)
+                        lockBox.setBytes(LockBoxKey.SEED, bip39Seed)
+                        lockBox.setBoolean(LockBoxKey.HAS_SEED, true)
+                        bip39Seed
+                    }
                 }
             }
         }
-    }
-
-    inline fun <T> measure(
-        key: String = "measurement.generic",
-        description: Any = "measurement",
-        block: () -> T
-    ): T {
-        val result = block()
-        return result
     }
 
     suspend fun loadBirthdayHeight(): Int = withContext(Dispatchers.IO) {

@@ -71,7 +71,12 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             it.inject(this)
         }
         super.onCreate(savedInstanceState)
-        ProviderInstaller.installIfNeededAsync(this, this) // Fix for AssertionError: Method getAlpnSelectedProtocol not supported for object SSL socket over Socket
+        try {
+            ProviderInstaller.installIfNeeded(this)
+            // Fix for AssertionError: Method getAlpnSelectedProtocol not supported for object SSL socket over Socket
+        } catch (t: Throwable) {
+            twig("Warning GooglePlayServices not available. Ignoring call to initialize ProviderInstaller.")
+        }
         setContentView(R.layout.main_activity)
         initNavigation()
 
@@ -108,6 +113,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
      * whether the error is recoverable.
      */
     override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent) {
+        twig("Warning onProviderInstallFailed. recoveryIntent:" + recoveryIntent.action)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -125,7 +131,12 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         super.onPostResume()
         if (retryProviderInstall) {
             // We can now safely retry installation.
-            ProviderInstaller.installIfNeededAsync(this, this)
+            try {
+                ProviderInstaller.installIfNeededAsync(this, this)
+                // Fix for AssertionError: Method getAlpnSelectedProtocol not supported for object SSL socket over Socket
+            } catch (t: Throwable) {
+                twig("Warning GooglePlayServices not available. Ignoring call to initialize ProviderInstaller.")
+            }
         }
         retryProviderInstall = false
     }
