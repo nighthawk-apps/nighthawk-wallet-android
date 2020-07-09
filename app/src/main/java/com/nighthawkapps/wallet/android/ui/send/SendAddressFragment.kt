@@ -8,24 +8,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
+import cash.z.ecc.android.sdk.block.CompactBlockProcessor.WalletBalance
+import cash.z.ecc.android.sdk.ext.collectWith
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.ext.onFirstWith
+import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.validate.AddressType
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendAddressBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
-import com.nighthawkapps.wallet.android.ext.*
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Send
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.*
+import com.nighthawkapps.wallet.android.ext.goneIf
+import com.nighthawkapps.wallet.android.ext.onEditorActionDone
+import com.nighthawkapps.wallet.android.ext.onClickNavUp
+import com.nighthawkapps.wallet.android.ext.convertZecToZatoshi
+import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import cash.z.ecc.android.sdk.Synchronizer
-import cash.z.ecc.android.sdk.block.CompactBlockProcessor.WalletBalance
-import cash.z.ecc.android.sdk.ext.*
-import cash.z.ecc.android.sdk.validate.AddressType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
     ClipboardManager.OnPrimaryClipChangedListener {
-    override val screen = Report.Screen.SEND_ADDRESS
 
     private var maxZatoshi: Long? = null
 
@@ -36,18 +38,18 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.backButtonHitArea.onClickNavTo(R.id.action_nav_send_address_to_nav_home) { tapped(SEND_ADDRESS_BACK) }
+        binding.backButtonHitArea.onClickNavUp()
         binding.buttonNext.setOnClickListener {
-            onSubmit().also { tapped(SEND_ADDRESS_NEXT) }
+            onSubmit()
         }
         binding.textBannerAction.setOnClickListener {
-            onPaste().also { tapped(SEND_ADDRESS_PASTE) }
+            onPaste()
         }
         binding.textBannerMessage.setOnClickListener {
-            onPaste().also { tapped(SEND_ADDRESS_PASTE) }
+            onPaste()
         }
         binding.textMax.setOnClickListener {
-            onMax().also { tapped(SEND_ADDRESS_MAX) }
+            onMax()
         }
 
         // Apply View Model
@@ -64,25 +66,26 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
             binding.inputZcashAddress.setText(null)
         }
 
-        binding.inputZcashAddress.onEditorActionDone(::onSubmit).also { tapped(SEND_ADDRESS_DONE_ADDRESS) }
-        binding.inputZcashAmount.onEditorActionDone(::onSubmit).also { tapped(SEND_ADDRESS_DONE_AMOUNT) }
+        binding.inputZcashAddress.onEditorActionDone(::onSubmit)
+        binding.inputZcashAmount.onEditorActionDone(::onSubmit)
 
         binding.inputZcashAddress.apply {
             doAfterTextChanged {
                 val textStr = text.toString()
                 val trim = textStr.trim()
                 if (text.toString() != trim) {
-                    val textView = binding.inputZcashAddress.findViewById<EditText>(R.id.input_zcash_address)
-                    val cursorPosition = textView.selectionEnd;
+                    val textView =
+                        binding.inputZcashAddress.findViewById<EditText>(R.id.input_zcash_address)
+                    val cursorPosition = textView.selectionEnd
                     textView.setText(trim)
-                    textView.setSelection(cursorPosition-(textStr.length-trim.length))
+                    textView.setSelection(cursorPosition - (textStr.length - trim.length))
                 }
                 onAddressChanged(trim)
             }
         }
 
         binding.textLayoutAddress.setEndIconOnClickListener {
-            mainActivity?.maybeOpenScan().also { tapped(SEND_ADDRESS_SCAN) }
+            mainActivity?.maybeOpenScan()
         }
     }
 
@@ -100,13 +103,11 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
         }
     }
 
-
     private fun onSubmit(unused: EditText? = null) {
         sendViewModel.toAddress = binding.inputZcashAddress.text.toString()
         binding.inputZcashAmount.convertZecToZatoshi()?.let { sendViewModel.zatoshiAmount = it }
         sendViewModel.validate(maxZatoshi).onFirstWith(resumedScope) {
             if (it == null) {
-                sendViewModel.funnel(Send.AddressPageComplete)
                 mainActivity?.safeNavigate(R.id.action_nav_send_address_to_send_memo)
             } else {
                 resumedScope.launch {
@@ -129,7 +130,6 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
             }
         }
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -154,12 +154,12 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
 
     private fun onBalanceUpdated(balance: WalletBalance) {
         binding.textLayoutAmount.helperText =
-            "You have ${balance.availableZatoshi.coerceAtLeast(0L).convertZatoshiToZecString(8)} available"
+            "You have ${balance.availableZatoshi.coerceAtLeast(0L)
+                .convertZatoshiToZecString(8)} available"
         maxZatoshi = (balance.availableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI).coerceAtLeast(0L)
     }
 
     override fun onPrimaryClipChanged() {
-        twig("clipboard changed!")
         updateClipboardBanner()
     }
 
@@ -192,5 +192,6 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
         return null
     }
 
-    private fun ClipboardManager.text(): CharSequence? = primaryClip?.getItemAt(0)?.coerceToText(mainActivity)
+    private fun ClipboardManager.text(): CharSequence? =
+        primaryClip?.getItemAt(0)?.coerceToText(mainActivity)
 }

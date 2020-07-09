@@ -89,10 +89,18 @@ android {
     }
 }
 
+apply from: "$rootDir/ktlint.gradle"
+
+afterEvaluate {
+    if (project.tasks.getByName("preBuild")) {
+        preBuild.dependsOn('ktlintFormat')
+        preBuild.dependsOn('ktlint')
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':qrecycler')
-    implementation project(':feedback')
     implementation project(':mnemonic')
     implementation project(':lockbox')
 
@@ -149,6 +157,7 @@ dependencies {
     testImplementation Deps.Test.COROUTINES_TEST
     testImplementation Deps.Test.JUNIT
     testImplementation Deps.Test.MOKITO
+    testImplementation Deps.Test.MOCKITO_KOTLIN
     androidTestImplementation Deps.Test.Android.JUNIT
     androidTestImplementation Deps.Test.Android.ESPRESSO
 }

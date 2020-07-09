@@ -9,8 +9,10 @@ import com.google.zxing.EncodeHintType.ERROR_CORRECTION
 import com.google.zxing.EncodeHintType.MARGIN
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.*
-
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.L
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.M
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.H
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.Q
 
 class QRecycler {
     fun load(content: String): Builder {
@@ -22,8 +24,10 @@ class QRecycler {
         builder.target.doOnLayout { measuredView ->
             val w = measuredView.width
             val h = measuredView.height
-            val hints = mapOf(ERROR_CORRECTION to builder.errorCorrection, MARGIN to builder.quietZone)
-            val bitMatrix = QRCodeWriter().encode(builder.content, BarcodeFormat.QR_CODE, w, h, hints)
+            val hints =
+                mapOf(ERROR_CORRECTION to builder.errorCorrection, MARGIN to builder.quietZone)
+            val bitMatrix =
+                QRCodeWriter().encode(builder.content, BarcodeFormat.QR_CODE, w, h, hints)
             val pixels = IntArray(w * h)
             for (y in 0 until h) {
                 val offset = y * w
@@ -46,10 +50,12 @@ class QRecycler {
             target = imageView
             encode(this)
         }
+
         fun withQuietZoneSize(customQuietZone: Int): Builder {
             quietZone = customQuietZone
             return this
         }
+
         fun withCorrectionLevel(level: CorrectionLevel): Builder {
             errorCorrection = level.errorCorrectionLevel
             return this

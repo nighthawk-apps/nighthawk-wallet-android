@@ -8,12 +8,15 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="shapeAppearanceSmallComponent">@style/Nighthawk.ShapeAppearance.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/Nighthawk.ShapeAppearance.MediumComponent</item>
+        <item name="shapeAppearanceSmallComponent">@style/Nighthawk.ShapeAppearance.SmallComponent
+        </item>
+        <item name="shapeAppearanceMediumComponent">
+            @style/Nighthawk.ShapeAppearance.MediumComponent
+        </item>
 
     </style>
 
-    <style name="NighthawkTheme" parent="NighthawkBaseTheme"/>
+    <style name="NighthawkTheme" parent="NighthawkBaseTheme" />
 
     <style name="NighthawkTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -81,9 +84,11 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">0dp</item>
     </style>
-    
+
     <!-- Theme Overlays -->
     <style name="Nighthawk.Overlay.TextInputLayout" parent="ThemeOverlay.MaterialComponents">
-        <item name="shapeAppearanceSmallComponent">@style/Nighthawk.ShapeAppearance.TextInputLayout</item>
+        <item name="shapeAppearanceSmallComponent">
+            @style/Nighthawk.ShapeAppearance.TextInputLayout
+        </item>
     </style>
 </resources>

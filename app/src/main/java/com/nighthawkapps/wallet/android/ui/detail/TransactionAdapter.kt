@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.nighthawkapps.wallet.android.R
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
+import com.nighthawkapps.wallet.android.R
 
 class TransactionAdapter<T : ConfirmedTransaction> :
     PagedListAdapter<T, TransactionViewHolder<T>>(
@@ -13,9 +13,11 @@ class TransactionAdapter<T : ConfirmedTransaction> :
             override fun areItemsTheSame(
                 oldItem: T,
                 newItem: T
-            ) = oldItem.minedHeight == newItem.minedHeight && oldItem.noteId == newItem.noteId
+            ) = oldItem.minedHeight == newItem.minedHeight && oldItem.noteId == newItem.noteId &&
                     // bugfix: distinguish between self-transactions so they don't overwrite each other in the UI // TODO confirm that this is working, as intended
-                    && ((oldItem.raw == null && newItem.raw == null) || (oldItem.raw != null && newItem.raw != null && oldItem.raw!!.contentEquals(newItem.raw!!)))
+                    ((oldItem.raw == null && newItem.raw == null) || (oldItem.raw != null && newItem.raw != null && oldItem.raw!!.contentEquals(
+                newItem.raw!!
+            )))
 
             override fun areContentsTheSame(
                 oldItem: T,

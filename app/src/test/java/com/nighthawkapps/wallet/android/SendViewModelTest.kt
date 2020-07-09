@@ -1,11 +1,10 @@
 package com.nighthawkapps.wallet.android
 
-import com.nighthawkapps.wallet.android.feedback.Feedback
-import com.nighthawkapps.wallet.android.ui.send.SendViewModel
-import com.nighthawkapps.wallet.android.sdk.entity.*
+import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
+import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.setMain
@@ -18,13 +17,14 @@ import org.mockito.Spy
 
 class SendViewModelTest {
 
-    @Mock lateinit var creatingTx: PendingTransaction
-    @Mock lateinit var createdTx: PendingTransaction
-    @Mock lateinit var submittedTx: PendingTransaction
-    @Mock lateinit var minedTx: PendingTransaction
-
     @Mock
-    lateinit var feedback: Feedback
+    lateinit var creatingTx: PendingTransaction
+    @Mock
+    lateinit var createdTx: PendingTransaction
+    @Mock
+    lateinit var submittedTx: PendingTransaction
+    @Mock
+    lateinit var minedTx: PendingTransaction
 
     @Spy
     lateinit var sendViewModel: SendViewModel
@@ -48,8 +48,6 @@ class SendViewModelTest {
         whenever(minedTx.raw).thenReturn(byteArrayOf(0x1))
         whenever(minedTx.submitAttempts).thenReturn(1)
         whenever(minedTx.minedHeight).thenReturn(500_001)
-
-        sendViewModel.feedback = feedback
     }
 
     @Test
@@ -93,7 +91,6 @@ class SendViewModelTest {
         verify(feedback).report(sendViewModel.metrics.values.first())
     }
 
-
     @Test
     fun testUpdateMetrics_mined() {
         assertEquals(true, minedTx.isMined())
@@ -107,5 +104,4 @@ class SendViewModelTest {
         Thread.sleep(100)
         assertEquals(0, sendViewModel.metrics.size)
     }
-
 }

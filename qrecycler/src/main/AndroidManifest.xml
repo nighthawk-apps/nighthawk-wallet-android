@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nighthawkapps.wallet.android.qrecycler" >
+    package="com.nighthawkapps.wallet.android.qrecycler">
 
     <uses-permission android:name="android.permission.CAMERA" />
 </manifest>

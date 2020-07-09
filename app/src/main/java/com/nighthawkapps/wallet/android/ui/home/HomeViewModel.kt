@@ -3,14 +3,18 @@ package com.nighthawkapps.wallet.android.ui.home
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.Synchronizer
-import cash.z.ecc.android.sdk.Synchronizer.Status.*
 import cash.z.ecc.android.sdk.block.CompactBlockProcessor
 import cash.z.ecc.android.sdk.exception.RustLayerException
 import cash.z.ecc.android.sdk.ext.ZcashSdk.MINERS_FEE_ZATOSHI
 import cash.z.ecc.android.sdk.ext.ZcashSdk.ZATOSHI_PER_ZEC
 import cash.z.ecc.android.sdk.ext.twig
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -41,30 +45,33 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         val zec = typedChars.scan("0") { acc, c ->
             when {
                 // no-op cases
-                acc == "0" && c == '0'
-                        || (c == '<' && acc == "0")
-                        || (c == '.' && acc.contains('.')) -> {twig("triggered: 1  acc: $acc  c: $c")
+                acc == "0" && c == '0' || (c == '<' && acc == "0") || (c == '.' && acc.contains('.')) -> {
+                    twig("triggered: 1  acc: $acc  c: $c")
                     acc
-               }
-                c == '<' && acc.length <= 1 -> {twig("triggered: 2 $typedChars")
+                }
+                c == '<' && acc.length <= 1 -> {
+                    twig("triggered: 2 $typedChars")
                     "0"
                 }
-                c == '<' -> {twig("triggered: 3")
+                c == '<' -> {
+                    twig("triggered: 3")
                     acc.substring(0, acc.length - 1)
                 }
-                acc == "0" && c != '.' -> {twig("triggered: 4 $typedChars")
+                acc == "0" && c != '.' -> {
+                    twig("triggered: 4 $typedChars")
                     c.toString()
                 }
-                else -> {twig("triggered: 5  $typedChars")
+                else -> {
+                    twig("triggered: 5  $typedChars")
                     "$acc$c"
                 }
             }
         }
         twig("initializing view models stream")
         uiModels = synchronizer.run {
-            combine(status, processorInfo, balances, zec) { s, p, b, z->
+            combine(status, processorInfo, balances, zec) { s, p, b, z ->
                 UiModel(s, p, b.availableZatoshi, b.totalZatoshi, z)
-            }.onStart{ emit(UiModel()) }
+            }.onStart { emit(UiModel()) }
         }.conflate()
     }
 
@@ -85,8 +92,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    data class UiModel( // <- THIS ERROR IS AN IDE BUG WITH PARCELIZE
-        val status: Synchronizer.Status = DISCONNECTED,
+    data class UiModel(
+        val status: Synchronizer.Status = Synchronizer.Status.DISCONNECTED,
         val processorInfo: CompactBlockProcessor.ProcessorInfo = CompactBlockProcessor.ProcessorInfo(),
         val availableBalance: Long = -1L,
         val totalBalance: Long = -1L,
@@ -95,41 +102,50 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         // Note: the wallet is effectively empty if it cannot cover the miner's fee
         val hasFunds: Boolean get() = availableBalance > (MINERS_FEE_ZATOSHI.toDouble() / ZATOSHI_PER_ZEC) // 0.0001
         val hasBalance: Boolean get() = totalBalance > 0
-        val isSynced: Boolean get() = status == SYNCED
+        val isSynced: Boolean get() = status == Synchronizer.Status.SYNCED
         val isSendEnabled: Boolean get() = isSynced && hasFunds
 
         // Processor Info
-        val isDownloading = status == DOWNLOADING
-        val isScanning = status == SCANNING
-        val isValidating = status == VALIDATING
-        val isDisconnected = status == DISCONNECTED
-        val downloadProgress: Int get() {
-            return processorInfo.run {
-                if (lastDownloadRange.isEmpty()) {
-                    100
-                } else {
-                    val progress =
-                        (((lastDownloadedHeight - lastDownloadRange.first + 1).coerceAtLeast(0).toFloat() / (lastDownloadRange.last - lastDownloadRange.first + 1)) * 100.0f).coerceAtMost(
-                            100.0f
-                        ).roundToInt()
-                    progress
+        val isDownloading = status == Synchronizer.Status.DOWNLOADING
+        val isScanning = status == Synchronizer.Status.SCANNING
+        val isValidating = status == Synchronizer.Status.VALIDATING
+        val isDisconnected = status == Synchronizer.Status.DISCONNECTED
+        val downloadProgress: Int
+            get() {
+                return processorInfo.run {
+                    if (lastDownloadRange.isEmpty()) {
+                        100
+                    } else {
+                        val progress =
+                            (((lastDownloadedHeight - lastDownloadRange.first + 1).coerceAtLeast(0)
+                                .toFloat() / (lastDownloadRange.last - lastDownloadRange.first + 1)) * 100.0f).coerceAtMost(
+                                100.0f
+                            ).roundToInt()
+                        progress
+                    }
                 }
             }
-        }
-        val scanProgress: Int get() {
-            return processorInfo.run {
-                if (lastScanRange.isEmpty()) {
-                    100
-                } else {
-                    val progress = (((lastScannedHeight - lastScanRange.first + 1).coerceAtLeast(0).toFloat() / (lastScanRange.last - lastScanRange.first + 1)) * 100.0f).coerceAtMost(100.0f).roundToInt()
-                    progress
+        val scanProgress: Int
+            get() {
+                return processorInfo.run {
+                    if (lastScanRange.isEmpty()) {
+                        100
+                    } else {
+                        val progress =
+                            (((lastScannedHeight - lastScanRange.first + 1).coerceAtLeast(0)
+                                .toFloat() / (lastScanRange.last - lastScanRange.first + 1)) * 100.0f).coerceAtMost(
+                                100.0f
+                            ).roundToInt()
+                        progress
+                    }
                 }
             }
-        }
-        val totalProgress: Float get() {
-            val downloadWeighted = 0.40f * (downloadProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
-            val scanWeighted = 0.60f * (scanProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
-            return downloadWeighted.coerceAtLeast(0.0f) + scanWeighted.coerceAtLeast(0.0f)
-        }
+        val totalProgress: Float
+            get() {
+                val downloadWeighted =
+                    0.40f * (downloadProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
+                val scanWeighted = 0.60f * (scanProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
+                return downloadWeighted.coerceAtLeast(0.0f) + scanWeighted.coerceAtLeast(0.0f)
+            }
     }
 }

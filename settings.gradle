@@ -1,2 +1,2 @@
-rootProject.name='Zcash Wallet'
-include ':app', ':qrecycler', ':feedback', ':mnemonic', ':lockbox'
+rootProject.name = 'Zcash Wallet'
+include ':app', ':qrecycler', ':mnemonic', ':lockbox'

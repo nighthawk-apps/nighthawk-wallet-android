@@ -69,8 +69,7 @@ class MnemonicTest {
                     println(word)
                     break
                 }
-
-            }
+}
         }
     }
 }

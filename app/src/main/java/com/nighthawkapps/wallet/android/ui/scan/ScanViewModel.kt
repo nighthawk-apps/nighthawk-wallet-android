@@ -16,5 +16,4 @@ class ScanViewModel @Inject constructor() : ViewModel() {
         super.onCleared()
         twig("${javaClass.simpleName} cleared!")
     }
-
 }

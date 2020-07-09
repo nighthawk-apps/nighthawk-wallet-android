@@ -31,7 +31,6 @@ import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.twig
-import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -39,26 +38,12 @@ import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
 import com.nighthawkapps.wallet.android.di.component.SynchronizerSubcomponent
-import com.nighthawkapps.wallet.android.feedback.Feedback
-import com.nighthawkapps.wallet.android.feedback.FeedbackCoordinator
-import com.nighthawkapps.wallet.android.feedback.LaunchMetric
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Error.NonFatal.Reorg
-import com.nighthawkapps.wallet.android.feedback.Report.NonUserAction.FEEDBACK_STOPPED
-import com.nighthawkapps.wallet.android.feedback.Report.NonUserAction.SYNC_START
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.COPY_ADDRESS
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val ERROR_DIALOG_REQUEST_CODE = 1
 
 class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListener {
-
-    @Inject
-    lateinit var feedback: Feedback
-
-    @Inject
-    lateinit var feedbackCoordinator: FeedbackCoordinator
 
     @Inject
     lateinit var clipboard: ClipboardManager
@@ -86,7 +71,12 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             it.inject(this)
         }
         super.onCreate(savedInstanceState)
-        ProviderInstaller.installIfNeededAsync(this, this)
+        try {
+            ProviderInstaller.installIfNeeded(this)
+            // Fix for AssertionError: Method getAlpnSelectedProtocol not supported for object SSL socket over Socket
+        } catch (t: Throwable) {
+            twig("Warning GooglePlayServices not available. Ignoring call to initialize ProviderInstaller.")
+        }
         setContentView(R.layout.main_activity)
         initNavigation()
 
@@ -98,10 +88,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         )
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, false)
-
-        lifecycleScope.launch {
-            feedback.start()
-        }
     }
 
     override fun onResume() {
@@ -111,17 +97,8 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         NighthawkWalletApp.instance.let { app ->
             if (!app.creationMeasured) {
                 app.creationMeasured = true
-                feedback.report(LaunchMetric())
             }
         }
-    }
-
-    override fun onDestroy() {
-        lifecycleScope.launch {
-            feedback.report(FEEDBACK_STOPPED)
-            feedback.stop()
-        }
-        super.onDestroy()
     }
 
     /**
@@ -129,7 +106,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
      * (or is already up-to-date).
      */
     override fun onProviderInstalled() {
-        // Provider is up-to-date, app can make secure network calls.
     }
 
     /**
@@ -137,18 +113,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
      * whether the error is recoverable.
      */
     override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent) {
-        GoogleApiAvailability.getInstance().apply {
-            if (isUserResolvableError(errorCode)) {
-                // Recoverable error. Show a dialog prompting the user to
-                // install/update/enable Google Play services.
-                showErrorDialogFragment(this@MainActivity, errorCode, ERROR_DIALOG_REQUEST_CODE) {
-                    // The user chose not to take the recovery action
-                    onProviderInstallerNotAvailable()
-                }
-            } else {
-                onProviderInstallerNotAvailable()
-            }
-        }
+        twig("Warning onProviderInstallFailed. recoveryIntent:" + recoveryIntent.action)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -166,15 +131,14 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         super.onPostResume()
         if (retryProviderInstall) {
             // We can now safely retry installation.
-            ProviderInstaller.installIfNeededAsync(this, this)
+            try {
+                ProviderInstaller.installIfNeededAsync(this, this)
+                // Fix for AssertionError: Method getAlpnSelectedProtocol not supported for object SSL socket over Socket
+            } catch (t: Throwable) {
+                twig("Warning GooglePlayServices not available. Ignoring call to initialize ProviderInstaller.")
+            }
         }
         retryProviderInstall = false
-    }
-
-    private fun onProviderInstallerNotAvailable() {
-        // This is reached if the provider cannot be updated for some reason.
-        // App should consider all HTTP communication to be vulnerable, and take
-        // appropriate action.
     }
 
     private fun setWindowFlag(bits: Int, on: Boolean) {
@@ -190,7 +154,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
 
     private fun initNavigation() {
         navController = findNavController(R.id.nav_host_fragment)
-        navController?.addOnDestinationChangedListener { _, _, _ ->
+        navController!!.addOnDestinationChangedListener { _, _, _ ->
             // hide the keyboard anytime we change destinations
             getSystemService<InputMethodManager>()?.hideSoftInputFromWindow(
                 this@MainActivity.window.decorView.rootView.windowToken,
@@ -232,27 +196,14 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
 
     fun startSync(initializer: Initializer) {
         if (!::synchronizerComponent.isInitialized) {
-            synchronizerComponent =
-                NighthawkWalletApp.component.synchronizerSubcomponent().create(initializer)
-            feedback.report(SYNC_START)
+            synchronizerComponent = NighthawkWalletApp.component.synchronizerSubcomponent().create(initializer)
             synchronizerComponent.synchronizer().let { synchronizer ->
                 synchronizer.onProcessorErrorHandler = ::onProcessorError
-                synchronizer.onChainErrorHandler = ::onChainError
                 synchronizer.start(lifecycleScope)
             }
         } else {
             twig("Ignoring request to start sync because sync has already been started!")
         }
-    }
-
-    fun reportScreen(screen: Report.Screen?) = reportAction(screen)
-
-    fun reportTap(tap: Report.Tap?) = reportAction(tap)
-
-    fun reportFunnel(step: Feedback.Funnel?) = reportAction(step)
-
-    private fun reportAction(action: Feedback.Action?) {
-        action?.let { feedback.report(it) }
     }
 
     fun playSound(fileName: String) {
@@ -280,7 +231,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     }
 
     fun copyAddress(view: View? = null) {
-        reportTap(COPY_ADDRESS)
         lifecycleScope.launch {
             clipboard.setPrimaryClip(
                 ClipData.newPlainText(
@@ -349,13 +299,13 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             snackBarView.getChildAt(0).layoutParams = params
             snacks
         } else {
-            snackbar?.setText(message)?.setAction(action) {/*auto-close*/ }
+            snackbar!!.setText(message).setAction(action) { /*auto-close*/ }
         }.also {
-            if (it != null && !it.isShownOrQueued) it.show()
+            if (!it.isShownOrQueued) it.show()
         }
     }
 
-    fun showKeyboard(focusedView: View?) {
+    fun showKeyboard(focusedView: View) {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(focusedView, InputMethodManager.SHOW_FORCED)
@@ -473,14 +423,8 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             }
         }
         twig("MainActivity has received an error${if (notified) " and notified the user" else ""} and reported it to crashlytics and mixpanel.")
-        feedback.report(error)
         return true
     }
-
-    private fun onChainError(errorHeight: Int, rewindHeight: Int) {
-        feedback.report(Reorg(errorHeight, rewindHeight))
-    }
-
 
     // TODO: maybe move this quick helper code somewhere general or throttle the dialogs differently (like with a flow and stream operators, instead)
 

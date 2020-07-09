@@ -2,25 +2,27 @@ package com.nighthawkapps.wallet.android.ui.detail
 
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
+import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.ext.isShielded
+import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ui.MainActivity
-import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
-import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
-import cash.z.ecc.android.sdk.ext.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
-class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) :
+    RecyclerView.ViewHolder(itemView) {
     private val indicator = itemView.findViewById<View>(R.id.indicator)
     private val amountText = itemView.findViewById<TextView>(R.id.text_transaction_amount)
     private val topText = itemView.findViewById<TextView>(R.id.text_transaction_top)
@@ -87,7 +89,6 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                 }
             }
 
-
             topText.text = lineOne
             bottomText.text = lineTwo
             amountText.text = amountDisplay
@@ -104,7 +105,8 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
         val memo = transaction.memo.toUtf8Memo()
         return when {
             memo.contains(INCLUDE_MEMO_PREFIX) -> {
-                val address = memo.split(INCLUDE_MEMO_PREFIX)[1].trim().validateAddress() ?: "Unknown"
+                val address =
+                    memo.split(INCLUDE_MEMO_PREFIX)[1].trim().validateAddress() ?: "Unknown"
                 "${address.toAbbreviatedAddress()} paid you"
             }
             memo.contains("eply to:") -> {
@@ -112,7 +114,8 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                 "${address.toAbbreviatedAddress()} paid you"
             }
             memo.contains("zs") -> {
-                val who = extractAddress(memo).validateAddress()?.toAbbreviatedAddress() ?: "Unknown"
+                val who =
+                    extractAddress(memo).validateAddress()?.toAbbreviatedAddress() ?: "Unknown"
                 "$who paid you"
             }
             else -> "Unknown paid you"
@@ -127,7 +130,10 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
         val detailsMessage: String = "Zatoshi amount: ${transaction.value}\n\n" +
                 "Transaction: $txId" +
                 "${if (transaction.toAddress != null) "\n\nTo: ${transaction.toAddress}" else ""}" +
-                "${if (transaction.memo != null) "\n\nMemo: \n${String(transaction.memo!!, Charset.forName("UTF-8"))}" else ""}"
+                "${if (transaction.memo != null) "\n\nMemo: \n${String(
+                    transaction.memo!!,
+                    Charset.forName("UTF-8")
+                )}" else ""}"
 
         MaterialAlertDialogBuilder(itemView.context)
             .setMessage(detailsMessage)
@@ -157,9 +163,8 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
 
 private fun ByteArray.toTxId(): String {
     val sb = StringBuilder(size * 2)
-    for(i in (size - 1) downTo 0) {
+    for (i in (size - 1) downTo 0) {
         sb.append(String.format("%02x", this[i]))
     }
     return sb.toString()
 }
-

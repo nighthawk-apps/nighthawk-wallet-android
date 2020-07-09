@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.di.module
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nighthawkapps.wallet.android.di.annotation.SynchronizerScope
@@ -57,7 +56,7 @@ abstract class ViewModelsSynchronizerModule {
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
     abstract fun bindProfileViewModel(implementation: ProfileViewModel): ViewModel
-    
+
     /**
      * Factory for view models that are not created until the Synchronizer exists. Only VMs that
      * require the Synchronizer should wait until it is created. In other words, these are the VMs

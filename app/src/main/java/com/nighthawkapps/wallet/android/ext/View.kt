@@ -1,7 +1,9 @@
 package com.nighthawkapps.wallet.android.ext
 
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.View.INVISIBLE
 import com.nighthawkapps.wallet.android.ui.MainActivity
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
@@ -30,8 +32,10 @@ fun View.onClickNavTo(navResId: Int, block: (() -> Any) = {}) {
     setOnClickListener {
         block()
         (context as? MainActivity)?.safeNavigate(navResId)
-            ?: throw IllegalStateException("Cannot navigate from this activity. " +
-                    "Expected MainActivity but found ${context.javaClass.simpleName}")
+            ?: throw IllegalStateException(
+                "Cannot navigate from this activity. " +
+                        "Expected MainActivity but found ${context.javaClass.simpleName}"
+            )
     }
 }
 

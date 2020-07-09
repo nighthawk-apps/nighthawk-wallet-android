@@ -6,28 +6,30 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
-import androidx.camera.core.*
+import androidx.camera.core.AspectRatio
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.ext.twig
+import com.google.common.util.concurrent.ListenableFuture
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentScanBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.SCAN_BACK
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.SCAN_RECEIVE
-import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
-import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class ScanFragment : BaseFragment<FragmentScanBinding>() {
-    override val screen = Report.Screen.SCAN
+
     private val viewModel: ScanViewModel by viewModel()
 
     private val sendViewModel: SendViewModel by activityViewModel()
@@ -44,8 +46,8 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         if (cameraExecutor != null) cameraExecutor?.shutdown()
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        binding.buttonReceive.onClickNavTo(R.id.action_nav_scan_to_nav_receive) { tapped(SCAN_RECEIVE) }
-        binding.backButtonHitArea.onClickNavBack() { tapped(SCAN_BACK) }
+        binding.buttonReceive.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
+        binding.backButtonHitArea.onClickNavBack()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -100,12 +102,9 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
             cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
             preview.setSurfaceProvider(binding.preview.createSurfaceProvider())
         } catch (t: Throwable) {
-            // TODO: consider bubbling this up to the user
-            mainActivity?.feedback?.report(t)
             twig("Error while opening the camera: $t")
         }
-
-    }
+}
 
     /**
      * Adapted from: https://github.com/android/camera-samples/blob/master/CameraXBasic/app/src/main/java/com/android/example/cameraxbasic/fragments/CameraFragment.kt#L350
@@ -116,7 +115,8 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
             height
         )
         if (kotlin.math.abs(previewRatio - (4.0 / 3.0))
-            <= kotlin.math.abs(previewRatio - (16.0 / 9.0))) {
+            <= kotlin.math.abs(previewRatio - (16.0 / 9.0))
+        ) {
             return AspectRatio.RATIO_4_3
         }
         return AspectRatio.RATIO_16_9
@@ -124,41 +124,18 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
 
     private fun onQrScanned(qrContent: String, image: ImageProxy) {
         resumedScope.launch {
-            if (viewModel.isNotValid(qrContent)) image.close() // continue scanning
-            else {
+            if (viewModel.isNotValid(qrContent)) {
+                // TODO: use the "NETWORK" constant that will be available in the next SDK build
+                val network = ZcashSdk.DEFAULT_DB_NAME_PREFIX.split("_")[1]
+                binding.textScanError.text = "Invalid Zcash $network address:\n$qrContent"
+                image.close()
+            } else {
+                binding.textScanError.text = ""
                 sendViewModel.toAddress = qrContent
                 mainActivity?.safeNavigate(R.id.action_nav_scan_to_nav_send_address)
             }
         }
     }
-
-//    private fun updateOverlay(detectedObjects: DetectedObjects) {
-//        if (detectedObjects.objects.isEmpty()) {
-//            return
-//        }
-//
-//        overlay.setSize(detectedObjects.imageWidth, detectedObjects.imageHeight)
-//        val list = mutableListOf<BoxData>()
-//        for (obj in detectedObjects.objects) {
-//            val box = obj.boundingBox
-//            val name = "${categoryNames[obj.classificationCategory]}"
-//            val confidence =
-//                if (obj.classificationCategory != FirebaseVisionObject.CATEGORY_UNKNOWN) {
-//                    val confidence: Int = obj.classificationConfidence!!.times(100).toInt()
-//                    "$confidence%"
-//                } else {
-//                    ""
-//                }
-//            list.add(BoxData("$name $confidence", box))
-//        }
-//        overlay.set(list)
-//    }
-
-
-
-
-
-
 
     //
     // Permissions
@@ -202,27 +179,14 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (allPermissionsGranted()) {
-//            view!!.postDelayed(
-//                {
-//                    onStartCamera()
-//                },
-//                2000L
-//            ) // TODO: remove this temp hack to sidestep crash when permissions were not available
-        }
-    }
-
     companion object {
         private const val CAMERA_PERMISSION_REQUEST = 1002
 
         private fun isPermissionGranted(context: Context, permission: String): Boolean {
-            return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+            return ContextCompat.checkSelfPermission(
+                context,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
         }
     }
 }

@@ -6,33 +6,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import com.nighthawkapps.wallet.android.R
-import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
-import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
-import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
-import com.nighthawkapps.wallet.android.ext.*
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.*
-import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import com.nighthawkapps.wallet.android.ui.home.HomeFragment.BannerAction.*
-import com.nighthawkapps.wallet.android.ui.send.SendViewModel
-import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
-import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
 import cash.z.ecc.android.sdk.Synchronizer
-import cash.z.ecc.android.sdk.Synchronizer.Status.*
-import cash.z.ecc.android.sdk.block.CompactBlockProcessor
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
 import cash.z.ecc.android.sdk.ext.safelyConvertToBigDecimal
 import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.nighthawkapps.wallet.android.R
+import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
+import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
+import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
+import com.nighthawkapps.wallet.android.ext.disabledIf
+import com.nighthawkapps.wallet.android.ext.onClickNavTo
+import com.nighthawkapps.wallet.android.ext.toColoredSpan
+import com.nighthawkapps.wallet.android.ext.invisibleIf
+import com.nighthawkapps.wallet.android.ext.transparentIf
+import com.nighthawkapps.wallet.android.ext.goneIf
+
+import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
+import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
+
+import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.send.SendViewModel
+import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
+import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.scanReduce
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-    override val screen = Report.Screen.HOME
 
     private lateinit var numberPad: List<TextView>
     private lateinit var uiModel: HomeViewModel.UiModel
@@ -82,17 +89,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 buttonNumberPadDecimal.asKey(),
                 buttonNumberPadBack.asKey()
             )
-            hitAreaReceive.onClickNavTo(R.id.action_nav_home_to_nav_profile) { tapped(HOME_PROFILE) }
-            textDetail.onClickNavTo(R.id.action_nav_home_to_nav_detail) { tapped(HOME_DETAIL) }
+            hitAreaReceive.onClickNavTo(R.id.action_nav_home_to_nav_profile)
+            textDetail.onClickNavTo(R.id.action_nav_home_to_nav_detail)
             hitAreaScan.setOnClickListener {
-                mainActivity?.maybeOpenScan().also { tapped(HOME_SCAN) }
+                mainActivity?.maybeOpenScan()
             }
 
             textBannerAction.setOnClickListener {
                 onBannerAction(BannerAction.from((it as? TextView)?.text?.toString()))
             }
             buttonSendAmount.setOnClickListener {
-                onSend().also { tapped(HOME_SEND) }
+                onSend()
             }
             setSendAmount("0", false)
 
@@ -100,7 +107,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.buttonNumberPadBack.setOnLongClickListener {
-            onClearAmount().also { tapped(HOME_CLEAR_AMOUNT) }
+            onClearAmount()
             true
         }
 
@@ -163,7 +170,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-
     //
     // Public UI API
     //
@@ -209,7 +215,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.buttonSendAmount.text = sendText
         twig("Send button set to: $sendText")
 
-        val resId = if (uiModel.isSynced) R.color.selector_button_text_dark else R.color.selector_button_text_light
+        val resId =
+            if (uiModel.isSynced) R.color.selector_button_text_dark else R.color.selector_button_text_light
         binding.buttonSendAmount.setTextColor(resources.getColorStateList(resId))
         binding.lottieButtonLoading.invisibleIf(uiModel.isDisconnected)
     }
@@ -227,7 +234,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     fun setAvailable(availableBalance: Long = -1L, totalBalance: Long = -1L) {
         val missingBalance = availableBalance < 0
-        val availableString = if (missingBalance) "Updating" else availableBalance.convertZatoshiToZecString()
+        val availableString =
+            if (missingBalance) "Updating" else availableBalance.convertZatoshiToZecString()
         binding.textBalanceAvailable.text = availableString
         binding.textBalanceAvailable.transparentIf(missingBalance)
         binding.labelBalance.transparentIf(missingBalance)
@@ -242,9 +250,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    fun setBanner(message: String = "", action: BannerAction = CLEAR) {
+    fun setBanner(message: String = "", action: BannerAction = BannerAction.CLEAR) {
         with(binding) {
-            val hasMessage = !message.isEmpty() || action != CLEAR
+            val hasMessage = !message.isEmpty() || action != BannerAction.CLEAR
             groupBalance.goneIf(hasMessage)
             groupBanner.goneIf(!hasMessage)
             layerLock.goneIf(!hasMessage)
@@ -253,7 +261,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             textBannerAction.text = action.action
         }
     }
-
 
     //
     // Private UI Events
@@ -267,8 +274,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
         setProgress(uiModel) // TODO: we may not need to separate anymore
 //        if (new.status = SYNCING) onSyncing(new) else onSynced(new)
-        if (new.status == SYNCED) onSynced(new) else onSyncing(new)
-        setSendEnabled(new.isSendEnabled, new.status == SYNCED)
+        if (new.status == Synchronizer.Status.SYNCED) onSynced(new) else onSyncing(new)
+        setSendEnabled(new.isSendEnabled, new.status == Synchronizer.Status.SYNCED)
     }
 
     private fun logUpdate(old: HomeViewModel.UiModel?, new: HomeViewModel.UiModel) {
@@ -280,21 +287,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             else -> {
                 buildString {
                     append("UiModel(")
-                    if (old.status != new.status) append ("status=${new.status}")
+                    if (old.status != new.status) append("status=${new.status}")
                     if (old.processorInfo != new.processorInfo) {
-                        append ("${maybeComma()}processorInfo=ProcessorInfo(")
+                        append("${maybeComma()}processorInfo=ProcessorInfo(")
                         val startLength = length
                         fun innerComma() = if (length > startLength) ", " else ""
-                        if (old.processorInfo.networkBlockHeight != new.processorInfo.networkBlockHeight) append("networkBlockHeight=${new.processorInfo.networkBlockHeight}")
-                        if (old.processorInfo.lastScannedHeight != new.processorInfo.lastScannedHeight) append("${innerComma()}lastScannedHeight=${new.processorInfo.lastScannedHeight}")
-                        if (old.processorInfo.lastDownloadedHeight != new.processorInfo.lastDownloadedHeight) append("${innerComma()}lastDownloadedHeight=${new.processorInfo.lastDownloadedHeight}")
-                        if (old.processorInfo.lastDownloadRange != new.processorInfo.lastDownloadRange) append("${innerComma()}lastDownloadRange=${new.processorInfo.lastDownloadRange}")
-                        if (old.processorInfo.lastScanRange != new.processorInfo.lastScanRange) append("${innerComma()}lastScanRange=${new.processorInfo.lastScanRange}")
+                        if (old.processorInfo.networkBlockHeight != new.processorInfo.networkBlockHeight) append(
+                            "networkBlockHeight=${new.processorInfo.networkBlockHeight}"
+                        )
+                        if (old.processorInfo.lastScannedHeight != new.processorInfo.lastScannedHeight) append(
+                            "${innerComma()}lastScannedHeight=${new.processorInfo.lastScannedHeight}"
+                        )
+                        if (old.processorInfo.lastDownloadedHeight != new.processorInfo.lastDownloadedHeight) append(
+                            "${innerComma()}lastDownloadedHeight=${new.processorInfo.lastDownloadedHeight}"
+                        )
+                        if (old.processorInfo.lastDownloadRange != new.processorInfo.lastDownloadRange) append(
+                            "${innerComma()}lastDownloadRange=${new.processorInfo.lastDownloadRange}"
+                        )
+                        if (old.processorInfo.lastScanRange != new.processorInfo.lastScanRange) append(
+                            "${innerComma()}lastScanRange=${new.processorInfo.lastScanRange}"
+                        )
                         append(")")
                     }
-                    if (old.availableBalance != new.availableBalance) append ("${maybeComma()}availableBalance=${new.availableBalance}")
-                    if (old.totalBalance != new.totalBalance) append ("${maybeComma()}totalBalance=${new.totalBalance}")
-                    if (old.pendingSend != new.pendingSend) append ("${maybeComma()}pendingSend=${new.pendingSend}")
+                    if (old.availableBalance != new.availableBalance) append("${maybeComma()}availableBalance=${new.availableBalance}")
+                    if (old.totalBalance != new.totalBalance) append("${maybeComma()}totalBalance=${new.totalBalance}")
+                    if (old.pendingSend != new.pendingSend) append("${maybeComma()}pendingSend=${new.pendingSend}")
                     append(")")
                 }
             }
@@ -322,19 +339,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onBannerAction(action: BannerAction) {
         when (action) {
-            FUND_NOW -> {
+            BannerAction.FUND_NOW -> {
                 MaterialAlertDialogBuilder(requireContext())
                     .setMessage("To make full use of this wallet, deposit funds to your address.")
                     .setTitle("No Balance")
                     .setCancelable(true)
                     .setPositiveButton("View Address") { dialog, _ ->
-                        tapped(HOME_FUND_NOW)
                         dialog.dismiss()
                         mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_receive)
                     }
                     .show()
             }
-            CANCEL -> {
+            BannerAction.CANCEL -> {
                 // TODO: trigger banner / balance update
                 onNoFunds()
             }
@@ -342,9 +358,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onNoFunds() {
-        setBanner("No Balance", FUND_NOW)
+        setBanner("No Balance", BannerAction.FUND_NOW)
     }
-
 
     //
     // Inner classes and extensions
