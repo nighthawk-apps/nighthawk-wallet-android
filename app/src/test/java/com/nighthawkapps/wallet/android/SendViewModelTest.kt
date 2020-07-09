@@ -4,7 +4,6 @@ import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
-import com.nighthawkapps.wallet.android.feedback.Feedback
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -26,9 +25,6 @@ class SendViewModelTest {
     lateinit var submittedTx: PendingTransaction
     @Mock
     lateinit var minedTx: PendingTransaction
-
-    @Mock
-    lateinit var feedback: Feedback
 
     @Spy
     lateinit var sendViewModel: SendViewModel
@@ -52,8 +48,6 @@ class SendViewModelTest {
         whenever(minedTx.raw).thenReturn(byteArrayOf(0x1))
         whenever(minedTx.submitAttempts).thenReturn(1)
         whenever(minedTx.minedHeight).thenReturn(500_001)
-
-        sendViewModel.feedback = feedback
     }
 
     @Test

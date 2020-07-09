@@ -8,7 +8,6 @@ import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.ui.MainActivity
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.CoroutineScope
@@ -17,13 +16,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 
 abstract class BaseFragment<T : ViewBinding> : Fragment() {
+
     val mainActivity: MainActivity? get() = activity as MainActivity?
 
     lateinit var binding: T
 
     lateinit var resumedScope: CoroutineScope
-
-    open val screen: Report.Screen? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +34,6 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        mainActivity?.reportScreen(screen)
         resumedScope = lifecycleScope.coroutineContext.let {
             CoroutineScope(Dispatchers.Main + SupervisorJob(it[Job]))
         }
@@ -56,9 +53,5 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
             block()
             mainActivity?.safeNavigate(navResId)
         }
-    }
-
-    fun tapped(tap: Report.Tap) {
-        mainActivity?.reportTap(tap)
     }
 }

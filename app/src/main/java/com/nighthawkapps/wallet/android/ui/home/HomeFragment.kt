@@ -26,7 +26,6 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
 import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
 
-import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
@@ -41,8 +40,6 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-
-    override val screen = Report.Screen.HOME
 
     private lateinit var numberPad: List<TextView>
     private lateinit var uiModel: HomeViewModel.UiModel

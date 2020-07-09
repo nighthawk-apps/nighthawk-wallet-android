@@ -19,7 +19,6 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendFinalBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
-import com.nighthawkapps.wallet.android.feedback.Report
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -28,8 +27,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlin.random.Random
 
 class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
-
-    override val screen = Report.Screen.SEND_FINAL
 
     private val sendViewModel: SendViewModel by activityViewModel()
 
@@ -59,11 +56,9 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity?.apply {
-            mainActivity?.lifecycleScope?.let {
-                sendViewModel.send().onEach {
-                    onPendingTxUpdated(it)
-                }.launchIn(it)
-            }
+            sendViewModel.send().onEach {
+                onPendingTxUpdated(it)
+            }.launchIn(mainActivity?.lifecycleScope!!)
         }
     }
 
@@ -84,44 +79,25 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
 
     private fun onPendingTxUpdated(pendingTransaction: PendingTransaction?) {
         try {
-            if (pendingTransaction != null) sendViewModel.updateMetrics(pendingTransaction)
             val id = pendingTransaction?.id ?: -1
             var isSending = true
             var isFailure = false
-            var step: Report.Funnel.Send? = null
             val message = when {
-                pendingTransaction == null -> "Transaction not found".also {
-                    step = Report.Funnel.Send.ErrorNotFound
-                }
+                pendingTransaction == null -> "Transaction not found"
                 pendingTransaction.isMined() -> "Transaction Mined!\n\nSEND COMPLETE".also {
-                    isSending = false; step =
-                    Report.Funnel.Send.Mined(pendingTransaction.minedHeight)
+                    isSending = false
                 }
-                pendingTransaction.isSubmitSuccess() -> "Successfully submitted transaction!\nAwaiting confirmation . . .".also {
-                    step = Report.Funnel.Send.Submitted
-                }
+                pendingTransaction.isSubmitSuccess() -> "Successfully submitted transaction!\nAwaiting confirmation . . ."
                 pendingTransaction.isFailedEncoding() -> "ERROR: failed to encode transaction! (id: $id)".also {
-                    isSending = false; isFailure = true; step = Report.Funnel.Send.ErrorEncoding(
-                    pendingTransaction?.errorCode,
-                    pendingTransaction?.errorMessage
-                )
+                    isSending = false
                 }
                 pendingTransaction.isFailedSubmit() -> "ERROR: failed to submit transaction! (id: $id)".also {
-                    isSending = false; isFailure = true; step = Report.Funnel.Send.ErrorSubmitting(
-                    pendingTransaction?.errorCode,
-                    pendingTransaction?.errorMessage
-                )
+                    isSending = false
                 }
-                pendingTransaction.isCreated() -> "Transaction creation complete!".also {
-                    step = Report.Funnel.Send.Created(id)
-                }
-                pendingTransaction.isCreating() -> "Creating transaction . . .".also {
-                    step = Report.Funnel.Send.Creating
-                }
+                pendingTransaction.isCreated() -> "Transaction creation complete!"
+                pendingTransaction.isCreating() -> "Creating transaction . . ."
                 else -> "Transaction updated!".also { twig("Unhandled TX state: $pendingTransaction") }
             }
-
-            sendViewModel.funnel(step)
 
             twig("Pending TX (id: ${pendingTransaction?.id} Updated with message: $message")
             binding.textStatus.apply {
@@ -139,8 +115,6 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
         } catch (t: Throwable) {
             val message = "ERROR: error while handling pending transaction update! $t"
             twig(message)
-            mainActivity?.feedback?.report(Report.Error.NonFatal.TxUpdateFailed(t))
-            mainActivity?.feedback?.report(t)
         }
     }
 

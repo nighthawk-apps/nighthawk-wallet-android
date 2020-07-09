@@ -18,14 +18,10 @@ import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onClickNavUp
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.DETAIL_BACK
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.launch
 
 class WalletDetailFragment : BaseFragment<FragmentDetailBinding>() {
-
-    override val screen = Report.Screen.DETAIL
 
     private val viewModel: WalletDetailViewModel by viewModel()
 
@@ -36,7 +32,7 @@ class WalletDetailFragment : BaseFragment<FragmentDetailBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.backButtonHitArea.onClickNavUp { tapped(DETAIL_BACK) }
+        binding.backButtonHitArea.onClickNavUp()
         lifecycleScope.launch {
             binding.textAddress.text = viewModel.getAddress().toAbbreviatedAddress()
         }

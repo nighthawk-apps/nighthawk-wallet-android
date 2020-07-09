@@ -13,11 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.databinding.FragmentBackupBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.MetricType.SEED_PHRASE_LOADED
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.BACKUP_DONE
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.BACKUP_VERIFY
-import com.nighthawkapps.wallet.android.feedback.measure
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.LockBoxKey
@@ -31,7 +26,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class BackupFragment : BaseFragment<FragmentBackupBinding>() {
-    override val screen = Report.Screen.BACKUP
 
     val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
@@ -55,7 +49,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
             )
         }
         binding.buttonPositive.setOnClickListener {
-            onEnterWallet().also { if (hasBackUp) tapped(BACKUP_DONE) else tapped(BACKUP_VERIFY) }
+            onEnterWallet()
         }
         if (hasBackUp) {
             binding.buttonPositive.text = "Done"
@@ -114,13 +108,11 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
         }
     }
 
-    private suspend fun loadSeedWords(): List<CharArray>? = withContext(Dispatchers.IO) {
-        mainActivity?.feedback?.measure(SEED_PHRASE_LOADED) {
+    private suspend fun loadSeedWords(): List<CharArray> = withContext(Dispatchers.IO) {
             val lockBox = LockBox(NighthawkWalletApp.instance)
             val mnemonics = Mnemonics()
-            val seedPhrase = lockBox.getCharsUtf8(LockBoxKey.SEED_PHRASE)
-            val result = seedPhrase?.let { mnemonics.toWordList(it) }
+            val seedPhrase = lockBox.getCharsUtf8(LockBoxKey.SEED_PHRASE)!!
+            val result = mnemonics.toWordList(seedPhrase)
             result
-        }
     }
 }

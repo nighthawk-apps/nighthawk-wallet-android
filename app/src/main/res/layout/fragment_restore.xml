@@ -54,7 +54,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_subtitle" />
 
-
     <View
         android:id="@+id/divider_top"
         android:layout_width="match_parent"
@@ -70,7 +69,6 @@
         android:background="@color/text_light_dimmed"
         app:layout_constraintBottom_toBottomOf="@id/chips_input"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_layout_birthdate"
@@ -95,6 +93,7 @@
             android:singleLine="true"
             android:textColor="@color/text_light"
             android:textColorHint="@color/text_light_dimmed" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton

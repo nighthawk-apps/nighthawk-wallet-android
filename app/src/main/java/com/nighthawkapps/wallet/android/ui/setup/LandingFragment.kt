@@ -8,8 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentLandingBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Restore
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITHOUT_BACKUP
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
@@ -18,8 +16,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class LandingFragment : BaseFragment<FragmentLandingBinding>() {
-
-    override val screen = Report.Screen.LANDING
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
@@ -38,9 +34,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
         }
         binding.buttonNegative.setOnClickListener {
             when (binding.buttonNegative.text.toString().toLowerCase()) {
-                "restore" -> onRestoreWallet().also {
-                    mainActivity?.reportFunnel(Restore.Initiated)
-                }
+                "restore" -> onRestoreWallet()
                 else -> onSkip(++skipCount)
             }
         }

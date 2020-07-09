@@ -10,15 +10,11 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentReceiveNewBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.RECEIVE_BACK
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.RECEIVE_SCAN
 import com.nighthawkapps.wallet.android.qrecycler.QRecycler
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.launch
 
 class ReceiveFragment : BaseFragment<FragmentReceiveNewBinding>() {
-    override val screen = Report.Screen.RECEIVE
 
     private val viewModel: ReceiveViewModel by viewModel()
 
@@ -31,9 +27,8 @@ class ReceiveFragment : BaseFragment<FragmentReceiveNewBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonScan.setOnClickListener {
             mainActivity?.maybeOpenScan(R.id.action_nav_receive_to_nav_scan)
-                .also { tapped(RECEIVE_SCAN) }
         }
-        binding.backButtonHitArea.onClickNavBack() { tapped(RECEIVE_BACK) }
+        binding.backButtonHitArea.onClickNavBack()
     }
 
     override fun onAttach(context: Context) {

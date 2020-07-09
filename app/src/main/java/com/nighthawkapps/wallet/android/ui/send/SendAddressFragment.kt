@@ -22,15 +22,12 @@ import com.nighthawkapps.wallet.android.ext.onEditorActionDone
 import com.nighthawkapps.wallet.android.ext.onClickNavUp
 import com.nighthawkapps.wallet.android.ext.convertZecToZatoshi
 import com.nighthawkapps.wallet.android.ext.toAppColor
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Send
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
     ClipboardManager.OnPrimaryClipChangedListener {
-    override val screen = Report.Screen.SEND_ADDRESS
 
     private var maxZatoshi: Long? = null
 
@@ -111,7 +108,6 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
         binding.inputZcashAmount.convertZecToZatoshi()?.let { sendViewModel.zatoshiAmount = it }
         sendViewModel.validate(maxZatoshi).onFirstWith(resumedScope) {
             if (it == null) {
-                sendViewModel.funnel(Send.AddressPageComplete)
                 mainActivity?.safeNavigate(R.id.action_nav_send_address_to_send_memo)
             } else {
                 resumedScope.launch {

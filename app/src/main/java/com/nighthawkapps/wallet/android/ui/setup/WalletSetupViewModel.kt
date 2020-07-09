@@ -7,14 +7,6 @@ import cash.z.ecc.android.sdk.Initializer.DefaultBirthdayStore.Companion.Importe
 import cash.z.ecc.android.sdk.Initializer.DefaultBirthdayStore.Companion.NewWalletBirthdayStore
 import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
-import com.nighthawkapps.wallet.android.feedback.Feedback
-import com.nighthawkapps.wallet.android.feedback.measure
-import com.nighthawkapps.wallet.android.feedback.Report.MetricType.ENTROPY_CREATED
-import com.nighthawkapps.wallet.android.feedback.Report.MetricType.SEED_PHRASE_CREATED
-import com.nighthawkapps.wallet.android.feedback.Report.MetricType.SEED_CREATED
-import com.nighthawkapps.wallet.android.feedback.Report.MetricType.SEED_IMPORTED
-import com.nighthawkapps.wallet.android.feedback.Report.MetricType.WALLET_CREATED
-import com.nighthawkapps.wallet.android.feedback.Report.MetricType.WALLET_IMPORTED
 
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
@@ -31,9 +23,6 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
 
     @Inject
     lateinit var lockBox: LockBox
-
-    @Inject
-    lateinit var feedback: Feedback
 
     enum class WalletSetupState {
         UNKNOWN, SEED_WITH_BACKUP, SEED_WITHOUT_BACKUP, NO_SEED
@@ -91,12 +80,27 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
                     " existing seed and could lead to a loss of funds if the user has no backup!"
         }
 
-        feedback.measure(WALLET_CREATED) {
+//        mnemonics.run {
+//            nextEntropy().let { entropy ->
+//                nextMnemonic(entropy).let { seedPhrase ->
+//                    toSeed(seedPhrase).let { bip39Seed ->
+//                        lockBox.setCharsUtf8(LockBoxKey.SEED_PHRASE, seedPhrase)
+//                        lockBox.setBoolean(LockBoxKey.HAS_SEED_PHRASE, true)
+//                        lockBox.setBytes(LockBoxKey.SEED, bip39Seed)
+//                        lockBox.setBoolean(LockBoxKey.HAS_SEED, true)
+//                        bip39Seed
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+        measure("WALLET_CREATED") {
             mnemonics.run {
-                feedback.measure(ENTROPY_CREATED) { nextEntropy() }.let { entropy ->
-                    feedback.measure(SEED_PHRASE_CREATED) { nextMnemonic(entropy) }
+                measure("ENTROPY_CREATED") { nextEntropy() }.let { entropy ->
+                    measure("SEED_PHRASE_CREATED") { nextMnemonic(entropy) }
                         .let { seedPhrase ->
-                            feedback.measure(SEED_CREATED) { toSeed(seedPhrase) }.let { bip39Seed ->
+                            measure("SEED_CREATED") { toSeed(seedPhrase) }.let { bip39Seed ->
 
                                 lockBox.setCharsUtf8(LockBoxKey.SEED_PHRASE, seedPhrase)
                                 lockBox.setBoolean(LockBoxKey.HAS_SEED_PHRASE, true)
@@ -110,6 +114,15 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
                 }
             }
         }
+    }
+
+    inline fun <T> measure(
+        key: String = "measurement.generic",
+        description: Any = "measurement",
+        block: () -> T
+    ): T {
+        val result = block()
+        return result
     }
 
     suspend fun loadBirthdayHeight(): Int = withContext(Dispatchers.IO) {
@@ -128,16 +141,13 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
             "Error! Cannot import a seed when one already exists! This would overwrite the" +
                     " existing seed and could lead to a loss of funds if the user has no backup!"
         }
-
-        feedback.measure(WALLET_IMPORTED) {
-            mnemonics.run {
-                feedback.measure(SEED_IMPORTED) { toSeed(seedPhrase) }.let { bip39Seed ->
-                    lockBox.setCharsUtf8(LockBoxKey.SEED_PHRASE, seedPhrase)
-                    lockBox.setBoolean(LockBoxKey.HAS_SEED_PHRASE, true)
-                    lockBox.setBytes(LockBoxKey.SEED, bip39Seed)
-                    lockBox.setBoolean(LockBoxKey.HAS_SEED, true)
-                    bip39Seed
-                }
+        mnemonics.run {
+            toSeed(seedPhrase).let { bip39Seed ->
+                lockBox.setCharsUtf8(LockBoxKey.SEED_PHRASE, seedPhrase)
+                lockBox.setBoolean(LockBoxKey.HAS_SEED_PHRASE, true)
+                lockBox.setBytes(LockBoxKey.SEED, bip39Seed)
+                lockBox.setBoolean(LockBoxKey.HAS_SEED, true)
+                bip39Seed
             }
         }
     }

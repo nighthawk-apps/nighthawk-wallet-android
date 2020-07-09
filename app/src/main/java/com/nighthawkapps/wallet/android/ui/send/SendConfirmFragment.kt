@@ -11,15 +11,10 @@ import com.nighthawkapps.wallet.android.databinding.FragmentSendConfirmBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Send
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.SEND_CONFIRM_BACK
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.SEND_CONFIRM_NEXT
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.launch
 
 class SendConfirmFragment : BaseFragment<FragmentSendConfirmBinding>() {
-    override val screen = Report.Screen.SEND_CONFIRM
 
     val sendViewModel: SendViewModel by activityViewModel()
 
@@ -28,12 +23,10 @@ class SendConfirmFragment : BaseFragment<FragmentSendConfirmBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.buttonNext.setOnClickListener {
-            onSend().also { tapped(SEND_CONFIRM_NEXT) }
-        }
+        binding.buttonNext.setOnClickListener { onSend() }
         R.id.action_nav_send_confirm_to_nav_send_memo.let {
-            binding.backButtonHitArea.onClickNavTo(it) { tapped(SEND_CONFIRM_BACK) }
-            onBackPressNavTo(it) { tapped(SEND_CONFIRM_BACK) }
+            binding.backButtonHitArea.onClickNavTo(it)
+            onBackPressNavTo(it)
         }
         mainActivity?.lifecycleScope?.launch {
             binding.textConfirmation.text =
@@ -46,7 +39,6 @@ class SendConfirmFragment : BaseFragment<FragmentSendConfirmBinding>() {
     }
 
     private fun onSend() {
-        sendViewModel.funnel(Send.ConfirmPageComplete)
         mainActivity?.safeNavigate(R.id.action_nav_send_confirm_to_send_final)
     }
 }

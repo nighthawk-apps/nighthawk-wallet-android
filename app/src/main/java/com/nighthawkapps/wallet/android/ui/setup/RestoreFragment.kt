@@ -20,8 +20,6 @@ import com.nighthawkapps.wallet.android.databinding.FragmentRestoreBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.showInvalidSeedPhraseError
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Restore
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.tylersuehr.chips.Chip
 import com.tylersuehr.chips.ChipsAdapter
@@ -29,7 +27,6 @@ import com.tylersuehr.chips.SeedWordAdapter
 import kotlinx.coroutines.launch
 
 class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListener {
-    override val screen = Report.Screen.RESTORE
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
@@ -73,7 +70,6 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
                     .setMessage("Are you sure? For security, the words that you have entered will be cleared!")
                     .setTitle("Abort?")
                     .setPositiveButton("Stay") { dialog, _ ->
-                        mainActivity?.reportFunnel(Restore.Stay)
                         dialog.dismiss()
                     }
                     .setNegativeButton("Exit") { dialog, _ ->
@@ -92,19 +88,16 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     }
 
     private fun onExit() {
-        mainActivity?.reportFunnel(Restore.Exit)
         hideAutoCompleteWords()
         mainActivity?.hideKeyboard()
         mainActivity?.navController?.popBackStack()
     }
 
     private fun onEnterWallet() {
-        mainActivity?.reportFunnel(Restore.Success)
         mainActivity?.safeNavigate(R.id.action_nav_restore_to_nav_home)
     }
 
     private fun onDone() {
-        mainActivity?.reportFunnel(Restore.Done)
         mainActivity?.hideKeyboard()
         val seedPhrase = binding.chipsInput.selectedChips.joinToString(" ") {
             it.title
@@ -123,14 +116,12 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     }
 
     private fun importWallet(seedPhrase: String, birthday: Int) {
-        mainActivity?.reportFunnel(Restore.ImportStarted)
         mainActivity?.hideKeyboard()
         mainActivity?.apply {
             lifecycleScope.launch {
                 mainActivity?.startSync(walletSetup.importWallet(seedPhrase, birthday))
                 // bugfix: if the user proceeds before the synchronizer is created the app will crash!
                 binding.buttonSuccess.isEnabled = true
-                mainActivity?.reportFunnel(Restore.ImportCompleted)
             }
             playSound("sound_receive_small.mp3")
             vibrateSuccess()
@@ -151,26 +142,14 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         setDoneEnabled()
 
         view?.postDelayed({
-            mainActivity?.showKeyboard(seedWordAdapter?.editText)
+            mainActivity?.showKeyboard(seedWordAdapter!!.editText)
             seedWordAdapter?.editText?.requestFocus()
         }, 500L)
     }
 
     private fun setDoneEnabled() {
         val count = seedWordAdapter?.itemCount ?: 0
-        reportWords(count - 1) // subtract 1 for the editText
         binding.groupDone.goneIf(count <= 24)
-    }
-
-    private fun reportWords(count: Int) {
-        mainActivity?.run {
-//            reportFunnel(Restore.SeedWordCount(count))
-            if (count == 1) {
-                reportFunnel(Restore.SeedWordsStarted)
-            } else if (count == 24) {
-                reportFunnel(Restore.SeedWordsCompleted)
-            }
-        }
     }
 
     private fun hideAutoCompleteWords() {

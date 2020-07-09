@@ -22,9 +22,6 @@ import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.SCAN_BACK
-import com.nighthawkapps.wallet.android.feedback.Report.Tap.SCAN_RECEIVE
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import kotlinx.coroutines.launch
@@ -32,8 +29,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class ScanFragment : BaseFragment<FragmentScanBinding>() {
-
-    override val screen = Report.Screen.SCAN
 
     private val viewModel: ScanViewModel by viewModel()
 
@@ -51,12 +46,8 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         if (cameraExecutor != null) cameraExecutor?.shutdown()
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        binding.buttonReceive.onClickNavTo(R.id.action_nav_scan_to_nav_receive) {
-            tapped(
-                SCAN_RECEIVE
-            )
-        }
-        binding.backButtonHitArea.onClickNavBack() { tapped(SCAN_BACK) }
+        binding.buttonReceive.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
+        binding.backButtonHitArea.onClickNavBack()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -111,8 +102,6 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
             cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
             preview.setSurfaceProvider(binding.preview.createSurfaceProvider())
         } catch (t: Throwable) {
-            // TODO: consider bubbling this up to the user
-            mainActivity?.feedback?.report(t)
             twig("Error while opening the camera: $t")
         }
 }
@@ -187,22 +176,6 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
 
         if (allNeededPermissions.isNotEmpty()) {
             requestPermissions(allNeededPermissions.toTypedArray(), CAMERA_PERMISSION_REQUEST)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (allPermissionsGranted()) {
-//            view!!.postDelayed(
-//                {
-//                    onStartCamera()
-//                },
-//                2000L
-//            ) // TODO: remove this temp hack to sidestep crash when permissions were not available
         }
     }
 

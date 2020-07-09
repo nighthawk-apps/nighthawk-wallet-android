@@ -12,13 +12,9 @@ import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.onEditorActionDone
-import com.nighthawkapps.wallet.android.feedback.Report
-import com.nighthawkapps.wallet.android.feedback.Report.Funnel.Send
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 
 class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
-
-    override val screen = Report.Screen.SEND_MEMO
 
     val sendViewModel: SendViewModel by activityViewModel()
 
@@ -112,7 +108,6 @@ class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
     }
 
     private fun onNext() {
-        sendViewModel.funnel(Send.MemoPageComplete)
         mainActivity?.safeNavigate(R.id.action_nav_send_memo_to_send_confirm)
     }
 }
