@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Nighthawk</string>
     <string name="app_name_full">Nighthawk Wallet</string>
-    <string name="app_version">1.0</string>
+    <string name="app_version">1.0.2</string>
 
     <string name="receive_address_title">Your Shielded Address</string>
 

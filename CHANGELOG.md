@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+Version 1.0.2 *(2020-07-09)*
+------------------------------------
+- Remove Feedback Module, Crashlytics & Mixpanel libs
+- Fix SSL handshake failure
+- Fix for bad QR scan & Navigation after sending ZEC.
+
+Version 1.0.1 *(2020-07-01)*
+------------------------------------
+- Resolved a critical bug where an EU locale or alternative keyboards defaults to , for decimal on the Send screen and the mobile SDK ignores the denominator on the input screen
+- Added further instances of Nighthawk branding (h/t @imichaelmiers)
+- Fixes the cursor position resetting to 0 when there's a space on either side of the address field (h/t @CrystalPony)
+- Updates dependencies
+
 Version 1.0.0 *(2020-06-16)*
 ------------------------------------
 - Repackage to Nighthawk Wallet
