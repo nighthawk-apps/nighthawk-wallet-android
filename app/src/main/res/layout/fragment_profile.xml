@@ -34,12 +34,38 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
 
+    <View
+        android:id="@+id/hit_area_settings"
+        android:layout_marginStart="24dp"
+        android:alpha="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="24dp"
+        android:background="@android:color/transparent"
+        android:elevation="6dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_hit_area_top"/>
+
+    <ImageView
+        android:id="@+id/icon_settings"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="44dp"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.064"
+        app:layout_constraintWidth_percent="0.08"
+        app:srcCompat="@drawable/ic_settings" />
+
     <ImageView
         android:id="@+id/icon_close"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="6dp"
-        android:tint="@color/text_light_dimmed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
