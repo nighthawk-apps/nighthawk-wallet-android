@@ -7,7 +7,7 @@ object Deps {
 
     const val compileSdkVersion = 30
     const val buildToolsVersion = "30.0.0"
-    const val minSdkVersion = 26
+    const val minSdkVersion = 23
     const val targetSdkVersion = 30
 
     object AndroidX {
