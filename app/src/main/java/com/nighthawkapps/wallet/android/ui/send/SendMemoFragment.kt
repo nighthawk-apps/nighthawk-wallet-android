@@ -13,10 +13,11 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.onEditorActionDone
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX
 
 class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
 
-    val sendViewModel: SendViewModel by activityViewModel()
+    private val sendViewModel: SendViewModel by activityViewModel()
 
     override fun inflate(inflater: LayoutInflater): FragmentSendMemoBinding =
         FragmentSendMemoBinding.inflate(inflater)
@@ -52,7 +53,7 @@ class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
         }
 
         sendViewModel.afterInitFromAddress {
-            binding.textIncludedAddress.text = "sent from ${sendViewModel.fromAddress}"
+            binding.textIncludedAddress.text = "$INCLUDE_MEMO_PREFIX ${sendViewModel.fromAddress}"
         }
 
         binding.textIncludedAddress.gone()

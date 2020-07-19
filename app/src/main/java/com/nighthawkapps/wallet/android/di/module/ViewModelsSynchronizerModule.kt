@@ -11,6 +11,7 @@ import com.nighthawkapps.wallet.android.ui.profile.ProfileViewModel
 import com.nighthawkapps.wallet.android.ui.receive.ReceiveViewModel
 import com.nighthawkapps.wallet.android.ui.scan.ScanViewModel
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
+import com.nighthawkapps.wallet.android.ui.setup.SettingsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -56,6 +57,12 @@ abstract class ViewModelsSynchronizerModule {
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
     abstract fun bindProfileViewModel(implementation: ProfileViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    abstract fun bindSettingsViewModel(implementation: SettingsViewModel): ViewModel
 
     /**
      * Factory for view models that are not created until the Synchronizer exists. Only VMs that

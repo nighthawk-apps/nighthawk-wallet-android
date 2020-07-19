@@ -19,6 +19,7 @@ object Deps {
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
         const val PAGING = "androidx.paging:paging-runtime-ktx:2.1.2"
+        const val SECURITY = "androidx.security:security-crypto:1.0.0-alpha02"
 
         object CameraX : Version("1.0.0-beta06") {
             val CAMERA2 = "androidx.camera:camera-camera2:1.0.0-beta06"

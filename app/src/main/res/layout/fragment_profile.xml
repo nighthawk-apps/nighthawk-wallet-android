@@ -36,16 +36,16 @@
 
     <View
         android:id="@+id/hit_area_settings"
-        android:layout_marginStart="24dp"
-        android:alpha="0.3"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="68dp"
         android:layout_height="68dp"
+        android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        android:alpha="0.3"
         android:background="@android:color/transparent"
         android:elevation="6dp"
         app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_hit_area_top"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_hit_area_top" />
 
     <ImageView
         android:id="@+id/icon_settings"
@@ -78,13 +78,13 @@
 
     <ImageView
         android:id="@+id/icon_profile"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="284dp"
+        android:layout_height="223dp"
         android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="H,1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.212"
         app:layout_constraintWidth_percent="0.7"
@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Shielded User"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/icon_profile" />
@@ -117,9 +117,9 @@
         style="@style/Nighthawk.TextAppearance.AddressPart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="zs1g7cqw...9qmvyzgm"
+        android:text="zs1ejoqw...9jkwlbgm"
         android:textColor="@color/text_light_dimmed"
-        android:textSize="16dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_username" />
@@ -138,14 +138,64 @@
 
     <View
         android:id="@+id/hit_area_address"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="290dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="16dp"
         android:onClick="copyAddress"
-        app:layout_constraintBottom_toTopOf="@id/button_feedback"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
-        app:layout_constraintStart_toStartOf="@id/text_address"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toTopOf="@id/text_username"
+        tools:background="@color/spacer" />
+
+    <TextView
+        android:id="@+id/text_nighthawk"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Donate to Nighthawk"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hit_area_address" />
+
+    <TextView
+        android:id="@+id/text_nighthawk_address"
+        style="@style/Nighthawk.TextAppearance.AddressPart"
+        android:layout_width="wrap_content"
+        android:layout_height="67dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="zs1ejoqw...9jkwlbgm"
+        android:textColor="@color/text_light_dimmed"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_nighthawk" />
+
+    <ImageView
+        android:id="@+id/image_donate_copy"
+        android:layout_width="22dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_content_copy"
+        app:layout_constraintBottom_toBottomOf="@id/text_nighthawk_address"
+        app:layout_constraintDimensionRatio="W,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintStart_toEndOf="@id/text_nighthawk_address"
+        app:layout_constraintTop_toTopOf="@id/text_nighthawk_address"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/hit_area_donate_address"
+        android:layout_width="292dp"
+        android:layout_height="60dp"
+        android:onClick="copyAddress"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintHorizontal_bias="0.235"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toTopOf="@id/text_nighthawk"
         tools:background="@color/spacer" />
 
     <com.google.android.material.button.MaterialButton
@@ -161,7 +211,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/text_address"
+        app:layout_constraintTop_toBottomOf="@id/hit_area_donate_address"
         app:layout_constraintVertical_bias="0.1" />
 
     <com.google.android.material.button.MaterialButton
