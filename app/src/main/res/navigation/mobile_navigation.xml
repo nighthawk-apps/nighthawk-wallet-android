@@ -71,6 +71,11 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_backup"
             app:destination="@id/nav_backup" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_settings"
+            app:destination="@id/nav_settings"
+            app:enterAnim="@anim/anim_enter_from_left"
+            app:exitAnim="@anim/anim_exit_to_right"/>
     </fragment>
 
     <!--                 -->
@@ -159,9 +164,14 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
         android:id="@+id/nav_backup"
         android:name="com.nighthawkapps.wallet.android.ui.setup.BackupFragment"
-        tools:layout="@layout/fragment_backup"></fragment>
+        tools:layout="@layout/fragment_backup" />
 
     <fragment
         android:id="@+id/nav_restore"
