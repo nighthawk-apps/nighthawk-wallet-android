@@ -1,6 +1,5 @@
 # Nighthawk Wallet
-An Android wallet using the Zcash Android SDK that is maintained by nighthawk apps devs.
-Our first Nighthawk Wallet release is based upon the Electric Coin Company's shielded reference wallet for Zcash. We've removed analytics reporting and logging, disabled sending to transparent addresses, and updated the branding. Please help us beta test and send feedback to nighthawkwallet@protonmail.com or Keybase (@NighthawkWallet). Be free with z2z!
+An Android wallet using the Zcash Android SDK that is maintained by nighthawk apps.
 
 ### Setup
 
@@ -27,14 +26,17 @@ cd /path/to/zcash-android-wallet
 ## Disclaimers
 There are some known areas for improvement:
 
-- This app is mainly intended for learning and improving the related libraries that it uses. There may be bugs.
+- This app depends upon related libraries that it uses. There may be bugs.
 - This wallet currently only supports transacting between shielded addresses, which makes it incompatible with wallets that do not support sending to shielded addresses. 
 - Traffic analysis, like in other cryptocurrency wallets, can leak some privacy of the user.
-- The wallet requires a trust in the server to display accurate transaction information. 
+- The wallet requires a trust in the lighthttps server to display accurate transaction information. 
 - This app has been developed and run exclusively on `mainnet` it might not work on `testnet`.  
 
 See the [Wallet App Threat Model](https://zcash.readthedocs.io/en/latest/rtd_pages/wallet_threat_model.html)
 for more information about the security and privacy limitations of the wallet.
+
+## Donate to Nighthawk Devs
+zs1wrr6swz67jnykexzg8e7rf4prtzm32p3fqv2ezsthaz48u3cj553tuy5m0q56h5u2f77q59ama5
 
 ### License
 MIT

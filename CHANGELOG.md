@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.0.3 *(2020-07-20)*
+------------------------------------
+- New Settings screen with the ability to point to a lighthttpd server of user's choice.
+- Switch to "Reply-To" from "sent-from" because the former underscores the idea that the given address is not necessarily the address that originated the transaction.
+- Update dependencies and secure the lighthttpd setting via EncryptedSharedPreferences
+- Add Donation address
+
 Version 1.0.2 *(2020-07-09)*
 ------------------------------------
 - Remove Feedback Module, Crashlytics & Mixpanel libs
