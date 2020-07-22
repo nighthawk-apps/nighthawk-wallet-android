@@ -1,6 +1,11 @@
 # Nighthawk Wallet
 An Android wallet using the Zcash Android SDK that is maintained by nighthawk apps.
 
+### Download
+
+<a href="https://play.google.com/store/apps/details?id=com.nighthawkapps.wallet.android">
+<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="50px"/></a>
+
 ### Setup
 
 To run, clone the repo, open it in Android Studio and press play. It should just work.™
