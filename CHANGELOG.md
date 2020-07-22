@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.4 *(2020-07-22)*
+------------------------------------
+- Fix a bug in resolving transaction history
+
 Version 1.0.3 *(2020-07-20)*
 ------------------------------------
 - New Settings screen with the ability to point to a lighthttpd server of user's choice.
