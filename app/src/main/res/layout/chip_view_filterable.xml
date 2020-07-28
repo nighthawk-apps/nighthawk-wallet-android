@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
+    android:focusable="true"
     android:paddingStart="16dp"
     android:paddingTop="16dp"
     android:paddingEnd="16dp">
@@ -26,7 +27,7 @@
         android:includeFontPadding="false"
         android:padding="16dp"
         android:textColor="@color/selector_button_text_light_to_dimmed"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/subtitle"
         app:layout_constraintLeft_toRightOf="@+id/image"
         app:layout_constraintRight_toRightOf="parent"
@@ -38,7 +39,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:alpha=".56"
         android:textColor="#212121"
         android:textSize="@dimen/chip_label_text_size"
@@ -48,4 +48,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
         tools:text="Subtitle" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

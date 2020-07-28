@@ -21,7 +21,6 @@ import com.nighthawkapps.wallet.android.databinding.FragmentScanBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
-import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import kotlinx.coroutines.launch
@@ -45,8 +44,6 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         super.onViewCreated(view, savedInstanceState)
         if (cameraExecutor != null) cameraExecutor?.shutdown()
         cameraExecutor = Executors.newSingleThreadExecutor()
-
-        binding.buttonReceive.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
         binding.backButtonHitArea.onClickNavBack()
     }
 

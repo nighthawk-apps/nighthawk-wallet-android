@@ -104,13 +104,13 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:paddingEnd="16dp"
-        android:text="This is a very long sentence and it better not messup the UI"
         android:textColor="@color/text_light_dimmed"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/indicator"
         app:layout_constraintEnd_toStartOf="@id/text_transaction_amount"
         app:layout_constraintStart_toEndOf="@id/indicator"
-        app:layout_constraintTop_toBottomOf="@id/image_shield_invisible" />
+        app:layout_constraintTop_toBottomOf="@id/image_shield_invisible"
+        tools:text="This is a very long sentence and it better not messup the UI" />
 
     <TextView
         android:id="@+id/text_transaction_amount"

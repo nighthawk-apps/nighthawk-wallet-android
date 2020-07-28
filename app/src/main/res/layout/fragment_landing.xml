@@ -18,16 +18,16 @@
         android:layout_height="wrap_content"
         android:alpha="0.05"
         android:gravity="center"
-        android:text="empowering\neveryone\nwith\neconomic\nfreedom"
+        android:text="@string/zcash_keywords"
         android:textColor="@color/zcashWhite_50"
-        android:textSize="56dp"
-        app:layout_constraintBottom_toBottomOf="@id/icon_logo"
+        android:textSize="56sp"
+        app:layout_constraintBottom_toBottomOf="@id/icon_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/icon_logo" />
+        app:layout_constraintTop_toTopOf="@id/icon_profile" />
 
     <ImageView
-        android:id="@+id/icon_logo"
+        android:id="@+id/icon_profile"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,7 +39,6 @@
         app:layout_constraintWidth_percent="0.7"
         app:srcCompat="@drawable/ic_f117_vector_yellow_no_bg" />
 
-    <!-- Choose release names from here https://en.wikipedia.org/wiki/List_of_woods -->
     <TextView
         android:id="@+id/text_message"
         style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -48,19 +47,19 @@
         android:gravity="center"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
-        android:text="Welcome to Nighthawk Wallet!"
+        android:text="@string/welcome_to_nighthawk_wallet"
         android:textColor="@color/zcashWhite"
         app:layout_constraintBottom_toTopOf="@id/guideline_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/icon_logo" />
+        app:layout_constraintTop_toBottomOf="@id/icon_profile" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_negative"
         style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Restore"
+        android:text="@string/restore"
         android:textColor="@color/text_light"
         app:layout_constraintEnd_toStartOf="@id/button_positive"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -72,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="New"
+        android:text="@string/new_wallet"
         android:textColor="@color/text_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_negative"

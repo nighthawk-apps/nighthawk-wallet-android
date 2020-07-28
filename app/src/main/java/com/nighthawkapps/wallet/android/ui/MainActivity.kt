@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
@@ -240,6 +241,12 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             )
             showMessage("Address copied!", "Sweet")
         }
+    }
+
+    fun openSideShift() {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse("https://sideshift.ai/a/EqcQp4iUM")
+        startActivity(i)
     }
 
     suspend fun isValidAddress(address: String): Boolean {
