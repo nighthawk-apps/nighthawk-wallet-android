@@ -41,7 +41,7 @@ See the [Wallet App Threat Model](https://zcash.readthedocs.io/en/latest/rtd_pag
 for more information about the security and privacy limitations of the wallet.
 
 ## Donate to Nighthawk Devs
-zs1wrr6swz67jnykexzg8e7rf4prtzm32p3fqv2ezsthaz48u3cj553tuy5m0q56h5u2f77q59ama5
+zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf
 
 ### License
 MIT
