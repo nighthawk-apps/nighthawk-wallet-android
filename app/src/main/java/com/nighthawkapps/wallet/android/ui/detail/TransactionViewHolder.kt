@@ -85,7 +85,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) :
                 // sanitize amount
                 if (value < ZcashSdk.MINERS_FEE_ZATOSHI) amountDisplay = "< 0.001"
                 else if (amountZec.length > 10) { // 10 allows 3 digits to the left and 6 to the right of the decimal
-                    amountDisplay = "tap to view"
+                    amountDisplay = itemView.context.getString(R.string.tap_to_view)
                 }
             }
 
@@ -105,22 +105,22 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) :
         val memo = transaction.memo.toUtf8Memo()
         return when {
             memo.contains(INCLUDE_MEMO_PREFIX) -> {
-                val address = memo.split(INCLUDE_MEMO_PREFIX)[1].trim().validateAddress() ?: "Unknown"
+                val address = memo.split(INCLUDE_MEMO_PREFIX)[1].trim().validateAddress() ?: itemView.context.getString(R.string.unknown)
                 "${address.toAbbreviatedAddress()} paid you"
             }
             memo.contains("eply to:") -> {
-                val address = memo.split("eply to:")[1].trim().validateAddress() ?: "Unknown"
+                val address = memo.split("eply to:")[1].trim().validateAddress() ?: itemView.context.getString(R.string.unknown)
                 "${address.toAbbreviatedAddress()} paid you"
             }
             memo.contains("zs") -> {
-                val who = extractAddress(memo).validateAddress()?.toAbbreviatedAddress() ?: "Unknown"
+                val who = extractAddress(memo).validateAddress()?.toAbbreviatedAddress() ?: itemView.context.getString(R.string.unknown)
                 "$who paid you"
             }
             memo.contains("sent from:") -> {
-                val who = extractValidAddress(memo, INCLUDE_MEMO_PREFIX) ?: extractValidAddress(memo, "sent from:") ?: "Unknown"
+                val who = extractValidAddress(memo, INCLUDE_MEMO_PREFIX) ?: extractValidAddress(memo, "sent from:") ?: itemView.context.getString(R.string.unknown)
                 "$who paid you"
             }
-            else -> "Unknown paid you"
+            else -> itemView.context.getString(R.string.unknown_sender)
         }
     }
 

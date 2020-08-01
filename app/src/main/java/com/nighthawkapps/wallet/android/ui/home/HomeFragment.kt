@@ -5,7 +5,6 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -80,8 +79,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.hitAreaProfile.onClickNavTo(R.id.action_nav_home_to_nav_profile)
         binding.buttonSendAmount.setOnClickListener { onSend() }
         binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
-        binding.textMyAddress.paintFlags = binding.textMyAddress.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG
-        binding.textSideShift.paintFlags = binding.textMyAddress.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG
+        binding.textMyAddress.paintFlags =
+            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textSideShift.paintFlags =
+            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.textSideShift.setOnClickListener {
             mainActivity?.copyAddress()
             MaterialAlertDialogBuilder(requireContext())
@@ -132,14 +133,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onBalanceUpdated(balance: CompactBlockProcessor.WalletBalance) {
-        binding.textBalanceAvailable.text = (getString(R.string.zec) + balance.availableZatoshi.convertZatoshiToZecString())
-            .toColoredSpan(R.color.text_light_dimmed, getString(R.string.zec))
+        binding.textBalanceAvailable.text =
+            (getString(R.string.zec) + balance.availableZatoshi.convertZatoshiToZecString())
+                .toColoredSpan(R.color.text_light_dimmed, getString(R.string.zec))
         val change = (balance.totalZatoshi - balance.availableZatoshi)
         binding.textBalanceDescription.apply {
             goneIf(change <= 0L)
             val changeString = change.convertZatoshiToZecString()
-            text =
-                "(expecting +$changeString ZEC)".toColoredSpan(R.color.text_light, "+$changeString")
+            text = "(expecting +$changeString ZEC)".toColoredSpan(R.color.text_light, "+$changeString")
         }
     }
 
@@ -157,22 +158,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         twig("got a new paged list of transactions")
         binding.groupEmptyViews.goneIf(transactions.size > 0)
         adapter.submitList(transactions)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        twig("HomeFragment.onSaveInstanceState")
-        if (::uiModel.isInitialized) {
-//            outState.putParcelable("uiModel", uiModel)
-        }
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.let { inState ->
-            twig("HomeFragment.onViewStateRestored")
-//            onModelUpdated(HomeViewModel.UiModel(), inState.getParcelable("uiModel")!!)
-        }
     }
 
     //
@@ -234,7 +219,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         logUpdate(old, new)
         uiModel = new
         setProgress(uiModel) // TODO: we may not need to separate anymore
-//        if (new.status = SYNCING) onSyncing(new) else onSynced(new)
         if (new.status == Synchronizer.Status.SYNCED) onSynced(new) else onSyncing(new)
         setSendEnabled(new.isSendEnabled, new.status == Synchronizer.Status.SYNCED)
     }
@@ -285,37 +269,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         snake.isSynced = true
-        if (!uiModel.hasBalance) {
-            onNoFunds()
-        } else {
-        }
     }
 
     private fun onSend() {
         if (isSendEnabled) mainActivity?.safeNavigate(R.id.action_nav_home_to_send)
-    }
-
-    private fun onBannerAction(action: BannerAction) {
-        when (action) {
-            BannerAction.FUND_NOW -> {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setMessage("To make full use of this wallet, deposit funds to your address.")
-                    .setTitle("No Balance")
-                    .setCancelable(true)
-                    .setPositiveButton("View Address") { dialog, _ ->
-                        dialog.dismiss()
-                        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_receive)
-                    }
-                    .show()
-            }
-            BannerAction.CANCEL -> {
-                // TODO: trigger banner / balance update
-                onNoFunds()
-            }
-        }
-    }
-
-    private fun onNoFunds() {
     }
 
     //
@@ -336,16 +293,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 throw IllegalArgumentException("Invalid BannerAction: $action")
             }
         }
-    }
-
-    private fun TextView.asKey(): TextView {
-        val c = text[0]
-        setOnClickListener {
-            lifecycleScope.launch {
-                twig("CHAR TYPED: $c")
-                viewModel.onChar(c)
-            }
-        }
-        return this
     }
 }
