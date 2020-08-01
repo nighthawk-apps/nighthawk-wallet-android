@@ -106,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Shielded User"
+        android:text="@string/my_zcash_address"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +117,7 @@
         style="@style/Nighthawk.TextAppearance.AddressPart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="zs1ejoqw...9jkwlbgm"
+        tools:text="zs1ejoqw...9jkwlbgm"
         android:textColor="@color/text_light_dimmed"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -143,31 +143,60 @@
         android:layout_marginBottom="16dp"
         android:onClick="copyAddress"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toTopOf="@id/text_username"
         tools:background="@color/spacer" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_feedback"
+        style="@style/Nighthawk.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/nighthawkwallet"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toBottomOf="@id/hit_area_address"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_backup"
+        style="@style/Nighthawk.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/backup_wallet"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/text_light"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toBottomOf="@id/button_feedback" />
 
     <TextView
         android:id="@+id/text_nighthawk"
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Donate to Nighthawk"
+        android:layout_marginTop="30dp"
+        android:text="@string/donate_to_nighthawk"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hit_area_address" />
+        app:layout_constraintTop_toBottomOf="@id/button_backup" />
 
     <TextView
         android:id="@+id/text_nighthawk_address"
         style="@style/Nighthawk.TextAppearance.AddressPart"
         android:layout_width="wrap_content"
-        android:layout_height="67dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="zs1ejoqw...9jkwlbgm"
+        tools:text="zs1ejoqw...9jkwlbgm"
         android:textColor="@color/text_light_dimmed"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -191,42 +220,12 @@
         android:id="@+id/hit_area_donate_address"
         android:layout_width="292dp"
         android:layout_height="60dp"
+        android:layout_marginTop="30dp"
         android:onClick="copyAddress"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
-        app:layout_constraintHorizontal_bias="0.235"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toTopOf="@id/text_nighthawk"
+        app:layout_constraintTop_toBottomOf="@id/button_backup"
         tools:background="@color/spacer" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_feedback"
-        style="@style/Nighthawk.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="12dp"
-        android:text="\@nighthawkwallet"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/hit_area_donate_address"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_backup"
-        style="@style/Nighthawk.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="12dp"
-        android:text="Backup Wallet"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/text_light"
-        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/button_feedback" />
 
     <TextView
         android:id="@+id/text_banner_message"
@@ -237,13 +236,14 @@
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:gravity="center_vertical"
         android:text="@string/app_name_full"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/selector_button_text_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/button_backup" />
+        app:layout_constraintTop_toBottomOf="@id/hit_area_donate_address" />
 
     <TextView
         android:id="@+id/text_version"

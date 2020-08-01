@@ -37,21 +37,6 @@
         app:layout_constraintWidth_percent="0.116"
         tools:background="@color/zcashRed" />
 
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/scan_frame"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:scaleType="centerCrop"-->
-    <!--        android:src="@drawable/ic_scan_frame"-->
-    <!--        app:layout_constraintDimensionRatio="H,1:1"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toStartOf="@id/spacer_bottom_right"-->
-    <!--        app:layout_constraintStart_toEndOf="@id/spacer_bottom_left"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.3" />-->
-
-
     <ImageView
         android:id="@+id/background_qr"
         android:layout_width="0dp"
@@ -99,10 +84,10 @@
         android:id="@+id/receive_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Address"
+        android:text="@string/my_zcash_address"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_light"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spacer_title" />
@@ -113,7 +98,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/Nighthawk.TextAppearance.AddressPart"
         android:textColor="@color/text_light"
-        android:textSize="16dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/receive_title"
@@ -135,7 +120,6 @@
         android:id="@+id/space_address_median"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        app:layout_constraintBottom_toTopOf="@id/button_scan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/receive_address"
@@ -151,22 +135,6 @@
         app:layout_constraintStart_toStartOf="@id/receive_address"
         app:layout_constraintTop_toTopOf="@id/receive_title"
         tools:background="@color/spacer" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_scan"
-        style="@style/Nighthawk.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="12dp"
-        android:text="Scan Recipient Address"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/spacer_bottom_right"
-        app:layout_constraintStart_toEndOf="@id/spacer_bottom_left"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
 
     <!-- Back Button -->
     <ImageView
@@ -192,6 +160,7 @@
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.045" />
+        app:layout_constraintVertical_bias="0.045"
+        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

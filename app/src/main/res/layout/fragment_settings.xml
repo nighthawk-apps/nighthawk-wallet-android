@@ -7,7 +7,7 @@
     android:background="@drawable/background_home">
 
     <ImageView
-        android:id="@+id/icon_logo"
+        android:id="@+id/icon_profile"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="6dp"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="92dp"
-        android:text="Change lightwalletd server:"
+        android:text="@string/change_lightwalletd_server"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_light"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
             android:id="@+id/input_text_lightwalletd_server"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Server Address" />
+            android:hint="@string/server_address" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,7 +84,7 @@
             android:id="@+id/input_text_lightwalletd_port"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Server Port"
+            android:hint="@string/server_port"
             android:inputType="number"
             android:maxLength="5" />
 
@@ -97,7 +97,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="Update"
+        android:text="@string/update"
         app:layout_constraintEnd_toStartOf="@+id/button_reset"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lightwalletd_port" />
@@ -110,7 +110,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:text="Reset to Default Host"
+        android:text="@string/reset_to_default_host"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_update"
         app:layout_constraintTop_toBottomOf="@+id/lightwalletd_port" />

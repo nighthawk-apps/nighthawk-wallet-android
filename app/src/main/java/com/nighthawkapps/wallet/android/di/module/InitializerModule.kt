@@ -11,8 +11,8 @@ import dagger.Reusable
 class InitializerModule {
 
     companion object {
-        val defaultHost = "lightwalletd.z.cash"
-        val defaultPort = 9067
+        val defaultHost = "lightd-main.zecwallet.co"
+        val defaultPort = 443
     }
 
     private val host: String = sharedPreferences.getString("SERVER_HOST", defaultHost) ?: defaultHost

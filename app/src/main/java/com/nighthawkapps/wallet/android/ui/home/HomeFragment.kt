@@ -1,36 +1,36 @@
 package com.nighthawkapps.wallet.android.ui.home
 
 import android.content.Context
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.LinearLayoutManager
 import cash.z.ecc.android.sdk.Synchronizer
+import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
+import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
+import cash.z.ecc.android.sdk.block.CompactBlockProcessor
+import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
+import cash.z.ecc.android.sdk.ext.collectWith
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
-import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
-import cash.z.ecc.android.sdk.ext.safelyConvertToBigDecimal
 import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
-import com.nighthawkapps.wallet.android.ext.disabledIf
+import com.nighthawkapps.wallet.android.ext.goneIf
+import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
-import com.nighthawkapps.wallet.android.ext.invisibleIf
-import com.nighthawkapps.wallet.android.ext.transparentIf
-import com.nighthawkapps.wallet.android.ext.goneIf
-
-import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
-import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
-
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import com.nighthawkapps.wallet.android.ui.send.SendViewModel
+import com.nighthawkapps.wallet.android.ui.detail.TransactionAdapter
+import com.nighthawkapps.wallet.android.ui.detail.TransactionsFooter
+import com.nighthawkapps.wallet.android.ui.detail.WalletDetailViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.launchIn
@@ -41,17 +41,16 @@ import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-    private lateinit var numberPad: List<TextView>
     private lateinit var uiModel: HomeViewModel.UiModel
+    private lateinit var adapter: TransactionAdapter<ConfirmedTransaction>
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
-    private val sendViewModel: SendViewModel by activityViewModel()
     private val viewModel: HomeViewModel by viewModel()
+    private val walletViewModel: WalletDetailViewModel by viewModel()
 
     lateinit var snake: MagicSnakeLoader
 
-    override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
-        FragmentHomeBinding.inflate(inflater)
+    override fun inflate(inflater: LayoutInflater): FragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -74,41 +73,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
-        with(binding) {
-            numberPad = arrayListOf(
-                buttonNumberPad0.asKey(),
-                buttonNumberPad1.asKey(),
-                buttonNumberPad2.asKey(),
-                buttonNumberPad3.asKey(),
-                buttonNumberPad4.asKey(),
-                buttonNumberPad5.asKey(),
-                buttonNumberPad6.asKey(),
-                buttonNumberPad7.asKey(),
-                buttonNumberPad8.asKey(),
-                buttonNumberPad9.asKey(),
-                buttonNumberPadDecimal.asKey(),
-                buttonNumberPadBack.asKey()
-            )
-            hitAreaReceive.onClickNavTo(R.id.action_nav_home_to_nav_profile)
-            textDetail.onClickNavTo(R.id.action_nav_home_to_nav_detail)
-            hitAreaScan.setOnClickListener {
-                mainActivity?.maybeOpenScan()
-            }
-
-            textBannerAction.setOnClickListener {
-                onBannerAction(BannerAction.from((it as? TextView)?.text?.toString()))
-            }
-            buttonSendAmount.setOnClickListener {
-                onSend()
-            }
-            setSendAmount("0", false)
-
-            snake = MagicSnakeLoader(binding.lottieButtonLoading)
+        snake = MagicSnakeLoader(binding.lottieButtonLoading)
+        binding.hitAreaProfile.onClickNavTo(R.id.action_nav_home_to_nav_profile)
+        binding.buttonSendAmount.setOnClickListener { onSend() }
+        binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
+        binding.textMyAddress.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textSideShift.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.hitAreaInfo.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.visit_zcash_link_title))
+                .setMessage(getString(R.string.visit_zcash_link_description))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                    mainActivity?.openWebURL(getString(R.string.zcash_learn_more_link))
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
-
-        binding.buttonNumberPadBack.setOnLongClickListener {
-            onClearAmount()
-            true
+        binding.textSideShift.setOnClickListener {
+            mainActivity?.copyAddress()
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.fund_wallet_sideshift_title))
+                .setMessage(getString(R.string.fund_wallet_sideshift_description))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                    mainActivity?.openWebURL(getString(R.string.sideshift_affiliate_link))
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
 
         if (::uiModel.isInitialized) {
@@ -117,24 +115,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun onClearAmount() {
-        if (::uiModel.isInitialized) {
-            resumedScope.launch {
-                binding.textSendAmount.text.apply {
-                    while (uiModel.pendingSend != "0") {
-                        viewModel.onChar('<')
-                        delay(5)
-                    }
-                }
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
+        initTransactionUI()
+        walletViewModel.balance.collectWith(resumedScope) {
+            onBalanceUpdated(it)
+        }
         twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
         viewModel.initializeMaybe()
-        onClearAmount()
         viewModel.uiModels.scanReduce { old, new ->
             onModelUpdated(old, new)
             new
@@ -154,19 +142,51 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        twig("HomeFragment.onSaveInstanceState")
-        if (::uiModel.isInitialized) {
-//            outState.putParcelable("uiModel", uiModel)
+    private fun onBalanceUpdated(balance: CompactBlockProcessor.WalletBalance) {
+        binding.textBalanceAvailable.text =
+            (getString(R.string.zec) + balance.availableZatoshi.convertZatoshiToZecString())
+                .toColoredSpan(R.color.text_light_dimmed, getString(R.string.zec))
+        val change = (balance.totalZatoshi - balance.availableZatoshi)
+        binding.textBalanceDescription.apply {
+            goneIf(change <= 0L)
+            val changeString = change.convertZatoshiToZecString()
+            text = "(expecting +$changeString ZEC)".toColoredSpan(R.color.text_light, "+$changeString")
         }
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.let { inState ->
-            twig("HomeFragment.onViewStateRestored")
-//            onModelUpdated(HomeViewModel.UiModel(), inState.getParcelable("uiModel")!!)
+    private fun initTransactionUI() {
+        adapter = TransactionAdapter()
+        binding.recyclerTransactions.apply {
+            layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(TransactionsFooter(binding.recyclerTransactions.context))
+            adapter = this@HomeFragment.adapter
+            scrollToTop()
+        }
+        walletViewModel.transactions.collectWith(resumedScope) { onTransactionsUpdated(it) }
+    }
+
+    private fun onTransactionsUpdated(transactions: PagedList<ConfirmedTransaction>) {
+        twig("got a new paged list of transactions")
+        transactions.size.let { newCount ->
+            binding.groupEmptyViews.goneIf(newCount > 0)
+            val preSize = adapter.itemCount
+            adapter.submitList(transactions)
+            // don't rescroll while the user is looking at the list, unless it's initialization
+            // using 4 here because there might be headers or other things that make 0 a bad pick
+            // 4 is about how many can fit before scrolling becomes necessary on many screens
+            if (preSize < 4 && newCount > preSize) {
+                scrollToTop()
+            }
+        }
+    }
+
+    private fun scrollToTop() {
+        twig("scrolling to the top")
+        binding.recyclerTransactions.apply {
+            postDelayed({
+                smoothScrollToPosition(0)
+            }, 5L)
         }
     }
 
@@ -204,7 +224,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         val sendText = when {
             uiModel.status == DISCONNECTED -> "Reconnecting . . ."
-            uiModel.isSynced -> if (uiModel.hasFunds) "SEND AMOUNT" else "NO FUNDS AVAILABLE"
+            uiModel.isSynced -> if (uiModel.hasFunds) "SEND ZCASH" else "NO FUNDS AVAILABLE"
             uiModel.status == STOPPED -> "IDLE"
             uiModel.isDownloading -> "Downloading . . . ${snake.downloadProgress}%"
             uiModel.isValidating -> "Validating . . ."
@@ -221,47 +241,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.lottieButtonLoading.invisibleIf(uiModel.isDisconnected)
     }
 
-    /**
-     * @param amount the amount to send represented as ZEC, without the dollar sign.
-     */
-    fun setSendAmount(amount: String, updateModel: Boolean = true) {
-        binding.textSendAmount.text = "\$$amount".toColoredSpan(R.color.text_light_dimmed, "$")
-        if (updateModel) {
-            sendViewModel.zatoshiAmount = amount.safelyConvertToBigDecimal().convertZecToZatoshi()
-        }
-        binding.buttonSendAmount.disabledIf(amount == "0")
-    }
-
-    fun setAvailable(availableBalance: Long = -1L, totalBalance: Long = -1L) {
-        val missingBalance = availableBalance < 0
-        val availableString =
-            if (missingBalance) "Updating" else availableBalance.convertZatoshiToZecString()
-        binding.textBalanceAvailable.text = availableString
-        binding.textBalanceAvailable.transparentIf(missingBalance)
-        binding.labelBalance.transparentIf(missingBalance)
-        binding.textBalanceDescription.apply {
-            goneIf(missingBalance)
-            text = if (availableBalance != -1L && (availableBalance < totalBalance)) {
-                val change = (totalBalance - availableBalance).convertZatoshiToZecString()
-                "(expecting +$change ZEC)".toColoredSpan(R.color.text_light, "+$change")
-            } else {
-                "(enter an amount to send)"
-            }
-        }
-    }
-
-    fun setBanner(message: String = "", action: BannerAction = BannerAction.CLEAR) {
-        with(binding) {
-            val hasMessage = !message.isEmpty() || action != BannerAction.CLEAR
-            groupBalance.goneIf(hasMessage)
-            groupBanner.goneIf(!hasMessage)
-            layerLock.goneIf(!hasMessage)
-
-            textBannerMessage.text = message
-            textBannerAction.text = action.action
-        }
-    }
-
     //
     // Private UI Events
     //
@@ -269,11 +248,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun onModelUpdated(old: HomeViewModel.UiModel?, new: HomeViewModel.UiModel) {
         logUpdate(old, new)
         uiModel = new
-        if (old?.pendingSend != new.pendingSend) {
-            setSendAmount(new.pendingSend)
-        }
         setProgress(uiModel) // TODO: we may not need to separate anymore
-//        if (new.status = SYNCING) onSyncing(new) else onSynced(new)
         if (new.status == Synchronizer.Status.SYNCED) onSynced(new) else onSyncing(new)
         setSendEnabled(new.isSendEnabled, new.status == Synchronizer.Status.SYNCED)
     }
@@ -320,75 +295,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onSyncing(uiModel: HomeViewModel.UiModel) {
-        setAvailable()
     }
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         snake.isSynced = true
-        if (!uiModel.hasBalance) {
-            onNoFunds()
-        } else {
-            setBanner("")
-            setAvailable(uiModel.availableBalance, uiModel.totalBalance)
-        }
     }
 
     private fun onSend() {
         if (isSendEnabled) mainActivity?.safeNavigate(R.id.action_nav_home_to_send)
-    }
-
-    private fun onBannerAction(action: BannerAction) {
-        when (action) {
-            BannerAction.FUND_NOW -> {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setMessage("To make full use of this wallet, deposit funds to your address.")
-                    .setTitle("No Balance")
-                    .setCancelable(true)
-                    .setPositiveButton("View Address") { dialog, _ ->
-                        dialog.dismiss()
-                        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_receive)
-                    }
-                    .show()
-            }
-            BannerAction.CANCEL -> {
-                // TODO: trigger banner / balance update
-                onNoFunds()
-            }
-        }
-    }
-
-    private fun onNoFunds() {
-        setBanner("No Balance", BannerAction.FUND_NOW)
-    }
-
-    //
-    // Inner classes and extensions
-    //
-
-    enum class BannerAction(val action: String) {
-        FUND_NOW(""),
-        CANCEL("Cancel"),
-        NONE(""),
-        CLEAR("clear");
-
-        companion object {
-            fun from(action: String?): BannerAction {
-                values().forEach {
-                    if (it.action == action) return it
-                }
-                throw IllegalArgumentException("Invalid BannerAction: $action")
-            }
-        }
-    }
-
-    private fun TextView.asKey(): TextView {
-        val c = text[0]
-        setOnClickListener {
-            lifecycleScope.launch {
-                twig("CHAR TYPED: $c")
-                viewModel.onChar(c)
-            }
-        }
-        return this
     }
 }

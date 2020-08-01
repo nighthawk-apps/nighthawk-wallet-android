@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import cash.z.ecc.android.sdk.ext.twig
-import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentReceiveNewBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
@@ -25,9 +24,6 @@ class ReceiveFragment : BaseFragment<FragmentReceiveNewBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.buttonScan.setOnClickListener {
-            mainActivity?.maybeOpenScan(R.id.action_nav_receive_to_nav_scan)
-        }
         binding.backButtonHitArea.onClickNavBack()
     }
 
