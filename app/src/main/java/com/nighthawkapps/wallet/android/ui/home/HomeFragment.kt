@@ -50,8 +50,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     lateinit var snake: MagicSnakeLoader
 
-    override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
-        FragmentHomeBinding.inflate(inflater)
+    override fun inflate(inflater: LayoutInflater): FragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,24 +75,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         snake = MagicSnakeLoader(binding.lottieButtonLoading)
         binding.hitAreaProfile.onClickNavTo(R.id.action_nav_home_to_nav_profile)
-        binding.hitAreaProfile.onClickNavTo(R.id.action_nav_home_to_nav_profile)
         binding.buttonSendAmount.setOnClickListener { onSend() }
         binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
-        binding.textMyAddress.paintFlags =
-            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.textSideShift.paintFlags =
-            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textMyAddress.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textSideShift.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.hitAreaInfo.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.visit_zcash_link_title))
+                .setMessage(getString(R.string.visit_zcash_link_description))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                    mainActivity?.openWebURL(getString(R.string.zcash_learn_more_link))
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
         binding.textSideShift.setOnClickListener {
             mainActivity?.copyAddress()
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Fund wallet with SideShift.ai?")
-                .setMessage("Your Z-Address has been copied to the clipboard, please paste it in the address bar after selecting Shielded Zcash as the receiving address in the browser.")
+                .setTitle(getString(R.string.fund_wallet_sideshift_title))
+                .setMessage(getString(R.string.fund_wallet_sideshift_description))
                 .setCancelable(false)
-                .setPositiveButton("Open Browser") { dialog, _ ->
-                    mainActivity?.openSideShift()
+                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                    mainActivity?.openWebURL(getString(R.string.sideshift_affiliate_link))
                     dialog.dismiss()
                 }
-                .setNegativeButton("Cancel") { dialog, _ ->
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                     dialog.dismiss()
                 }
                 .show()
@@ -273,25 +283,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSend() {
         if (isSendEnabled) mainActivity?.safeNavigate(R.id.action_nav_home_to_send)
-    }
-
-    //
-    // Inner classes and extensions
-    //
-
-    enum class BannerAction(val action: String) {
-        FUND_NOW(""),
-        CANCEL("Cancel"),
-        NONE(""),
-        CLEAR("clear");
-
-        companion object {
-            fun from(action: String?): BannerAction {
-                values().forEach {
-                    if (it.action == action) return it
-                }
-                throw IllegalArgumentException("Invalid BannerAction: $action")
-            }
-        }
     }
 }

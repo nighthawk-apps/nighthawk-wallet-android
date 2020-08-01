@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.0.5 *(2020-08-01)*
+------------------------------------
+- Revamp Wallet UI, add Zash info link
+- Update donation address, add SideShift.ai integration
+- Default to ZecWallet server, Thanks @adityapk!
+- Upgrade NDK version, Strigify resources and optimize layouts.
+
 Version 1.0.4 *(2020-07-22)*
 ------------------------------------
 - Fix a bug in resolving transaction history

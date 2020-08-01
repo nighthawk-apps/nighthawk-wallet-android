@@ -243,9 +243,9 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         }
     }
 
-    fun openSideShift() {
+    fun openWebURL(urlString: String) {
         val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse("https://sideshift.ai/a/EqcQp4iUM")
+        i.data = Uri.parse(urlString)
         startActivity(i)
     }
 

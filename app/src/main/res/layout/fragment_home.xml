@@ -7,6 +7,33 @@
     android:background="@drawable/background_home">
 
     <ImageView
+        android:id="@+id/icon_info"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
+        app:srcCompat="@drawable/ic_info_24dp"
+        app:tint="@color/text_light" />
+
+    <View
+        android:id="@+id/hit_area_info"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="24dp"
+        android:alpha="0.3"
+        android:background="@android:color/transparent"
+        android:elevation="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/header" />
+
+    <ImageView
         android:id="@+id/icon_profile"
         android:layout_width="0dp"
         android:layout_height="0dp"
