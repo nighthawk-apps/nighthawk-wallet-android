@@ -155,19 +155,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun initTransactionUI() {
-        binding.recyclerTransactions.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerTransactions.addItemDecoration(TransactionsFooter(binding.recyclerTransactions.context))
         adapter = TransactionAdapter()
+        binding.recyclerTransactions.apply {
+            layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(TransactionsFooter(binding.recyclerTransactions.context))
+            adapter = this@HomeFragment.adapter
+            scrollToTop()
+        }
         walletViewModel.transactions.collectWith(resumedScope) { onTransactionsUpdated(it) }
-        binding.recyclerTransactions.adapter = adapter
-        binding.recyclerTransactions.smoothScrollToPosition(0)
     }
 
     private fun onTransactionsUpdated(transactions: PagedList<ConfirmedTransaction>) {
         twig("got a new paged list of transactions")
-        binding.groupEmptyViews.goneIf(transactions.size > 0)
-        adapter.submitList(transactions)
+        transactions.size.let { newCount ->
+            binding.groupEmptyViews.goneIf(newCount > 0)
+            val preSize = adapter.itemCount
+            adapter.submitList(transactions)
+            // don't rescroll while the user is looking at the list, unless it's initialization
+            // using 4 here because there might be headers or other things that make 0 a bad pick
+            // 4 is about how many can fit before scrolling becomes necessary on many screens
+            if (preSize < 4 && newCount > preSize) {
+                scrollToTop()
+            }
+        }
+    }
+
+    private fun scrollToTop() {
+        twig("scrolling to the top")
+        binding.recyclerTransactions.apply {
+            postDelayed({
+                smoothScrollToPosition(0)
+            }, 5L)
+        }
     }
 
     //
