@@ -4,6 +4,7 @@ Change Log
 Version 1.0.6 *(2020-08-24)*
 ------------------------------------
 - Update to latest librustzcash SDK lib & android dependencies
+- Fix New Wallet creation
 - Fix SideShift affiliate url
 - Fix Donate to Nighthawk copy address
 - Add Biometric support

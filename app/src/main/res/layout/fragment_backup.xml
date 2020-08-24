@@ -300,9 +300,6 @@
             app:layout_constraintStart_toStartOf="@id/text_address_part_3"
             app:layout_constraintTop_toBottomOf="@id/text_address_part_21"
             tools:text="word" />
-        <!--
-        text_address_part_3, text_address_part_6, text_address_part_9, text_address_part_12, text_address_part_15, text_address_part_18, text_address_part_21, text_address_part_24
-        -->
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_left_address_column_1"
@@ -360,7 +357,6 @@
         app:layout_constraintWidth_percent="0.4053398058"
         app:srcCompat="@drawable/ic_logo_landing" />
 
-    <!-- Choose release names from here https://en.wikipedia.org/wiki/List_of_woods -->
     <TextView
         android:id="@+id/text_message"
         style="@style/TextAppearance.MaterialComponents.Headline6"
