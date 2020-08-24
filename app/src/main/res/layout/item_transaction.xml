@@ -39,7 +39,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <View
         android:id="@+id/indicator"
         android:layout_width="3dp"
@@ -52,44 +51,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/image_shield"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_check_shield"
-        app:layout_constraintBottom_toTopOf="@id/text_transaction_bottom"
-        app:layout_constraintStart_toEndOf="@id/indicator"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/image_shield_invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_check_shield"
-        android:tint="@color/zcashRed"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/text_transaction_bottom"
-        app:layout_constraintStart_toEndOf="@id/indicator"
-        app:layout_constraintTop_toTopOf="@id/indicator"
-        app:layout_constraintVertical_chainStyle="packed" />
-
     <TextView
         android:id="@+id/text_transaction_top"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:autoSizeTextType="uniform"
         android:maxLines="1"
+        android:layout_marginTop="8dp"
         android:textColor="@color/text_light"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/image_shield_invisible"
         app:layout_constraintEnd_toStartOf="@id/text_transaction_amount"
-        app:layout_constraintStart_toEndOf="@id/image_shield"
-        app:layout_constraintTop_toTopOf="@id/image_shield_invisible"
+        app:layout_constraintStart_toEndOf="@id/indicator"
+        app:layout_constraintTop_toTopOf="@id/indicator"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_goneMarginStart="16dp"
         tools:text="This is a very long sentence and it better not messup the UI" />
@@ -109,7 +83,7 @@
         app:layout_constraintBottom_toBottomOf="@id/indicator"
         app:layout_constraintEnd_toStartOf="@id/text_transaction_amount"
         app:layout_constraintStart_toEndOf="@id/indicator"
-        app:layout_constraintTop_toBottomOf="@id/image_shield_invisible"
+        app:layout_constraintTop_toBottomOf="@id/text_transaction_top"
         tools:text="This is a very long sentence and it better not messup the UI" />
 
     <TextView

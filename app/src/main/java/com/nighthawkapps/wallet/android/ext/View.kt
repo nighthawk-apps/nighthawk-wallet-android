@@ -8,10 +8,17 @@ import com.nighthawkapps.wallet.android.ui.MainActivity
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 
-fun View.gone() = goneIf(true)
+fun View.gone() {
+    visibility = GONE
+}
 
-fun View.invisible() = invisibleIf(true)
+fun View.invisible() {
+    visibility = INVISIBLE
+}
 
+fun View.visible() {
+    visibility = VISIBLE
+}
 fun View.goneIf(isGone: Boolean) {
     visibility = if (isGone) GONE else VISIBLE
 }

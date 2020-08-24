@@ -108,8 +108,8 @@
         android:layout_marginTop="16dp"
         android:text="@string/my_zcash_address"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/icon_profile" />
 
     <TextView
@@ -117,32 +117,33 @@
         style="@style/Nighthawk.TextAppearance.AddressPart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="zs1ejoqw...9jkwlbgm"
         android:textColor="@color/text_light_dimmed"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_username" />
+        android:layout_marginStart="42dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toBottomOf="@id/text_username"
+        tools:text="zs1ejoqw...9jkwlbgm" />
 
     <ImageView
         android:id="@+id/image_copy"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="22dp"
+        android:layout_height="28dp"
         android:src="@drawable/ic_content_copy"
         app:layout_constraintBottom_toBottomOf="@id/text_address"
         app:layout_constraintDimensionRatio="W,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toEndOf="@id/text_address"
-        app:layout_constraintTop_toTopOf="@id/text_address" />
+        app:layout_constraintTop_toTopOf="@id/text_address"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/hit_area_address"
         android:layout_width="290dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="16dp"
         android:onClick="copyAddress"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toTopOf="@id/text_username"
         tools:background="@color/spacer" />
@@ -185,8 +186,8 @@
         android:layout_marginTop="30dp"
         android:text="@string/donate_to_nighthawk"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/button_backup" />
 
     <TextView
@@ -194,14 +195,13 @@
         style="@style/Nighthawk.TextAppearance.AddressPart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        tools:text="zs1ejoqw...9jkwlbgm"
         android:textColor="@color/text_light_dimmed"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_nighthawk" />
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toBottomOf="@id/text_nighthawk"
+        tools:text="zs1ejoqw...9jkwlbgm" />
 
     <ImageView
         android:id="@+id/image_donate_copy"
@@ -221,7 +221,7 @@
         android:layout_width="292dp"
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
-        android:onClick="copyAddress"
+        android:onClick="copyDonationAddress"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/button_backup"
@@ -233,10 +233,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_banner"
         android:elevation="6dp"
+        android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:gravity="center_vertical"
         android:text="@string/app_name_full"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/selector_button_text_light"

@@ -7,27 +7,23 @@ import androidx.recyclerview.widget.RecyclerView
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
-import cash.z.ecc.android.sdk.ext.isShielded
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
-import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ui.MainActivity
-import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX
+import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIXES_RECOGNIZED
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.launch
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) :
-    RecyclerView.ViewHolder(itemView) {
+class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val indicator = itemView.findViewById<View>(R.id.indicator)
     private val amountText = itemView.findViewById<TextView>(R.id.text_transaction_amount)
     private val topText = itemView.findViewById<TextView>(R.id.text_transaction_top)
     private val bottomText = itemView.findViewById<TextView>(R.id.text_transaction_bottom)
-    private val shieldIcon = itemView.findViewById<View>(R.id.image_shield)
     private val formatter = SimpleDateFormat("M/d h:mma", Locale.getDefault())
     private val addressRegex = """zs\d\w{65,}""".toRegex()
 
@@ -57,8 +53,10 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) :
                 val isMined = blockTimeInSeconds != 0L
                 when {
                     !toAddress.isNullOrEmpty() -> {
-                        lineOne = "You paid ${toAddress?.toAbbreviatedAddress()}"
+                        lineOne = "Sent to ${toAddress?.toAbbreviatedAddress()}"
                         lineTwo = if (isMined) "Sent $timestamp" else "Pending confirmation"
+                        // TODO: this logic works but is sloppy. Find a more robust solution to displaying information about expiration (such as expires in 1 block, etc). Then if it is way beyond expired, remove it entirely. Perhaps give the user a button for that (swipe to dismiss?)
+                        if (!isMined && (expiryHeight != null) && (expiryHeight!! < (itemView.context as MainActivity).latestHeight ?: -1)) lineTwo = "Expired"
                         amountDisplay = "- $amountZec"
                         if (isMined) {
                             amountColor = R.color.zcashRed
@@ -97,50 +95,42 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) :
             bottomText.setTextColor(lineTwoColor.toAppColor())
             val context = itemView.context
             indicator.background = context.resources.getDrawable(indicatorBackground)
-            shieldIcon.goneIf((transaction?.raw != null || transaction?.expiryHeight != null) && !transaction?.toAddress.isShielded())
         }
     }
 
     private suspend fun getSender(transaction: ConfirmedTransaction): String {
         val memo = transaction.memo.toUtf8Memo()
-        return when {
-            memo.contains(INCLUDE_MEMO_PREFIX) -> {
-                val address = memo.split(INCLUDE_MEMO_PREFIX)[1].trim().validateAddress() ?: itemView.context.getString(R.string.unknown)
-                "${address.toAbbreviatedAddress()} paid you"
-            }
-            memo.contains("eply to:") -> {
-                val address = memo.split("eply to:")[1].trim().validateAddress() ?: itemView.context.getString(R.string.unknown)
-                "${address.toAbbreviatedAddress()} paid you"
-            }
-            memo.contains("zs") -> {
-                val who = extractAddress(memo).validateAddress()?.toAbbreviatedAddress() ?: itemView.context.getString(R.string.unknown)
-                "$who paid you"
-            }
-            memo.contains("sent from:") -> {
-                val who = extractValidAddress(memo, INCLUDE_MEMO_PREFIX) ?: extractValidAddress(memo, "sent from:") ?: itemView.context.getString(R.string.unknown)
-                "$who paid you"
-            }
-            else -> itemView.context.getString(R.string.unknown_sender)
-        }
+        val who = extractValidAddress(memo)?.toAbbreviatedAddress() ?: "Unknown"
+        return "Received from $who"
     }
 
     private fun extractAddress(memo: String?) =
         addressRegex.findAll(memo ?: "").lastOrNull()?.value
 
-    private suspend fun extractValidAddress(memo: String?, delimiter: String): String? {
-        return memo?.lastIndexOf(delimiter, ignoreCase = true)?.let { i ->
-            memo.substring(i + delimiter.length).trimStart() }?.validateAddress()
+    private suspend fun extractValidAddress(memo: String?): String? {
+        if (memo == null || memo.length < 25) return null
+
+        // note: cannot use substringAfterLast because we need to ignore case
+        try {
+            INCLUDE_MEMO_PREFIXES_RECOGNIZED.forEach { prefix ->
+                memo.lastIndexOf(prefix, ignoreCase = true).takeUnless { it == -1 }?.let { lastIndex ->
+                    memo.substring(lastIndex + prefix.length).trimStart().validateAddress()?.let { address ->
+                        return@extractValidAddress address
+                    }
+                }
+            }
+        } catch (t: Throwable) { }
+
+        return null
     }
 
     private fun onTransactionClicked(transaction: ConfirmedTransaction) {
         val txId = transaction.rawTransactionId.toTxId()
         val detailsMessage: String = "Zatoshi amount: ${transaction.value}\n\n" +
-                "Transaction: $txId" +
+                "Mined at height: ${transaction.minedHeight}\n\n" +
+                "Transaction id: $txId" +
                 "${if (transaction.toAddress != null) "\n\nTo: ${transaction.toAddress}" else ""}" +
-                "${if (transaction.memo != null) "\n\nMemo: \n${String(
-                    transaction.memo!!,
-                    Charset.forName("UTF-8")
-                )}" else ""}"
+                "${if (transaction.memo != null) "\n\nMemo: \n${String(transaction.memo!!, Charset.forName("UTF-8"))}" else ""}"
 
         MaterialAlertDialogBuilder(itemView.context)
             .setMessage(detailsMessage)

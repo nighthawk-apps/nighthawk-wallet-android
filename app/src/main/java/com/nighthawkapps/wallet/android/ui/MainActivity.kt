@@ -22,6 +22,8 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricConstants
+import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
@@ -66,6 +68,12 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             this,
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
+
+    val latestHeight: Int? get() = if (::synchronizerComponent.isInitialized) {
+        synchronizerComponent.synchronizer().latestHeight
+    } else {
+        null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component = NighthawkWalletApp.component.mainActivitySubcomponent().create(this).also {
@@ -207,6 +215,43 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         }
     }
 
+    fun authenticate(description: String, block: () -> Unit) {
+        val callback = object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                twig("Authentication success")
+                block()
+            }
+
+            override fun onAuthenticationFailed() {
+                twig("Authentication failed!!!!")
+            }
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                twig("Authenticatiion Error")
+                when (errorCode) {
+                    BiometricConstants.ERROR_HW_NOT_PRESENT, BiometricConstants.ERROR_HW_UNAVAILABLE,
+                    BiometricConstants.ERROR_NO_BIOMETRICS, BiometricConstants.ERROR_NO_DEVICE_CREDENTIAL -> {
+                        twig("Warning: bypassing authentication because $errString [$errorCode]")
+                        block()
+                    }
+                    else -> {
+                        twig("Warning: failed authentication because $errString [$errorCode]")
+                    }
+                }
+            }
+        }
+
+        BiometricPrompt(this, ContextCompat.getMainExecutor(this), callback).apply {
+            authenticate(
+                BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Authenticate to Proceed")
+                    .setConfirmationRequired(false)
+                    .setDescription(description)
+                    .setDeviceCredentialAllowed(true)
+                    .build()
+            )
+        }
+    }
+
     fun playSound(fileName: String) {
         mediaPlayer.apply {
             if (isPlaying) stop()
@@ -240,6 +285,18 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 )
             )
             showMessage("Address copied!", "Sweet")
+        }
+    }
+
+    fun copyDonationAddress(view: View? = null) {
+        lifecycleScope.launch {
+            clipboard.setPrimaryClip(
+                ClipData.newPlainText(
+                    "Z-Address",
+                    getString(R.string.nighthawk_address)
+                )
+            )
+            showMessage("Donation Address copied!", "Sweet")
         }
     }
 
