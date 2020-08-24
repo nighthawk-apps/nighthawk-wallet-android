@@ -2,6 +2,7 @@ import com.nighthawkapps.wallet.android.Deps
 
 buildscript {
     repositories {
+        mavenLocal()
         google()
         jcenter()
     }

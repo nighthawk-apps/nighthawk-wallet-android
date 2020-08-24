@@ -11,7 +11,7 @@ import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.validate.AddressType
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
-import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX
+import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
@@ -59,23 +59,21 @@ class SendViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun createMemoToSend() =
-        if (includeFromAddress) "$memo\n$INCLUDE_MEMO_PREFIX\n$fromAddress" else memo
+    fun createMemoToSend() = if (includeFromAddress) "$memo\n$INCLUDE_MEMO_PREFIX_STANDARD\n$fromAddress" else memo
 
     suspend fun validateAddress(address: String): AddressType =
         synchronizer.validateAddress(address)
 
     fun validate(maxZatoshi: Long?) = flow<String?> {
-
         when {
             synchronizer.validateAddress(toAddress).isNotValid -> {
                 emit("Please enter a valid address.")
             }
             zatoshiAmount < 1 -> {
-                emit("Please enter at least 1 Zatoshi.")
+                emit("Please go back and enter at least 1 Zatoshi.")
             }
             maxZatoshi != null && zatoshiAmount > maxZatoshi -> {
-                emit("Please enter no more than ${maxZatoshi.convertZatoshiToZecString(8)} ZEC.")
+                emit("Please go back and enter no more than ${maxZatoshi.convertZatoshiToZecString(8)} ZEC.")
             }
             createMemoToSend().length > ZcashSdk.MAX_MEMO_SIZE -> {
                 emit("Memo must be less than ${ZcashSdk.MAX_MEMO_SIZE} in length.")

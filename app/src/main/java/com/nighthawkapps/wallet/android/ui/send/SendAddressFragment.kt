@@ -12,6 +12,7 @@ import cash.z.ecc.android.sdk.block.CompactBlockProcessor.WalletBalance
 import cash.z.ecc.android.sdk.ext.collectWith
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.ext.onFirstWith
+import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.validate.AddressType
 import com.nighthawkapps.wallet.android.R
@@ -30,6 +31,7 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
     ClipboardManager.OnPrimaryClipChangedListener {
 
     private var maxZatoshi: Long? = null
+    private var minZatoshi: Long = 1.toLong()
 
     val sendViewModel: SendViewModel by activityViewModel()
 
@@ -47,6 +49,9 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
         }
         binding.textBannerMessage.setOnClickListener {
             onPaste()
+        }
+        binding.textMemo.setOnClickListener {
+            onMemo()
         }
         binding.textMax.setOnClickListener {
             onMax()
@@ -108,11 +113,13 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
         binding.inputZcashAmount.convertZecToZatoshi()?.let { sendViewModel.zatoshiAmount = it }
         sendViewModel.validate(maxZatoshi).onFirstWith(resumedScope) {
             if (it == null) {
-                mainActivity?.safeNavigate(R.id.action_nav_send_address_to_send_memo)
+                mainActivity?.authenticate("Please confirm that you want to send ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC to\n${sendViewModel.toAddress.toAbbreviatedAddress()}") {
+                    mainActivity?.safeNavigate(R.id.action_nav_send_address_to_send_memo)
+                }
             } else {
                 resumedScope.launch {
                     binding.textAddressError.text = it
-                    delay(1500L)
+                    delay(2000L)
                     binding.textAddressError.text = ""
                 }
             }
@@ -123,6 +130,18 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
         if (maxZatoshi != null) {
             binding.inputZcashAmount.apply {
                 setText(maxZatoshi.convertZatoshiToZecString(8))
+                postDelayed({
+                    requestFocus()
+                    setSelection(text?.length ?: 0)
+                }, 10L)
+            }
+        }
+    }
+
+    private fun onMemo() {
+        if (maxZatoshi != null) {
+            binding.inputZcashAmount.apply {
+                setText(minZatoshi.convertZatoshiToZecString(8))
                 postDelayed({
                     requestFocus()
                     setSelection(text?.length ?: 0)

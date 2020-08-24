@@ -10,10 +10,9 @@ import com.nighthawkapps.wallet.android.databinding.FragmentSendMemoBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.goneIf
-import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.onEditorActionDone
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX
+import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
 
 class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
 
@@ -34,11 +33,6 @@ class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
             onClearMemo()
         }
 
-        R.id.action_nav_send_memo_to_nav_send_address.let {
-            binding.backButtonHitArea.onClickNavTo(it)
-            onBackPressNavTo(it)
-        }
-
         binding.checkIncludeAddress.setOnCheckedChangeListener { _, _ ->
             onIncludeMemo(binding.checkIncludeAddress.isChecked)
         }
@@ -53,7 +47,7 @@ class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
         }
 
         sendViewModel.afterInitFromAddress {
-            binding.textIncludedAddress.text = "$INCLUDE_MEMO_PREFIX ${sendViewModel.fromAddress}"
+            binding.textIncludedAddress.text = "$INCLUDE_MEMO_PREFIX_STANDARD ${sendViewModel.fromAddress}"
         }
 
         binding.textIncludedAddress.gone()
@@ -74,7 +68,7 @@ class SendMemoFragment : BaseFragment<FragmentSendMemoBinding>() {
                 binding.inputMemo.setText(sendViewModel.memo)
                 binding.checkIncludeAddress.isChecked = sendViewModel.includeFromAddress
                 binding.buttonNext.text = "ADD MEMO"
-                binding.buttonSkip.text = "OMIT MEMO"
+                binding.buttonSkip.text = "SKIP MEMO"
             } else {
                 binding.buttonNext.text = "GO BACK"
                 binding.buttonSkip.visibility = GONE

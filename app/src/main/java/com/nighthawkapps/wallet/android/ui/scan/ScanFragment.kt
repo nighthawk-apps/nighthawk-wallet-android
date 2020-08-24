@@ -123,7 +123,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         resumedScope.launch {
             if (viewModel.isNotValid(qrContent)) {
                 // TODO: use the "NETWORK" constant that will be available in the next SDK build
-                val network = ZcashSdk.DEFAULT_DB_NAME_PREFIX.split("_")[1]
+                val network = ZcashSdk.NETWORK
                 binding.textScanError.text = "Invalid Zcash $network address:\n$qrContent"
                 image.close()
             } else {

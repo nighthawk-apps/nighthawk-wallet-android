@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 1.0.6 *(2020-08-24)*
+------------------------------------
+- Update to latest librustzcash SDK lib & android dependencies
+- Fix SideShift affiliate url
+- Fix Donate to Nighthawk copy address
+- Add Biometric support
+- Add shortcut for auto-fill amount for memo
+- Improve compatibility with memo reply-to formats
+- Support precise birthday heights for faster restore
+- Switch to Reply-To standard for memos
+
 Version 1.0.5 *(2020-08-01)*
 ------------------------------------
 - Revamp Wallet UI, add Zash info link

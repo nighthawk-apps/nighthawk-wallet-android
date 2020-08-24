@@ -219,6 +219,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="12dp"
+        android:layout_marginTop="16dp"
         android:textColor="@color/text_light"
         app:layout_constraintEnd_toEndOf="@id/button_next"
         app:layout_constraintStart_toStartOf="@id/button_next"

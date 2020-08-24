@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
+import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.databinding.FragmentBackupBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -20,6 +22,7 @@ import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetu
 import com.nighthawkapps.wallet.android.ui.util.AddressPartNumberSpan
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -77,9 +80,20 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
     override fun onResume() {
         super.onResume()
         resumedScope.launch {
-            binding.textBirtdate.text =
-                "Birthday Height: %,d".format(walletSetup.loadBirthdayHeight())
+            binding.textBirtdate.text = "Birthday Height: %,d".format(calculateBirthday())
         }
+    }
+
+    private suspend fun calculateBirthday(): Int {
+        var storedBirthday: Int = 0
+        var oldestTransactionHeight: Int = 0
+        try {
+            storedBirthday = walletSetup.loadBirthdayHeight()
+            oldestTransactionHeight = mainActivity?.synchronizerComponent?.synchronizer()?.receivedTransactions?.first()?.last()?.minedHeight ?: 0
+        } catch (t: Throwable) {
+            twig("failed to calculate birthday due to: $t")
+        }
+        return maxOf(storedBirthday, oldestTransactionHeight, ZcashSdk.SAPLING_ACTIVATION_HEIGHT)
     }
 
     private fun onEnterWallet(showMessage: Boolean = !this.hasBackUp) {

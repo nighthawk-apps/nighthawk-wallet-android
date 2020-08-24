@@ -65,6 +65,15 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+    <style name="Nighthawk.TextAppearance.Body1" parent="TextAppearance.AppCompat.Body2">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">0.0316</item>
+    </style>
+
     <!-- Shape Appearances -->
 
     <!-- General: buttons -->
@@ -91,4 +100,9 @@
             @style/Nighthawk.ShapeAppearance.TextInputLayout
         </item>
     </style>
+
+    <style name="Nighthawk.Overlay.TextInputLayout.HelperTextAppearance" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
