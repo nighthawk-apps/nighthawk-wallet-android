@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.0.6 *(2020-08-29)*
+Version 1.0.7 *(2020-08-29)*
 ------------------------------------
 - Switch default lightwalletd server to Nighthawk's own no-Logs, non-US based server
 - Theming & copy updates
