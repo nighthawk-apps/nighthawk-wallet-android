@@ -45,7 +45,6 @@ class MagicSnakeLoader(
         }
 
     private fun startMaybe() {
-
         if (!isSynced && !isStarted) lottie.postDelayed({
             // after some delay, if we're still not synced then we better start animating (unless we already are)!
             if (!isSynced && isPaused) {
@@ -91,7 +90,6 @@ class MagicSnakeLoader(
 
     private fun onScanUpdated() {
         if (isSynced) {
-//            playToCompletion()
             return
         }
 

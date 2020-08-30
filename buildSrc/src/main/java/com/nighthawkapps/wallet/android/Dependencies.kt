@@ -12,15 +12,15 @@ object Deps {
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.1.0"
-        const val APPCOMPAT = "androidx.appcompat:appcompat:1.1.0"
-        const val BIOMETRICS = "androidx.biometric:biometric:1.1.0-alpha01"
+        const val APPCOMPAT = "androidx.appcompat:appcompat:1.2.0"
+        const val BIOMETRICS = "androidx.biometric:biometric:1.1.0-alpha02"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val CORE_KTX = "androidx.core:core-ktx:1.3.1"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.2.5"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
         const val PAGING = "androidx.paging:paging-runtime-ktx:2.1.2"
-        const val SECURITY = "androidx.security:security-crypto:1.0.0-rc03"
+        const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha02"
 
         object CameraX : Version("1.0.0-beta06") {
             val CAMERA2 = "androidx.camera:camera-camera2:1.0.0-beta08"
@@ -98,7 +98,7 @@ object Deps {
     }
 
     object Misc {
-        const val LOTTIE = "com.airbnb.android:lottie:3.4.1"
+        const val LOTTIE = "com.airbnb.android:lottie:3.4.2"
         const val CHIPS = "com.github.gmale:chips-input-layout:2.3.1"
 
         object Plugins {

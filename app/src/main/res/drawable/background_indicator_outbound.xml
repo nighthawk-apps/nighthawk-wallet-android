@@ -3,6 +3,6 @@
     <corners android:radius="4dp" />
     <gradient
         android:angle="270"
-        android:endColor="@color/colorPrimaryMedium"
-        android:startColor="@color/colorPrimary" />
+        android:endColor="@color/zcashRed"
+        android:startColor="@color/zcashOrange" />
 </shape>

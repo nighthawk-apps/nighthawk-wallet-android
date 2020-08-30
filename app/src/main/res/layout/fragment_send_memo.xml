@@ -200,6 +200,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_next"
+        style="@style/Nighthawk.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -218,8 +219,8 @@
         style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="12dp"
         android:layout_marginTop="16dp"
+        android:padding="12dp"
         android:textColor="@color/text_light"
         app:layout_constraintEnd_toEndOf="@id/button_next"
         app:layout_constraintStart_toStartOf="@id/button_next"

@@ -71,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,29 +90,43 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_update"
+        style="@style/Nighthawk.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="@string/update"
         app:layout_constraintEnd_toStartOf="@+id/button_reset"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lightwalletd_port" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_reset"
         style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:text="@string/reset_to_default_host"
+        android:textColor="@color/text_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_update"
         app:layout_constraintTop_toBottomOf="@+id/lightwalletd_port" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_update"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/zcashWhite_40"
+        app:layout_constraintTop_toBottomOf="@+id/button_reset"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

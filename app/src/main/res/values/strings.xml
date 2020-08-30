@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Nighthawk</string>
     <string name="app_name_full">Nighthawk Wallet</string>
-    <string name="app_version">1.0.6</string>
+    <string name="app_version">1.0.7</string>
 
     <string name="receive_address_title">Your Shielded Address</string>
     <string name="nighthawk_address">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
@@ -22,7 +22,7 @@
     <string name="scan_recipient_address">Scan Recipient Address</string>
     <string name="_12">12</string>
     <string name="send_address">send address</string>
-    <string name="zcash_keywords">empowering\neveryone\nwith\neconomic\nfreedom</string>
+    <string name="zcash_keywords">privacy is priceless</string>
     <string name="store_these_backup_words_securely">Store these backup words securely.</string>
     <string name="verify">Verify</string>
     <string name="confirm_send">Confirm Send</string>
@@ -71,7 +71,7 @@
     <string name="unknown">Unknown</string>
     <string name="tap_to_view">Tap to View</string>
     <string name="fund_wallet_sideshift_title">Fund wallet with SideShift.ai?</string>
-    <string name="fund_wallet_sideshift_description">Your Z-Address has been copied to the clipboard.\n\nSelect \"Open Browser\" below and paste your address into the SideShift page and select Shielded Zcash as the receiving address.</string>
+    <string name="fund_wallet_sideshift_description">Your Z-Address has been copied to the clipboard.\n\nChoose \"Open Browser\" below, select \'Zcash (Shielded)\' as the receiving coin on the SideShift page, and then paste your Z-address.</string>
     <string name="open_browser">Open Browser</string>
     <string name="cancel">Cancel</string>
     <string name="sideshift_affiliate_link">https://sideshift.ai/a/EqcQp4iUM</string>

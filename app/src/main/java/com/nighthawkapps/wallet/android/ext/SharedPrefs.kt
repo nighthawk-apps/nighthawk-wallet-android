@@ -5,8 +5,8 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 
-val SERVER_HOST: String = "SERVER_HOST"
-val SERVER_PORT: String = "SERVER_PORT"
+const val SERVER_HOST: String = "SERVER_HOST"
+const val SERVER_PORT: String = "SERVER_PORT"
 
 var masterKeyAlias: String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 

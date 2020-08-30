@@ -21,7 +21,6 @@
         app:layout_constraintVertical_bias="0.58"
         app:layout_constraintWidth_percent="0.7475728155" />
 
-    <!-- Back Button -->
     <ImageView
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
@@ -81,15 +80,16 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_sending"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/button_next"
+        android:layout_width="372dp"
+        android:layout_height="251dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintTop_toBottomOf="@id/radio_include_address"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.075"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHeight_percent="0.42"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_confirmation"
-        app:layout_constraintVertical_bias="0.564"
         app:layout_constraintWidth_percent="0.3"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
@@ -138,6 +138,7 @@
         app:strokeColor="@color/text_dark" />
 
     <ImageView
+        android:id="@+id/mini_nighthawk"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:layout_marginBottom="16dp"

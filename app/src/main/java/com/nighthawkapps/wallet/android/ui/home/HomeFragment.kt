@@ -224,7 +224,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         val sendText = when {
             uiModel.status == DISCONNECTED -> "Reconnecting . . ."
-            uiModel.isSynced -> if (uiModel.hasFunds) "SEND ZCASH" else "NO FUNDS AVAILABLE"
+            uiModel.isSynced -> if (uiModel.hasFunds) "Send Zcash" else "NO FUNDS AVAILABLE"
             uiModel.status == STOPPED -> "IDLE"
             uiModel.isDownloading -> "Downloading . . . ${snake.downloadProgress}%"
             uiModel.isValidating -> "Validating . . ."
@@ -235,8 +235,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.buttonSendAmount.text = sendText
         twig("Send button set to: $sendText")
 
-        val resId =
-            if (uiModel.isSynced) R.color.selector_button_text_dark else R.color.selector_button_text_light
+        val resId = if (uiModel.isSynced) R.color.selector_button_text_dark else R.color.selector_button_text_light
         binding.buttonSendAmount.setTextColor(resources.getColorStateList(resId))
         binding.lottieButtonLoading.invisibleIf(uiModel.isDisconnected)
     }
