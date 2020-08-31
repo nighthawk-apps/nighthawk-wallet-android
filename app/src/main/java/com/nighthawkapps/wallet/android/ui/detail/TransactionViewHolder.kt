@@ -135,8 +135,8 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
         val detailsMessage: String = "Zatoshi amount: ${transaction.value}\n\n" +
                 "Mined at height: ${transaction.minedHeight}\n\n" +
                 "Transaction id: $txId" +
-                if (transaction.toAddress != null) "\n\nTo: ${transaction.toAddress}" else "" +
-                if (transaction.memo != null) "\n\nMemo: \n${String(transaction.memo!!, Charset.forName("UTF-8"))}" else ""
+                "${if (transaction.toAddress != null) "\n\nTo: ${transaction.toAddress}" else ""}" +
+                "${if (transaction.memo != null) "\n\nMemo: \n${String(transaction.memo!!, Charset.forName("UTF-8"))}" else ""}"
 
         MaterialAlertDialogBuilder(itemView.context)
             .setMessage(detailsMessage)
