@@ -74,7 +74,7 @@
             android:maxLength="255"
             android:singleLine="true"
             android:textColor="@color/text_light"
-            android:textColorHint="@color/text_light_dimmed" />
+            android:textColorHint="@color/zcashWhite_87" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,7 +103,7 @@
             android:maxLength="20"
             android:singleLine="true"
             android:textColor="@color/text_light"
-            android:textColorHint="@color/text_light_dimmed" />
+            android:textColorHint="@color/zcashWhite_87" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -171,6 +171,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_next"
+        style="@style/Nighthawk.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

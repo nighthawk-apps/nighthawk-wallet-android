@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
     private val indicator = itemView.findViewById<View>(R.id.indicator)
     private val amountText = itemView.findViewById<TextView>(R.id.text_transaction_amount)
     private val topText = itemView.findViewById<TextView>(R.id.text_transaction_top)
@@ -29,7 +30,6 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
 
     fun bindTo(transaction: T?) {
         (itemView.context as MainActivity).lifecycleScope.launch {
-            // update view
             var lineOne: String = ""
             var lineTwo: String = ""
             var amountZec: String = ""
@@ -81,8 +81,10 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                     }
                 }
                 // sanitize amount
-                if (value < ZcashSdk.MINERS_FEE_ZATOSHI) amountDisplay = "< 0.001"
-                else if (amountZec.length > 10) { // 10 allows 3 digits to the left and 6 to the right of the decimal
+                if (value < ZcashSdk.MINERS_FEE_ZATOSHI) {
+                    amountDisplay = "Tap to View"
+                    amountColor = R.color.zcashYellow
+                } else if (amountZec.length > 10) { // 10 allows 3 digits to the left and 6 to the right of the decimal
                     amountDisplay = itemView.context.getString(R.string.tap_to_view)
                 }
             }
@@ -101,7 +103,11 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
     private suspend fun getSender(transaction: ConfirmedTransaction): String {
         val memo = transaction.memo.toUtf8Memo()
         val who = extractValidAddress(memo)?.toAbbreviatedAddress() ?: "Unknown"
-        return "Received from $who"
+        return if (who == "Unknown") {
+            "Received"
+        } else {
+            "Received from $who"
+        }
     }
 
     private fun extractAddress(memo: String?) =

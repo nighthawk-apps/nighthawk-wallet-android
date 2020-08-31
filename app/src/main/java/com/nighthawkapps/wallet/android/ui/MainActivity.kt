@@ -99,17 +99,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, false)
     }
 
-    override fun onResume() {
-        super.onResume()
-        // keep track of app launch metrics
-        // (how long does it take the app to open when it is not already in the foreground)
-        NighthawkWalletApp.instance.let { app ->
-            if (!app.creationMeasured) {
-                app.creationMeasured = true
-            }
-        }
-    }
-
     /**
      * This method is only called if the provider is successfully updated
      * (or is already up-to-date).

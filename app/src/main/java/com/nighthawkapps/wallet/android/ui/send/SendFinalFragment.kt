@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isCreating
@@ -40,6 +41,7 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
         binding.backButtonHitArea.setOnClickListener {
             onExit()
         }
+        binding.radioIncludeAddress.visibility = GONE
         binding.textConfirmation.text =
             "Sending ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC to\n${sendViewModel.toAddress.toAbbreviatedAddress()}"
         mainActivity?.preventBackPress(this)

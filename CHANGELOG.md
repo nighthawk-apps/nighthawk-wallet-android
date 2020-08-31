@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.0.7 *(2020-08-29)*
+------------------------------------
+- Switch default lightwalletd server to Nighthawk's own no-Logs, non-US based server
+- Theming & copy updates
+- Update dependencies
+- Fix MaterialButton styling
+
 Version 1.0.6 *(2020-08-24)*
 ------------------------------------
 - Update to latest librustzcash SDK lib & android dependencies

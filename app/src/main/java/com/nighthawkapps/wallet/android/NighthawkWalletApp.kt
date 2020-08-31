@@ -8,13 +8,7 @@ import com.nighthawkapps.wallet.android.di.component.DaggerAppComponent
 
 class NighthawkWalletApp : Application(), CameraXConfig.Provider {
 
-    var creationTime: Long = 0
-        private set
-
-    var creationMeasured: Boolean = false
-
     override fun onCreate() {
-        creationTime = System.currentTimeMillis()
         instance = this
         super.onCreate()
 

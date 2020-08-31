@@ -31,7 +31,7 @@
     </style>
 
     <style name="Nighthawk.Button" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="backgroundTint">@color/zcashYellow</item>
         <item name="android:textColor">@color/text_dark</item>
     </style>
 

@@ -174,7 +174,7 @@ class SendAddressFragment : BaseFragment<FragmentSendAddressBinding>(),
     private fun onBalanceUpdated(balance: WalletBalance) {
         binding.textLayoutAmount.helperText =
             "You have ${balance.availableZatoshi.coerceAtLeast(0L)
-                .convertZatoshiToZecString(8)} available"
+                .convertZatoshiToZecString(8)} ZEC available"
         maxZatoshi = (balance.availableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI).coerceAtLeast(0L)
     }
 

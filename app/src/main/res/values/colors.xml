@@ -37,14 +37,13 @@
     <color name="zcashBlack_dark">#171717</color>
     <color name="zcashBlack_0">#00000000</color>
 
-    <color name="zcashGreen">#66BB6A</color>
-    <color name="zcashRed">#BB666A</color>
-    <color name="zcashBlue">#26DAB6</color>
+    <color name="zcashGreen">#00FF0C</color>
+    <color name="zcashRed">#FF000B</color>
+    <color name="zcashBlue">#00FFCC</color>
 
     <!-- yellows -->
-    <color name="zcashYellow_light">#FFCF4A</color>
     <color name="zcashYellow">#FFB900</color>
-    <color name="zcashYellow_dark">#FFAA17</color>
+    <color name="zcashOrange">#FF9800</color>
 
     <!--                  -->
     <!-- named colors     -->
@@ -61,7 +60,7 @@
 
     <!-- text -->
     <color name="text_light">#FFFFFF</color>
-    <color name="text_light_dimmed">@color/zcashWhite_50</color>
+    <color name="text_light_dimmed">@color/zcashWhite_87</color>
     <color name="text_dark">@color/zcashBlack_87</color>
     <color name="text_dark_dimmed">@color/zcashBlack_54</color>
     <color name="text_shadow">@color/zcashBlack_40</color>

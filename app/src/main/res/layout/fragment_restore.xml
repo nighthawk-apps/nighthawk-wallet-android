@@ -98,6 +98,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_done"
+        style="@style/Nighthawk.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -138,6 +139,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_success"
+        style="@style/Nighthawk.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

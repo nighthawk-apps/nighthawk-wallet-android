@@ -107,7 +107,7 @@
         android:layout_marginStart="4dp"
         android:text="@string/available"
         android:textAppearance="@style/Nighthawk.TextAppearance.Body1"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/zcashYellow"
         app:layout_constraintBaseline_toBaselineOf="@id/text_balance_available"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/text_balance_available" />

@@ -16,10 +16,9 @@
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="0.05"
         android:gravity="center"
         android:text="@string/zcash_keywords"
-        android:textColor="@color/zcashWhite_50"
+        android:textColor="@color/zcashWhite_12"
         android:textSize="56sp"
         app:layout_constraintBottom_toBottomOf="@id/icon_profile"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +67,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_positive"
+        style="@style/Nighthawk.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
