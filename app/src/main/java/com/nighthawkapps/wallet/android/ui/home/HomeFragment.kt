@@ -25,6 +25,7 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
+import com.nighthawkapps.wallet.android.ui.MainActivity
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.detail.TransactionAdapter
 import com.nighthawkapps.wallet.android.ui.detail.TransactionsFooter
@@ -74,25 +75,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         snake = MagicSnakeLoader(binding.lottieButtonLoading)
-        binding.hitAreaProfile.onClickNavTo(R.id.action_nav_home_to_nav_profile)
         binding.buttonSendAmount.setOnClickListener { onSend() }
         binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
         binding.textMyAddress.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.textSideShift.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.hitAreaInfo.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.visit_zcash_link_title))
-                .setMessage(getString(R.string.visit_zcash_link_description))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
-                    mainActivity?.openWebURL(getString(R.string.zcash_learn_more_link))
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-        }
         binding.textSideShift.setOnClickListener {
             mainActivity?.copyAddress()
             MaterialAlertDialogBuilder(requireContext())
@@ -132,6 +118,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             twig("exception while processing uiModels $e")
             throw e
         }.launchIn(resumedScope)
+
+        (activity as MainActivity).showBottomNav(true)
 
         // TODO: see if there is a better way to trigger a refresh of the uiModel on resume
         //       the latest one should just be in the viewmodel and we should just "resubscribe"

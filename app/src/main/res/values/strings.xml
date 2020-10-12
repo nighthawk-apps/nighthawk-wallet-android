@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Nighthawk</string>
     <string name="app_name_full">Nighthawk Wallet</string>
-    <string name="app_version">1.0.7</string>
+    <string name="app_version">1.0.8</string>
 
     <string name="receive_address_title">Your Shielded Address</string>
-    <string name="nighthawk_address">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
+
+    <string name="navigation_wallet">Wallet</string>
+    <string name="navigation_discover">Discover</string>
+    <string name="navigation_exchange">Exchange</string>
+    <string name="navigation_profile">Profile</string>
 
     <!-- Send Flow -->
     <string name="send_hint_input_zcash_address">Enter a shielded Zcash address</string>

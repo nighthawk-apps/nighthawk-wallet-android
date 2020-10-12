@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.ZcashSdk
@@ -41,6 +42,11 @@ import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
 import com.nighthawkapps.wallet.android.di.component.SynchronizerSubcomponent
+import com.nighthawkapps.wallet.android.ui.discover.DiscoverFragment
+import com.nighthawkapps.wallet.android.ui.exchange.ExchangeFragment
+import com.nighthawkapps.wallet.android.ui.home.HomeFragment
+import com.nighthawkapps.wallet.android.ui.profile.ProfileFragment
+import kotlinx.android.synthetic.main.main_activity.bottom_nav
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -125,6 +131,13 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val navController = findNavController(R.id.nav_host_fragment)
+        NavigationUI.setupWithNavController(bottom_nav, navController)
+    }
+
     override fun onPostResume() {
         super.onPostResume()
         if (retryProviderInstall) {
@@ -151,19 +164,34 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     }
 
     private fun initNavigation() {
-        navController = findNavController(R.id.nav_host_fragment)
-        navController!!.addOnDestinationChangedListener { _, _, _ ->
+        findNavController(R.id.nav_host_fragment).addOnDestinationChangedListener { controller, destination, arguments ->
             // hide the keyboard anytime we change destinations
             getSystemService<InputMethodManager>()?.hideSoftInputFromWindow(
                 this@MainActivity.window.decorView.rootView.windowToken,
                 InputMethodManager.HIDE_NOT_ALWAYS
             )
+            if (HomeFragment::class.simpleName.equals((destination).javaClass.simpleName) ||
+                DiscoverFragment::class.simpleName.equals((destination).javaClass.simpleName) ||
+                ExchangeFragment::class.simpleName.equals((destination).javaClass.simpleName) ||
+                ProfileFragment::class.simpleName.equals((destination).javaClass.simpleName)) {
+                showBottomNav(true)
+            } else {
+                showBottomNav(false)
+            }
         }
 
         for (listener in navInitListeners) {
             listener()
         }
         navInitListeners.clear()
+    }
+
+    fun showBottomNav(show: Boolean) {
+        if (show) {
+            bottom_nav.visibility = View.VISIBLE
+        } else {
+            bottom_nav.visibility = View.GONE
+        }
     }
 
     fun safeNavigate(@IdRes destination: Int) {
@@ -274,18 +302,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 )
             )
             showMessage("Address copied!", "Sweet")
-        }
-    }
-
-    fun copyDonationAddress(view: View? = null) {
-        lifecycleScope.launch {
-            clipboard.setPrimaryClip(
-                ClipData.newPlainText(
-                    "Z-Address",
-                    getString(R.string.nighthawk_address)
-                )
-            )
-            showMessage("Donation Address copied!", "Sweet")
         }
     }
 

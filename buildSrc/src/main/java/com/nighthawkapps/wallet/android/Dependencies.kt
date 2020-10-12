@@ -3,18 +3,20 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.4.0"
-
+    const val kotlinVersion = "1.4.10"
     const val compileSdkVersion = 30
     const val buildToolsVersion = "30.0.0"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
+    const val versionName = "1.0.8"
+    const val versionCode = 1_00_08_800  // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.1.0"
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.2.0"
         const val BIOMETRICS = "androidx.biometric:biometric:1.1.0-alpha02"
-        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:1.1.3"
+        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.0.1"
         const val CORE_KTX = "androidx.core:core-ktx:1.3.1"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.2.5"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"

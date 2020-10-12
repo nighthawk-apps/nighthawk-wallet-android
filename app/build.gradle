@@ -8,20 +8,17 @@ apply plugin: 'com.google.gms.google-services'
 
 archivesBaseName = 'nighthawk-android-wallet'
 group = 'com.nighthawkapps.wallet.android'
-version = '1.0.7'
-
 android {
     ndkVersion "21.3.6528147"
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
     viewBinding.enabled = true
     defaultConfig {
-        applicationId 'com.nighthawkapps.wallet.android'
+        applicationId Deps.packageName
         minSdkVersion Deps.minSdkVersion
         targetSdkVersion Deps.targetSdkVersion
-        versionCode = 1_00_07_800
-        // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX) dev(9XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
-        versionName = "$version"
+        versionCode = Deps.versionCode
+        versionName = Deps.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testInstrumentationRunnerArguments clearPackageData: 'true'
         multiDexEnabled true

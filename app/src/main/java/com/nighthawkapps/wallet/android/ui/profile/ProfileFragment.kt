@@ -55,7 +55,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         super.onResume()
         resumedScope.launch {
             binding.textAddress.text = viewModel.getAddress().toAbbreviatedAddress(12, 12)
-            binding.textNighthawkAddress.text = getString(R.string.nighthawk_address).toAbbreviatedAddress(12, 12)
         }
     }
 }

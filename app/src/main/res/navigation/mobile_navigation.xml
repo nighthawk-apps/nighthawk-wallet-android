@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.nighthawkapps.wallet.android.ui.home.HomeFragment"
+        android:label="@string/navigation_wallet"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_receive"
@@ -60,8 +61,19 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
+        android:id="@+id/nav_discover"
+        android:name="com.nighthawkapps.wallet.android.ui.discover.DiscoverFragment"
+        android:label="@string/navigation_discover"
+        tools:layout="@layout/fragment_discover" />
+    <fragment
+        android:id="@+id/nav_exchange"
+        android:name="com.nighthawkapps.wallet.android.ui.exchange.ExchangeFragment"
+        android:label="@string/navigation_exchange"
+        tools:layout="@layout/fragment_exchange" />
+    <fragment
         android:id="@+id/nav_profile"
         android:name="com.nighthawkapps.wallet.android.ui.profile.ProfileFragment"
+        android:label="@string/navigation_profile"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_nav_profile_to_nav_backup"
