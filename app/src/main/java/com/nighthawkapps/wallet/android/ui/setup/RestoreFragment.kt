@@ -40,10 +40,9 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         super.onViewCreated(view, savedInstanceState)
 
         seedWordRecycler = binding.chipsInput.findViewById<RecyclerView>(R.id.chips_recycler)
-        seedWordAdapter =
-            SeedWordAdapter(seedWordRecycler.adapter as ChipsAdapter).onDataSetChanged {
-                onChipsModified()
-            }.also { onChipsModified() }
+        seedWordAdapter = SeedWordAdapter(seedWordRecycler.adapter as ChipsAdapter).onDataSetChanged {
+            onChipsModified()
+        }.also { onChipsModified() }
         seedWordRecycler.adapter = seedWordAdapter
 
         binding.chipsInput.apply {
@@ -165,8 +164,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     private fun touchScreenForUser() {
         seedWordAdapter?.editText?.apply {
             postDelayed({
-                seedWordAdapter?.editText?.inputType =
-                    InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                seedWordAdapter?.editText?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                 dispatchTouchEvent(motionEvent(ACTION_DOWN))
                 dispatchTouchEvent(motionEvent(ACTION_UP))
             }, 100L)

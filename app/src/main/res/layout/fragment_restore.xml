@@ -89,7 +89,7 @@
             android:layout_height="match_parent"
             android:imeOptions="actionDone"
             android:inputType="number"
-            android:maxLength="6"
+            android:maxLength="8"
             android:singleLine="true"
             android:textColor="@color/text_light"
             android:textColorHint="@color/text_light_dimmed" />

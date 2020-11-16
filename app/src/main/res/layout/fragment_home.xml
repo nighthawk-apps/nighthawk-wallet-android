@@ -87,6 +87,19 @@
         app:layout_constraintGuide_percent="1.0" />
 
     <TextView
+        android:id="@+id/text_balance_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/zboto"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
+        android:textAppearance="@style/Nighthawk.TextAppearance.Zboto"
+        android:textColor="@color/text_light"
+        app:layout_constraintBottom_toTopOf="@id/text_balance_description"
+        app:layout_constraintEnd_toStartOf="@id/text_balance_available"
+        app:layout_constraintTop_toTopOf="@id/icon_profile" />
+
+    <TextView
         android:id="@+id/text_balance_available"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -191,6 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
             android:elevation="6dp"
             android:padding="12dp"
             android:text="@string/side_shift"

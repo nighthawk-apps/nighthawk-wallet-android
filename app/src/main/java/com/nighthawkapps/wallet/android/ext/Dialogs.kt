@@ -37,12 +37,7 @@ fun Context.showUninitializedError(error: Throwable? = null, onDismiss: () -> Un
             onDismiss()
             if (error != null) throw error
         }
-        .setNegativeButton("Clear Data") { dialog, _ ->
-            showClearDataConfirmation(onDismiss, onCancel = {
-                // do not let the user back into the app because we cannot recover from this case
-                showUninitializedError(error, onDismiss)
-            })
-        }
+        .setNegativeButton("Clear Data") { dialog, _ -> showClearDataConfirmation(onDismiss, onCancel = { showUninitializedError(error, onDismiss) }) } // do not let the user back into the app because we cannot recover from this case
         .show()
 }
 

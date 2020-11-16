@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     @Inject
     lateinit var clipboard: ClipboardManager
 
+    val isInitialized get() = ::synchronizerComponent.isInitialized
+
     private var retryProviderInstall: Boolean = false
     private val mediaPlayer: MediaPlayer = MediaPlayer()
     private var snackbar: Snackbar? = null
@@ -315,11 +317,14 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     }
 
     fun onFragmentBackPressed(fragment: Fragment, block: () -> Unit) {
-        onBackPressedDispatcher.addCallback(fragment, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                block()
+        onBackPressedDispatcher.addCallback(
+            fragment,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    block()
+                }
             }
-        })
+        )
     }
 
     private fun showMessage(message: String, action: String) {
@@ -498,6 +503,8 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 throttles.remove(key)
                 if (pendingWork !== noWork) throttle(key, delay, pendingWork)
             }
-        }, delay)
+        },
+            delay
+        )
     }
 }

@@ -329,20 +329,6 @@
         app:layout_constraintTop_toBottomOf="@id/receive_address_parts"
         tools:text="Birthday Height: 510,123" />
 
-    <TextView
-        style="@style/TextAppearance.MaterialComponents.Body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0.03"
-        android:gravity="center"
-        android:text="@string/zcash_keywords"
-        android:textColor="@color/zcashWhite_50"
-        android:textSize="56sp"
-        app:layout_constraintBottom_toBottomOf="@id/icon_profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/icon_profile" />
-
     <ImageView
         android:id="@+id/icon_profile"
         android:layout_width="0dp"

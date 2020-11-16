@@ -29,7 +29,9 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
     private val addressRegex = """zs\d\w{65,}""".toRegex()
 
     fun bindTo(transaction: T?) {
-        (itemView.context as MainActivity).lifecycleScope.launch {
+        val mainActivity = itemView.context as MainActivity
+        mainActivity.lifecycleScope.launch {
+            // update view
             var lineOne: String = ""
             var lineTwo: String = ""
             var amountZec: String = ""
@@ -56,7 +58,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                         lineOne = "Sent to ${toAddress?.toAbbreviatedAddress()}"
                         lineTwo = if (isMined) "Sent $timestamp" else "Pending confirmation"
                         // TODO: this logic works but is sloppy. Find a more robust solution to displaying information about expiration (such as expires in 1 block, etc). Then if it is way beyond expired, remove it entirely. Perhaps give the user a button for that (swipe to dismiss?)
-                        if (!isMined && (expiryHeight != null) && (expiryHeight!! < (itemView.context as MainActivity).latestHeight ?: -1)) lineTwo = "Expired"
+                        if (!isMined && (expiryHeight != null) && (expiryHeight!! < mainActivity.latestHeight ?: -1)) lineTwo = "Expired"
                         amountDisplay = "- $amountZec"
                         if (isMined) {
                             amountColor = R.color.zcashRed

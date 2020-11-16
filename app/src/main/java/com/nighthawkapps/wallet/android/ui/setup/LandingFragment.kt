@@ -39,7 +39,6 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
             }
         }
     }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -81,6 +80,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
 
     private fun onNewWallet() {
         lifecycleScope.launch {
+            val ogText = binding.buttonPositive.text
             binding.buttonPositive.text = "creating"
             binding.buttonPositive.isEnabled = false
 

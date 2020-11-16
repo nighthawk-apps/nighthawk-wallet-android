@@ -4,8 +4,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.nighthawkapps.wallet.android.di.annotation.ActivityScope
 import com.nighthawkapps.wallet.android.di.module.MainActivityModule
+import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ui.MainActivity
-
 import dagger.BindsInstance
 import dagger.Subcomponent
 import javax.inject.Named
@@ -16,7 +16,7 @@ interface MainActivitySubcomponent {
 
     fun inject(activity: MainActivity)
 
-    @Named("BeforeSynchronizer")
+    @Named(Const.Name.BEFORE_SYNCHRONIZER)
     fun viewModelFactory(): ViewModelProvider.Factory
 
     @Subcomponent.Factory

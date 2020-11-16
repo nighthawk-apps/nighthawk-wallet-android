@@ -65,6 +65,13 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+    <style name="Nighthawk.TextAppearance.Zboto" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">@font/zboto</item>
+        <item name="fontFamily">@font/zboto</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
     <style name="Nighthawk.TextAppearance.Body1" parent="TextAppearance.AppCompat.Body2">
         <item name="fontFamily">sans-serif</item>
         <item name="android:fontFamily">sans-serif</item>

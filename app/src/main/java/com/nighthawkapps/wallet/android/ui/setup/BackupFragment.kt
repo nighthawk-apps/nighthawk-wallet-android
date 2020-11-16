@@ -89,7 +89,9 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
         var oldestTransactionHeight: Int = 0
         try {
             storedBirthday = walletSetup.loadBirthdayHeight()
-            oldestTransactionHeight = mainActivity?.synchronizerComponent?.synchronizer()?.receivedTransactions?.first()?.last()?.minedHeight ?: 0
+            oldestTransactionHeight =
+                mainActivity?.synchronizerComponent?.synchronizer()?.receivedTransactions?.first()
+                    ?.last()?.minedHeight ?: 0
         } catch (t: Throwable) {
             twig("failed to calculate birthday due to: $t")
         }
@@ -108,25 +110,19 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
         val thinSpace = "\u2005" // 0.25 em space
         textViews.forEachIndexed { index, textView ->
             val numLength = "$index".length
-            val word = words?.get(index)
+            val word = words[index]
             // TODO: work with a charsequence here, rather than constructing a String
-            textView.text =
-                SpannableString("${index + 1}$thinSpace${word?.let { String(it) }}").apply {
-                    setSpan(
-                        AddressPartNumberSpan(),
-                        0,
-                        1 + numLength,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
+            textView.text = SpannableString("${index + 1}$thinSpace${String(word)}").apply {
+                setSpan(AddressPartNumberSpan(), 0, 1 + numLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
         }
     }
 
     private suspend fun loadSeedWords(): List<CharArray> = withContext(Dispatchers.IO) {
-            val lockBox = LockBox(NighthawkWalletApp.instance)
-            val mnemonics = Mnemonics()
-            val seedPhrase = lockBox.getCharsUtf8(LockBoxKey.SEED_PHRASE)!!
-            val result = mnemonics.toWordList(seedPhrase)
-            result
+        val lockBox = LockBox(NighthawkWalletApp.instance)
+        val mnemonics = Mnemonics()
+        val seedPhrase = lockBox.getCharsUtf8(LockBoxKey.SEED_PHRASE)!!
+        val result = mnemonics.toWordList(seedPhrase)
+        result
     }
 }
