@@ -28,10 +28,7 @@ class SeedWordAdapter : ChipsAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == CHIP) { // Chips
             // Display the chip information on the chip view
-            (holder as SeedWordHolder).seedChipView.bind(
-                mDataSource.getSelectedChip(position),
-                position
-            )
+            (holder as SeedWordHolder).seedChipView.bind(mDataSource.getSelectedChip(position), position)
         } else {
             val size = mDataSource.selectedChips.size
             mEditText.hint = if (size < 3) {
@@ -83,8 +80,7 @@ class SeedWordAdapter : ChipsAdapter {
         }
     }
 
-    private inner class SeedWordHolder(chipView: SeedWordChipView) :
-        ChipsAdapter.ChipHolder(chipView) {
+    private inner class SeedWordHolder(chipView: SeedWordChipView) : ChipsAdapter.ChipHolder(chipView) {
         val seedChipView = super.chipView as SeedWordChipView
     }
 

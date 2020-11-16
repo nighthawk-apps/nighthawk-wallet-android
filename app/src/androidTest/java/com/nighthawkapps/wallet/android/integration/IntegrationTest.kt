@@ -22,7 +22,7 @@ class IntegrationTest {
     private val mnemonics = Mnemonics()
     private val phrase =
         "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor" +
-                " under absorb spirit hurdle animal original honey owner upper empower describe"
+            " under absorb spirit hurdle animal original honey owner upper empower describe"
 
     @Before
     fun start() {
@@ -35,7 +35,7 @@ class IntegrationTest {
         assertEquals(
             "Generated incorrect BIP-39 seed!",
             "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f" +
-                    "5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe",
+                "5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe",
             seed.toHex()
         )
     }
@@ -74,7 +74,7 @@ class IntegrationTest {
         val maxSeedPhraseLength = 8 * 24 + 23
         assertTrue(
             "LockBox does not support the maximum length seed phrase." +
-                    " Expected: $maxSeedPhraseLength but was: $acceptedSize",
+                " Expected: $maxSeedPhraseLength but was: $acceptedSize",
             acceptedSize > maxSeedPhraseLength
         )
     }

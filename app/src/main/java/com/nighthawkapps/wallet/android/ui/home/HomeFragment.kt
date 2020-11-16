@@ -143,9 +143,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onBalanceUpdated(balance: CompactBlockProcessor.WalletBalance) {
-        binding.textBalanceAvailable.text =
-            (getString(R.string.zec) + balance.availableZatoshi.convertZatoshiToZecString())
-                .toColoredSpan(R.color.text_light_dimmed, getString(R.string.zec))
+        binding.textBalanceAvailable.text = balance.availableZatoshi.convertZatoshiToZecString()
         val change = (balance.totalZatoshi - balance.availableZatoshi)
         binding.textBalanceDescription.apply {
             goneIf(change <= 0L)

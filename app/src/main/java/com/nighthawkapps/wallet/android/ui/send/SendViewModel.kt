@@ -48,14 +48,19 @@ class SendViewModel @Inject constructor() : ViewModel() {
         val keys = initializer.deriveSpendingKeys(
             lockBox.getBytes(WalletSetupViewModel.LockBoxKey.SEED)!!
         )
-
         return synchronizer.sendToAddress(
-            keys?.get(0) ?: "",
+            keys[0],
             zatoshiAmount,
             toAddress,
             memoToSend.chunked(ZcashSdk.MAX_MEMO_SIZE).firstOrNull() ?: ""
         ).onEach {
-            twig(it.toString())
+            twig("Received pending txUpdate: ${it?.toString()}")
+        }
+    }
+
+    fun cancel(pendingId: Long) {
+        viewModelScope.launch {
+            synchronizer.cancelSpend(pendingId)
         }
     }
 
@@ -64,13 +69,22 @@ class SendViewModel @Inject constructor() : ViewModel() {
     suspend fun validateAddress(address: String): AddressType =
         synchronizer.validateAddress(address)
 
-    fun validate(maxZatoshi: Long?) = flow<String?> {
+    fun validate(availableZatoshi: Long?, maxZatoshi: Long?) = flow<String?> {
         when {
             synchronizer.validateAddress(toAddress).isNotValid -> {
                 emit("Please enter a valid address.")
             }
             zatoshiAmount < 1 -> {
                 emit("Please go back and enter at least 1 Zatoshi.")
+            }
+            availableZatoshi == null -> {
+                emit("Available funds not found. Please try again in a moment.")
+            }
+            availableZatoshi == 0L -> {
+                emit("No funds available to send.")
+            }
+            availableZatoshi > 0 && availableZatoshi < ZcashSdk.MINERS_FEE_ZATOSHI -> {
+                emit("Insufficient funds to cover miner's fee.")
             }
             maxZatoshi != null && zatoshiAmount > maxZatoshi -> {
                 emit("Please go back and enter no more than ${maxZatoshi.convertZatoshiToZecString(8)} ZEC.")

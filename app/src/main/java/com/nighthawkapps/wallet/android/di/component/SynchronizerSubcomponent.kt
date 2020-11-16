@@ -5,6 +5,7 @@ import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.Synchronizer
 import com.nighthawkapps.wallet.android.di.annotation.SynchronizerScope
 import com.nighthawkapps.wallet.android.di.module.SynchronizerModule
+import com.nighthawkapps.wallet.android.ext.Const
 import dagger.BindsInstance
 import dagger.Subcomponent
 import javax.inject.Named
@@ -15,7 +16,7 @@ interface SynchronizerSubcomponent {
 
     fun synchronizer(): Synchronizer
 
-    @Named("Synchronizer")
+    @Named(Const.Name.SYNCHRONIZER)
     fun viewModelFactory(): ViewModelProvider.Factory
 
     @Subcomponent.Factory

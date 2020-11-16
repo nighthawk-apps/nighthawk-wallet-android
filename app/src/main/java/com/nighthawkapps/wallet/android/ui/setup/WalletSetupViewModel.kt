@@ -7,7 +7,6 @@ import cash.z.ecc.android.sdk.Initializer.DefaultBirthdayStore.Companion.Importe
 import cash.z.ecc.android.sdk.Initializer.DefaultBirthdayStore.Companion.NewWalletBirthdayStore
 import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
-
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
 import kotlinx.coroutines.Dispatchers
@@ -77,7 +76,7 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
     private suspend fun createWallet(): ByteArray = withContext(Dispatchers.IO) {
         check(!lockBox.getBoolean(LockBoxKey.HAS_SEED)) {
             "Error! Cannot create a seed when one already exists! This would overwrite the" +
-                    " existing seed and could lead to a loss of funds if the user has no backup!"
+                " existing seed and could lead to a loss of funds if the user has no backup!"
         }
 
         mnemonics.run {
@@ -109,7 +108,7 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
     ): ByteArray = withContext(Dispatchers.IO) {
         check(!lockBox.getBoolean(LockBoxKey.HAS_SEED)) {
             "Error! Cannot import a seed when one already exists! This would overwrite the" +
-                    " existing seed and could lead to a loss of funds if the user has no backup!"
+                " existing seed and could lead to a loss of funds if the user has no backup!"
         }
         mnemonics.run {
             toSeed(seedPhrase).let { bip39Seed ->

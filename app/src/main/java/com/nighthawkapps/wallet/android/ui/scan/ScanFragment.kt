@@ -112,8 +112,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
             height
         )
         if (kotlin.math.abs(previewRatio - (4.0 / 3.0))
-            <= kotlin.math.abs(previewRatio - (16.0 / 9.0))
-        ) {
+            <= kotlin.math.abs(previewRatio - (16.0 / 9.0))) {
             return AspectRatio.RATIO_4_3
         }
         return AspectRatio.RATIO_16_9
@@ -122,11 +121,10 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
     private fun onQrScanned(qrContent: String, image: ImageProxy) {
         resumedScope.launch {
             if (viewModel.isNotValid(qrContent)) {
-                // TODO: use the "NETWORK" constant that will be available in the next SDK build
                 val network = ZcashSdk.NETWORK
                 binding.textScanError.text = "Invalid Zcash $network address:\n$qrContent"
                 image.close()
-            } else {
+            } else { /* continue scanning*/
                 binding.textScanError.text = ""
                 sendViewModel.toAddress = qrContent
                 mainActivity?.safeNavigate(R.id.action_nav_scan_to_nav_send_address)
@@ -180,10 +178,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         private const val CAMERA_PERMISSION_REQUEST = 1002
 
         private fun isPermissionGranted(context: Context, permission: String): Boolean {
-            return ContextCompat.checkSelfPermission(
-                context,
-                permission
-            ) == PackageManager.PERMISSION_GRANTED
+            return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
         }
     }
 }

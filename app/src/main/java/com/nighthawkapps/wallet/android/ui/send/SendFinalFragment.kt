@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isCreating
@@ -25,23 +24,22 @@ import kotlinx.coroutines.flow.onEach
 
 class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
 
-    private val sendViewModel: SendViewModel by activityViewModel()
+    val sendViewModel: SendViewModel by activityViewModel()
 
     override fun inflate(inflater: LayoutInflater): FragmentSendFinalBinding =
         FragmentSendFinalBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.buttonNext.setOnClickListener {
-            onReturnToHome()
+        binding.buttonPrimary.setOnClickListener {
+            onReturnToSend()
         }
-        binding.buttonExit.setOnClickListener {
+        binding.buttonSecondary.setOnClickListener {
             onExit()
         }
         binding.backButtonHitArea.setOnClickListener {
             onExit()
         }
-        binding.radioIncludeAddress.visibility = GONE
         binding.textConfirmation.text =
             "Sending ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC to\n${sendViewModel.toAddress.toAbbreviatedAddress()}"
         mainActivity?.preventBackPress(this)
@@ -57,28 +55,29 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
     }
 
     private fun onPendingTxUpdated(tx: PendingTransaction?) {
-        if (tx == null) return
+        if (tx == null) return // TODO: maybe log this
 
         try {
             tx.toUiModel().let { model ->
                 binding.apply {
                     backButton.goneIf(!model.showCloseIcon)
                     backButtonHitArea.goneIf(!model.showCloseIcon)
-                    buttonExit.goneIf(!model.showCloseIcon)
+                    buttonSecondary.goneIf(!model.showCloseIcon)
 
                     textConfirmation.text = model.title
                     lottieSending.goneIf(!model.showProgress)
                     if (!model.showProgress) lottieSending.pauseAnimation() else lottieSending.playAnimation()
                     errorMessage.text = model.errorMessage
-                    buttonNext.apply {
+                    buttonPrimary.apply {
                         text = model.primaryButtonText
                         setOnClickListener { model.primaryAction() }
                     }
-
-                    if (tx.isSubmitSuccess()) {
-                        sendViewModel.reset()
-                    }
                 }
+            }
+
+            // only hold onto the view model if the transaction failed so that the user can retry
+            if (tx.isSubmitSuccess()) {
+                sendViewModel.reset()
             }
         } catch (t: Throwable) {
             val message = "ERROR: error while handling pending transaction update! $t"
@@ -91,9 +90,13 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
         mainActivity?.navController?.popBackStack(R.id.nav_home, false)
     }
 
-    private fun onReturnToHome() {
+    private fun onCancel(tx: PendingTransaction) {
+        sendViewModel.cancel(tx.id)
+    }
+
+    private fun onReturnToSend() {
         sendViewModel.reset()
-        mainActivity?.safeNavigate(R.id.action_nav_send_final_to_nav_home)
+        mainActivity?.navController?.popBackStack(R.id.nav_send, false)
     }
 
     private fun PendingTransaction.toUiModel() = UiModel().also { model ->
@@ -101,18 +104,18 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
             isCancelled() -> {
                 model.title = "Cancelled."
                 model.primaryButtonText = "Go Back"
-                model.primaryAction = { onReturnToHome() }
+                model.primaryAction = { onReturnToSend() }
             }
             isSubmitSuccess() -> {
                 model.title = "SENT!"
                 model.primaryButtonText = "See Details"
-                model.primaryAction = { onReturnToHome() }
+                model.primaryAction = { onExit() }
             }
             isFailure() -> {
                 model.title = "Failed."
                 model.errorMessage = if (isFailedEncoding()) "The transaction could not be encoded." else "Unable to submit transaction to the network."
                 model.primaryButtonText = "Retry"
-                model.primaryAction = { onReturnToHome() }
+                model.primaryAction = { onReturnToSend() }
             }
             else -> {
                 model.title = "Sending ${value.convertZatoshiToZecString(8)} ZEC to\n${toAddress.toAbbreviatedAddress()}"
@@ -120,10 +123,10 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
                 if (isCreating()) {
                     model.showCloseIcon = false
                     model.primaryButtonText = "Cancel"
-                    model.primaryAction = { onReturnToHome() }
+                    model.primaryAction = { onExit() }
                 } else {
                     model.primaryButtonText = "See Details"
-                    model.primaryAction = { onReturnToHome() }
+                    model.primaryAction = { onExit() }
                 }
             }
         }

@@ -32,7 +32,7 @@ abstract class ViewModelsActivityModule {
      * view models yet.
      */
     @ActivityScope
-    @Named("BeforeSynchronizer")
+    @Named("const.name.before_synchronizer")
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
 }

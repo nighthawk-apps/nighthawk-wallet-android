@@ -3,23 +3,26 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.4.0"
-
+    const val kotlinVersion = "1.4.10"
     const val compileSdkVersion = 30
-    const val buildToolsVersion = "30.0.0"
+    const val buildToolsVersion = "30.0.1"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
+    const val versionName = "1.0.8"
+    const val versionCode = 1_00_08_800  // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.1.0"
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.2.0"
         const val BIOMETRICS = "androidx.biometric:biometric:1.1.0-alpha02"
-        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:1.1.3"
+        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.0.4"
         const val CORE_KTX = "androidx.core:core-ktx:1.3.1"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.2.5"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
         const val PAGING = "androidx.paging:paging-runtime-ktx:2.1.2"
+        const val RECYCLER = "androidx.recyclerview:recyclerview:1.2.0-alpha06"
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha02"
 
         object CameraX : Version("1.0.0-beta06") {
@@ -49,7 +52,7 @@ object Deps {
         }
     }
 
-    object Dagger : Version("2.28.3") {
+    object Dagger : Version("2.29.1") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -80,7 +83,7 @@ object Deps {
     object Kotlin : Version(kotlinVersion) {
         val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
-        object Coroutines : Version("1.3.2") {
+        object Coroutines : Version("1.4.10") {
             val ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             val TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -98,12 +101,12 @@ object Deps {
     }
 
     object Misc {
-        const val LOTTIE = "com.airbnb.android:lottie:3.4.2"
+        const val LOTTIE = "com.airbnb.android:lottie:3.5.0"
         const val CHIPS = "com.github.gmale:chips-input-layout:2.3.1"
 
         object Plugins {
             const val SECURE_STORAGE = "de.adorsys.android:securestoragelibrary:1.2.4"
-            const val QR_SCANNER = "com.google.zxing:core:3.4.0"
+            const val QR_SCANNER = "com.google.zxing:core:3.4.1"
         }
     }
 

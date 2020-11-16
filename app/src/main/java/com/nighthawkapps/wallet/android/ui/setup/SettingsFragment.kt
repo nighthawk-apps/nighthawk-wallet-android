@@ -29,9 +29,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             validateServerHost(view)
         })
         binding.buttonReset.setOnClickListener(View.OnClickListener {
-            resetServer()
-            showUpdateServerDialog(view)
-        })
+                resetServer()
+                showUpdateServerDialog(view)
+            }
+        )
     }
 
     private fun getCurrentServer() {
