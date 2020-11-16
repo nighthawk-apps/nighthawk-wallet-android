@@ -4,7 +4,6 @@ Change Log
 Version 1.0.8 *(2020-11-15)*
 ------------------------------------
 - Enable deshielding ZEC transaction z -> t
-- Upgrade zcash-android-sdk lib
 - Update dependencies and gradle build setup
 - Simplify Send transaction flow
 - Fix importing of wallets with birthday heights after 1,000,000 blocks
