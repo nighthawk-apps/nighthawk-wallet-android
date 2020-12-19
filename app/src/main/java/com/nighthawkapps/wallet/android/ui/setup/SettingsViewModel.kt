@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.di.module.InitializerModule
+import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.SERVER_HOST
 import com.nighthawkapps.wallet.android.ext.SERVER_PORT
 import javax.inject.Inject
@@ -22,14 +23,14 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     fun getServerHost(): String {
         return com.nighthawkapps.wallet.android.ext.getString(
             SERVER_HOST,
-            InitializerModule.defaultHost
+            Const.Default.Server.HOST
         )
     }
 
     fun getServerPort(): Int {
         return com.nighthawkapps.wallet.android.ext.getInt(
             SERVER_PORT,
-            InitializerModule.defaultPort
+            Const.Default.Server.PORT
         )
     }
 

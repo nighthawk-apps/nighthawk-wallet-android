@@ -10,6 +10,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentSettingsBinding
 import com.nighthawkapps.wallet.android.di.module.InitializerModule
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
+import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 
@@ -41,8 +42,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     }
 
     private fun resetServer() {
-        binding.inputTextLightwalletdServer.setText(InitializerModule.defaultHost)
-        binding.inputTextLightwalletdPort.setText(InitializerModule.defaultPort.toString())
+        binding.inputTextLightwalletdServer.setText(Const.Default.Server.HOST)
+        binding.inputTextLightwalletdPort.setText(Const.Default.Server.PORT.toString())
     }
 
     private fun validateServerHost(view: View) {
