@@ -1,12 +1,13 @@
 package com.nighthawkapps.wallet.android.ui.setup
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.ext.twig
-import com.nighthawkapps.wallet.android.di.module.InitializerModule
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.SERVER_HOST
 import com.nighthawkapps.wallet.android.ext.SERVER_PORT
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor() : ViewModel() {
@@ -15,9 +16,14 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     lateinit var synchronizer: Synchronizer
 
     fun updateServer(host: String, port: Int) {
-        com.nighthawkapps.wallet.android.ext.putString(SERVER_HOST, host)
-        com.nighthawkapps.wallet.android.ext.putInt(SERVER_PORT, port)
-        synchronizer.stop()
+        viewModelScope.launch {
+            synchronizer.changeServer(host, port) { error ->
+                if (error == null) {
+                    com.nighthawkapps.wallet.android.ext.putString(SERVER_HOST, host)
+                    com.nighthawkapps.wallet.android.ext.putInt(SERVER_PORT, port)
+                }
+            }
+        }
     }
 
     fun getServerHost(): String {
