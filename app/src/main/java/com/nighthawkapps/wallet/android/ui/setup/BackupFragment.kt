@@ -84,14 +84,18 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
         }
     }
 
+    // TODO: move this into the SDK
     private suspend fun calculateBirthday(): Int {
-        var storedBirthday: Int = 0
-        var oldestTransactionHeight: Int = 0
+        var storedBirthday = 0
+        var oldestTransactionHeight = 0
         try {
-            storedBirthday = walletSetup.loadBirthdayHeight()
-            oldestTransactionHeight =
-                mainActivity?.synchronizerComponent?.synchronizer()?.receivedTransactions?.first()
-                    ?.last()?.minedHeight ?: 0
+            storedBirthday = walletSetup.loadBirthdayHeight() ?: 0
+            oldestTransactionHeight = mainActivity?.synchronizerComponent?.synchronizer()?.receivedTransactions?.first()?.last()?.minedHeight ?: 0
+            // to be safe adjust for reorgs (and generally a little cushion is good for privacy)
+            // so we round down to the nearest 100 and then subtract 100 to ensure that the result is always at least 100 blocks away
+            oldestTransactionHeight = ZcashSdk.MAX_REORG_SIZE.let { boundary ->
+                oldestTransactionHeight.let { it - it.rem(boundary) - boundary }
+            }
         } catch (t: Throwable) {
             twig("failed to calculate birthday due to: $t")
         }
