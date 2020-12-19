@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
-    private val walletViewModel: WalletDetailViewModel by viewModel()
+    private val walletViewModel: WalletDetailViewModel by activityViewModel()
 
     lateinit var snake: MagicSnakeLoader
 
@@ -65,7 +65,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 mainActivity?.safeNavigate(R.id.action_nav_home_to_create_wallet)
             } else {
                 twig("Found seed. Re-opening existing wallet")
-                mainActivity?.startSync(walletSetup.openWallet())
+                mainActivity?.startSync(walletSetup.openStoredWallet())
             }
         }.launchIn(lifecycleScope)
     }

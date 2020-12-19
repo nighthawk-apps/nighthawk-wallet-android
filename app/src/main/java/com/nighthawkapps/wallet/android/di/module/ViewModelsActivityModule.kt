@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.nighthawkapps.wallet.android.di.annotation.ActivityScope
 import com.nighthawkapps.wallet.android.di.annotation.ViewModelKey
 import com.nighthawkapps.wallet.android.di.viewmodel.ViewModelFactory
+import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import dagger.Binds
 import dagger.Module
@@ -32,7 +33,7 @@ abstract class ViewModelsActivityModule {
      * view models yet.
      */
     @ActivityScope
-    @Named("const.name.before_synchronizer")
+    @Named(Const.Name.BEFORE_SYNCHRONIZER)
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
 }

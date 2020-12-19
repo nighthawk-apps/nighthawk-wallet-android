@@ -1,15 +1,13 @@
 package com.nighthawkapps.wallet.android.ui.setup
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.databinding.FragmentSettingsBinding
-import com.nighthawkapps.wallet.android.di.module.InitializerModule
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
+import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 
@@ -41,8 +39,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     }
 
     private fun resetServer() {
-        binding.inputTextLightwalletdServer.setText(InitializerModule.defaultHost)
-        binding.inputTextLightwalletdPort.setText(InitializerModule.defaultPort.toString())
+        binding.inputTextLightwalletdServer.setText(Const.Default.Server.HOST)
+        binding.inputTextLightwalletdPort.setText(Const.Default.Server.PORT.toString())
     }
 
     private fun validateServerHost(view: View) {
@@ -71,27 +69,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             .setCancelable(false)
             .setPositiveButton("Update") { dialog, _ ->
                 dialog.dismiss()
-                updateServer()
+                viewModel.updateServer(
+                    binding.inputTextLightwalletdServer.text.toString(),
+                    Integer.valueOf(binding.inputTextLightwalletdPort.text.toString())
+                )
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
-    }
-
-    private fun updateServer() {
-        try {
-            viewModel.updateServer(
-                binding.inputTextLightwalletdServer.text.toString(),
-                Integer.valueOf(binding.inputTextLightwalletdPort.text.toString())
-            )
-            mainActivity?.startSync(walletSetup.openWallet())
-            val restartIntent: Intent? = requireContext().packageManager
-                .getLaunchIntentForPackage(requireContext().packageName)
-            restartIntent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(restartIntent)
-        } catch (exception: Exception) {
-            twig("Server Update failed")
-        }
     }
 }

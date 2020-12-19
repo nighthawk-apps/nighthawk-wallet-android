@@ -8,8 +8,8 @@ object Deps {
     const val buildToolsVersion = "30.0.1"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.8"
-    const val versionCode = 1_00_08_800  // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.9"
+    const val versionCode = 1_00_09_201  // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -94,9 +94,9 @@ object Deps {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.0-beta09"
 
-        object Sdk : Version("1.1.0-beta04") {
-            val MAINNET = "cash.z.ecc.android:sdk-mainnet:$version"
-            val TESTNET = "cash.z.ecc.android:sdk-testnet:$version"
+        object Sdk : Version("1.2.1-beta03") {
+            val MAINNET = "cash.z.ecc.android:zcash-android-sdk-mainnet:$version"
+            val TESTNET = "cash.z.ecc.android:zcash-android-sdk-mainnet:$version"
         }
     }
 
@@ -105,7 +105,7 @@ object Deps {
         const val CHIPS = "com.github.gmale:chips-input-layout:2.3.1"
 
         object Plugins {
-            const val SECURE_STORAGE = "de.adorsys.android:securestoragelibrary:1.2.4"
+            const val SECURE_STORAGE = "com.github.gmale:secure-storage-android:0.0.3"//"de.adorsys.android:securestoragelibrary:1.2.2"
             const val QR_SCANNER = "com.google.zxing:core:3.4.1"
         }
     }
