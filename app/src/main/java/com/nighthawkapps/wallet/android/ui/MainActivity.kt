@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
 
-    val latestHeight: Int? get() = if (::synchronizerComponent.isInitialized) {
+    val latestHeight: Int? get() = if (isInitialized) {
         synchronizerComponent.synchronizer().latestHeight
     } else {
         null
@@ -195,7 +195,8 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     }
 
     fun startSync(initializer: Initializer) {
-        if (!::synchronizerComponent.isInitialized) {
+        if (!isInitialized) {
+            twig("Starting sync!")
             synchronizerComponent = NighthawkWalletApp.component.synchronizerSubcomponent().create(initializer)
             synchronizerComponent.synchronizer().let { synchronizer ->
                 synchronizer.onProcessorErrorHandler = ::onProcessorError
