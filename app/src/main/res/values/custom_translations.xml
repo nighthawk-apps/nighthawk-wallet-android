@@ -1,0 +1,18 @@
+<resources>
+    <string name="custom_translation_decimal_separator">.</string>
+    <string name="custom_translation_decimal_key">.</string>
+    <string name="custom_translation_format_date_time_brief">M/d h:mma</string>
+
+    <!-- Manual -->
+    <string name="custom_translation_verify">Verify</string>
+    <string name="custom_translation_birthday">Birthday Height: %1$,d</string>
+    <string name="custom_translation_expecting">Expecting</string>
+    <string name="custom_translation_syncing">Downloading…%1$d%%</string>
+    <string name="custom_translation_scanning">Scanning…%1$d%%</string>
+    <string name="custom_translation_send_confirm">Please confirm that you want to send</string>
+    <string name="custom_translation_from_your">"from your "</string>
+    <string name="custom_translation_wallet">" wallet"</string>
+    <string name="custom_translation_chars">chars</string>
+    <string name="custom_translation_sending">Sending</string>
+
+</resources>

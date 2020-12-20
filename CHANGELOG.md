@@ -1,6 +1,20 @@
 Change Log
 ==========
 
+Version 1.0.9 *(2020-12-20)*
+------------------------------------
+- New: Upgrade to the latest Zcash SDK.
+- New: Implement ZIP-313, reducing the default fee from 10,000 to 1,000 zats.
+- New: Adds authentication prior to viewing backup seed words.
+- Fix: Repaired the upgrade flow, which could not reorg because of missing birthday height
+- Fix: Repaired create wallet flow which was being covered by the loading screen
+- Fix: Authentication bugs on older devices that were preventing sends and mishandling cancels.
+- Fix: Users can now upgrade from seed-only prior versions without crashing or needing to restore.
+- Fix: Improved internal metrics for troubleshooting issues.
+- Fix: Correct race condition when launching the app
+- Fix: Display loading screen while waiting for app to initialize
+- Add translations for Spanish, Italian, Korea, Russian and Chinese
+
 Version 1.0.8 *(2020-11-15)*
 ------------------------------------
 - Enable deshielding ZEC transaction z -> t

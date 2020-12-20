@@ -96,7 +96,6 @@ class LockBox @Inject constructor(private val appContext: Context) : LockBoxPlug
             }
     }
 
-
     //
     // Extensions (TODO: find library that works better with arrays of bytes and chars)
     //
@@ -130,5 +129,3 @@ class LockBox @Inject constructor(private val appContext: Context) : LockBoxPlug
         return Arrays.copyOf(charBuffer.array(), charBuffer.limit())
     }
 }
-
-

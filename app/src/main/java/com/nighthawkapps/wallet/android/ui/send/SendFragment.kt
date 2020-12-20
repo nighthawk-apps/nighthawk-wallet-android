@@ -214,7 +214,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         sendViewModel.zatoshiAmount = binding.inputZcashAmount.text.toString().safelyConvertToBigDecimal().convertZecToZatoshi()
         binding.inputZcashAmount.convertZecToZatoshi()?.let { sendViewModel.zatoshiAmount = it }
         applyViewModel(sendViewModel)
-        sendViewModel.validate(availableZatoshi, maxZatoshi).onFirstWith(resumedScope) { errorMessage ->
+        sendViewModel.validate(requireContext(), availableZatoshi, maxZatoshi).onFirstWith(resumedScope) { errorMessage ->
             if (errorMessage == null) {
                 mainActivity?.authenticate("Please confirm that you want to send ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC to\n${sendViewModel.toAddress.toAbbreviatedAddress()}") {
                     mainActivity?.safeNavigate(R.id.action_nav_send_to_nav_send_final)

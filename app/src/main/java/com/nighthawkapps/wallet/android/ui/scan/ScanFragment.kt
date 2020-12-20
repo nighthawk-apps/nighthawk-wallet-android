@@ -97,7 +97,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
 
         try {
             cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
-            preview.setSurfaceProvider(binding.preview.createSurfaceProvider())
+            preview.setSurfaceProvider(binding.preview.surfaceProvider)
         } catch (t: Throwable) {
             twig("Error while opening the camera: $t")
         }

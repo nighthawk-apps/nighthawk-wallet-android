@@ -23,8 +23,10 @@ internal inline fun @receiver:ColorRes Int.toAppColor(): Int {
 /**
  * Grab a string from the application resources
  */
-internal inline fun @receiver:StringRes Int.toAppString(): String {
-    return NighthawkWalletApp.instance.getString(this)
+internal inline fun @receiver:StringRes Int.toAppString(lowercase: Boolean = false): String {
+    return NighthawkWalletApp.instance.getString(this).let {
+        if (lowercase) it.toLowerCase() else it
+    }
 }
 
 /**

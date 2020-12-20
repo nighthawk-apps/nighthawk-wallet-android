@@ -1,0 +1,15 @@
+<resources>
+    <string name="custom_translation_decimal_key">,</string>
+    <string name="custom_translation_decimal_separator">,</string>
+    <string name="custom_translation_format_date_time_brief">d/M HH:mma</string>
+
+    <!-- Manual -->
+    <string name="custom_translation_verify"> 확인</string>
+    <string name="custom_translation_birthday">생일: %1$,d</string>
+    <string name="custom_translation_expecting">기대</string>
+    <string name="custom_translation_syncing">동기화…%1$d %%</string>
+    <string name="custom_translation_scanning">스캐닝…%1$d %%</string>
+    <string name="custom_translation_send_confirm">를 보낼 것인지 확인하십시오</string>
+    <string name="custom_translation_chars">문자</string>
+    <string name="custom_translation_sending">보내기</string>
+</resources>
