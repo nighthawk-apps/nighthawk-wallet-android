@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.databinding.FragmentSettingsBinding
-import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
@@ -14,7 +13,6 @@ import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     private val viewModel: SettingsViewModel by viewModel()
-    private val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
     override fun inflate(inflater: LayoutInflater): FragmentSettingsBinding =
         FragmentSettingsBinding.inflate(inflater)
@@ -70,6 +68,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             .setPositiveButton("Update") { dialog, _ ->
                 dialog.dismiss()
                 viewModel.updateServer(
+                    requireContext(),
                     binding.inputTextLightwalletdServer.text.toString(),
                     Integer.valueOf(binding.inputTextLightwalletdPort.text.toString())
                 )

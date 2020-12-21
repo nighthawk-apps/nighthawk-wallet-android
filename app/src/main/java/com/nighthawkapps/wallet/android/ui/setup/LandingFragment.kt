@@ -4,16 +4,20 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentLandingBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
+import com.nighthawkapps.wallet.android.ext.locale
+import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITHOUT_BACKUP
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.lang.IllegalStateException
 
 class LandingFragment : BaseFragment<FragmentLandingBinding>() {
 
@@ -27,14 +31,14 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonPositive.setOnClickListener {
-            when (binding.buttonPositive.text.toString().toLowerCase()) {
-                "new" -> onNewWallet()
-                "backup" -> onBackupWallet()
+            when (binding.buttonPositive.text.toString().toLowerCase(locale())) {
+                R.string.landing_button_primary.toAppString(true) -> onNewWallet()
+                R.string.landing_button_primary_create_success.toAppString(true) -> onBackupWallet()
             }
         }
         binding.buttonNegative.setOnClickListener {
-            when (binding.buttonNegative.text.toString().toLowerCase()) {
-                "restore" -> onRestoreWallet()
+            when (binding.buttonNegative.text.toString().toLowerCase(locale())) {
+                R.string.landing_button_secondary.toAppString(true) -> onRestoreWallet()
                 else -> onSkip(++skipCount)
             }
         }
@@ -47,6 +51,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 SEED_WITHOUT_BACKUP, SEED_WITH_BACKUP -> {
                     mainActivity?.safeNavigate(R.id.nav_backup)
                 }
+                else -> {}
             }
         }.launchIn(lifecycleScope)
     }
@@ -59,14 +64,12 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
     private fun onSkip(count: Int) {
         when (count) {
             1 -> {
-                binding.textMessage.text =
-                    "Are you sure? Without a backup, funds can be lost FOREVER!"
-                binding.buttonNegative.text = "Later"
+                binding.textMessage.setText(R.string.landing_backup_skipped_message_1)
+                binding.buttonNegative.setText(R.string.landing_button_backup_skipped_1)
             }
             2 -> {
-                binding.textMessage.text =
-                    "You can't backup later. You're probably going to lose your funds!"
-                binding.buttonNegative.text = "I've been warned"
+                binding.textMessage.setText(R.string.landing_backup_skipped_message_2)
+                binding.buttonNegative.setText(R.string.landing_button_backup_skipped_2)
             }
             else -> {
                 onEnterWallet()
@@ -80,18 +83,27 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
 
     private fun onNewWallet() {
         lifecycleScope.launch {
-            val ogText = binding.buttonPositive.text
-            binding.buttonPositive.text = "creating"
+            binding.buttonPositive.setText(R.string.landing_button_progress_create)
             binding.buttonPositive.isEnabled = false
 
-            mainActivity?.startSync(walletSetup.newWallet())
+            try {
+                val initializer = walletSetup.newWallet()
+                if (!initializer.accountsCreated) {
+                    binding.buttonPositive.isEnabled = true
+                    binding.buttonPositive.setText(R.string.landing_button_primary)
+                    throw IllegalStateException("New wallet should result in accounts table being created")
+                }
+                mainActivity?.startSync(initializer)
 
-            binding.buttonPositive.isEnabled = true
-            binding.textMessage.text = "Wallet created! Congratulations!"
-            binding.buttonNegative.text = "Skip"
-            binding.buttonPositive.text = "Backup"
-            mainActivity?.playSound("sound_receive_small.mp3")
-            mainActivity?.vibrateSuccess()
+                binding.buttonPositive.isEnabled = true
+                binding.textMessage.setText(R.string.landing_create_success_message)
+                binding.buttonNegative.setText(R.string.landing_button_secondary_create_success)
+                binding.buttonPositive.setText(R.string.landing_button_primary_create_success)
+                mainActivity?.playSound("sound_receive_small.mp3")
+                mainActivity?.vibrateSuccess()
+            } catch (t: Throwable) {
+                Toast.makeText(context, "Failed to create wallet", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

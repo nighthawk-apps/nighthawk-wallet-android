@@ -18,29 +18,60 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricConstants
+import androidx.biometric.BiometricPrompt.ERROR_HW_NOT_PRESENT
+import androidx.biometric.BiometricPrompt.ERROR_HW_UNAVAILABLE
+import androidx.biometric.BiometricPrompt.ERROR_NO_BIOMETRICS
+import androidx.biometric.BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL
+import androidx.biometric.BiometricPrompt.ERROR_LOCKOUT
+import androidx.biometric.BiometricPrompt.ERROR_LOCKOUT_PERMANENT
+import androidx.biometric.BiometricPrompt.ERROR_CANCELED
+import androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
+import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
+import androidx.biometric.BiometricPrompt.ERROR_NO_SPACE
+import androidx.biometric.BiometricPrompt.ERROR_TIMEOUT
+import androidx.biometric.BiometricPrompt.ERROR_UNABLE_TO_PROCESS
+import androidx.biometric.BiometricPrompt.ERROR_VENDOR
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import cash.z.ecc.android.sdk.Initializer
+import cash.z.ecc.android.sdk.SdkSynchronizer
+import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
+import com.nighthawkapps.wallet.android.databinding.DialogFirstUseMessageBinding
 import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
 import com.nighthawkapps.wallet.android.di.component.SynchronizerSubcomponent
+import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
+import com.nighthawkapps.wallet.android.ext.goneIf
+import com.nighthawkapps.wallet.android.ext.showCriticalProcessorError
+import com.nighthawkapps.wallet.android.ext.showScanFailure
+import com.nighthawkapps.wallet.android.ext.showUninitializedError
+import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
+import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
+import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIXES_RECOGNIZED
+import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -51,8 +82,15 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     @Inject
     lateinit var clipboard: ClipboardManager
 
+    @Inject
+    lateinit var mainViewModel: MainViewModel
+
+    @Inject
+    lateinit var walletSetupViewModel: WalletSetupViewModel
+
     val isInitialized get() = ::synchronizerComponent.isInitialized
 
+    private val historyViewModel: HistoryViewModel by activityViewModel()
     private var retryProviderInstall: Boolean = false
     private val mediaPlayer: MediaPlayer = MediaPlayer()
     private var snackbar: Snackbar? = null
@@ -71,11 +109,12 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
 
-    val latestHeight: Int? get() = if (isInitialized) {
-        synchronizerComponent.synchronizer().latestHeight
-    } else {
-        null
-    }
+    val latestHeight: Int?
+        get() = if (isInitialized) {
+            synchronizerComponent.synchronizer().latestHeight
+        } else {
+            null
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component = NighthawkWalletApp.component.mainActivitySubcomponent().create(this).also {
@@ -90,6 +129,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         }
         setContentView(R.layout.main_activity)
         initNavigation()
+        initLoadScreen()
 
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
@@ -168,46 +208,98 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         navInitListeners.clear()
     }
 
-    fun safeNavigate(@IdRes destination: Int) {
+    private fun initLoadScreen() {
+        lifecycleScope.launchWhenResumed {
+            mainViewModel.loadingMessage.collect { message ->
+                onLoadingMessage(message)
+            }
+        }
+    }
+
+    private fun onLoadingMessage(message: String?) {
+        twig("Applying loading message: $message")
+        // TODO: replace with view binding
+        findViewById<View>(R.id.container_loading).goneIf(message == null)
+        findViewById<TextView>(R.id.text_message).text = message
+    }
+
+    fun safeNavigate(@IdRes destination: Int, extras: Navigator.Extras? = null) {
         if (navController == null) {
             navInitListeners.add {
                 try {
-                    navController?.navigate(destination)
+                    navController?.navigate(destination, null, null, extras)
                 } catch (t: Throwable) {
                     twig(
-                        "WARNING: during callback, did not navigate to destination: R.id.${resources.getResourceEntryName(
-                            destination
-                        )} due to: $t"
+                        "WARNING: during callback, did not navigate to destination: R.id.${
+                            resources.getResourceEntryName(
+                                destination
+                            )
+                        } due to: $t"
                     )
                 }
             }
         } else {
             try {
-                navController?.navigate(destination)
+                navController?.navigate(destination, null, null, extras)
             } catch (t: Throwable) {
                 twig(
-                    "WARNING: did not immediately navigate to destination: R.id.${resources.getResourceEntryName(
-                        destination
-                    )} due to: $t"
+                    "WARNING: did not immediately navigate to destination: R.id.${
+                        resources.getResourceEntryName(
+                            destination
+                        )
+                    } due to: $t"
                 )
             }
         }
     }
 
     fun startSync(initializer: Initializer) {
+        twig("MainActivity.startSync")
         if (!isInitialized) {
-            twig("Starting sync!")
-            synchronizerComponent = NighthawkWalletApp.component.synchronizerSubcomponent().create(initializer)
+            mainViewModel.setLoading(true)
+            synchronizerComponent = NighthawkWalletApp.component.synchronizerSubcomponent().create(
+                initializer
+            )
+            twig("Synchronizer component created")
             synchronizerComponent.synchronizer().let { synchronizer ->
                 synchronizer.onProcessorErrorHandler = ::onProcessorError
+                synchronizer.onChainErrorHandler = ::onChainError
                 synchronizer.start(lifecycleScope)
             }
         } else {
             twig("Ignoring request to start sync because sync has already been started!")
         }
+        mainViewModel.setLoading(false)
+        twig("MainActivity.startSync COMPLETE")
     }
 
-    fun authenticate(description: String, block: () -> Unit) {
+    fun setLoading(isLoading: Boolean, message: String? = null) {
+        mainViewModel.setLoading(isLoading, message)
+    }
+
+    /**
+     * Launch the given block if the synchronizer is ready and syncing. Otherwise, wait until it is.
+     * The block will be scoped to the synchronizer when it runs.
+     */
+    fun launchWhenSyncing(block: suspend CoroutineScope.() -> Unit) {
+        // TODO: update this quick and dirty implementation, after the holidays. For now, this gets
+        //  the job done but the synchronizer should expose a method that helps with this so that
+        //  any complexity is taken care of at the library level.
+        lifecycleScope.launch {
+            while (mainViewModel.isLoading) {
+                delay(250L)
+            }
+            (synchronizerComponent.synchronizer() as SdkSynchronizer).coroutineScope.launch {
+                block()
+            }
+        }
+    }
+
+    fun authenticate(
+        description: String,
+        title: String = getString(R.string.biometric_prompt_title),
+        block: () -> Unit
+    ) {
         val callback = object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 twig("Authentication success")
@@ -216,18 +308,37 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
 
             override fun onAuthenticationFailed() {
                 twig("Authentication failed!!!!")
+                showMessage("Authentication failed :(")
             }
+
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                twig("Authenticatiion Error")
+                twig("Authentication Error")
+                fun doNothing(message: String, interruptUser: Boolean = true) {
+                    if (interruptUser) {
+                        showSnackbar(message)
+                    } else {
+                        showMessage(message, true)
+                    }
+                }
                 when (errorCode) {
-                    BiometricConstants.ERROR_HW_NOT_PRESENT, BiometricConstants.ERROR_HW_UNAVAILABLE,
-                    BiometricConstants.ERROR_NO_BIOMETRICS, BiometricConstants.ERROR_NO_DEVICE_CREDENTIAL -> {
+                    ERROR_HW_NOT_PRESENT, ERROR_HW_UNAVAILABLE,
+                    ERROR_NO_BIOMETRICS, ERROR_NO_DEVICE_CREDENTIAL -> {
                         twig("Warning: bypassing authentication because $errString [$errorCode]")
+                        showMessage(
+                            "Please enable screen lock on this device to add security here!",
+                            true
+                        )
                         block()
                     }
-                    else -> {
-                        twig("Warning: failed authentication because $errString [$errorCode]")
-                    }
+                    ERROR_LOCKOUT -> doNothing("Too many attempts. Try again in 30s.")
+                    ERROR_LOCKOUT_PERMANENT -> doNothing("Whoa. Waaaay too many attempts!")
+                    ERROR_CANCELED -> doNothing("I just can't right now. Please try again.")
+                    ERROR_NEGATIVE_BUTTON -> doNothing("Authentication cancelled", false)
+                    ERROR_USER_CANCELED -> doNothing("Cancelled", false)
+                    ERROR_NO_SPACE -> doNothing("Not enough storage space!")
+                    ERROR_TIMEOUT -> doNothing("Oops. It timed out.")
+                    ERROR_UNABLE_TO_PROCESS -> doNothing(".")
+                    ERROR_VENDOR -> doNothing("We got some weird error and you should report this.")
                 }
             }
         }
@@ -235,7 +346,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         BiometricPrompt(this, ContextCompat.getMainExecutor(this), callback).apply {
             authenticate(
                 BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("Authenticate to Proceed")
+                    .setTitle(title)
                     .setConfirmationRequired(false)
                     .setDescription(description)
                     .setDeviceCredentialAllowed(true)
@@ -276,7 +387,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                     synchronizerComponent.synchronizer().getAddress()
                 )
             )
-            showMessage("Address copied!", "Sweet")
+            showMessage("Address copied!")
         }
     }
 
@@ -288,14 +399,17 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                     getString(R.string.nighthawk_address)
                 )
             )
-            showMessage("Donation Address copied!", "Sweet")
+            showMessage("Donation Address copied!")
         }
     }
 
-    fun openWebURL(urlString: String) {
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(urlString)
-        startActivity(i)
+    fun onLaunchUrl(url: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        } catch (t: Throwable) {
+            showMessage(getString(R.string.error_launch_url))
+            twig("Warning: failed to open browser due to $t")
+        }
     }
 
     suspend fun isValidAddress(address: String): Boolean {
@@ -306,11 +420,11 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         return false
     }
 
-    fun copyText(textToCopy: String, label: String = "Nighthawk Wallet Text") {
+    fun copyText(textToCopy: String, label: String = "ECC Wallet Text") {
         clipboard.setPrimaryClip(
             ClipData.newPlainText(label, textToCopy)
         )
-        showMessage("$label copied!", "Sweet")
+        showMessage("$label copied!")
     }
 
     fun preventBackPress(fragment: Fragment) {
@@ -318,21 +432,18 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     }
 
     fun onFragmentBackPressed(fragment: Fragment, block: () -> Unit) {
-        onBackPressedDispatcher.addCallback(
-            fragment,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    block()
-                }
+        onBackPressedDispatcher.addCallback(fragment, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                block()
             }
-        )
+        })
     }
 
-    private fun showMessage(message: String, action: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showMessage(message: String, linger: Boolean = false) {
+        Toast.makeText(this, message, if (linger) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
 
-    fun showSnackbar(message: String, action: String = "OK"): Snackbar? {
+    fun showSnackbar(message: String, action: String = getString(android.R.string.ok)): Snackbar {
         return if (snackbar == null) {
             val view = findViewById<View>(R.id.main_activity_container)
             val snacks = Snackbar
@@ -355,7 +466,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 navigationBarHeight
             )
 
-            snackBarView.getChildAt(0).layoutParams = params
+            snackBarView.getChildAt(0).setLayoutParams(params)
             snacks
         } else {
             snackbar!!.setText(message).setAction(action) { /*auto-close*/ }
@@ -411,7 +522,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     }
 
     private fun onNoCamera() {
-        showSnackbar("Well, this is awkward. You denied permission for the camera.")
+        showSnackbar(getString(R.string.camera_permission_denied))
     }
 
     // TODO: clean up this error handling
@@ -423,15 +534,9 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 if (dialog == null) {
                     notified = true
                     runOnUiThread {
-                        dialog = MaterialAlertDialogBuilder(this)
-                            .setTitle("Wallet Improperly Initialized")
-                            .setMessage("This wallet has not been initialized correctly! Perhaps an error occurred during install.\n\nThis can be fixed with a reset. Please reimport using your backup seed phrase.")
-                            .setCancelable(false)
-                            .setPositiveButton("Exit") { dialog, _ ->
-                                dialog.dismiss()
-                                throw error
-                            }
-                            .show()
+                        dialog = showUninitializedError(error) {
+                            dialog = null
+                        }
                     }
                 }
             }
@@ -439,20 +544,10 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 if (dialog == null && !ignoreScanFailure) throttle("scanFailure", 20_000L) {
                     notified = true
                     runOnUiThread {
-                        dialog = MaterialAlertDialogBuilder(this)
-                            .setTitle("Scan Failure")
-                            .setMessage("${error.message}${if (error.cause != null) "\n\nCaused by: ${error.cause}" else ""}")
-                            .setCancelable(true)
-                            .setPositiveButton("Retry") { d, _ ->
-                                d.dismiss()
-                                dialog = null
-                            }
-                            .setNegativeButton("Ignore") { d, _ ->
-                                d.dismiss()
-                                ignoreScanFailure = true
-                                dialog = null
-                            }
-                            .show()
+                        dialog = showScanFailure(error,
+                            onCancel = { dialog = null },
+                            onDismiss = { dialog = null }
+                        )
                     }
                 }
             }
@@ -463,26 +558,23 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 if (dialog == null) {
                     notified = true
                     runOnUiThread {
-                        dialog = MaterialAlertDialogBuilder(this)
-                            .setTitle("Processor Error")
-                            .setMessage(error?.message ?: "Critical error while processing blocks!")
-                            .setCancelable(false)
-                            .setPositiveButton("Retry") { d, _ ->
-                                d.dismiss()
-                                dialog = null
+                        dialog = showCriticalProcessorError(error, onRetry = {
+                                lifecycleScope.launch {
+                                    Initializer.erase(NighthawkWalletApp.instance, ZcashSdk.DEFAULT_ALIAS)
+                                    walletSetupViewModel.onRestore()
+                                    dialog = null
+                                }
                             }
-                            .setNegativeButton("Exit") { dialog, _ ->
-                                dialog.dismiss()
-                                throw error
-                                    ?: RuntimeException("Critical error while processing blocks and the user chose to exit.")
-                            }
-                            .show()
+                        )
                     }
                 }
             }
         }
-        twig("MainActivity has received an error${if (notified) " and notified the user" else ""} and reported it to crashlytics and mixpanel.")
+        twig("MainActivity has received an error${if (notified) " and notified the user" else ""} and reported it to bugsnag and mixpanel.")
         return true
+    }
+
+    private fun onChainError(errorHeight: Int, rewindHeight: Int) {
     }
 
     // TODO: maybe move this quick helper code somewhere general or throttle the dialogs differently (like with a flow and stream operators, instead)
@@ -504,8 +596,95 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 throttles.remove(key)
                 if (pendingWork !== noWork) throttle(key, delay, pendingWork)
             }
-        },
-            delay
-        )
+        }, delay)
+    }
+
+    fun toTxId(tx: ByteArray?): String? {
+        if (tx == null) return null
+        val sb = StringBuilder(tx.size * 2)
+        for (i in (tx.size - 1) downTo 0) {
+            sb.append(String.format("%02x", tx[i]))
+        }
+        return sb.toString()
+    }
+
+    /* Memo functions that might possibly get moved to MemoUtils */
+
+    private val addressRegex = """zs\d\w{65,}""".toRegex()
+
+    suspend fun getSender(transaction: ConfirmedTransaction?): String {
+        if (transaction == null) return getString(R.string.unknown)
+        val memo = transaction.memo.toUtf8Memo()
+        return extractValidAddress(memo)?.toAbbreviatedAddress() ?: getString(R.string.unknown)
+    }
+
+    fun extractAddress(memo: String?) = addressRegex.findAll(memo ?: "").lastOrNull()?.value
+
+    suspend fun extractValidAddress(memo: String?): String? {
+        if (memo == null || memo.length < 25) return null
+
+        // note: cannot use substringAfterLast because we need to ignore case
+        try {
+            INCLUDE_MEMO_PREFIXES_RECOGNIZED.forEach { prefix ->
+                memo.lastIndexOf(prefix, ignoreCase = true).takeUnless { it == -1 }
+                    ?.let { lastIndex ->
+                        memo.substring(lastIndex + prefix.length).trimStart().validateAddress()
+                            ?.let { address ->
+                                return@extractValidAddress address
+                            }
+                    }
+            }
+        } catch (t: Throwable) {
+        }
+
+        return null
+    }
+
+    suspend fun String?.validateAddress(): String? {
+        if (this == null) return null
+        return if (isValidAddress(this)) this else null
+    }
+
+    fun showFirstUseWarning(
+        prefKey: String,
+        @StringRes titleResId: Int = R.string.blank,
+        @StringRes msgResId: Int = R.string.blank,
+        @StringRes positiveResId: Int = android.R.string.ok,
+        @StringRes negativeResId: Int = android.R.string.cancel,
+        action: MainActivity.() -> Unit = {}
+    ) {
+        historyViewModel.prefs.getBoolean(prefKey).let { doNotWarnAgain ->
+            if (doNotWarnAgain) {
+                action()
+                return@showFirstUseWarning
+            }
+        }
+
+        val dialogViewBinding = DialogFirstUseMessageBinding.inflate(layoutInflater)
+
+        fun savePref() {
+            dialogViewBinding.dialogFirstUseCheckbox.isChecked.let { wasChecked ->
+                historyViewModel.prefs.setBoolean(prefKey, wasChecked)
+            }
+        }
+
+        dialogViewBinding.dialogMessage.setText(msgResId)
+        if (dialog != null) dialog?.dismiss()
+        dialog = MaterialAlertDialogBuilder(this)
+            .setTitle(titleResId)
+            .setView(dialogViewBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(positiveResId) { d, _ ->
+                d.dismiss()
+                dialog = null
+                savePref()
+                action()
+            }
+            .setNegativeButton(negativeResId) { d, _ ->
+                d.dismiss()
+                dialog = null
+                savePref()
+            }
+            .show()
     }
 }

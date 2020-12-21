@@ -3,6 +3,7 @@ package com.nighthawkapps.wallet.android.ui.setup
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.exception.InitializerException
+import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.tool.DerivationTool
 import cash.z.ecc.android.sdk.tool.WalletBirthdayTool
@@ -56,6 +57,12 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
         return lockBox[Const.Backup.BIRTHDAY_HEIGHT]
     }
 
+    suspend fun onRestore() {
+        val vk = lockBox.getCharsUtf8(Const.Backup.VIEWING_KEY)?.let { String(it) } ?: onMissingViewingKey()
+        val birthdayHeight = loadBirthdayHeight() ?: 0
+        importWallet(vk, birthdayHeight)
+    }
+
     suspend fun newWallet(): Initializer {
         twig("Initializing new wallet")
         with(mnemonics) {
@@ -84,8 +91,7 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
         val vk = lockBox.getCharsUtf8(Const.Backup.VIEWING_KEY)?.let { String(it) }
             ?: onMissingViewingKey()
         return Initializer.Config { config ->
-            val birthdayHeight = loadBirthdayHeight()
-                ?: onMissingBirthday()
+            val birthdayHeight = loadBirthdayHeight() ?: onMissingBirthday()
             val host = getString(SERVER_HOST, Const.Default.Server.HOST)
             val port = getInt(SERVER_PORT, Const.Default.Server.PORT)
 
@@ -94,7 +100,7 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun onMissingBirthday(): Int {
-        return loadNearestBirthday()?.height ?: throw InitializerException.MissingBirthdayException
+        return loadNearestBirthday(ZcashSdk.SAPLING_ACTIVATION_HEIGHT).height
     }
 
     private suspend fun onMissingViewingKey(): String {
@@ -132,7 +138,7 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
     ) {
         check(!lockBox.getBoolean(Const.Backup.HAS_SEED)) {
             "Error! Cannot store a seed when one already exists! This would overwrite the" +
-                    " existing seed and could lead to a loss of funds if the user has no backup!"
+                " existing seed and could lead to a loss of funds if the user has no backup!"
         }
 
         storeBirthday(birthday)

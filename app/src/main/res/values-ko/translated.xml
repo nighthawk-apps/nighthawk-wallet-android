@@ -1,0 +1,74 @@
+<resources>
+    <string name="translated_app_name">Nighthawk 지갑</string>
+    <string name="translated_loadingtext">로딩</string>
+    <string name="translated_welcometext">환영</string>
+    <string name="translated_fiattext">₩ (currency = 통화)</string>
+    <string name="translated_title_backupseed">당신의 백업 시드</string>
+    <string name="translated_copy_backupseed">종이 백업과 비밀번호 보관소를 권장합니다.</string>
+    <string name="translated_feedback_walletbackupstatus">지갑을 백업해야합니다</string>
+    <string name="translated_seed_verify">백업 확인</string>
+    <string name="translated_seed_verifytext">누락 된 시드 단어를 입력하여 백업을 확인하십시오.</string>
+    <string name="translated_seed_restore">백업에서 복원</string>
+    <string name="translated_seed_restoretext">24 개의 시드 단어를 모두 순서대로 입력해야합니다.</string>
+    <string name="translated_seed_reminder">당신의 자금이 위험에 처해 있습니다</string>
+    <string name="translated_seed_remindertext">Zcash에서 당신은 은행이라는 것을 기억하십시오. 시드 문구가있는 사람은 누구나 지갑에 액세스 할 수 있습니다.</string>
+    <string name="translated_seed_remindertext2">다른 사람이 대신 백업 할 수 없으므로 즉시 백업해야합니다.</string>
+    <string name="translated_seed_accepted">시드 수락, 지금 스캔!</string>
+    <string name="translated_seed_birthdaytext">지갑에 대한 거래를 위해 블록 체인을 스캔하고 있습니다. 이 지갑의 생일 날짜를 제공 할 수 있다면 동기화 속도를 높일 수 있습니다.</string>
+    <string name="translated_seed_enterdate">날짜 입력</string>
+    <string name="translated_seed_birthday">생일</string>
+    <string name="translated_button_dontknow">몰라</string>
+    <string name="translated_button_backup">백업</string>
+    <string name="translated_button_skip">일단은 스킵</string>
+    <string name="translated_balance_screen">밸런스 화면</string>
+    <string name="translated_balance_amounttosend">보낼 금액 입력</string>
+    <string name="translated_balance_expecting">기대 XX ZEC</string>
+    <string name="translated_balance_available">사용 가능</string>
+    <string name="translated_balance_nofunds">사용할 수있는 자금 없습니다</string>
+    <string name="translated_balance_syncing">동기화</string>
+    <string name="translated_balance_scanning">스캐닝</string>
+    <string name="translated_button_sendamount">보내는 금액</string>
+    <string name="translated_button_wallethistory">지갑 내역</string>
+    <string name="translated_address_screen">당신의 주소</string>
+    <string name="translated_address_shielded">당신의 쉴드된 주소</string>
+    <string name="translated_address_transparent">당신의 투명 주소</string>
+    <string name="translated_feedback_addresscopied">주소 복사</string>
+    <string name="translated_button_copytoclipboard">클립 보드에 복사</string>
+    <string name="translated_profile_screen">쉴드된 사용자</string>
+    <string name="translated_button_feedback">피드백 보내기</string>
+    <string name="translated_button_backup_wallet">지갑 백업</string>
+    <string name="translated_button_applicationlogs">애플리케이션 로그보기</string>
+    <string name="translated_button_close">닫기</string>
+    <string name="translated_send_screen">보내는 화면</string>
+    <string name="translated_button_send">보내기</string>
+    <string name="translated_send_fromshielded">쉴드된 지갑에서</string>
+    <string name="translated_send_fromtransparent">투명한 지갑에서</string>
+    <string name="translated_send_fromboth">두 지갑에서</string>
+    <string name="translated_label_to">에</string>
+    <string name="translated_feedback_default">유효한 zcash 주소를 입력하십시오</string>
+    <string name="translated_feedback_shieldedaddress">유효한 쉴드된 주소입니다.</string>
+    <string name="translated_feedback_transparentaddress">유효한 투명 주소입니다.</string>
+    <string name="translated_feedback_sameaddress">경고, 이것은 귀하의 주소 인 것 같습니다!</string>
+    <string name="translated_feedback_invalidaddress">경고,이 주소는 유효하지 않습니다!</string>
+    <string name="translated_label_memo">메모</string>
+    <string name="translated_label_charactercount">문자</string>
+    <string name="translated_label_replyto">회신 포함</string>
+    <string name="translated_send_onclipboard">클립 보드에서</string>
+    <string name="translated_send_lastused">마지막 사용</string>
+    <string name="translated_send_unknown">알 수 없는</string>
+    <string name="translated_send_scanqr">수신자 주소 스캔</string>
+    <string name="translated_send_securityauth">보내기 인증</string>
+    <string name="translated_send_securityauth2">XX ZEC를 보낼 것인지 확인하십시오.</string>
+    <string name="translated_send_sending">XX ZEC를 보내기</string>
+    <string name="translated_send_cancelled">취소되었습니다</string>
+    <string name="translated_send_sent">보냈습니다!</string>
+    <string name="translated_button_done">끝</string>
+    <string name="translated_button_seedetails">세부 사항보기</string>
+    <string name="translated_button_back">돌아가기</string>
+    <string name="translated_screen_wallethistory">지갑 내역</string>
+</resources>
+
+<!-- ISSUES:
+- button_backup isn't unique
+
+-->

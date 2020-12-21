@@ -62,9 +62,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 // interact with user to create, backup and verify seed
                 // leads to a call to startSync(), later (after accounts are created from seed)
                 twig("Seed not found, therefore, launching seed creation flow")
+                mainActivity?.setLoading(false)
                 mainActivity?.safeNavigate(R.id.action_nav_home_to_create_wallet)
             } else {
                 twig("Found seed. Re-opening existing wallet")
+                mainActivity?.setLoading(true)
                 mainActivity?.startSync(walletSetup.openStoredWallet())
             }
         }.launchIn(lifecycleScope)
@@ -85,7 +87,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 .setMessage(getString(R.string.visit_zcash_link_description))
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
-                    mainActivity?.openWebURL(getString(R.string.zcash_learn_more_link))
+                    mainActivity?.onLaunchUrl(getString(R.string.zcash_learn_more_link))
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
@@ -100,7 +102,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 .setMessage(getString(R.string.fund_wallet_sideshift_description))
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
-                    mainActivity?.openWebURL(getString(R.string.sideshift_affiliate_link))
+                    mainActivity?.onLaunchUrl(getString(R.string.sideshift_affiliate_link))
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
@@ -117,28 +119,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-        initTransactionUI()
-        walletViewModel.balance.collectWith(resumedScope) {
-            onBalanceUpdated(it)
-        }
-        twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
-        viewModel.initializeMaybe()
-        viewModel.uiModels.scanReduce { old, new ->
-            onModelUpdated(old, new)
-            new
-        }.onCompletion {
-            twig("uiModel.scanReduce completed.")
-        }.catch { e ->
-            twig("exception while processing uiModels $e")
-            throw e
-        }.launchIn(resumedScope)
+        mainActivity?.launchWhenSyncing {
+            initTransactionUI()
+            walletViewModel.balance.collectWith(resumedScope) {
+                onBalanceUpdated(it)
+            }
+            twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
+            viewModel.initializeMaybe()
+            viewModel.uiModels.scanReduce { old, new ->
+                onModelUpdated(old, new)
+                new
+            }.onCompletion {
+                twig("uiModel.scanReduce completed.")
+            }.catch { e ->
+                twig("exception while processing uiModels $e")
+                throw e
+            }.launchIn(resumedScope)
 
-        // TODO: see if there is a better way to trigger a refresh of the uiModel on resume
-        //       the latest one should just be in the viewmodel and we should just "resubscribe"
-        //       but for some reason, this doesn't always happen, which kind of defeats the purpose
-        //       of having a cold stream in the view model
-        resumedScope.launch {
-            viewModel.refreshBalance()
+            // TODO: see if there is a better way to trigger a refresh of the uiModel on resume
+            //       the latest one should just be in the viewmodel and we should just "resubscribe"
+            //       but for some reason, this doesn't always happen, which kind of defeats the purpose
+            //       of having a cold stream in the view model
+            resumedScope.launch {
+                viewModel.refreshBalance()
+            }
         }
     }
 

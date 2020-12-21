@@ -1,0 +1,15 @@
+<resources>
+    <string name="custom_translation_decimal_key">,</string>
+    <string name="custom_translation_decimal_separator">,</string>
+    <string name="custom_translation_format_date_time_brief">d/M HH:mma</string>
+
+    <!-- Manual -->
+    <string name="custom_translation_verify">验证</string>
+    <string name="custom_translation_birthday">创建日期: %1$,d</string>
+    <string name="custom_translation_expecting">预计为</string>
+    <string name="custom_translation_syncing">正在同步…%1$d%%</string>
+    <string name="custom_translation_scanning">正在扫描…%1$d%%</string>
+    <string name="custom_translation_send_confirm">请确认，您现在要发送</string>
+    <string name="custom_translation_chars">字符</string>
+    <string name="custom_translation_sending">正在发送</string>
+</resources>

@@ -33,8 +33,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 .setMessage("WARNING: Make sure that you are the only one viewing your phone as your wallet seed key will be shown in the next screen.")
                 .setCancelable(false)
                 .setPositiveButton("View Seed") { dialog, _ ->
-                    mainActivity?.safeNavigate(R.id.action_nav_profile_to_nav_backup)
                     dialog.dismiss()
+                    mainActivity?.let { main ->
+                        main.authenticate(
+                            getString(R.string.biometric_backup_phrase_description),
+                            getString(R.string.biometric_backup_phrase_title)
+                        ) {
+                            main.safeNavigate(R.id.action_nav_profile_to_nav_backup)
+                        }
+                    }
                 }
                 .setNegativeButton("Cancel") { dialog, _ ->
                     dialog.dismiss()
