@@ -57,6 +57,12 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
         return lockBox[Const.Backup.BIRTHDAY_HEIGHT]
     }
 
+    suspend fun onRestore() {
+        val vk = lockBox.getCharsUtf8(Const.Backup.VIEWING_KEY)?.let { String(it) } ?: onMissingViewingKey()
+        val birthdayHeight = loadBirthdayHeight() ?: 0
+        importWallet(vk, birthdayHeight)
+    }
+
     suspend fun newWallet(): Initializer {
         twig("Initializing new wallet")
         with(mnemonics) {

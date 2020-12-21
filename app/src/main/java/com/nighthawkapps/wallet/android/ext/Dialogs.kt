@@ -4,10 +4,7 @@ import android.app.ActivityManager
 import android.app.Dialog
 import android.content.Context
 import androidx.core.content.getSystemService
-import cash.z.ecc.android.sdk.Initializer
-import cash.z.ecc.android.sdk.ext.ZcashSdk
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 
 fun Context.showClearDataConfirmation(onDismiss: () -> Unit = {}, onCancel: () -> Unit = {}): Dialog {
@@ -82,15 +79,20 @@ fun Context.showScanFailure(error: Throwable?, onCancel: () -> Unit = {}, onDism
         .show()
 }
 
-fun Context.showCriticalProcessorError(error: Throwable?, onRetry: () -> Unit = {}): Dialog {
+fun Context.showCriticalProcessorError(
+    error: Throwable?,
+    onRetry: () -> Unit
+): Dialog {
     return MaterialAlertDialogBuilder(this)
         .setTitle(R.string.dialog_error_processor_critical_title)
         .setMessage(error?.message ?: getString(R.string.dialog_error_processor_critical_message))
         .setCancelable(false)
-        .setPositiveButton(R.string.dialog_error_processor_critical_button_positive) { d, _ ->
+        .setPositiveButton(R.string.dialog_error_processor_critical_button_rescan) { d, _ ->
             d.dismiss()
-            Initializer.erase(NighthawkWalletApp.instance, ZcashSdk.DEFAULT_ALIAS)
             onRetry()
+        }
+        .setNeutralButton(R.string.dialog_error_processor_critical_button_wait) { d, _ ->
+            d.dismiss()
         }
         .setNegativeButton(R.string.dialog_error_processor_critical_button_negative) { dialog, _ ->
             dialog.dismiss()

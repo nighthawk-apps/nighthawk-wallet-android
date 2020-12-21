@@ -290,8 +290,9 @@
     <string name="dialog_error_invalid_seed_phrase_message">That seed phrase appears to be invalid! Please double-check it and try again.\n\n%1$s</string>
     <string name="dialog_error_invalid_seed_phrase_title">Oops! Invalid Seed Phrase</string>
     <string name="dialog_error_processor_critical_button_negative">Exit</string>
-    <string name="dialog_error_processor_critical_button_positive">Retry</string>
-    <string name="dialog_error_processor_critical_message">Critical error while processing blocks! Please Retry and manually restart Nighthawk</string>
+    <string name="dialog_error_processor_critical_button_wait">Wait</string>
+    <string name="dialog_error_processor_critical_button_rescan">Rescan</string>
+    <string name="dialog_error_processor_critical_message">Critical error while processing blocks! \n\n Would you like to wait it out? Exit the app? \nOr attempt to fix this issue by rescanning the blockchain (which could take a while)?</string>
     <string name="dialog_error_processor_critical_title">Processor Error</string>
     <string name="dialog_error_scan_button_negative">Ignore</string>
     <string name="dialog_error_scan_button_positive">Retry</string>

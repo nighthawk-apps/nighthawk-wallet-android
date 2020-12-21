@@ -66,6 +66,7 @@ import com.nighthawkapps.wallet.android.ext.showCriticalProcessorError
 import com.nighthawkapps.wallet.android.ext.showScanFailure
 import com.nighthawkapps.wallet.android.ext.showUninitializedError
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
+import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIXES_RECOGNIZED
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.CoroutineScope
@@ -84,10 +85,12 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     @Inject
     lateinit var mainViewModel: MainViewModel
 
+    @Inject
+    lateinit var walletSetupViewModel: WalletSetupViewModel
+
     val isInitialized get() = ::synchronizerComponent.isInitialized
 
-    val historyViewModel: HistoryViewModel by activityViewModel()
-
+    private val historyViewModel: HistoryViewModel by activityViewModel()
     private var retryProviderInstall: Boolean = false
     private val mediaPlayer: MediaPlayer = MediaPlayer()
     private var snackbar: Snackbar? = null
@@ -555,9 +558,14 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 if (dialog == null) {
                     notified = true
                     runOnUiThread {
-                        dialog = showCriticalProcessorError(error) {
-                            dialog = null
-                        }
+                        dialog = showCriticalProcessorError(error, onRetry = {
+                                lifecycleScope.launch {
+                                    Initializer.erase(NighthawkWalletApp.instance, ZcashSdk.DEFAULT_ALIAS)
+                                    walletSetupViewModel.onRestore()
+                                    dialog = null
+                                }
+                            }
+                        )
                     }
                 }
             }
