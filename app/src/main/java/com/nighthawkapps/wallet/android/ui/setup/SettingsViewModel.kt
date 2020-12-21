@@ -1,5 +1,7 @@
 package com.nighthawkapps.wallet.android.ui.setup
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cash.z.ecc.android.sdk.Synchronizer
@@ -15,12 +17,16 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var synchronizer: Synchronizer
 
-    fun updateServer(host: String, port: Int) {
+    fun updateServer(context: Context, host: String, port: Int) {
         viewModelScope.launch {
             synchronizer.changeServer(host, port) { error ->
-                if (error == null) {
+                try {
                     com.nighthawkapps.wallet.android.ext.putString(SERVER_HOST, host)
                     com.nighthawkapps.wallet.android.ext.putInt(SERVER_PORT, port)
+                } finally {
+                    val restartIntent: Intent? = context.packageManager.getLaunchIntentForPackage(context.packageName)
+                    restartIntent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(restartIntent)
                 }
             }
         }

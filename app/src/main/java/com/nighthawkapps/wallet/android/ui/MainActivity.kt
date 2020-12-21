@@ -388,6 +388,27 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         }
     }
 
+    fun copyDonationAddress(view: View? = null) {
+        lifecycleScope.launch {
+            clipboard.setPrimaryClip(
+                ClipData.newPlainText(
+                    "Z-Address",
+                    getString(R.string.nighthawk_address)
+                )
+            )
+            showMessage("Donation Address copied!")
+        }
+    }
+
+    fun onLaunchUrl(url: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        } catch (t: Throwable) {
+            showMessage(getString(R.string.error_launch_url))
+            twig("Warning: failed to open browser due to $t")
+        }
+    }
+
     suspend fun isValidAddress(address: String): Boolean {
         try {
             return !synchronizerComponent.synchronizer().validateAddress(address).isNotValid
@@ -657,14 +678,5 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 savePref()
             }
             .show()
-    }
-
-    fun onLaunchUrl(url: String) {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-        } catch (t: Throwable) {
-            showMessage(getString(R.string.error_launch_url))
-            twig("Warning: failed to open browser due to $t")
-        }
     }
 }

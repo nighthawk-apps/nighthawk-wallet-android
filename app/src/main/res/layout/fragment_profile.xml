@@ -86,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.212"
+        app:layout_constraintVertical_bias="0.121"
         app:layout_constraintWidth_percent="0.7"
         app:srcCompat="@drawable/ic_logo" />
 
@@ -162,7 +162,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/hit_area_address"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.01" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_backup"
@@ -183,7 +183,7 @@
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:text="@string/donate_to_nighthawk"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
@@ -220,7 +220,7 @@
         android:id="@+id/hit_area_donate_address"
         android:layout_width="292dp"
         android:layout_height="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:onClick="copyDonationAddress"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
@@ -242,8 +242,10 @@
         android:textColor="@color/selector_button_text_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/hit_area_donate_address" />
+        app:layout_constraintTop_toBottomOf="@id/hit_area_donate_address"
+        app:layout_constraintVertical_bias="0.08" />
 
     <TextView
         android:id="@+id/text_version"
@@ -256,5 +258,23 @@
         android:textColor="@color/text_light_dimmed"
         app:layout_constraintBaseline_toBaselineOf="@id/text_banner_message"
         app:layout_constraintEnd_toEndOf="@id/text_banner_message" />
+
+    <TextView
+        android:id="@+id/text_notice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_banner"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/notice"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/selector_button_text_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toBottomOf="@id/text_banner_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

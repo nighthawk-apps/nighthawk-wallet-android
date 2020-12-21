@@ -4,6 +4,7 @@
     <string name="app_version">1.0.9</string>
     <string name="blank" />
     <string name="nighthawk_address">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
+    <string name="notice">If you are having trouble viewing incoming transactions. Please backup your wallet seed, uninstall &amp; reinstall Nighthawk to restore your wallet.</string>
 
     <!-- Send Flow -->
     <string name="no_balance">No Balance</string>
