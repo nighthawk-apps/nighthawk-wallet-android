@@ -9,10 +9,8 @@ import cash.z.ecc.android.sdk.tool.DerivationTool
 import cash.z.ecc.android.sdk.tool.WalletBirthdayTool
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.ext.Const
-import com.nighthawkapps.wallet.android.ext.SERVER_HOST
-import com.nighthawkapps.wallet.android.ext.SERVER_PORT
-import com.nighthawkapps.wallet.android.ext.getInt
-import com.nighthawkapps.wallet.android.ext.getString
+import com.nighthawkapps.wallet.android.ext.Const.SERVER_HOST
+import com.nighthawkapps.wallet.android.ext.Const.SERVER_PORT
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
 import kotlinx.coroutines.Dispatchers
@@ -92,8 +90,8 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
             ?: onMissingViewingKey()
         return Initializer.Config { config ->
             val birthdayHeight = loadBirthdayHeight() ?: onMissingBirthday()
-            val host = getString(SERVER_HOST, Const.Default.Server.HOST)
-            val port = getInt(SERVER_PORT, Const.Default.Server.PORT)
+            val host = prefs[SERVER_HOST] ?: Const.Default.Server.HOST
+            val port = prefs[SERVER_PORT] ?: Const.Default.Server.PORT
 
             config.importWallet(vk, birthdayHeight, host, port)
         }

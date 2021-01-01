@@ -8,15 +8,15 @@ object Deps {
     const val buildToolsVersion = "30.0.1"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.9"
-    const val versionCode = 1_00_09_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.10"
+    const val versionCode = 1_00_10_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.2.0-alpha01"
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.3.0-alpha02"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha01"
-        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.0-alpha1"
+        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.0-alpha2"
         const val CORE_KTX = "androidx.core:core-ktx:1.5.0-alpha05"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.3.0-rc01"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
@@ -62,7 +62,7 @@ object Deps {
         // solves error: Duplicate class com.google.common.util.concurrent.ListenableFuture found in modules jetified-guava-26.0-android.jar (com.google.guava:guava:26.0-android) and listenablefuture-1.0.jar (com.google.guava:listenablefuture:1.0)
         // per this recommendation from Chris Povirk, given guava's decision to split ListenableFuture away from Guava: https://groups.google.com/d/msg/guava-discuss/GghaKwusjcY/bCIAKfzOEwAJ
         const val GUAVA = "com.google.guava:guava:29.0-android"
-        const val MATERIAL = "com.google.android.material:material:1.3.0-alpha04"
+        const val MATERIAL = "com.google.android.material:material:1.3.0-beta01"
 
         // QR Scanner
         const val ML_VISION = "com.google.firebase:firebase-ml-vision:24.0.3"
@@ -101,7 +101,7 @@ object Deps {
     }
 
     object Misc {
-        const val LOTTIE = "com.airbnb.android:lottie:3.5.0"
+        const val LOTTIE = "com.airbnb.android:lottie:3.6.0"
         const val CHIPS = "com.github.gmale:chips-input-layout:2.3.1"
 
         object Plugins {

@@ -2,6 +2,9 @@ package com.nighthawkapps.wallet.android.ext
 
 object Const {
 
+    const val SERVER_HOST: String = "SERVER_HOST"
+    const val SERVER_PORT: String = "SERVER_PORT"
+
     /**
      * Named objects for Dependency Injection
      */

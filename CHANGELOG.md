@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.10 *(2021-01-01)*
+------------------------------------
+- Fix: Use LockBox Server Settings.
+- Update dependencies for material and lottie libs.
+- Remove donation box.
+
 Version 1.0.9 *(2020-12-20)*
 ------------------------------------
 - New: Upgrade to the latest Zcash SDK.

@@ -3,15 +3,12 @@
     <string name="app_name_full">Nighthawk Wallet</string>
     <string name="app_version">1.0.9</string>
     <string name="blank" />
-    <string name="nighthawk_address">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
-    <string name="notice">If you are having trouble viewing incoming transactions. Please backup your wallet seed, uninstall &amp; then reinstall Nighthawk to restore your wallet.</string>
 
     <!-- Send Flow -->
     <string name="no_balance">No Balance</string>
     <string name="fund_now">Fund Now</string>
     <string name="view_my_address">View My Address</string>
     <string name="side_shift">Fund with Sideshift</string>
-    <string name="donate_to_nighthawk">Donate to Nighthawk</string>
     <string name="backup_wallet">Backup Wallet</string>
     <string name="nighthawkwallet">\@nighthawkwallet</string>
     <string name="my_zcash_address">My Zcash Address</string>
