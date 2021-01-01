@@ -222,7 +222,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             } else {
                 resumedScope.launch {
                     binding.textAddressError.text = errorMessage
-                    delay(2500L)
+                    delay(25L)
                     binding.textAddressError.text = ""
                 }
             }

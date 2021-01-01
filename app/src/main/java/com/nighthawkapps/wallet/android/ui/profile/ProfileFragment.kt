@@ -30,7 +30,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.buttonBackup.setOnClickListener(View.OnClickListener {
             MaterialAlertDialogBuilder(view.context)
                 .setTitle("View Seed Words?")
-                .setMessage("WARNING: Make sure that you are the only one viewing your phone as your wallet seed key will be shown in the next screen.")
+                .setMessage("WARNING: Please make sure that you are the only one viewing your phone as your wallet seed key will be shown in the next screen.")
                 .setCancelable(false)
                 .setPositiveButton("View Seed") { dialog, _ ->
                     dialog.dismiss()
@@ -62,7 +62,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         super.onResume()
         resumedScope.launch {
             binding.textAddress.text = viewModel.getAddress().toAbbreviatedAddress(12, 12)
-            binding.textNighthawkAddress.text = getString(R.string.nighthawk_address).toAbbreviatedAddress(12, 12)
         }
     }
 }

@@ -287,7 +287,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         //  any complexity is taken care of at the library level.
         lifecycleScope.launch {
             while (mainViewModel.isLoading) {
-                delay(250L)
+                delay(25L)
             }
             (synchronizerComponent.synchronizer() as SdkSynchronizer).coroutineScope.launch {
                 block()
@@ -388,18 +388,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                 )
             )
             showMessage("Address copied!")
-        }
-    }
-
-    fun copyDonationAddress(view: View? = null) {
-        lifecycleScope.launch {
-            clipboard.setPrimaryClip(
-                ClipData.newPlainText(
-                    "Z-Address",
-                    getString(R.string.nighthawk_address)
-                )
-            )
-            showMessage("Donation Address copied!")
         }
     }
 
