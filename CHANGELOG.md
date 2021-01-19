@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.11 *(2021-01-18)*
+------------------------------------
+- Add price query via Nighthawk Server Cached Proxy.
+- Update dependencies & Zcash-SDK.
+
 Version 1.0.10 *(2021-01-01)*
 ------------------------------------
 - Fix: Use LockBox Server Settings.

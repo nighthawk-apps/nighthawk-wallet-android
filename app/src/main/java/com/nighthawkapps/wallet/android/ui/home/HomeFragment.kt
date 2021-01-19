@@ -21,10 +21,12 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
+import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
+import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.detail.TransactionAdapter
 import com.nighthawkapps.wallet.android.ui.detail.TransactionsFooter
@@ -150,9 +152,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.textBalanceAvailable.text = balance.availableZatoshi.convertZatoshiToZecString()
         val change = (balance.totalZatoshi - balance.availableZatoshi)
         binding.textBalanceDescription.apply {
-            goneIf(change <= 0L)
-            val changeString = change.convertZatoshiToZecString()
-            text = "(expecting +$changeString ZEC)".toColoredSpan(R.color.text_light, "+$changeString")
+            if (change <= 0L) {
+                if (walletViewModel.priceModel != null) {
+                    val usdPrice = walletViewModel.priceModel?.price!!.toFloat()
+                    val zecBalance = balance.availableZatoshi.convertZatoshiToZecString().toFloat()
+                    val usdTotal = "%.2f".format(usdPrice * zecBalance)
+                    text = "~$$usdTotal"
+                    visible()
+                } else {
+                    gone()
+                    walletViewModel.initPrice()
+                }
+            } else {
+                val changeString = change.convertZatoshiToZecString()
+                text = "(expecting +$changeString ZEC)".toColoredSpan(
+                    R.color.text_light,
+                    "+$changeString"
+                )
+                visible()
+            }
         }
     }
 
