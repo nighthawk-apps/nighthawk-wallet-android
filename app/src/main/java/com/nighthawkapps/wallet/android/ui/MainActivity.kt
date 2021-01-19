@@ -547,13 +547,15 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
                     notified = true
                     runOnUiThread {
                         dialog = showCriticalProcessorError(error, onRetry = {
-                                lifecycleScope.launch {
-                                    Initializer.erase(NighthawkWalletApp.instance, ZcashSdk.DEFAULT_ALIAS)
-                                    walletSetupViewModel.onRestore()
-                                    dialog = null
-                                }
+                            lifecycleScope.launch {
+                                Initializer.erase(
+                                    NighthawkWalletApp.instance,
+                                    ZcashSdk.DEFAULT_ALIAS
+                                )
+                                walletSetupViewModel.onRestore()
+                                dialog = null
                             }
-                        )
+                        })
                     }
                 }
             }
