@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Nighthawk</string>
     <string name="app_name_full">Nighthawk Wallet</string>
-    <string name="app_version">1.0.9</string>
     <string name="blank" />
 
     <!-- Send Flow -->
@@ -28,8 +27,8 @@
     <string name="restore">Restore</string>
     <string name="new_wallet">New</string>
     <string name="restoring_from_a_backup">Restoring from a backup</string>
-    <string name="enter_all_24_seed_words">You will need to enter all 24 seed words.\nDon\'t worry, we will find them as you type.</string>
-    <string name="enter_the_1st_seed_word">Enter the 1st seed word…</string>
+    <string name="enter_all_24_seed_words">You will need to enter all 24 seed words.\nPlease add space between each word.</string>
+    <string name="enter_the_1st_seed_word">Enter seed words here</string>
     <string name="enter_wallet_birthday_height_recommended">Enter wallet birthday height (recommended)</string>
     <string name="import_text">Import</string>
     <string name="success">Success</string>

@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.12 *(2021-01-20)*
+------------------------------------
+- Fix crash when restoring wallet.
+
 Version 1.0.11 *(2021-01-18)*
 ------------------------------------
 - Add price query via Nighthawk Server Cached Proxy.
