@@ -204,7 +204,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:elevation="6dp"
-        android:text="@string/app_version"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_light_dimmed"
         app:layout_constraintBaseline_toBaselineOf="@id/text_banner_message"

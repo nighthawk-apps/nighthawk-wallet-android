@@ -1,18 +1,12 @@
 package com.nighthawkapps.wallet.android.ui.setup
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.SystemClock
-import android.text.InputType
-import android.view.KeyEvent
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.MotionEvent.ACTION_DOWN
-import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
@@ -21,17 +15,27 @@ import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.showInvalidSeedPhraseError
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import com.tylersuehr.chips.Chip
-import com.tylersuehr.chips.ChipsAdapter
-import com.tylersuehr.chips.SeedWordAdapter
 import kotlinx.coroutines.launch
 
-class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListener {
+class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
-    private lateinit var seedWordRecycler: RecyclerView
-    private var seedWordAdapter: SeedWordAdapter? = null
+    private val textWatcher: TextWatcher by lazy {
+        object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null && s.isNotEmpty()) {
+                    binding.groupDone.goneIf(binding.seedInput.text.isNullOrBlank())
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        }
+    }
 
     override fun inflate(inflater: LayoutInflater): FragmentRestoreBinding =
         FragmentRestoreBinding.inflate(inflater)
@@ -39,30 +43,21 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        seedWordRecycler = binding.chipsInput.findViewById<RecyclerView>(R.id.chips_recycler)
-        seedWordAdapter = SeedWordAdapter(seedWordRecycler.adapter as ChipsAdapter).onDataSetChanged {
-            onChipsModified()
-        }.also { onChipsModified() }
-        seedWordRecycler.adapter = seedWordAdapter
-
-        binding.chipsInput.apply {
-            setFilterableChipList(getChips())
-            setDelimiter("[ ;,]", true)
-        }
-
+        binding.seedInput.addTextChangedListener(textWatcher)
         binding.buttonDone.setOnClickListener {
             onDone()
         }
-
         binding.buttonSuccess.setOnClickListener {
             onEnterWallet()
         }
+        binding.groupDone.visibility = View.GONE
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         mainActivity?.onFragmentBackPressed(this) {
-            if (seedWordAdapter == null || seedWordAdapter?.itemCount == 1) {
+            if (binding.seedInput.text.isNullOrBlank()) {
                 onExit()
             } else {
                 MaterialAlertDialogBuilder(requireContext())
@@ -80,14 +75,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        // Require one less tap to enter the seed words
-        touchScreenForUser()
-    }
-
     private fun onExit() {
-        hideAutoCompleteWords()
         mainActivity?.hideKeyboard()
         mainActivity?.navController?.popBackStack()
     }
@@ -98,9 +86,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
 
     private fun onDone() {
         mainActivity?.hideKeyboard()
-        val seedPhrase = binding.chipsInput.selectedChips.joinToString(" ") {
-            it.title
-        }
+        val seedPhrase = binding.seedInput.text.toString()
         val birthday = binding.root.findViewById<TextView>(R.id.input_birthdate).text.toString()
             .let { birthdateString ->
                 if (birthdateString.isNullOrEmpty()) ZcashSdk.SAPLING_ACTIVATION_HEIGHT else birthdateString.toInt()
@@ -131,59 +117,4 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         binding.groupSuccess.visibility = View.VISIBLE
         binding.buttonSuccess.isEnabled = false
     }
-
-    private fun onChipsModified() {
-        seedWordAdapter?.editText?.apply {
-            postDelayed({
-                requestFocus()
-            }, 40L)
-        }
-        setDoneEnabled()
-
-        view?.postDelayed({
-            mainActivity?.showKeyboard(seedWordAdapter!!.editText)
-            seedWordAdapter?.editText?.requestFocus()
-        }, 500L)
-    }
-
-    private fun setDoneEnabled() {
-        val count = seedWordAdapter?.itemCount ?: 0
-        binding.groupDone.goneIf(count <= 24)
-    }
-
-    private fun hideAutoCompleteWords() {
-        seedWordAdapter?.editText?.setText("")
-    }
-
-    private fun getChips(): List<Chip> {
-        return resources.getStringArray(R.array.word_list).map {
-            SeedWordChip(it)
-        }
-    }
-
-    private fun touchScreenForUser() {
-        seedWordAdapter?.editText?.apply {
-            postDelayed({
-                seedWordAdapter?.editText?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                dispatchTouchEvent(motionEvent(ACTION_DOWN))
-                dispatchTouchEvent(motionEvent(ACTION_UP))
-            }, 100L)
-        }
-    }
-
-    private fun motionEvent(action: Int) = SystemClock.uptimeMillis().let { now ->
-        MotionEvent.obtain(now, now, action, 0f, 0f, 0)
-    }
-
-    override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
-        return false
-    }
-}
-
-class SeedWordChip(val word: String, var index: Int = -1) : Chip() {
-    override fun getSubtitle(): String? = null // "subtitle for $word"
-    override fun getAvatarDrawable(): Drawable? = null
-    override fun getId() = index
-    override fun getTitle() = word
-    override fun getAvatarUri() = null
 }

@@ -34,22 +34,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_title" />
 
-    <com.tylersuehr.chips.ChipsInputLayout
-        android:id="@+id/chips_input"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/seed_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/zcashBlack_54"
         android:hint="@string/enter_the_1st_seed_word"
         android:paddingStart="16dp"
+        android:paddingTop="4dp"
         android:paddingEnd="16dp"
-        android:scrollbarStyle="outsideOverlay"
+        android:paddingBottom="4dp"
         android:textColor="@color/text_light"
         android:textColorHint="#757575"
-        app:allowCustomChips="false"
-        app:chip_showDelete="false"
-        app:chip_showDetails="true"
-        app:chip_textColor="@color/text_light_dimmed"
-        app:hideKeyboardOnChipClick="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_subtitle" />
@@ -60,14 +56,14 @@
         android:layout_height="1px"
         android:background="@color/text_light_dimmed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/chips_input" />
+        app:layout_constraintTop_toTopOf="@id/seed_input" />
 
     <View
         android:id="@+id/divider_bottom"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/text_light_dimmed"
-        app:layout_constraintBottom_toBottomOf="@id/chips_input"
+        app:layout_constraintBottom_toBottomOf="@id/seed_input"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -77,7 +73,7 @@
         android:layout_marginTop="16dp"
         android:hint="@string/enter_wallet_birthday_height_recommended"
         android:theme="@style/Nighthawk.Overlay.TextInputLayout"
-        app:helperText="e.g. 420690. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while."
+        app:helperText="e.g. 900000. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider_bottom"
@@ -160,12 +156,12 @@
         android:id="@+id/group_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="button_done, text_layout_birthdate" />
+        app:constraint_referenced_ids="button_done" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="text_title, text_subtitle, chips_input, divider_bottom, divider_top" />
+        app:constraint_referenced_ids="text_title, text_subtitle, seed_input, text_layout_birthdate, divider_bottom, divider_top" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

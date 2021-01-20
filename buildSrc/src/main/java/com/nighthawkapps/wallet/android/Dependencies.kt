@@ -8,8 +8,8 @@ object Deps {
     const val buildToolsVersion = "30.0.3"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.11"
-    const val versionCode = 1_00_11_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.12"
+    const val versionCode = 1_00_12_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -102,7 +102,6 @@ object Deps {
 
     object Misc {
         const val LOTTIE = "com.airbnb.android:lottie:3.6.0"
-        const val CHIPS = "com.github.gmale:chips-input-layout:2.3.1"
 
         object Plugins {
             const val SECURE_STORAGE = "com.github.gmale:secure-storage-android:0.0.3"
