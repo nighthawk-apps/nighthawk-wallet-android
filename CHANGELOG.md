@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.13 *(2021-01-24)*
+------------------------------------
+- Fix crash in magicsnakeloader.
+- Handle NumberFormatException.
+- Add donation address under Settings.
+
 Version 1.0.12 *(2021-01-20)*
 ------------------------------------
 - Fix crash when restoring wallet.
