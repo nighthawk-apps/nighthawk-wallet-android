@@ -154,11 +154,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.textBalanceDescription.apply {
             if (change <= 0L) {
                 if (walletViewModel.priceModel != null) {
-                    val usdPrice = walletViewModel.priceModel?.price!!.toFloat()
-                    val zecBalance = balance.availableZatoshi.convertZatoshiToZecString().toFloat()
-                    val usdTotal = "%.2f".format(usdPrice * zecBalance)
-                    text = "~$$usdTotal"
-                    visible()
+                    try {
+                        val usdPrice = walletViewModel.priceModel?.price!!.toFloat()
+                        val zecBalance = roundFloat(
+                            balance.availableZatoshi.convertZatoshiToZecString().toFloat()
+                        )
+                        val usdTotal = "%.2f".format(usdPrice * zecBalance)
+                        text = "~$$usdTotal"
+                        visible()
+                    } catch (e: NumberFormatException) {
+                        gone()
+                    }
                 } else {
                     gone()
                     walletViewModel.initPrice()
@@ -172,6 +178,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 visible()
             }
         }
+    }
+
+    private fun roundFloat(number: Float): Float {
+        var pow = 10
+        for (i in 1 until 2) pow *= 10
+        val tmp = number * pow
+        return ((if (tmp - tmp.toInt() >= 0.5f) tmp + 1 else tmp).toInt()).toFloat() / pow
     }
 
     private fun initTransactionUI() {

@@ -391,6 +391,18 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         }
     }
 
+    fun copyDonationAddress(view: View? = null) {
+        lifecycleScope.launch {
+            clipboard.setPrimaryClip(
+                ClipData.newPlainText(
+                    "Z-Address",
+                    getString(R.string.nighthawk_address)
+                )
+            )
+            showMessage("Donation Address copied! Please return Send Zcash for sending the donation.")
+        }
+    }
+
     fun onLaunchUrl(url: String) {
         try {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))

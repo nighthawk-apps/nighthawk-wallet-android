@@ -70,7 +70,7 @@ class MagicSnakeLoader(
 
         // if we are scanning, then set the animation progress, based on the scan progress
         // if we're not scanning, then we're looping
-        animation.currentFrame().let { frame ->
+        animation.currentFrame()?.let { frame ->
             if (isDownloading) allowLoop(frame) else applyScanProgress(frame)
         }
     }
@@ -137,7 +137,10 @@ class MagicSnakeLoader(
         }
     }
 
-    private fun ValueAnimator.currentFrame(): Int {
-        return ((animatedValue as Float) * totalFrames).toInt()
+    private fun ValueAnimator.currentFrame(): Int? {
+        animatedValue?.let {
+            return ((it as Float) * totalFrames).toInt()
+        }
+        return null
     }
 }

@@ -2,12 +2,15 @@
     <string name="app_name">Nighthawk</string>
     <string name="app_name_full">Nighthawk Wallet</string>
     <string name="blank" />
+    <string name="nighthawk_address_part">zs1nhawk....2dmr0sf</string>
+    <string name="nighthawk_address">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
 
     <!-- Send Flow -->
     <string name="no_balance">No Balance</string>
     <string name="fund_now">Fund Now</string>
     <string name="view_my_address">View My Address</string>
     <string name="side_shift">Fund with Sideshift</string>
+    <string name="donate_to_nighthawk">Donate to Nighthawk</string>
     <string name="backup_wallet">Backup Wallet</string>
     <string name="nighthawkwallet">\@nighthawkwallet</string>
     <string name="my_zcash_address">My Zcash Address</string>
@@ -65,7 +68,7 @@
     <string name="sideshift_affiliate_link">https://sideshift.ai/a/EqcQp4iUM</string>
     <string name="zcash_learn_more_link">https://z.cash/the-basics/</string>
     <string name="visit_zcash_link_description">Visit Z.cash website to learn more!</string>
-    <string name="visit_zcash_link_title">Zcash is private digital currency.</string>
+    <string name="visit_zcash_link_title">Zcash is digital money</string>
     <string name="last_used">Last Used</string>
     <string name="on_clipboard">On clipboard</string>
     <string name="include_reply_to">Include Reply-to</string>
@@ -326,6 +329,6 @@
     <!--    <string name="key_decimal">@string/custom_translation_decimal_key</string>-->
     <string name="mixpanel_project">a178e1ef062133fc121079cb12fa43c7</string>
     <string name="format_date_time">@string/custom_translation_format_date_time_brief</string>
-    <string name="loading">⏳ Loading...</string>
+    <string name="loading">⏳ Loading…</string>
 
 </resources>
