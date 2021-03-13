@@ -32,11 +32,13 @@ android {
         zcashtestnet {
             dimension 'network'
             applicationId 'com.nighthawkapps.wallet.android.testnet'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"testnet.lightwalletd.com"'
             matchingFallbacks = ['zcashtestnet', 'debug']
         }
 
         zcashmainnet {
             dimension 'network'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"mainnet.lightwalletd.com"'
             matchingFallbacks = ['zcashmainnet', 'release']
         }
     }

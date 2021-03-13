@@ -1,9 +1,11 @@
 package com.nighthawkapps.wallet.android.ext
 
+import com.nighthawkapps.wallet.android.BuildConfig
+
 object Const {
 
-    const val SERVER_HOST: String = "SERVER_HOST"
-    const val SERVER_PORT: String = "SERVER_PORT"
+    const val HOST_SERVER: String = "HOST_SERVER"
+    const val HOST_PORT: String = "HOST_PORT"
 
     /**
      * Named objects for Dependency Injection
@@ -35,7 +37,7 @@ object Const {
      */
     object Default {
         object Server {
-            const val HOST = "shielded.nighthawkwallet.com"
+            const val HOST = BuildConfig.DEFAULT_SERVER_URL
             const val PORT = 9067
         }
     }
