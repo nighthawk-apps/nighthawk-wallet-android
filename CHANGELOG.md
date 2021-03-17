@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.14 *(2021-03-17)*
+------------------------------------
+- Connect to lightwalletd.com service funded by ZOMG.
+- Remove Google Services dependency.
+- Support QR code scan on ZecPages.
+
 Version 1.0.13 *(2021-01-24)*
 ------------------------------------
 - Fix crash in magicsnakeloader.
