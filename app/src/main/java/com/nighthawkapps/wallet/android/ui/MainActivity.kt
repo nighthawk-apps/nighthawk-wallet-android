@@ -52,7 +52,6 @@ import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import cash.z.ecc.android.sdk.ext.twig
-import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
@@ -75,9 +74,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val ERROR_DIALOG_REQUEST_CODE = 1
-
-class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListener {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var clipboard: ClipboardManager
@@ -91,7 +88,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
     val isInitialized get() = ::synchronizerComponent.isInitialized
 
     private val historyViewModel: HistoryViewModel by activityViewModel()
-    private var retryProviderInstall: Boolean = false
     private val mediaPlayer: MediaPlayer = MediaPlayer()
     private var snackbar: Snackbar? = null
     private var dialog: Dialog? = null
@@ -121,12 +117,7 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
             it.inject(this)
         }
         super.onCreate(savedInstanceState)
-        try {
-            ProviderInstaller.installIfNeeded(this)
-            // Fix for AssertionError: Method getAlpnSelectedProtocol not supported for object SSL socket over Socket
-        } catch (t: Throwable) {
-            twig("Warning GooglePlayServices not available. Ignoring call to initialize ProviderInstaller.")
-        }
+
         setContentView(R.layout.main_activity)
         initNavigation()
         initLoadScreen()
@@ -139,46 +130,6 @@ class MainActivity : AppCompatActivity(), ProviderInstaller.ProviderInstallListe
         )
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, false)
-    }
-
-    /**
-     * This method is only called if the provider is successfully updated
-     * (or is already up-to-date).
-     */
-    override fun onProviderInstalled() {
-    }
-
-    /**
-     * This method is called if updating fails; the error code indicates
-     * whether the error is recoverable.
-     */
-    override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent) {
-        twig("Warning onProviderInstallFailed. recoveryIntent:" + recoveryIntent.action)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == ERROR_DIALOG_REQUEST_CODE) {
-            // Adding a fragment via GoogleApiAvailability.showErrorDialogFragment
-            // before the instance state is restored throws an error. So instead,
-            // set a flag here, which will cause the fragment to delay until
-            // onPostResume.
-            retryProviderInstall = true
-        }
-    }
-
-    override fun onPostResume() {
-        super.onPostResume()
-        if (retryProviderInstall) {
-            // We can now safely retry installation.
-            try {
-                ProviderInstaller.installIfNeededAsync(this, this)
-                // Fix for AssertionError: Method getAlpnSelectedProtocol not supported for object SSL socket over Socket
-            } catch (t: Throwable) {
-                twig("Warning GooglePlayServices not available. Ignoring call to initialize ProviderInstaller.")
-            }
-        }
-        retryProviderInstall = false
     }
 
     private fun setWindowFlag(bits: Int, on: Boolean) {

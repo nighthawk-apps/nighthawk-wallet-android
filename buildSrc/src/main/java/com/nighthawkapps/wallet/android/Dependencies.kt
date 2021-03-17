@@ -16,16 +16,16 @@ object Deps {
         const val ANNOTATION = "androidx.annotation:annotation:1.2.0-rc01"
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.3.0-beta01"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha03"
-        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.0-alpha2"
-        const val CORE_KTX = "androidx.core:core-ktx:1.5.0-beta02"
-        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.3.0"
+        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.0-beta01"
+        const val CORE_KTX = "androidx.core:core-ktx:1.5.0-beta03"
+        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.3.1"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
-        const val PAGING = "androidx.paging:paging-runtime-ktx:3.0.0-beta01"
+        const val PAGING = "androidx.paging:paging-runtime-ktx:3.0.0-beta02"
         const val RECYCLER = "androidx.recyclerview:recyclerview:1.2.0-beta02"
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
 
-        object CameraX : Version("1.1.0-alpha02") {
+        object CameraX : Version("1.1.0-rc02") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
             val CORE = "androidx.camera:camera-core:$version"
             val LIFECYCLE = "androidx.camera:camera-lifecycle:$version"
@@ -41,7 +41,7 @@ object Deps {
             val LIFECYCLE_EXTENSIONS = "androidx.lifecycle:lifecycle-extensions:$version"
         }
 
-        object Navigation : Version("2.3.2") {
+        object Navigation : Version("2.3.4") {
             val FRAGMENT_KTX = "androidx.navigation:navigation-fragment-ktx:$version"
             val UI_KTX = "androidx.navigation:navigation-ui-ktx:$version"
         }
@@ -63,9 +63,6 @@ object Deps {
         // per this recommendation from Chris Povirk, given guava's decision to split ListenableFuture away from Guava: https://groups.google.com/d/msg/guava-discuss/GghaKwusjcY/bCIAKfzOEwAJ
         const val GUAVA = "com.google.guava:guava:30.1-android"
         const val MATERIAL = "com.google.android.material:material:1.3.0"
-
-        // QR Scanner
-        const val ML_VISION = "com.google.firebase:firebase-ml-vision:24.0.3"
     }
 
     object Grpc : Version("1.36.0") {
