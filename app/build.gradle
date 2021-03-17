@@ -4,7 +4,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
 
 archivesBaseName = 'nighthawk-android-wallet'
 group = 'com.nighthawkapps.wallet.android'
@@ -32,11 +31,13 @@ android {
         zcashtestnet {
             dimension 'network'
             applicationId 'com.nighthawkapps.wallet.android.testnet'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"testnet.lightwalletd.com"'
             matchingFallbacks = ['zcashtestnet', 'debug']
         }
 
         zcashmainnet {
             dimension 'network'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"mainnet.lightwalletd.com"'
             matchingFallbacks = ['zcashmainnet', 'release']
         }
     }
@@ -137,7 +138,6 @@ dependencies {
     // Google
     implementation Deps.Google.GUAVA
     implementation Deps.Google.MATERIAL
-    implementation Deps.Google.ML_VISION // QR Scanner
 
     // Dagger
     implementation Deps.Dagger.ANDROID_SUPPORT
@@ -153,6 +153,7 @@ dependencies {
 
     // Misc.
     implementation Deps.Misc.LOTTIE
+    implementation Deps.Misc.Plugins.QR_SCANNER
 
     // Tests
     testImplementation Deps.Test.COROUTINES_TEST

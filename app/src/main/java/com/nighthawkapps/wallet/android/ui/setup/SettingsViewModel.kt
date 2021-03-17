@@ -29,11 +29,11 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     var pendingPortText by Delegates.observable("", ::onUpdateModel)
 
     private fun getHost(): String {
-        return prefs[Const.SERVER_HOST] ?: Const.Default.Server.HOST
+        return prefs[Const.HOST_SERVER] ?: Const.Default.Server.HOST
     }
 
     private fun getPort(): Int {
-        return prefs[Const.SERVER_PORT] ?: Const.Default.Server.PORT
+        return prefs[Const.HOST_PORT] ?: Const.Default.Server.PORT
     }
 
     fun init() {
@@ -59,8 +59,8 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
             error = it
         }
         if (error == null) {
-            prefs[Const.SERVER_HOST] = host
-            prefs[Const.SERVER_PORT] = port
+            prefs[Const.HOST_SERVER] = host
+            prefs[Const.HOST_PORT] = port
         }
         uiModels.value = uiModels.value.copy(changeError = error, complete = true)
     }

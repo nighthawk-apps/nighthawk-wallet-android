@@ -1,62 +1,63 @@
 package com.nighthawkapps.wallet.android.ui.scan
 
+import android.content.res.Resources
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import cash.z.ecc.android.sdk.ext.retrySimple
-import cash.z.ecc.android.sdk.ext.twig
-import com.google.android.gms.tasks.Task
-import com.google.firebase.ml.vision.FirebaseVision
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.MultiFormatReader
+import com.google.zxing.PlanarYUVLuminanceSource
+import com.google.zxing.Reader
+import com.google.zxing.common.HybridBinarizer
 
 class QrAnalyzer(val scanCallback: (qrContent: String, image: ImageProxy) -> Unit) :
     ImageAnalysis.Analyzer {
-    private val detector: FirebaseVisionBarcodeDetector by lazy {
-        val options = FirebaseVisionBarcodeDetectorOptions.Builder()
-            .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE)
-            .build()
-        FirebaseVision.getInstance().getVisionBarcodeDetector(options)
-    }
 
-    var pendingTask: Task<out Any>? = null
+    private val reader = MultiFormatReader()
 
     override fun analyze(image: ImageProxy) {
-        var rotation = image.imageInfo.rotationDegrees % 360
-        if (rotation < 0) {
-            rotation += 360
-        }
-
-        retrySimple {
-            val mediaImage = FirebaseVisionImage.fromMediaImage(
-                image.image!!, when (rotation) {
-                    0 -> FirebaseVisionImageMetadata.ROTATION_0
-                    90 -> FirebaseVisionImageMetadata.ROTATION_90
-                    180 -> FirebaseVisionImageMetadata.ROTATION_180
-                    270 -> FirebaseVisionImageMetadata.ROTATION_270
-                    else -> {
-                        FirebaseVisionImageMetadata.ROTATION_0
-                    }
-                }
-            )
-            pendingTask = detector.detectInImage(mediaImage).also {
-                it.addOnSuccessListener { result ->
-                    onImageScan(result, image)
-                }
-                it.addOnFailureListener(::onImageScanFailure)
+        image.toBinaryBitmap().let { bitmap ->
+            val qrContent = bitmap.decodeWith(reader) ?: bitmap.flip().decodeWith(reader)
+            if (qrContent == null) {
+                image.close()
+            } else {
+                onImageScan(qrContent, image)
             }
         }
     }
 
-    private fun onImageScan(result: List<FirebaseVisionBarcode>, image: ImageProxy) {
-        result.firstOrNull()?.rawValue?.let {
-            scanCallback(it, image)
-        } ?: runCatching { image.close() }
+    private fun ImageProxy.toBinaryBitmap(): BinaryBitmap {
+        return planes[0].buffer.let { buffer ->
+            ByteArray(buffer.remaining()).also { buffer.get(it) }
+        }.let { bytes ->
+            PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false)
+        }.let { source ->
+            BinaryBitmap(HybridBinarizer(source))
+        }
     }
 
-    private fun onImageScanFailure(e: Exception) {
-        twig("Warning: Image scan failed")
+    private fun BinaryBitmap.decodeWith(reader: Reader): String? {
+        return try {
+            reader.decode(this).toString()
+        } catch (e: Resources.NotFoundException) {
+            // these happen frequently. Whenever no QR code is found in the frame. No need to log.
+            null
+        } catch (e: Throwable) {
+            null
+        }
+    }
+
+    private fun BinaryBitmap.flip(): BinaryBitmap {
+        blackMatrix.apply {
+            repeat(width) { w ->
+                repeat(height) { h ->
+                    flip(w, h)
+                }
+            }
+        }
+        return this
+    }
+
+    private fun onImageScan(result: String, image: ImageProxy) {
+        scanCallback(result, image)
     }
 }
