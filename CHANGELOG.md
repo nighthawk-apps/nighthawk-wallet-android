@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.15 *(2021-03-21)*
+------------------------------------
+- Fix block rescan error.
+
 Version 1.0.14 *(2021-03-17)*
 ------------------------------------
 - Connect to lightwalletd.com service funded by ZOMG.

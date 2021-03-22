@@ -1,5 +1,5 @@
 # Nighthawk Wallet
-An Android wallet using the Zcash Android SDK that is maintained by nighthawk apps.
+Zcash wallet using the Zcash Android SDK that is maintained by nighthawk apps.
 
 ### Download
 
