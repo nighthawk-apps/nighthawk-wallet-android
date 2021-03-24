@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.16 *(2021-03-24)*
+------------------------------------
+- Better handling around unsatisfied link errors.
+
 Version 1.0.15 *(2021-03-21)*
 ------------------------------------
 - Fix block rescan error.

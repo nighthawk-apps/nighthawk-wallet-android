@@ -293,6 +293,8 @@
     <string name="dialog_error_processor_critical_button_rescan">Rescan</string>
     <string name="dialog_error_processor_critical_message">Critical error while processing blocks! \n\n Would you like to wait it out? Exit the app? \nOr attempt to fix this issue by rescanning the blockchain (which could take a while)?</string>
     <string name="dialog_error_processor_critical_title">Processor Error</string>
+    <string name="dialog_error_critical_link_title">Oh no! Invalid Build!</string>
+    <string name="dialog_error_critical_link_message">Unfortunately, the Rust libraries are missing and the only remedy is to update to a new version.\n\n(Note to developers: try commenting out mavenLocal).</string>
     <string name="dialog_error_scan_button_negative">Ignore</string>
     <string name="dialog_error_scan_button_positive">Retry</string>
     <string name="dialog_error_scan_failure_button_negative">Ignore</string>

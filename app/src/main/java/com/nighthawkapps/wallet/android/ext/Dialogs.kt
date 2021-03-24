@@ -3,6 +3,7 @@ package com.nighthawkapps.wallet.android.ext
 import android.app.ActivityManager
 import android.app.Dialog
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
@@ -79,6 +80,18 @@ fun Context.showScanFailure(error: Throwable?, onCancel: () -> Unit = {}, onDism
         .show()
 }
 
+fun Context.showCriticalMessage(@StringRes titleResId: Int, @StringRes messageResId: Int, onDismiss: () -> Unit = {}): Dialog {
+    return MaterialAlertDialogBuilder(this)
+        .setTitle(titleResId)
+        .setMessage(messageResId)
+        .setCancelable(false)
+        .setPositiveButton(android.R.string.ok) { d, _ ->
+            d.dismiss()
+            onDismiss()
+        }
+        .show()
+}
+
 fun Context.showCriticalProcessorError(
     error: Throwable?,
     onRetry: () -> Unit
@@ -128,3 +141,17 @@ fun Context.showUpdateServerDialog(positiveResId: Int = R.string.dialog_modify_s
         }
         .show()
 }
+
+/**
+ * Error to show when the Rust libraries did not properly link. This problem can happen pretty often
+ * during development when a build of the SDK failed to compile and resulted in an AAR file with no
+ * shared libraries (*.so files) inside. In theory, this should never be seen by an end user but if
+ * it does occur it is better to show a clean message explaining the situation. Nothing can be done
+ * other than rebuilding the SDK or switching to a functional version.
+ * As a developer, this error probably means that you need to comment out mavenLocal() as a repo.
+ */
+fun Context.showSharedLibraryCriticalError(e: Throwable): Dialog = showCriticalMessage(
+    titleResId = R.string.dialog_error_critical_link_title,
+    messageResId = R.string.dialog_error_critical_link_message,
+    onDismiss = { throw e }
+)

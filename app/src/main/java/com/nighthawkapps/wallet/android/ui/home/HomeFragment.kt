@@ -25,6 +25,7 @@ import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
+import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
@@ -69,7 +70,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             } else {
                 twig("Found seed. Re-opening existing wallet")
                 mainActivity?.setLoading(true)
-                mainActivity?.startSync(walletSetup.openStoredWallet())
+                try {
+                    mainActivity?.startSync(walletSetup.openStoredWallet())
+                } catch (e: UnsatisfiedLinkError) {
+                    mainActivity?.showSharedLibraryCriticalError(e)
+                }
             }
         }.launchIn(lifecycleScope)
     }

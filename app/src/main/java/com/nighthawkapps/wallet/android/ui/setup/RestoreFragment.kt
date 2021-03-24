@@ -14,6 +14,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentRestoreBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.showInvalidSeedPhraseError
+import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.launch
 
@@ -104,12 +105,16 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         mainActivity?.hideKeyboard()
         mainActivity?.apply {
             lifecycleScope.launch {
-                mainActivity?.startSync(walletSetup.importWallet(seedPhrase, birthday))
-                // bugfix: if the user proceeds before the synchronizer is created the app will crash!
-                binding.buttonSuccess.isEnabled = true
+                try {
+                    mainActivity?.startSync(walletSetup.importWallet(seedPhrase, birthday))
+                    // bugfix: if the user proceeds before the synchronizer is created the app will crash!
+                    binding.buttonSuccess.isEnabled = true
+                    playSound("sound_receive_small.mp3")
+                    vibrateSuccess()
+                } catch (e: UnsatisfiedLinkError) {
+                    mainActivity?.showSharedLibraryCriticalError(e)
+                }
             }
-            playSound("sound_receive_small.mp3")
-            vibrateSuccess()
         }
 
         binding.groupDone.visibility = View.GONE

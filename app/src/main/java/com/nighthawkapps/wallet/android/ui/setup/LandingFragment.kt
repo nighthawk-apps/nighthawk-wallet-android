@@ -10,6 +10,7 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentLandingBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.locale
+import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITHOUT_BACKUP
@@ -101,8 +102,19 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 binding.buttonPositive.setText(R.string.landing_button_primary_create_success)
                 mainActivity?.playSound("sound_receive_small.mp3")
                 mainActivity?.vibrateSuccess()
+            } catch (e: UnsatisfiedLinkError) {
+                // For developer sanity:
+                // show a nice dialog, rather than a toast, when the rust didn't get compile
+                // which can happen often when working from a local SDK build
+                mainActivity?.showSharedLibraryCriticalError(e)
             } catch (t: Throwable) {
-                Toast.makeText(context, "Failed to create wallet", Toast.LENGTH_SHORT).show()
+                binding.buttonPositive.isEnabled = true
+                binding.buttonPositive.setText(R.string.landing_button_primary)
+                Toast.makeText(
+                    context,
+                    "Failed to create wallet. See logs for details. Try restarting the app.\n\nMessage: \n${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

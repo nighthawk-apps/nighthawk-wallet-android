@@ -3,13 +3,13 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.4.31"
+    const val kotlinVersion = "1.4.32"
     const val compileSdkVersion = 30
     const val buildToolsVersion = "30.0.3"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.15"
-    const val versionCode = 1_00_15_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.16"
+    const val versionCode = 1_00_16_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -37,7 +37,7 @@ object Deps {
         }
 
         object Lifecycle : Version("2.2.0") {
-            val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
+            val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0"
             val LIFECYCLE_EXTENSIONS = "androidx.lifecycle:lifecycle-extensions:$version"
         }
 
@@ -61,7 +61,7 @@ object Deps {
     object Google {
         // solves error: Duplicate class com.google.common.util.concurrent.ListenableFuture found in modules jetified-guava-26.0-android.jar (com.google.guava:guava:26.0-android) and listenablefuture-1.0.jar (com.google.guava:listenablefuture:1.0)
         // per this recommendation from Chris Povirk, given guava's decision to split ListenableFuture away from Guava: https://groups.google.com/d/msg/guava-discuss/GghaKwusjcY/bCIAKfzOEwAJ
-        const val GUAVA = "com.google.guava:guava:30.1-android"
+        const val GUAVA = "com.google.guava:guava:30.1.1-android"
         const val MATERIAL = "com.google.android.material:material:1.3.0"
     }
 
@@ -80,7 +80,7 @@ object Deps {
     object Kotlin : Version(kotlinVersion) {
         val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
-        object Coroutines : Version("1.4.2") {
+        object Coroutines : Version("1.4.3") {
             val ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             val TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -120,4 +120,3 @@ object Deps {
 }
 
 open class Version(@JvmField val version: String)
-
