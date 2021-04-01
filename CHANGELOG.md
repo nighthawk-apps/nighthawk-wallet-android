@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.17 *(2021-03-31)*
+------------------------------------
+- Switch price endpoint to api.lightwalletd.com
+
 Version 1.0.16 *(2021-03-24)*
 ------------------------------------
 - Better handling around unsatisfied link errors.

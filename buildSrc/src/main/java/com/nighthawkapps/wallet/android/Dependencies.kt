@@ -8,8 +8,8 @@ object Deps {
     const val buildToolsVersion = "30.0.3"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.16"
-    const val versionCode = 1_00_16_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.17"
+    const val versionCode = 1_00_17_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {

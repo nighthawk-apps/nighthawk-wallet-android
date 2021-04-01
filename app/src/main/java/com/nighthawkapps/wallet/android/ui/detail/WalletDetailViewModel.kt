@@ -34,7 +34,7 @@ class WalletDetailViewModel @Inject constructor() : ViewModel() {
             supervisorScope {
                 if (priceModel == null) {
                     val client = OkHttpClient()
-                    val urlBuilder = HttpUrl.parse("https://api.nighthawkwallet.com/price.json").newBuilder()
+                    val urlBuilder = HttpUrl.parse("https://api.lightwalletd.com/price.json").newBuilder()
                     val url = urlBuilder.build().toString()
                     val request: Request = Request.Builder().url(url).build()
                     val gson = Gson()
