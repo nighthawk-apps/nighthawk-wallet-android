@@ -106,8 +106,7 @@ dependencies {
 
     // Zcash
     implementation Deps.Zcash.ANDROID_WALLET_PLUGINS
-    zcashtestnetImplementation Deps.Zcash.Sdk.TESTNET
-    zcashmainnetImplementation Deps.Zcash.Sdk.MAINNET
+    zcashmainnetImplementation Deps.Zcash.SDK
 
     //  Kotlin
     implementation Deps.Kotlin.STDLIB
