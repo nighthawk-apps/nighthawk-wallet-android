@@ -125,15 +125,34 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun onMissingBirthday(network: ZcashNetwork): Int = failWith(InitializerException.MissingBirthdayException) {
+        twig("Warning: Birthday was missing. We will fall back to sapling activation. This may be worth messaging to the user.")
         loadNearestBirthday(network, network.saplingActivationHeight).height
     }
 
     private fun loadNearestBirthday(network: ZcashNetwork, birthdayHeight: Int? = null) =
         WalletBirthdayTool.loadNearest(NighthawkWalletApp.instance, network, birthdayHeight)
 
-    // TODO: simplify this tremendously for nighthawk purposes
     private suspend fun onMissingViewingKey(network: ZcashNetwork): UnifiedViewingKey {
-        throw InitializerException.MissingViewingKeyException
+        twig("Viewing key was missing attempting migration")
+        var migrationViewingKey: UnifiedViewingKey? = null
+        var ableToLoadSeed = false
+        try {
+            val seed = lockBox.getBytes(Const.Backup.SEED)!!
+            ableToLoadSeed = true
+            migrationViewingKey = DerivationTool.deriveUnifiedViewingKeys(seed, network)[0]
+        } catch (t: Throwable) {
+            twig("Failed to migrate viewing key. This is an non-recoverable error.")
+        }
+
+        // this will happen during rare upgrade scenarios when the user migrates from a seed-only wallet to this vk-based version
+        // or during more common scenarios where the user migrates from a vk only wallet to a unified vk wallet
+        if (migrationViewingKey != null) {
+            // at this point we store the migrated key and future launches will work as expected, without this migration step
+            storeUnifiedViewingKey(migrationViewingKey)
+            return migrationViewingKey
+        } else {
+            throw InitializerException.MissingViewingKeyException
+        }
     }
 
     //
