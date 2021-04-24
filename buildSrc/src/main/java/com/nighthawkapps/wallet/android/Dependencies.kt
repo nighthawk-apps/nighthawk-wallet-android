@@ -65,7 +65,7 @@ object Deps {
         const val MATERIAL = "com.google.android.material:material:1.3.0"
     }
 
-    object Grpc : Version("1.34.1") {
+    object Grpc : Version("1.37.0") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
