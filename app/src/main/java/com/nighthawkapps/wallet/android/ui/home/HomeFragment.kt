@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
 import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
-import cash.z.ecc.android.sdk.block.CompactBlockProcessor
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.collectWith
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.ext.twig
+import cash.z.ecc.android.sdk.type.WalletBalance
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
@@ -35,8 +35,8 @@ import com.nighthawkapps.wallet.android.ui.detail.WalletDetailViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scanReduce
 import kotlinx.coroutines.isActive
@@ -153,7 +153,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun onBalanceUpdated(balance: CompactBlockProcessor.WalletBalance) {
+    private fun onBalanceUpdated(balance: WalletBalance) {
         binding.textBalanceAvailable.text = balance.availableZatoshi.convertZatoshiToZecString()
         val change = (balance.totalZatoshi - balance.availableZatoshi)
         binding.textBalanceDescription.apply {

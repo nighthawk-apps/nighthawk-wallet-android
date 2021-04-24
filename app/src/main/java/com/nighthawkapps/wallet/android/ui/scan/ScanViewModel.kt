@@ -10,6 +10,8 @@ class ScanViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var synchronizer: Synchronizer
 
+    val networkName get() = synchronizer.network.networkName
+
     suspend fun parse(qrCode: String): String? {
         // Temporary parse code to allow both plain addresses and those that start with Zcash
         // TODO: Replace with more robust ZIP-321 handling of QR codes

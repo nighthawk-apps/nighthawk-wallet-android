@@ -1,0 +1,3 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="api_block_explorer">https://blockchair.com/zcash/transaction/%1$s</string>
+</resources>

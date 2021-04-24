@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import cash.z.ecc.android.sdk.ext.ZcashSdk
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentRestoreBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -88,10 +88,12 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
     private fun onDone() {
         mainActivity?.hideKeyboard()
         val seedPhrase = binding.seedInput.text.toString()
-        val birthday = binding.root.findViewById<TextView>(R.id.input_birthdate).text.toString()
+        // we only use the default network here because the synchronizer doesn't exist yet
+        val activation = NighthawkWalletApp.instance.defaultNetwork.saplingActivationHeight
+        var birthday = binding.root.findViewById<TextView>(R.id.input_birthdate).text.toString()
             .let { birthdateString ->
-                if (birthdateString.isNullOrEmpty()) ZcashSdk.SAPLING_ACTIVATION_HEIGHT else birthdateString.toInt()
-            }.coerceAtLeast(ZcashSdk.SAPLING_ACTIVATION_HEIGHT)
+                if (birthdateString.isNullOrEmpty()) activation else birthdateString.toInt()
+            }.coerceAtLeast(activation)
 
         try {
             walletSetup.validatePhrase(seedPhrase)

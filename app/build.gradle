@@ -137,6 +137,8 @@ dependencies {
     // Google
     implementation Deps.Google.GUAVA
     implementation Deps.Google.MATERIAL
+    // TODO: move this
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     // Dagger
     implementation Deps.Dagger.ANDROID_SUPPORT

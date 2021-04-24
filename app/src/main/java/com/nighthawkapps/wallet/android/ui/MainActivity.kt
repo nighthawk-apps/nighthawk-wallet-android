@@ -511,11 +511,12 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread {
                         dialog = showCriticalProcessorError(error, onRetry = {
                             lifecycleScope.launch {
-                                Initializer.erase(
-                                    NighthawkWalletApp.instance,
-                                    ZcashSdk.DEFAULT_ALIAS
-                                )
-                                walletSetupViewModel.onRestore()
+                                // TODO: give a WIPE option here, instead of auto-erase. Perhaps a rescan popup?
+//                                Initializer.erase(
+//                                    NighthawkWalletApp.instance,
+//                                    ZcashSdk.DEFAULT_ALIAS
+//                                )
+//                                walletSetupViewModel.onRestore()
                                 dialog = null
                             }
                         })
