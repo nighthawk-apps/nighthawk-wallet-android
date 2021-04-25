@@ -122,12 +122,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             twig("uiModel exists!")
             onModelUpdated(null, uiModel)
         }
+
+        initTransactionUI()
     }
 
     override fun onResume() {
         super.onResume()
         mainActivity?.launchWhenSyncing {
-            initTransactionUI()
+            walletViewModel.transactions.collectWith(resumedScope) { onTransactionsUpdated(it) }
             walletViewModel.balance.collectWith(resumedScope) {
                 onBalanceUpdated(it)
             }
@@ -201,7 +203,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             adapter = this@HomeFragment.adapter
             scrollToTop()
         }
-        walletViewModel.transactions.collectWith(resumedScope) { onTransactionsUpdated(it) }
     }
 
     private fun onTransactionsUpdated(transactions: PagedList<ConfirmedTransaction>) {
