@@ -21,12 +21,14 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
+import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
+import com.nighthawkapps.wallet.android.ext.toTxId
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.detail.TransactionAdapter
@@ -34,9 +36,10 @@ import com.nighthawkapps.wallet.android.ui.detail.TransactionsFooter
 import com.nighthawkapps.wallet.android.ui.detail.WalletDetailViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
+import com.nighthawkapps.wallet.android.ui.util.NotificationHelper
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scanReduce
 import kotlinx.coroutines.isActive
@@ -52,6 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val walletViewModel: WalletDetailViewModel by activityViewModel()
 
     lateinit var snake: MagicSnakeLoader
+    lateinit var receivedTransactionList: PagedList<ConfirmedTransaction>
 
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
 
@@ -126,6 +130,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
+        walletViewModel.receivedTransactions.collectWith(resumedScope) {
+            if (it.size > 0) {
+                receivedTransactionList = it
+            }
+        }
         mainActivity?.launchWhenSyncing {
             initTransactionUI()
             walletViewModel.balance.collectWith(resumedScope) {
@@ -160,6 +169,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             if (change <= 0L) {
                 if (walletViewModel.priceModel != null) {
                     try {
+                        walletSetup.prefs.delete(Const.BalanceNotification.TRANSACTION_KEY) // delete all transactions raw id once amount is settled
                         val usdPrice = walletViewModel.priceModel?.price!!.toFloat()
                         val zecBalance = roundFloat(
                             balance.availableZatoshi.convertZatoshiToZecString().toFloat()
@@ -181,6 +191,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     "+$changeString"
                 )
                 visible()
+                if (this@HomeFragment::receivedTransactionList.isInitialized) {
+                    showBalanceExpectingNotification(change)
+                }
+            }
+        }
+    }
+
+    private fun showBalanceExpectingNotification(balanceChange: Long) {
+        if (this::receivedTransactionList.isInitialized && receivedTransactionList.size > 0) {
+            if (balanceChange > 0L) {
+                walletSetup.prefs.getChunkedString(Const.BalanceNotification.TRANSACTION_KEY).let {
+                    val transactionRawId = receivedTransactionList[0]?.rawTransactionId?.toTxId() ?: ""
+                    if (it == null || !it?.contains(transactionRawId, true)) {
+                        NotificationHelper.showBalanceNotification(
+                            requireContext(),
+                            getString(R.string.balance_expecting_notification_title, balanceChange.convertZatoshiToZecString()),
+                            getString(R.string.balance_expecting_notification_desc)
+                        )
+                        walletSetup.prefs.set(Const.BalanceNotification.TRANSACTION_KEY, transactionRawId)
+                    }
+                }
             }
         }
     }

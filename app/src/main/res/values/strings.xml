@@ -333,4 +333,7 @@
     <string name="format_date_time">@string/custom_translation_format_date_time_brief</string>
     <string name="loading">⏳ Loading…</string>
 
+    <string name="balance_expecting_notification_title">Received %s ZEC</string>
+    <string name="balance_expecting_notification_desc">Tap here to open Nighthawk</string>
+
 </resources>

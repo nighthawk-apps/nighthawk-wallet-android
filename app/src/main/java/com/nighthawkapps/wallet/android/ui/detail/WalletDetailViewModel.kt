@@ -24,6 +24,7 @@ class WalletDetailViewModel @Inject constructor() : ViewModel() {
     lateinit var synchronizer: Synchronizer
 
     val transactions get() = synchronizer.clearedTransactions
+    val receivedTransactions get() = synchronizer.receivedTransactions
     val balance get() = synchronizer.balances
     var priceModel: PriceModel? = null
 

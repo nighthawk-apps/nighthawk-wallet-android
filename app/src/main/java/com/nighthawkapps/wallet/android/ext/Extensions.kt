@@ -35,3 +35,11 @@ inline fun Context.locale(): Locale {
         resources.configuration.locale
     }
 }
+
+fun ByteArray.toTxId(): String {
+    val sb = StringBuilder(size * 2)
+    for (i in (size - 1) downTo 0) {
+        sb.append(String.format("%02x", this[i]))
+    }
+    return sb.toString()
+}
