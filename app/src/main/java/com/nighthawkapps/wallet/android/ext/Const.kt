@@ -41,4 +41,8 @@ object Const {
             const val PORT = 9067
         }
     }
+
+    object BalanceNotification {
+        const val TRANSACTION_KEY = "transaction_key"
+    }
 }
