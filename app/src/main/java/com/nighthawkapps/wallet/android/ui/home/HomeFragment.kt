@@ -260,9 +260,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             uiModel.status == DISCONNECTED -> "Reconnecting . . ."
             uiModel.isSynced -> if (uiModel.hasFunds) "Send Zcash" else "NO FUNDS AVAILABLE"
             uiModel.status == STOPPED -> "IDLE"
-            uiModel.isDownloading -> "Downloading . . . ${snake.downloadProgress}%"
+            uiModel.isDownloading -> {
+                when (snake.downloadProgress) {
+                    0 -> "Preparing to download..."
+                    else -> "Downloading . . . ${snake.downloadProgress}%"
+                }
+            }
             uiModel.isValidating -> "Validating . . ."
-            uiModel.isScanning -> "Scanning . . . ${snake.scanProgress}%"
+            uiModel.isScanning -> {
+                when (snake.scanProgress) {
+                    0 -> "Preparing to scan..."
+                    100 -> "Finalizing..."
+                    else -> "Scanning . . . ${snake.scanProgress}%"
+                }
+            }
             else -> "Updating"
         }
 

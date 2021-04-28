@@ -12,6 +12,7 @@
     <string name="side_shift">Fund with Sideshift</string>
     <string name="donate_to_nighthawk">Donate to Nighthawk</string>
     <string name="backup_wallet">Backup Wallet</string>
+    <string name="profile_rescan_wallet">Rescan Wallet</string>
     <string name="nighthawkwallet">\@nighthawkwallet</string>
     <string name="my_zcash_address">My Zcash Address</string>
     <string name="scan_recipient_address">Scan Recipient Address</string>
@@ -318,6 +319,12 @@
     <string name="dialog_nuke_wallet_button_positive">Cancel</string>
     <string name="dialog_nuke_wallet_message">WARNING: Potential Loss of Funds\n\nClearing all wallet data and can result in a loss of funds, if you cannot locate your correct seed phrase.\n\nPlease confirm that you have your 24-word seed phrase available before proceeding.</string>
     <string name="dialog_nuke_wallet_title">Nuke Wallet?</string>
+    <string name="dialog_rescan_wallet_title">Rescan This Wallet?</string>
+    <string name="dialog_rescan_wallet_message"><![CDATA[This fix may take a while!<br/><br/>A <b>FULL</b> scan will rewind %1$s blocks to this wallet\'s birthday and take around %2$s.<br/><br/>A <b>WIPE</b> is like a full scan but it first deletes all data then restores it from your backup seed words.]]></string>
+    <string name="dialog_rescan_wallet_button_positive">Quick</string>
+    <string name="dialog_rescan_wallet_button_negative">Full</string>
+    <string name="dialog_rescan_wallet_button_neutral">Wipe</string>
+    <string name="dialog_rescan_failed_title">Full Rescan Failed</string>
 
     <!--      -->
     <!-- Misc -->

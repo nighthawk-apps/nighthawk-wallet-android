@@ -39,6 +39,10 @@
         <item name="strokeColor">@color/zcashWhite</item>
     </style>
 
+    <style name="Nighthawk.Button.OutlinedButton.Primary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/colorPrimary</item>
+    </style>
+
     <!-- Text Appearances -->
 
     <style name="Nighthawk.TextAppearance.NumberPad" parent="TextAppearance.MaterialComponents.Body1">
