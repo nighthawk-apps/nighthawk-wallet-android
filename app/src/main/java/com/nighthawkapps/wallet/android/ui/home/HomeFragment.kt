@@ -40,7 +40,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scanReduce
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
@@ -126,31 +125,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-        mainActivity?.launchWhenSyncing {
-            initTransactionUI()
-            walletViewModel.balance.collectWith(resumedScope) {
-                onBalanceUpdated(it)
-            }
-            twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
-            viewModel.initializeMaybe()
-            viewModel.uiModels.scanReduce { old, new ->
-                onModelUpdated(old, new)
-                new
-            }.onCompletion {
-                twig("uiModel.scanReduce completed.")
-            }.catch { e ->
-                twig("exception while processing uiModels $e")
-                throw e
-            }.launchIn(resumedScope)
+        twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
 
-            // TODO: see if there is a better way to trigger a refresh of the uiModel on resume
-            //       the latest one should just be in the viewmodel and we should just "resubscribe"
-            //       but for some reason, this doesn't always happen, which kind of defeats the purpose
-            //       of having a cold stream in the view model
-            resumedScope.launch {
-                viewModel.refreshBalance()
-            }
-        }
+        monitorTransactions()
+        monitorBalance()
+        monitorUiModelChanges()
     }
 
     private fun onBalanceUpdated(balance: WalletBalance) {
@@ -192,7 +171,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return ((if (tmp - tmp.toInt() >= 0.5f) tmp + 1 else tmp).toInt()).toFloat() / pow
     }
 
-    private fun initTransactionUI() {
+    private fun monitorTransactions() {
         adapter = TransactionAdapter()
         binding.recyclerTransactions.apply {
             layoutManager =
@@ -201,7 +180,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             adapter = this@HomeFragment.adapter
             scrollToTop()
         }
-        walletViewModel.transactions.collectWith(resumedScope) { onTransactionsUpdated(it) }
+        walletViewModel.transactions.collectWith(resumedScope, ::onTransactionsUpdated)
+    }
+
+    private fun monitorBalance() {
+        walletViewModel.balance.collectWith(resumedScope, ::onBalanceUpdated)
+    }
+
+    private fun monitorUiModelChanges() {
+        viewModel.initializeMaybe()
+        viewModel.uiModels.scanReduce { old, new ->
+            onModelUpdated(old, new)
+            new
+        }.onCompletion {
+            twig("uiModel.scanReduce completed.")
+        }.catch { e ->
+            twig("exception while processing uiModels $e")
+            throw e
+        }.launchIn(resumedScope)
     }
 
     private fun onTransactionsUpdated(transactions: PagedList<ConfirmedTransaction>) {

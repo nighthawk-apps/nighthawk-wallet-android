@@ -24,20 +24,20 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.ERROR_CANCELED
 import androidx.biometric.BiometricPrompt.ERROR_HW_NOT_PRESENT
 import androidx.biometric.BiometricPrompt.ERROR_HW_UNAVAILABLE
-import androidx.biometric.BiometricPrompt.ERROR_NO_BIOMETRICS
-import androidx.biometric.BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt.ERROR_LOCKOUT
 import androidx.biometric.BiometricPrompt.ERROR_LOCKOUT_PERMANENT
-import androidx.biometric.BiometricPrompt.ERROR_CANCELED
 import androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
-import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
+import androidx.biometric.BiometricPrompt.ERROR_NO_BIOMETRICS
+import androidx.biometric.BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt.ERROR_NO_SPACE
 import androidx.biometric.BiometricPrompt.ERROR_TIMEOUT
 import androidx.biometric.BiometricPrompt.ERROR_UNABLE_TO_PROCESS
+import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
 import androidx.biometric.BiometricPrompt.ERROR_VENDOR
-import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
@@ -46,7 +46,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import cash.z.ecc.android.sdk.Initializer
-import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.ZcashSdk
@@ -68,8 +67,6 @@ import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIXES_RECOGNIZED
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -226,24 +223,6 @@ class MainActivity : AppCompatActivity() {
 
     fun setLoading(isLoading: Boolean, message: String? = null) {
         mainViewModel.setLoading(isLoading, message)
-    }
-
-    /**
-     * Launch the given block if the synchronizer is ready and syncing. Otherwise, wait until it is.
-     * The block will be scoped to the synchronizer when it runs.
-     */
-    fun launchWhenSyncing(block: suspend CoroutineScope.() -> Unit) {
-        // TODO: update this quick and dirty implementation, after the holidays. For now, this gets
-        //  the job done but the synchronizer should expose a method that helps with this so that
-        //  any complexity is taken care of at the library level.
-        lifecycleScope.launch {
-            while (mainViewModel.isLoading) {
-                delay(25L)
-            }
-            (synchronizerComponent.synchronizer() as SdkSynchronizer).coroutineScope.launch {
-                block()
-            }
-        }
     }
 
     fun authenticate(
