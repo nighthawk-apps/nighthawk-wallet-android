@@ -126,7 +126,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onResume() {
         super.onResume()
         twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
+        // Once the synchronizer is created, monitor state changes, while this fragment is resumed
+        launchWhenSyncReady(::onSyncReady)
+    }
 
+    private fun onSyncReady() {
+        twig("Sync ready! Monitoring synchronizer state...")
         monitorTransactions()
         monitorBalance()
         monitorUiModelChanges()

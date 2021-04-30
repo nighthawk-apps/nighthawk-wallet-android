@@ -213,6 +213,7 @@ class MainActivity : AppCompatActivity() {
                 synchronizer.onProcessorErrorHandler = ::onProcessorError
                 synchronizer.onChainErrorHandler = ::onChainError
                 synchronizer.start(lifecycleScope)
+                mainViewModel.setSyncReady(true)
             }
         } else {
             twig("Ignoring request to start sync because sync has already been started!")
