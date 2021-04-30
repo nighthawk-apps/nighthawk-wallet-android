@@ -87,7 +87,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
 
     private fun onDone() {
         mainActivity?.hideKeyboard()
-        val seedPhrase = binding.seedInput.text.toString()
+        val seedPhrase = binding.seedInput.text.toString().trim()
         // we only use the default network here because the synchronizer doesn't exist yet
         val activation = NighthawkWalletApp.instance.defaultNetwork.saplingActivationHeight
         var birthday = binding.root.findViewById<TextView>(R.id.input_birthdate).text.toString()
