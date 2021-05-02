@@ -32,9 +32,5 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <meta-data
-            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-            android:value="barcode" />
-
     </application>
 </manifest>
