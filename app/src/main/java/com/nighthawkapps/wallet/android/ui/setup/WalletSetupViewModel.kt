@@ -96,15 +96,19 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
      */
     private suspend fun loadConfig(): Initializer.Config {
         twig("Loading config variables")
+        var overwriteVks = false
         val network = NighthawkWalletApp.instance.defaultNetwork
-        val vk = loadUnifiedViewingKey() ?: onMissingViewingKey(network)
+        val vk = loadUnifiedViewingKey() ?: onMissingViewingKey(network).also { overwriteVks = true }
         val birthdayHeight = loadBirthdayHeight() ?: onMissingBirthday(network)
         // TDDO: verify that we're using the same values that would get set by the user in settings
         val host = prefs[HOST_SERVER] ?: Const.Default.Server.HOST
         val port = prefs[HOST_PORT] ?: Const.Default.Server.PORT
 
         twig("Done loading config variables")
-        return Initializer.Config { it.importWallet(vk, birthdayHeight, network, host, port) }
+        return Initializer.Config {
+            it.importWallet(vk, birthdayHeight, network, host, port)
+            it.setOverwriteKeys(overwriteVks)
+        }
     }
 
     private fun loadUnifiedViewingKey(): UnifiedViewingKey? {
