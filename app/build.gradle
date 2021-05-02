@@ -63,10 +63,6 @@ android {
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-//        mock {
-//            initWith debug
-//            matchingFallbacks = ['debug', 'release', 'zcashtestnet']
-//        }
     }
 
     compileOptions {
@@ -107,7 +103,7 @@ dependencies {
 
     // Zcash
     implementation Deps.Zcash.ANDROID_WALLET_PLUGINS
-    zcashmainnetImplementation Deps.Zcash.SDK
+    implementation Deps.Zcash.SDK
 
     //  Kotlin
     implementation Deps.Kotlin.STDLIB
