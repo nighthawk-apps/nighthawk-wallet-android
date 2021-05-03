@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.di.module
 
-import android.content.Context
 import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.Synchronizer
 import com.nighthawkapps.wallet.android.di.annotation.SynchronizerScope
@@ -16,7 +15,7 @@ class SynchronizerModule {
 
     @Provides
     @SynchronizerScope
-    fun provideSynchronizer(appContext: Context, initializer: Initializer): Synchronizer {
+    fun provideSynchronizer(initializer: Initializer): Synchronizer {
         return Synchronizer(initializer)
     }
 }
