@@ -1,0 +1,6 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Currently, blockchair does not support testnet so we use our explorer.z.cash for now -->
+    <string name="api_block_explorer">https://explorer.testnet.z.cash/tx/%1$s</string>
+    <string name="app_name">NightTEST</string>
+    <string name="app_name_full">Nighthawk (Testnet) Wallet</string>
+</resources>

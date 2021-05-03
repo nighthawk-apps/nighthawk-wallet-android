@@ -3,6 +3,7 @@ package com.nighthawkapps.wallet.android.ext
 import android.app.ActivityManager
 import android.app.Dialog
 import android.content.Context
+import android.text.Html
 import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -138,6 +139,36 @@ fun Context.showUpdateServerDialog(positiveResId: Int = R.string.dialog_modify_s
         .setNegativeButton(R.string.dialog_modify_server_button_negative) { dialog, _ ->
             dialog.dismiss()
             onCancel
+        }
+        .show()
+}
+
+fun Context.showRescanWalletDialog(distance: String, estimate: String, onWipe: () -> Unit = {}, onFullRescan: () -> Unit = {}, onQuickRescan: () -> Unit = {}): Dialog {
+    return MaterialAlertDialogBuilder(this)
+        .setTitle(R.string.dialog_rescan_wallet_title)
+        .setMessage(Html.fromHtml(getString(R.string.dialog_rescan_wallet_message, distance, estimate)))
+        .setCancelable(true)
+        .setNeutralButton(R.string.dialog_rescan_wallet_button_neutral) { dialog, _ ->
+            dialog.dismiss()
+            onWipe()
+        }
+        .setNegativeButton(R.string.dialog_rescan_wallet_button_negative) { dialog, _ ->
+            dialog.dismiss()
+            onFullRescan()
+        }
+        .show()
+}
+
+fun Context.showConfirmation(title: String, message: String, positiveButton: String, negativeButton: String = "Cancel", onPositive: () -> Unit = {}): Dialog {
+    return MaterialAlertDialogBuilder(this)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(positiveButton) { dialog, _ ->
+            dialog.dismiss()
+            onPositive()
+        }
+        .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+            dialog.dismiss()
         }
         .show()
 }

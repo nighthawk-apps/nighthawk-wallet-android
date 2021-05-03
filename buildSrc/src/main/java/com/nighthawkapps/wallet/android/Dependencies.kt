@@ -8,8 +8,8 @@ object Deps {
     const val buildToolsVersion = "30.0.3"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.17"
-    const val versionCode = 1_00_17_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.18"
+    const val versionCode = 1_00_18_001 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -65,7 +65,7 @@ object Deps {
         const val MATERIAL = "com.google.android.material:material:1.3.0"
     }
 
-    object Grpc : Version("1.34.1") {
+    object Grpc : Version("1.37.0") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
@@ -90,11 +90,7 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.1"
-
-        object Sdk : Version("1.2.1-beta04") {
-            val MAINNET = "cash.z.ecc.android:zcash-android-sdk-mainnet:$version"
-            val TESTNET = "cash.z.ecc.android:zcash-android-sdk-testnet:$version"
-        }
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta08"
     }
 
     object Misc {
