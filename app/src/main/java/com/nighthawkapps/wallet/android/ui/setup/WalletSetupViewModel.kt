@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui.setup
 
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Initializer
+import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.exception.InitializerException
 import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.tool.DerivationTool
@@ -9,6 +10,7 @@ import cash.z.ecc.android.sdk.tool.WalletBirthdayTool
 import cash.z.ecc.android.sdk.type.UnifiedViewingKey
 import cash.z.ecc.android.sdk.type.WalletBirthday
 import cash.z.ecc.android.sdk.type.ZcashNetwork
+import com.nighthawkapps.wallet.android.BuildConfig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.Const.HOST_PORT
@@ -44,6 +46,24 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
             lockBox.getBoolean(Const.Backup.HAS_BACKUP) -> emit(WalletSetupState.SEED_WITH_BACKUP)
             lockBox.getBoolean(Const.Backup.HAS_SEED) -> emit(WalletSetupState.SEED_WITHOUT_BACKUP)
             else -> emit(WalletSetupState.NO_SEED)
+        }
+    }
+
+    /**
+     * A hook to run logic that needs to execute before sync starts. This is a good place for
+     * "first run" logic, which typically involves fixing known issues from previous versions or
+     * migrating data.
+     */
+    suspend fun onPrepareSync(synchronizer: Synchronizer) {
+        val existingVersion = lockBox.get<Int?>(Const.App.LAST_VERSION) ?: -1
+        // if this is the first run of this version
+        if (existingVersion < BuildConfig.VERSION_CODE) {
+            twig("Detected the first run of app version ${BuildConfig.VERSION_CODE}, executing first run logic.")
+            synchronizer.quickRewind()
+            lockBox[Const.App.LAST_VERSION] = BuildConfig.VERSION_CODE
+            twig("First run logic complete. Saving version ${BuildConfig.VERSION_CODE}.")
+        } else {
+            twig("App Version ${BuildConfig.VERSION_CODE} has run before on this device. Skipping first run logic!")
         }
     }
 

@@ -34,6 +34,13 @@ object Const {
     }
 
     /**
+     * Constants used for wallet backup.
+     */
+    object App {
+        const val LAST_VERSION = "const.app.LAST_VERSION"
+    }
+
+    /**
      * Default values to use application-wide. Ideally, this set of values should remain very short.
      */
     object Default {

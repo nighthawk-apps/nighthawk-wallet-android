@@ -210,16 +210,19 @@ class MainActivity : AppCompatActivity() {
             )
             twig("Synchronizer component created")
             synchronizerComponent.synchronizer().let { synchronizer ->
-                synchronizer.onProcessorErrorHandler = ::onProcessorError
-                synchronizer.onChainErrorHandler = ::onChainError
-                synchronizer.start(lifecycleScope)
-                mainViewModel.setSyncReady(true)
+                lifecycleScope.launch {
+                    synchronizer.onProcessorErrorHandler = ::onProcessorError
+                    synchronizer.onChainErrorHandler = ::onChainError
+                    walletSetupViewModel.onPrepareSync(synchronizer)
+                    synchronizer.start(this)
+                    mainViewModel.setSyncReady(true)
+                    mainViewModel.setLoading(false)
+                }
             }
         } else {
             twig("Ignoring request to start sync because sync has already been started!")
+            mainViewModel.setLoading(false)
         }
-        mainViewModel.setLoading(false)
-        twig("MainActivity.startSync COMPLETE")
     }
 
     fun setLoading(isLoading: Boolean, message: String? = null) {
