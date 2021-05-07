@@ -55,6 +55,8 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
      * migrating data.
      */
     suspend fun onPrepareSync(synchronizer: Synchronizer) {
+        // call prepare here so that we can rewind if we need to
+        synchronizer.prepare()
         val existingVersion = lockBox.get<Int?>(Const.App.LAST_VERSION) ?: -1
         // if this is the first run of this version
         if (existingVersion < BuildConfig.VERSION_CODE) {
@@ -159,11 +161,10 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
     private suspend fun onMissingViewingKey(network: ZcashNetwork): UnifiedViewingKey {
         twig("Viewing key was missing attempting migration")
         var migrationViewingKey: UnifiedViewingKey? = null
-        var ableToLoadSeed = false
         try {
             val seed = lockBox.getBytes(Const.Backup.SEED)!!
-            ableToLoadSeed = true
             migrationViewingKey = DerivationTool.deriveUnifiedViewingKeys(seed, network)[0]
+            twig("Successfully recreated Unified Viewing Key from seed!")
         } catch (t: Throwable) {
             twig("Failed to migrate viewing key. This is an non-recoverable error.")
         }
