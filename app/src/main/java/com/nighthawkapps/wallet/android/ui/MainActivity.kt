@@ -69,6 +69,7 @@ import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIXES_RECOGNIZED
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -169,9 +170,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun onLoadingMessage(message: String?) {
         twig("Applying loading message: $message")
-        // TODO: replace with view binding
-        findViewById<View>(R.id.container_loading).goneIf(message == null)
-        findViewById<TextView>(R.id.text_message).text = message
+        lifecycleScope.launch {
+            // TODO: replace with view binding
+            val loadTextView = findViewById<TextView>(R.id.text_message)
+            if (message == null && loadTextView.text.isNotEmpty()) delay(800)
+            findViewById<View>(R.id.container_loading).goneIf(message == null)
+            loadTextView.text = message
+        }
     }
 
     fun safeNavigate(@IdRes destination: Int, extras: Navigator.Extras? = null) {
