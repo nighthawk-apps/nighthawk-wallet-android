@@ -82,9 +82,13 @@ fun Context.showScanFailure(error: Throwable?, onCancel: () -> Unit = {}, onDism
 }
 
 fun Context.showCriticalMessage(@StringRes titleResId: Int, @StringRes messageResId: Int, onDismiss: () -> Unit = {}): Dialog {
+    return showCriticalError(getString(titleResId), getString(messageResId), onDismiss)
+}
+
+fun Context.showCriticalError(title: String, message: String, onDismiss: () -> Unit = {}): Dialog {
     return MaterialAlertDialogBuilder(this)
-        .setTitle(titleResId)
-        .setMessage(messageResId)
+        .setTitle(title)
+        .setMessage(message)
         .setCancelable(false)
         .setPositiveButton(android.R.string.ok) { d, _ ->
             d.dismiss()

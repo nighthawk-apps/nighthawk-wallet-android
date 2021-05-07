@@ -60,6 +60,7 @@ import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
 import com.nighthawkapps.wallet.android.di.component.SynchronizerSubcomponent
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
+import com.nighthawkapps.wallet.android.ext.showCriticalError
 import com.nighthawkapps.wallet.android.ext.showCriticalProcessorError
 import com.nighthawkapps.wallet.android.ext.showScanFailure
 import com.nighthawkapps.wallet.android.ext.showUninitializedError
@@ -67,9 +68,12 @@ import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIXES_RECOGNIZED
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -166,9 +170,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun onLoadingMessage(message: String?) {
         twig("Applying loading message: $message")
-        // TODO: replace with view binding
-        findViewById<View>(R.id.container_loading).goneIf(message == null)
-        findViewById<TextView>(R.id.text_message).text = message
+        lifecycleScope.launch {
+            // TODO: replace with view binding
+            val loadTextView = findViewById<TextView>(R.id.text_message)
+            if (message == null && loadTextView.text.isNotEmpty()) delay(800)
+            findViewById<View>(R.id.container_loading).goneIf(message == null)
+            loadTextView.text = message
+        }
     }
 
     fun safeNavigate(@IdRes destination: Int, extras: Navigator.Extras? = null) {
@@ -210,16 +218,32 @@ class MainActivity : AppCompatActivity() {
             )
             twig("Synchronizer component created")
             synchronizerComponent.synchronizer().let { synchronizer ->
-                synchronizer.onProcessorErrorHandler = ::onProcessorError
-                synchronizer.onChainErrorHandler = ::onChainError
-                synchronizer.start(lifecycleScope)
-                mainViewModel.setSyncReady(true)
+                lifecycleScope.launch(CoroutineExceptionHandler(::onCriticalError)) {
+                    twig("starting synchronizer...")
+                    synchronizer.onProcessorErrorHandler = ::onProcessorError
+                    synchronizer.onChainErrorHandler = ::onChainError
+                    walletSetupViewModel.onPrepareSync(synchronizer)
+                    synchronizer.start(this)
+                    mainViewModel.setSyncReady(true)
+                    mainViewModel.setLoading(false)
+                    twig("...done starting synchronizer")
+                }
             }
         } else {
             twig("Ignoring request to start sync because sync has already been started!")
+            mainViewModel.setLoading(false)
         }
-        mainViewModel.setLoading(false)
-        twig("MainActivity.startSync COMPLETE")
+    }
+
+    private fun onCriticalError(coroutineContext: CoroutineContext, error: Throwable) {
+        showCriticalError(
+            "Critical Error",
+            "An unrecognized error occurred:" +
+                    "\n\n${error.message}" +
+                    if (error.cause?.message != null) "\ncaused by: ${error.cause?.message}" else ""
+        ) {
+            throw error
+        }
     }
 
     fun setLoading(isLoading: Boolean, message: String? = null) {
