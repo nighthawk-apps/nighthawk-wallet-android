@@ -83,11 +83,13 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
         }
     }
 
-    // TODO: move this into the SDK
+    // TODO: expose this in the SDK
     private suspend fun calculateBirthday(): Int {
         var storedBirthday = 0
         var oldestTransactionHeight = 0
+        var activationHeight = 0
         try {
+            activationHeight = mainActivity?.synchronizerComponent?.synchronizer()?.network?.saplingActivationHeight ?: 0
             storedBirthday = walletSetup.loadBirthdayHeight() ?: 0
             oldestTransactionHeight = mainActivity?.synchronizerComponent?.synchronizer()?.receivedTransactions?.first()?.last()?.minedHeight ?: 0
             // to be safe adjust for reorgs (and generally a little cushion is good for privacy)
@@ -98,7 +100,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
         } catch (t: Throwable) {
             twig("failed to calculate birthday due to: $t")
         }
-        return maxOf(storedBirthday, oldestTransactionHeight, ZcashSdk.SAPLING_ACTIVATION_HEIGHT)
+        return maxOf(storedBirthday, oldestTransactionHeight, activationHeight)
     }
 
     private fun onEnterWallet(showMessage: Boolean = !this.hasBackUp) {

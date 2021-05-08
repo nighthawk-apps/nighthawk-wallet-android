@@ -178,6 +178,20 @@
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/button_feedback" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_rescan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/Nighthawk.Button.OutlinedButton.Primary"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/profile_rescan_wallet"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toBottomOf="@id/button_backup" />
+
     <TextView
         android:id="@+id/text_banner_message"
         android:layout_width="0dp"

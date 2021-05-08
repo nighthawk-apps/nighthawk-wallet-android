@@ -13,7 +13,6 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.twig
 import com.google.common.util.concurrent.ListenableFuture
 import com.nighthawkapps.wallet.android.R
@@ -122,7 +121,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         resumedScope.launch {
             val parsed = viewModel.parse(qrContent)
             if (parsed == null) {
-                val network = ZcashSdk.NETWORK
+                val network = viewModel.networkName
                 binding.textScanError.text = getString(R.string.scan_invalid_address, network, qrContent)
                 image.close()
             } else { /* continue scanning*/

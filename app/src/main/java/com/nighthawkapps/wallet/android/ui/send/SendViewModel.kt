@@ -8,7 +8,7 @@ import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.tool.DerivationTool
-import cash.z.ecc.android.sdk.validate.AddressType
+import cash.z.ecc.android.sdk.type.AddressType
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
@@ -45,7 +45,8 @@ class SendViewModel @Inject constructor() : ViewModel() {
     fun send(): Flow<PendingTransaction> {
         val memoToSend = createMemoToSend()
         val keys = DerivationTool.deriveSpendingKeys(
-            lockBox.getBytes(Const.Backup.SEED)!!
+            lockBox.getBytes(Const.Backup.SEED)!!,
+            synchronizer.network
         )
         return synchronizer.sendToAddress(
             keys[0],

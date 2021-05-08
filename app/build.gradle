@@ -6,9 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 archivesBaseName = 'nighthawk-android-wallet'
-group = 'com.nighthawkapps.wallet.android'
 android {
-    ndkVersion "21.3.6528147"
+    ndkVersion "21.1.6352462"
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
     viewBinding.enabled = true
@@ -63,10 +62,6 @@ android {
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-//        mock {
-//            initWith debug
-//            matchingFallbacks = ['debug', 'release', 'zcashtestnet']
-//        }
     }
 
     compileOptions {
@@ -75,6 +70,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
     }
     kapt {
         arguments {
@@ -106,8 +102,7 @@ dependencies {
 
     // Zcash
     implementation Deps.Zcash.ANDROID_WALLET_PLUGINS
-    zcashtestnetImplementation Deps.Zcash.Sdk.TESTNET
-    zcashmainnetImplementation Deps.Zcash.Sdk.MAINNET
+    implementation Deps.Zcash.SDK
 
     //  Kotlin
     implementation Deps.Kotlin.STDLIB
@@ -138,6 +133,7 @@ dependencies {
     // Google
     implementation Deps.Google.GUAVA
     implementation Deps.Google.MATERIAL
+    implementation Deps.Google.GSON
 
     // Dagger
     implementation Deps.Dagger.ANDROID_SUPPORT

@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
 import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
-import cash.z.ecc.android.sdk.block.CompactBlockProcessor
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.collectWith
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.ext.twig
+import cash.z.ecc.android.sdk.type.WalletBalance
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
@@ -35,12 +35,11 @@ import com.nighthawkapps.wallet.android.ui.detail.WalletDetailViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scanReduce
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
@@ -122,40 +121,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             twig("uiModel exists!")
             onModelUpdated(null, uiModel)
         }
-
-        initTransactionUI()
     }
 
     override fun onResume() {
         super.onResume()
-        mainActivity?.launchWhenSyncing {
-            walletViewModel.transactions.collectWith(resumedScope) { onTransactionsUpdated(it) }
-            walletViewModel.balance.collectWith(resumedScope) {
-                onBalanceUpdated(it)
-            }
-            twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
-            viewModel.initializeMaybe()
-            viewModel.uiModels.scanReduce { old, new ->
-                onModelUpdated(old, new)
-                new
-            }.onCompletion {
-                twig("uiModel.scanReduce completed.")
-            }.catch { e ->
-                twig("exception while processing uiModels $e")
-                throw e
-            }.launchIn(resumedScope)
-
-            // TODO: see if there is a better way to trigger a refresh of the uiModel on resume
-            //       the latest one should just be in the viewmodel and we should just "resubscribe"
-            //       but for some reason, this doesn't always happen, which kind of defeats the purpose
-            //       of having a cold stream in the view model
-            resumedScope.launch {
-                viewModel.refreshBalance()
-            }
-        }
+        twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
+        // Once the synchronizer is created, monitor state changes, while this fragment is resumed
+        launchWhenSyncReady(::onSyncReady)
     }
 
-    private fun onBalanceUpdated(balance: CompactBlockProcessor.WalletBalance) {
+    private fun onSyncReady() {
+        twig("Sync ready! Monitoring synchronizer state...")
+        monitorTransactions()
+        monitorBalance()
+        monitorUiModelChanges()
+    }
+
+    private fun onBalanceUpdated(balance: WalletBalance) {
         binding.textBalanceAvailable.text = balance.availableZatoshi.convertZatoshiToZecString()
         val change = (balance.totalZatoshi - balance.availableZatoshi)
         binding.textBalanceDescription.apply {
@@ -194,7 +176,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return ((if (tmp - tmp.toInt() >= 0.5f) tmp + 1 else tmp).toInt()).toFloat() / pow
     }
 
-    private fun initTransactionUI() {
+    private fun monitorTransactions() {
         adapter = TransactionAdapter()
         binding.recyclerTransactions.apply {
             layoutManager =
@@ -203,6 +185,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             adapter = this@HomeFragment.adapter
             scrollToTop()
         }
+        walletViewModel.transactions.collectWith(resumedScope, ::onTransactionsUpdated)
+    }
+
+    private fun monitorBalance() {
+        walletViewModel.balance.collectWith(resumedScope, ::onBalanceUpdated)
+    }
+
+    private fun monitorUiModelChanges() {
+        viewModel.initializeMaybe()
+        viewModel.uiModels.scanReduce { old, new ->
+            onModelUpdated(old, new)
+            new
+        }.onCompletion {
+            twig("uiModel.scanReduce completed.")
+        }.catch { e ->
+            twig("exception while processing uiModels $e")
+            throw e
+        }.launchIn(resumedScope)
     }
 
     private fun onTransactionsUpdated(transactions: PagedList<ConfirmedTransaction>) {
@@ -265,9 +265,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             uiModel.status == DISCONNECTED -> "Reconnecting . . ."
             uiModel.isSynced -> if (uiModel.hasFunds) "Send Zcash" else "NO FUNDS AVAILABLE"
             uiModel.status == STOPPED -> "IDLE"
-            uiModel.isDownloading -> "Downloading . . . ${snake.downloadProgress}%"
+            uiModel.isDownloading -> {
+                when (snake.downloadProgress) {
+                    0 -> "Preparing to download..."
+                    else -> "Downloading . . . ${snake.downloadProgress}%"
+                }
+            }
             uiModel.isValidating -> "Validating . . ."
-            uiModel.isScanning -> "Scanning . . . ${snake.scanProgress}%"
+            uiModel.isScanning -> {
+                when (snake.scanProgress) {
+                    0 -> "Preparing to scan..."
+                    100 -> "Finalizing..."
+                    else -> "Scanning . . . ${snake.scanProgress}%"
+                }
+            }
             else -> "Updating"
         }
 

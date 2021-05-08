@@ -15,15 +15,15 @@ import androidx.core.view.isVisible
 import androidx.core.widget.ImageViewCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.viewModelScope
-import cash.z.ecc.android.sdk.block.CompactBlockProcessor
-import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.collectWith
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
 import cash.z.ecc.android.sdk.ext.onFirstWith
 import cash.z.ecc.android.sdk.ext.safelyConvertToBigDecimal
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
-import cash.z.ecc.android.sdk.ext.ZcashSdk
-import cash.z.ecc.android.sdk.validate.AddressType
+import cash.z.ecc.android.sdk.type.AddressType
+import cash.z.ecc.android.sdk.type.WalletBalance
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -31,8 +31,8 @@ import com.nighthawkapps.wallet.android.ext.convertZecToZatoshi
 import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onClickNavUp
-import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ext.toAppColor
+import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -183,7 +183,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             var type = when (validation) {
                 is AddressType.Transparent -> "This is a valid transparent address" to R.color.zcashGreen
                 is AddressType.Shielded -> "This is a valid shielded address" to R.color.zcashGreen
-                is AddressType.Invalid -> "This address appears to be invalid" to R.color.zcashRed
+                else -> "This address appears to be invalid" to R.color.zcashRed
             }
             if (address == sendViewModel.synchronizer.getAddress()) type =
                 "Warning, this appears to be your address!" to R.color.zcashRed
@@ -251,7 +251,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         }
     }
 
-    private fun onBalanceUpdated(balance: CompactBlockProcessor.WalletBalance) {
+    private fun onBalanceUpdated(balance: WalletBalance) {
         maxZatoshi = (balance.availableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI).coerceAtLeast(0L)
         availableZatoshi = balance.availableZatoshi
     }

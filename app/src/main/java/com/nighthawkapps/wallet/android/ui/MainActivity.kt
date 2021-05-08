@@ -24,20 +24,20 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.ERROR_CANCELED
 import androidx.biometric.BiometricPrompt.ERROR_HW_NOT_PRESENT
 import androidx.biometric.BiometricPrompt.ERROR_HW_UNAVAILABLE
-import androidx.biometric.BiometricPrompt.ERROR_NO_BIOMETRICS
-import androidx.biometric.BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt.ERROR_LOCKOUT
 import androidx.biometric.BiometricPrompt.ERROR_LOCKOUT_PERMANENT
-import androidx.biometric.BiometricPrompt.ERROR_CANCELED
 import androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
-import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
+import androidx.biometric.BiometricPrompt.ERROR_NO_BIOMETRICS
+import androidx.biometric.BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt.ERROR_NO_SPACE
 import androidx.biometric.BiometricPrompt.ERROR_TIMEOUT
 import androidx.biometric.BiometricPrompt.ERROR_UNABLE_TO_PROCESS
+import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
 import androidx.biometric.BiometricPrompt.ERROR_VENDOR
-import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
@@ -46,7 +46,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import cash.z.ecc.android.sdk.Initializer
-import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.ZcashSdk
@@ -61,6 +60,7 @@ import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
 import com.nighthawkapps.wallet.android.di.component.SynchronizerSubcomponent
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
+import com.nighthawkapps.wallet.android.ext.showCriticalError
 import com.nighthawkapps.wallet.android.ext.showCriticalProcessorError
 import com.nighthawkapps.wallet.android.ext.showScanFailure
 import com.nighthawkapps.wallet.android.ext.showUninitializedError
@@ -68,11 +68,12 @@ import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIXES_RECOGNIZED
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -169,9 +170,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun onLoadingMessage(message: String?) {
         twig("Applying loading message: $message")
-        // TODO: replace with view binding
-        findViewById<View>(R.id.container_loading).goneIf(message == null)
-        findViewById<TextView>(R.id.text_message).text = message
+        lifecycleScope.launch {
+            // TODO: replace with view binding
+            val loadTextView = findViewById<TextView>(R.id.text_message)
+            if (message == null && loadTextView.text.isNotEmpty()) delay(800)
+            findViewById<View>(R.id.container_loading).goneIf(message == null)
+            loadTextView.text = message
+        }
     }
 
     fun safeNavigate(@IdRes destination: Int, extras: Navigator.Extras? = null) {
@@ -213,37 +218,36 @@ class MainActivity : AppCompatActivity() {
             )
             twig("Synchronizer component created")
             synchronizerComponent.synchronizer().let { synchronizer ->
-                synchronizer.onProcessorErrorHandler = ::onProcessorError
-                synchronizer.onChainErrorHandler = ::onChainError
-                synchronizer.start(lifecycleScope)
+                lifecycleScope.launch(CoroutineExceptionHandler(::onCriticalError)) {
+                    twig("starting synchronizer...")
+                    synchronizer.onProcessorErrorHandler = ::onProcessorError
+                    synchronizer.onChainErrorHandler = ::onChainError
+                    walletSetupViewModel.onPrepareSync(synchronizer)
+                    synchronizer.start(this)
+                    mainViewModel.setSyncReady(true)
+                    mainViewModel.setLoading(false)
+                    twig("...done starting synchronizer")
+                }
             }
         } else {
             twig("Ignoring request to start sync because sync has already been started!")
+            mainViewModel.setLoading(false)
         }
-        mainViewModel.setLoading(false)
-        twig("MainActivity.startSync COMPLETE")
+    }
+
+    private fun onCriticalError(coroutineContext: CoroutineContext, error: Throwable) {
+        showCriticalError(
+            "Critical Error",
+            "An unrecognized error occurred:" +
+                    "\n\n${error.message}" +
+                    if (error.cause?.message != null) "\ncaused by: ${error.cause?.message}" else ""
+        ) {
+            throw error
+        }
     }
 
     fun setLoading(isLoading: Boolean, message: String? = null) {
         mainViewModel.setLoading(isLoading, message)
-    }
-
-    /**
-     * Launch the given block if the synchronizer is ready and syncing. Otherwise, wait until it is.
-     * The block will be scoped to the synchronizer when it runs.
-     */
-    fun launchWhenSyncing(block: suspend CoroutineScope.() -> Unit) {
-        // TODO: update this quick and dirty implementation, after the holidays. For now, this gets
-        //  the job done but the synchronizer should expose a method that helps with this so that
-        //  any complexity is taken care of at the library level.
-        lifecycleScope.launch {
-            while (mainViewModel.isLoading) {
-                delay(25L)
-            }
-            (synchronizerComponent.synchronizer() as SdkSynchronizer).coroutineScope.launch {
-                block()
-            }
-        }
     }
 
     fun authenticate(
@@ -511,11 +515,12 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread {
                         dialog = showCriticalProcessorError(error, onRetry = {
                             lifecycleScope.launch {
-                                Initializer.erase(
-                                    NighthawkWalletApp.instance,
-                                    ZcashSdk.DEFAULT_ALIAS
-                                )
-                                walletSetupViewModel.onRestore()
+                                // TODO: give a WIPE option here, instead of auto-erase. Perhaps a rescan popup?
+//                                Initializer.erase(
+//                                    NighthawkWalletApp.instance,
+//                                    ZcashSdk.DEFAULT_ALIAS
+//                                )
+//                                walletSetupViewModel.onRestore()
                                 dialog = null
                             }
                         })

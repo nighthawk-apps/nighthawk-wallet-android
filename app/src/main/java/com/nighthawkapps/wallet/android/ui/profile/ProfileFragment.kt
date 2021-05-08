@@ -5,14 +5,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.BuildConfig
+import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentProfileBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
+import com.nighthawkapps.wallet.android.ext.showConfirmation
+import com.nighthawkapps.wallet.android.ext.showRescanWalletDialog
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.launch
 
@@ -27,7 +32,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.hitAreaSettings.onClickNavTo(R.id.action_nav_profile_to_nav_settings)
         binding.hitAreaClose.onClickNavBack()
-        binding.buttonBackup.setOnClickListener(View.OnClickListener {
+        binding.buttonBackup.setOnClickListener {
             MaterialAlertDialogBuilder(view.context)
                 .setTitle("View Seed Words?")
                 .setMessage("WARNING: Please make sure that you are the only one viewing your phone as your wallet seed key will be shown in the next screen.")
@@ -47,13 +52,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     dialog.dismiss()
                 }
                 .show()
-        })
-        binding.buttonFeedback.setOnClickListener(View.OnClickListener {
+        }
+        binding.buttonFeedback.setOnClickListener {
             val url = "https://twitter.com/nighthawkwallet"
             val i = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(url)
             startActivity(i)
-        })
+        }
+        binding.buttonRescan.setOnClickListener {
+            onRescanWallet()
+        }
 
         binding.textVersion.text = BuildConfig.VERSION_NAME
     }
@@ -62,6 +70,52 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         super.onResume()
         resumedScope.launch {
             binding.textAddress.text = viewModel.getAddress().toAbbreviatedAddress(12, 12)
+        }
+    }
+
+    private fun onRescanWallet() {
+        val distance = viewModel.scanDistance()
+        mainActivity?.showRescanWalletDialog(
+            String.format("%,d", distance),
+            viewModel.blocksToMinutesString(distance),
+            onFullRescan = ::onFullRescan,
+            onWipe = ::onWipe
+        )
+    }
+
+    private fun onFullRescan() {
+        mainActivity?.lifecycleScope?.launch {
+            try {
+                viewModel.fullRescan()
+                Toast.makeText(
+                    NighthawkWalletApp.instance,
+                    "Performing full rescan!",
+                    Toast.LENGTH_LONG
+                ).show()
+                mainActivity?.navController?.popBackStack()
+            } catch (t: Throwable) {
+                MaterialAlertDialogBuilder(requireActivity())
+                    .setTitle(R.string.dialog_rescan_failed_title)
+                    .setMessage("Unable to perform full rescan due to error:\n\n${t.message}")
+                    .setCancelable(false)
+                    .setPositiveButton(android.R.string.ok) { d, _ ->
+                        d.dismiss()
+                    }
+                    .show()
+            }
+        }
+    }
+
+    private fun onWipe() {
+        mainActivity?.showConfirmation(
+            "Are you sure?",
+            "Wiping your data will close the app. Since your seed is preserved, " +
+                    "this operation is probably safe but please backup your seed anyway." +
+                    "\n\nContinue?",
+            "Wipe"
+        ) {
+            viewModel.wipe()
+            mainActivity?.finish()
         }
     }
 }

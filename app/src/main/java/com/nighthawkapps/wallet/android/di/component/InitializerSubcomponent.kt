@@ -9,6 +9,7 @@ import dagger.Subcomponent
 @SynchronizerScope
 @Subcomponent(modules = [InitializerModule::class])
 interface InitializerSubcomponent {
+
     fun initializer(): Initializer
     fun config(): Initializer.Config
 
