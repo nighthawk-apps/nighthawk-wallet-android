@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.18 *(2021-05-08)*
+------------------------------------
+- Add the ability to rescan or wipe the wallet for troubleshooting.
+- Fix issue when syncing transactions after sending MAX balance out of wallet.
+- Update ECC dependencies.
+
 Version 1.0.17 *(2021-03-31)*
 ------------------------------------
 - Switch price endpoint to api.lightwalletd.com
