@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui.detail
 
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
@@ -98,7 +99,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
             topText.setTextColor(lineOneColor.toAppColor())
             bottomText.setTextColor(lineTwoColor.toAppColor())
             val context = itemView.context
-            indicator.background = context.resources.getDrawable(indicatorBackground)
+            indicator.background = ContextCompat.getDrawable(context, indicatorBackground)
         }
     }
 

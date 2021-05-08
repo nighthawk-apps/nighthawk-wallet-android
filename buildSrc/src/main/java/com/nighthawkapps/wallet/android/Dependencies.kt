@@ -9,14 +9,14 @@ object Deps {
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
     const val versionName = "1.0.18"
-    const val versionCode = 1_00_18_001 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionCode = 1_00_18_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.2.0"
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.3.0-rc01"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha03"
-        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.0-beta01"
+        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.0-beta02"
         const val CORE_KTX = "androidx.core:core-ktx:1.5.0-rc01"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.3.3"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
@@ -95,7 +95,7 @@ object Deps {
     }
 
     object Misc {
-        const val LOTTIE = "com.airbnb.android:lottie:3.6.1"
+        const val LOTTIE = "com.airbnb.android:lottie:3.7.0"
 
         object Plugins {
             const val SECURE_STORAGE = "com.github.gmale:secure-storage-android:0.0.3"

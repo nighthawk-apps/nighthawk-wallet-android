@@ -117,8 +117,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 .show()
         }
 
-        initTransactionRv()
-
         if (::uiModel.isInitialized) {
             twig("uiModel exists!")
             onModelUpdated(null, uiModel)
@@ -178,7 +176,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return ((if (tmp - tmp.toInt() >= 0.5f) tmp + 1 else tmp).toInt()).toFloat() / pow
     }
 
-    private fun initTransactionRv() {
+    private fun monitorTransactions() {
         adapter = TransactionAdapter()
         binding.recyclerTransactions.apply {
             layoutManager =
@@ -187,9 +185,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             adapter = this@HomeFragment.adapter
             scrollToTop()
         }
-    }
-
-    private fun monitorTransactions() {
         walletViewModel.transactions.collectWith(resumedScope, ::onTransactionsUpdated)
     }
 
