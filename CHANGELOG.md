@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.19 *(2021-05-13)*
+------------------------------------
+- Hotfix: Remove un-used flags during wallet creation. 
+
 Version 1.0.18 *(2021-05-08)*
 ------------------------------------
 - Add the ability to rescan or wipe the wallet for troubleshooting.
