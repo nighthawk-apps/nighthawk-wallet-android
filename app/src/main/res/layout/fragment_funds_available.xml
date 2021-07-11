@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/background_home">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardBackgroundColor="#292929"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33"
+        app:layout_constraintWidth_percent="0.8413" />
+
+    <ImageView
+        android:id="@+id/image_shield"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/content_description_send_shield"
+        android:elevation="8dp"
+        android:src="@drawable/ic_shielded"
+        app:layout_constraintBottom_toTopOf="@id/card_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.15625"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/card_background"
+        app:tint="#F5BA41" />
+
+    <TextView
+        android:id="@+id/text_exclamation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:text="@string/exclamation"
+        android:textColor="@android:color/black"
+        android:textSize="94sp"
+        app:layout_constraintBottom_toBottomOf="@id/image_shield"
+        app:layout_constraintEnd_toEndOf="@id/image_shield"
+        app:layout_constraintStart_toStartOf="@id/image_shield"
+        app:layout_constraintTop_toTopOf="@id/image_shield" />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:text="@string/shielding"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@id/card_background"
+        app:layout_constraintEnd_toEndOf="@id/card_background"
+        app:layout_constraintStart_toStartOf="@id/card_background"
+        app:layout_constraintTop_toTopOf="@id/card_background"
+        app:layout_constraintVertical_bias="0.24" />
+
+    <TextView
+        android:id="@+id/text_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:text="@string/you_ve_received_more_than_n1_zec_in_transparent_funds_n_nthis_won_t_take_but_a_moment"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/card_background"
+        app:layout_constraintEnd_toEndOf="@id/card_background"
+        app:layout_constraintStart_toStartOf="@id/card_background"
+        app:layout_constraintTop_toBottomOf="@id/text_title"
+        app:layout_constraintVertical_bias="0.24" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_action"
+        style="@style/Nighthawk.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/zcashWhite"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/got_it"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@id/card_background"
+        app:layout_constraintEnd_toEndOf="@id/card_background"
+        app:layout_constraintStart_toStartOf="@id/card_background" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

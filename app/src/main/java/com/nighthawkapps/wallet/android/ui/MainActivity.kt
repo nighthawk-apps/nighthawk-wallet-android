@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.ERROR_CANCELED
 import androidx.biometric.BiometricPrompt.ERROR_HW_NOT_PRESENT
@@ -46,8 +48,10 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import cash.z.ecc.android.sdk.Initializer
+import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
+import cash.z.ecc.android.sdk.ext.BatchMetrics
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import cash.z.ecc.android.sdk.ext.twig
@@ -60,20 +64,15 @@ import com.nighthawkapps.wallet.android.di.component.MainActivitySubcomponent
 import com.nighthawkapps.wallet.android.di.component.SynchronizerSubcomponent
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
-import com.nighthawkapps.wallet.android.ext.showCriticalError
+import com.nighthawkapps.wallet.android.ext.showCriticalMessage
 import com.nighthawkapps.wallet.android.ext.showCriticalProcessorError
 import com.nighthawkapps.wallet.android.ext.showScanFailure
 import com.nighthawkapps.wallet.android.ext.showUninitializedError
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
-import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
-import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIXES_RECOGNIZED
-import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.delay
+import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -83,12 +82,10 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var mainViewModel: MainViewModel
 
-    @Inject
-    lateinit var walletSetupViewModel: WalletSetupViewModel
-
     val isInitialized get() = ::synchronizerComponent.isInitialized
 
-    private val historyViewModel: HistoryViewModel by activityViewModel()
+    val historyViewModel: HistoryViewModel by activityViewModel()
+
     private val mediaPlayer: MediaPlayer = MediaPlayer()
     private var snackbar: Snackbar? = null
     private var dialog: Dialog? = null
@@ -106,12 +103,15 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
 
-    val latestHeight: Int?
-        get() = if (isInitialized) {
-            synchronizerComponent.synchronizer().latestHeight
-        } else {
-            null
-        }
+    val latestHeight: Int? get() = if (isInitialized) {
+        synchronizerComponent.synchronizer().latestHeight
+    } else {
+        null
+    }
+
+    // Autoshielding settings
+    val maxAutoshieldFrequency: Long = 30 * DateUtils.MINUTE_IN_MILLIS
+    var lastAutoShieldTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component = NighthawkWalletApp.component.mainActivitySubcomponent().create(this).also {
@@ -170,13 +170,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun onLoadingMessage(message: String?) {
         twig("Applying loading message: $message")
-        lifecycleScope.launch {
-            // TODO: replace with view binding
-            val loadTextView = findViewById<TextView>(R.id.text_message)
-            if (message == null && loadTextView.text.isNotEmpty()) delay(800)
-            findViewById<View>(R.id.container_loading).goneIf(message == null)
-            loadTextView.text = message
-        }
+        // TODO: replace with view binding
+        findViewById<View>(R.id.container_loading).goneIf(message == null)
+        findViewById<TextView>(R.id.text_message).text = message
+    }
+
+    fun popBackTo(@IdRes destination: Int, inclusive: Boolean = false) {
+        navController?.popBackStack(destination, inclusive)
     }
 
     fun safeNavigate(@IdRes destination: Int, extras: Navigator.Extras? = null) {
@@ -209,63 +209,70 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun startSync(initializer: Initializer) {
+    fun startSync(initializer: Initializer, isRestart: Boolean = false) {
         twig("MainActivity.startSync")
-        if (!isInitialized) {
+        if (!isInitialized || isRestart) {
             mainViewModel.setLoading(true)
             synchronizerComponent = NighthawkWalletApp.component.synchronizerSubcomponent().create(
                 initializer
             )
             twig("Synchronizer component created")
             synchronizerComponent.synchronizer().let { synchronizer ->
-                lifecycleScope.launch(CoroutineExceptionHandler(::onCriticalError)) {
-                    twig("starting synchronizer...")
-                    synchronizer.onProcessorErrorHandler = ::onProcessorError
-                    synchronizer.onChainErrorHandler = ::onChainError
-                    walletSetupViewModel.onPrepareSync(synchronizer)
-                    synchronizer.start(this)
-                    mainViewModel.setSyncReady(true)
-                    mainViewModel.setLoading(false)
-                    twig("...done starting synchronizer")
-                }
+                synchronizer.onProcessorErrorHandler = ::onProcessorError
+                synchronizer.onCriticalErrorHandler = ::onCriticalError
+                (synchronizer as SdkSynchronizer).processor.onScanMetricCompleteListener = ::onScanMetricComplete
+
+                synchronizer.start(lifecycleScope)
+                mainViewModel.setSyncReady(true)
             }
         } else {
             twig("Ignoring request to start sync because sync has already been started!")
-            mainViewModel.setLoading(false)
+        }
+        mainViewModel.setLoading(false)
+        twig("MainActivity.startSync COMPLETE")
+    }
+
+    private fun onScanMetricComplete(batchMetrics: BatchMetrics, isComplete: Boolean) {
+        val reportingThreshold = 100
+        if (isComplete) {
+            if (batchMetrics.cumulativeItems > reportingThreshold) {
+                val network = synchronizerComponent.synchronizer().network.networkName
+            }
         }
     }
 
-    private fun onCriticalError(coroutineContext: CoroutineContext, error: Throwable) {
-        showCriticalError(
-            "Critical Error",
-            "An unrecognized error occurred:" +
-                    "\n\n${error.message}" +
-                    if (error.cause?.message != null) "\ncaused by: ${error.cause?.message}" else ""
+    private fun onCriticalError(error: Throwable?): Boolean {
+        val errorMessage = error?.message
+            ?: error?.cause?.message
+            ?: error?.toString()
+            ?: "A critical error has occurred but no details were provided. Please report and consider submitting logs to help track this one down."
+        showCriticalMessage(
+            title = "Unrecoverable Error",
+            message = errorMessage
         ) {
-            throw error
+            throw error ?: RuntimeException("A critical error occurred but it was null")
         }
+        return false
     }
 
     fun setLoading(isLoading: Boolean, message: String? = null) {
         mainViewModel.setLoading(isLoading, message)
     }
 
-    fun authenticate(
-        description: String,
-        title: String = getString(R.string.biometric_prompt_title),
-        block: () -> Unit
-    ) {
+    fun authenticate(description: String, title: String = getString(R.string.biometric_prompt_title), block: () -> Unit) {
         val callback = object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                twig("Authentication success")
+                twig("Authentication success with type: ${if (result.authenticationType == BiometricPrompt.AUTHENTICATION_RESULT_TYPE_DEVICE_CREDENTIAL) "DEVICE_CREDENTIAL" else if (result.authenticationType == BiometricPrompt.AUTHENTICATION_RESULT_TYPE_BIOMETRIC) "BIOMETRIC" else "UNKNOWN"}  object: ${result.cryptoObject}")
                 block()
+                twig("Done authentication block")
+                // we probably only need to do this if the type is DEVICE_CREDENTIAL
+                // but it doesn't hurt to hide the keyboard every time
+                hideKeyboard()
             }
-
             override fun onAuthenticationFailed() {
                 twig("Authentication failed!!!!")
                 showMessage("Authentication failed :(")
             }
-
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 twig("Authentication Error")
                 fun doNothing(message: String, interruptUser: Boolean = true) {
@@ -279,10 +286,7 @@ class MainActivity : AppCompatActivity() {
                     ERROR_HW_NOT_PRESENT, ERROR_HW_UNAVAILABLE,
                     ERROR_NO_BIOMETRICS, ERROR_NO_DEVICE_CREDENTIAL -> {
                         twig("Warning: bypassing authentication because $errString [$errorCode]")
-                        showMessage(
-                            "Please enable screen lock on this device to add security here!",
-                            true
-                        )
+                        showMessage("Please enable screen lock on this device to add security here!", true)
                         block()
                     }
                     ERROR_LOCKOUT -> doNothing("Too many attempts. Try again in 30s.")
@@ -294,6 +298,10 @@ class MainActivity : AppCompatActivity() {
                     ERROR_TIMEOUT -> doNothing("Oops. It timed out.")
                     ERROR_UNABLE_TO_PROCESS -> doNothing(".")
                     ERROR_VENDOR -> doNothing("We got some weird error and you should report this.")
+                    else -> {
+                        twig("Warning: unrecognized authentication error $errorCode")
+                        doNothing("Authentication failed with error code $errorCode")
+                    }
                 }
             }
         }
@@ -304,7 +312,7 @@ class MainActivity : AppCompatActivity() {
                     .setTitle(title)
                     .setConfirmationRequired(false)
                     .setDescription(description)
-                    .setDeviceCredentialAllowed(true)
+                    .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL)
                     .build()
             )
         }
@@ -327,52 +335,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     // TODO: spruce this up with API 26 stuff
-    fun vibrateSuccess() {
+    fun vibrateSuccess() = vibrate(0, 200, 200, 100, 100, 800)
+
+    fun vibrate(initialDelay: Long, vararg durations: Long) {
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (vibrator.hasVibrator()) {
-            vibrator.vibrate(longArrayOf(0, 200, 200, 100, 100, 800), -1)
+            vibrator.vibrate(longArrayOf(initialDelay, *durations), -1)
         }
     }
 
     fun copyAddress(view: View? = null) {
         lifecycleScope.launch {
-            clipboard.setPrimaryClip(
-                ClipData.newPlainText(
-                    "Z-Address",
-                    synchronizerComponent.synchronizer().getAddress()
-                )
-            )
-            showMessage("Address copied!")
+            copyText(synchronizerComponent.synchronizer().getAddress(), "Address")
         }
     }
 
-    fun copyDonationAddress(view: View? = null) {
+    fun copyTransparentAddress(view: View? = null) {
         lifecycleScope.launch {
-            clipboard.setPrimaryClip(
-                ClipData.newPlainText(
-                    "Z-Address",
-                    getString(R.string.nighthawk_address)
-                )
-            )
-            showMessage("Donation Address copied! Please return Send Zcash for sending the donation.")
+            copyText(synchronizerComponent.synchronizer().getTransparentAddress(), "T-Address")
         }
-    }
-
-    fun onLaunchUrl(url: String) {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-        } catch (t: Throwable) {
-            showMessage(getString(R.string.error_launch_url))
-            twig("Warning: failed to open browser due to $t")
-        }
-    }
-
-    suspend fun isValidAddress(address: String): Boolean {
-        try {
-            return !synchronizerComponent.synchronizer().validateAddress(address).isNotValid
-        } catch (t: Throwable) {
-        }
-        return false
     }
 
     fun copyText(textToCopy: String, label: String = "ECC Wallet Text") {
@@ -380,6 +361,25 @@ class MainActivity : AppCompatActivity() {
             ClipData.newPlainText(label, textToCopy)
         )
         showMessage("$label copied!")
+        vibrate(0, 50)
+    }
+
+    fun shareText(textToShare: String) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, textToShare)
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
+    suspend fun isValidAddress(address: String): Boolean {
+        try {
+            return !synchronizerComponent.synchronizer().validateAddress(address).isNotValid
+        } catch (t: Throwable) { }
+        return false
     }
 
     fun preventBackPress(fragment: Fragment) {
@@ -387,14 +387,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onFragmentBackPressed(fragment: Fragment, block: () -> Unit) {
-        onBackPressedDispatcher.addCallback(fragment, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                block()
+        onBackPressedDispatcher.addCallback(
+            fragment,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    block()
+                }
             }
-        })
+        )
     }
 
     private fun showMessage(message: String, linger: Boolean = false) {
+        twig("toast: $message")
         Toast.makeText(this, message, if (linger) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
 
@@ -499,7 +503,8 @@ class MainActivity : AppCompatActivity() {
                 if (dialog == null && !ignoreScanFailure) throttle("scanFailure", 20_000L) {
                     notified = true
                     runOnUiThread {
-                        dialog = showScanFailure(error,
+                        dialog = showScanFailure(
+                            error,
                             onCancel = { dialog = null },
                             onDismiss = { dialog = null }
                         )
@@ -513,26 +518,15 @@ class MainActivity : AppCompatActivity() {
                 if (dialog == null) {
                     notified = true
                     runOnUiThread {
-                        dialog = showCriticalProcessorError(error, onRetry = {
-                            lifecycleScope.launch {
-                                // TODO: give a WIPE option here, instead of auto-erase. Perhaps a rescan popup?
-//                                Initializer.erase(
-//                                    NighthawkWalletApp.instance,
-//                                    ZcashSdk.DEFAULT_ALIAS
-//                                )
-//                                walletSetupViewModel.onRestore()
-                                dialog = null
-                            }
-                        })
+                        dialog = showCriticalProcessorError(error) {
+                            dialog = null
+                        }
                     }
                 }
             }
         }
         twig("MainActivity has received an error${if (notified) " and notified the user" else ""} and reported it to bugsnag and mixpanel.")
         return true
-    }
-
-    private fun onChainError(errorHeight: Int, rewindHeight: Int) {
     }
 
     // TODO: maybe move this quick helper code somewhere general or throttle the dialogs differently (like with a flow and stream operators, instead)
@@ -549,53 +543,22 @@ class MainActivity : AppCompatActivity() {
 
         // after doing the work, check back in later and if another request came in, throttle it, otherwise exit
         throttles[key] = noWork
-        findViewById<View>(android.R.id.content).postDelayed({
-            throttles[key]?.let { pendingWork ->
-                throttles.remove(key)
-                if (pendingWork !== noWork) throttle(key, delay, pendingWork)
-            }
-        }, delay)
-    }
-
-    fun toTxId(tx: ByteArray?): String? {
-        if (tx == null) return null
-        val sb = StringBuilder(tx.size * 2)
-        for (i in (tx.size - 1) downTo 0) {
-            sb.append(String.format("%02x", tx[i]))
-        }
-        return sb.toString()
+        findViewById<View>(android.R.id.content).postDelayed(
+            {
+                throttles[key]?.let { pendingWork ->
+                    throttles.remove(key)
+                    if (pendingWork !== noWork) throttle(key, delay, pendingWork)
+                }
+            },
+            delay
+        )
     }
 
     /* Memo functions that might possibly get moved to MemoUtils */
 
-    private val addressRegex = """zs\d\w{65,}""".toRegex()
-
     suspend fun getSender(transaction: ConfirmedTransaction?): String {
         if (transaction == null) return getString(R.string.unknown)
-        val memo = transaction.memo.toUtf8Memo()
-        return extractValidAddress(memo)?.toAbbreviatedAddress() ?: getString(R.string.unknown)
-    }
-
-    fun extractAddress(memo: String?) = addressRegex.findAll(memo ?: "").lastOrNull()?.value
-
-    suspend fun extractValidAddress(memo: String?): String? {
-        if (memo == null || memo.length < 25) return null
-
-        // note: cannot use substringAfterLast because we need to ignore case
-        try {
-            INCLUDE_MEMO_PREFIXES_RECOGNIZED.forEach { prefix ->
-                memo.lastIndexOf(prefix, ignoreCase = true).takeUnless { it == -1 }
-                    ?.let { lastIndex ->
-                        memo.substring(lastIndex + prefix.length).trimStart().validateAddress()
-                            ?.let { address ->
-                                return@extractValidAddress address
-                            }
-                    }
-            }
-        } catch (t: Throwable) {
-        }
-
-        return null
+        return MemoUtil.findAddressInMemo(transaction, ::isValidAddress)?.toAbbreviatedAddress() ?: getString(R.string.unknown)
     }
 
     suspend fun String?.validateAddress(): String? {
@@ -644,5 +607,14 @@ class MainActivity : AppCompatActivity() {
                 savePref()
             }
             .show()
+    }
+
+    fun onLaunchUrl(url: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        } catch (t: Throwable) {
+            showMessage(getString(R.string.error_launch_url))
+            twig("Warning: failed to open browser due to $t")
+        }
     }
 }

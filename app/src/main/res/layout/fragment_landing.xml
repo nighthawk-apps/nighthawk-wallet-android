@@ -23,13 +23,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.2"
         app:layout_constraintWidth_percent="0.7"
-        app:srcCompat="@drawable/ic_f117_vector_yellow_no_bg" />
+        app:srcCompat="@drawable/ic_nighthawk_logo" />
 
     <TextView
         android:id="@+id/text_message"
         style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:gravity="center"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
@@ -38,7 +39,7 @@
         app:layout_constraintBottom_toTopOf="@id/guideline_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/icon_profile" />
+        app:layout_constraintTop_toBottomOf="@+id/icon_profile" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_negative"

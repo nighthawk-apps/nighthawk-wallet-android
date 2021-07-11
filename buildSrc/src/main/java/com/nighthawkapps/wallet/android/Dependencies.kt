@@ -3,13 +3,14 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.4.32"
+    const val kotlinVersion = "1.5.20"
+    const val navigationVersion =   "2.3.5"
     const val compileSdkVersion = 30
     const val buildToolsVersion = "30.0.3"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.19"
-    const val versionCode = 1_00_19_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.20"
+    const val versionCode = 1_00_20_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -17,13 +18,14 @@ object Deps {
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.3.0-rc01"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha03"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.0-beta02"
-        const val CORE_KTX = "androidx.core:core-ktx:1.5.0-rc01"
-        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.3.3"
+        const val CORE_KTX = "androidx.core:core-ktx:1.6.0-rc01"
+        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.3.5"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
-        const val PAGING = "androidx.paging:paging-runtime-ktx:3.0.0-rc01"
+        const val PAGING = "androidx.paging:paging-runtime-ktx:3.0.0"
         const val RECYCLER = "androidx.recyclerview:recyclerview:1.2.0"
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
+        const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
 
         object CameraX : Version("1.0.0-rc05") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
@@ -37,8 +39,7 @@ object Deps {
         }
 
         object Lifecycle : Version("2.2.0") {
-            val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
-            val LIFECYCLE_EXTENSIONS = "androidx.lifecycle:lifecycle-extensions:$version"
+            val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha02"
         }
 
         object Navigation : Version("2.3.5") {
@@ -46,7 +47,7 @@ object Deps {
             val UI_KTX = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
-        object Room : Version("2.2.6") {
+        object Room : Version("2.3.0") {
             val ROOM_COMPILER = "androidx.room:room-compiler:$version"
             val ROOM_KTX = "androidx.room:room-ktx:$version"
         }
@@ -66,7 +67,7 @@ object Deps {
         const val GSON = "com.google.code.gson:gson:2.8.6"
     }
 
-    object Grpc : Version("1.37.0") {
+    object Grpc : Version("1.38.1") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
@@ -81,7 +82,7 @@ object Deps {
     object Kotlin : Version(kotlinVersion) {
         val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
-        object Coroutines : Version("1.4.3") {
+        object Coroutines : Version("1.5.0") {
             val ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             val TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -91,7 +92,7 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.1"
-        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta11"
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta15"
     }
 
     object Misc {

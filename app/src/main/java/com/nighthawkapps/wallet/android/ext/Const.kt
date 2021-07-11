@@ -44,6 +44,9 @@ object Const {
      * Default values to use application-wide. Ideally, this set of values should remain very short.
      */
     object Default {
+
+        const val FIRST_USE_VIEW_TX = "const.pref.first_use_view_tx"
+
         object Server {
             const val HOST = BuildConfig.DEFAULT_SERVER_URL
             const val PORT = 9067

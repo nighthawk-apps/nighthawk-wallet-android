@@ -1,6 +1,30 @@
 Change Log
 ==========
 
+Version 1.0.20
+------------------------------------
+- New: Added workflow for automatically shielding funds.
+- New: Automatically recover from more network failure states.
+- New: Link to play store from the build number.
+- New: Hide available/total toggle when there are no pending funds.
+- New: Easter Egg to access the testnet faucets.
+- New: Updated checkpoints for mainnet and testnet.
+- New: Address tabs with t-address support [Credit @herou].
+- New: Balance details screen [Credit @herou].
+- New: Better balance information around unmined transactions.
+- New: Add toggle to show available vs. total funds.
+- New: Auto-shielding via balance details screen.
+- Fix: Expand tappable area for showing the balance details.
+- Fix: Off by one error when calculating confirmations.
+- Fix: Do not show time in transaction details for pending transactions.
+- Fix: Repaired QR scanning on older devices (below API 24).
+- Fix: Several of the most frequent crashes reported in bugsnag.
+- Fix: Corrected over-sized icon in history.
+- Fix: History no longer displays negative balance during initial sync.
+- Fix: Errors that prevented sync from working in some situations.
+- Fix: Improved support for smaller screens and older devices. 
+- Update ECC & Android dependencies.
+
 Version 1.0.19 *(2021-05-13)*
 ------------------------------------
 - Hotfix: Remove un-used flags during wallet creation. 

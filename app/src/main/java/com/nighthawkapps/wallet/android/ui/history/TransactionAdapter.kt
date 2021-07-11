@@ -1,4 +1,4 @@
-package com.nighthawkapps.wallet.android.ui.detail
+package com.nighthawkapps.wallet.android.ui.history
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -82,10 +82,10 @@ fun Context.showScanFailure(error: Throwable?, onCancel: () -> Unit = {}, onDism
 }
 
 fun Context.showCriticalMessage(@StringRes titleResId: Int, @StringRes messageResId: Int, onDismiss: () -> Unit = {}): Dialog {
-    return showCriticalError(getString(titleResId), getString(messageResId), onDismiss)
+    return showCriticalMessage(titleResId.toAppString(), messageResId.toAppString(), onDismiss)
 }
 
-fun Context.showCriticalError(title: String, message: String, onDismiss: () -> Unit = {}): Dialog {
+fun Context.showCriticalMessage(title: String, message: String, onDismiss: () -> Unit = {}): Dialog {
     return MaterialAlertDialogBuilder(this)
         .setTitle(title)
         .setMessage(message)

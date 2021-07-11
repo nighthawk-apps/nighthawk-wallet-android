@@ -40,10 +40,14 @@
     <color name="zcashGreen">#00FF0C</color>
     <color name="zcashRed">#FF000B</color>
     <color name="zcashBlue">#00FFCC</color>
+    <color name="zcashBlueDark">#4A90E2</color>
 
     <!-- yellows -->
     <color name="zcashYellow">#FFB900</color>
     <color name="zcashOrange">#FF9800</color>
+
+    <!-- tab layout grey -->
+    <color name="unselected_tab_grey">#727272</color>
 
     <!--                  -->
     <!-- named colors     -->
@@ -64,5 +68,16 @@
     <color name="text_dark">@color/zcashBlack_87</color>
     <color name="text_dark_dimmed">@color/zcashBlack_54</color>
     <color name="text_shadow">@color/zcashBlack_40</color>
+
+    <!-- text : pending design review -->
+    <!-- these are colors found in designs that fall near but outside the palette but may want to
+         replace existing palette colors, after design review -->
+    <color name="tx_text_light_dimmed">#9B9B9B</color>
+    <color name="tx_text_light_dimmed_less">#D3D3D3</color>
+    <color name="tx_circle_icon_bg">#494A4C</color>
+    <color name="tx_primary">#F5A623</color>
+
+    <!--transaction colors-->
+    <color name="transaction_sent">#B8B8B8</color>
 
 </resources>

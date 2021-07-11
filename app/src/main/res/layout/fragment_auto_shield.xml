@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/background_home">
+
+    <View
+        android:id="@+id/guide_keys"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.3"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.38196601125"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.58"
+        app:layout_constraintWidth_percent="0.7475728155" />
+
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/content_description_send_final_back"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.088"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.065"
+        app:layout_constraintWidth_percent="0.08"
+        app:srcCompat="@drawable/ic_cancel"
+        app:tint="@color/zcashWhite_87"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/back_button_hit_area"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_shielding"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.212"
+        app:layout_constraintWidth_percent="0.46"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/lottie_shielding" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/lottie_shielding"
+        app:layout_constraintEnd_toEndOf="@id/lottie_shielding"
+        app:layout_constraintStart_toStartOf="@id/lottie_shielding"
+        app:layout_constraintTop_toTopOf="@id/lottie_shielding"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/lottie_success" />
+
+    <TextView
+        android:id="@+id/text_title"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="3"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/text_light"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lottie_shielding"
+        tools:text="Shielding Now!" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@id/button_primary"
+        app:layout_constraintEnd_toEndOf="@id/button_primary"
+        app:layout_constraintStart_toStartOf="@id/button_primary"
+        app:layout_constraintTop_toBottomOf="@id/text_title">
+
+        <TextView
+            android:id="@+id/text_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/text_light" />
+
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_primary"
+        style="@style/Nighthawk.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="@string/cancel"
+        android:textColor="@color/text_light"
+        android:translationY="-6dp"
+        app:layout_constraintBottom_toTopOf="@id/button_more_info"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/guide_keys"
+        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:strokeColor="@color/text_light" />
+
+    <TextView
+        android:id="@+id/button_more_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/send_more_info"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/text_light"
+        app:layout_constraintEnd_toEndOf="@+id/button_primary"
+        app:layout_constraintStart_toStartOf="@+id/button_primary"
+        app:layout_constraintTop_toBottomOf="@id/button_primary" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
