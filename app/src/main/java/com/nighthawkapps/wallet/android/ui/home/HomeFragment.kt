@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
@@ -242,39 +243,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.textBalanceAvailable.transparentIf(missingBalance)
         binding.labelBalance.transparentIf(missingBalance)
         binding.textBalanceDescription.apply {
-            if (missingBalance) {
-                if (viewModel.priceModel != null) {
-                    try {
-                        val usdPrice = viewModel.priceModel?.price!!.toFloat()
-                        val zecBalance = roundFloat(
-                            availableBalance.convertZatoshiToZecString().toFloat()
-                        )
-                        val usdTotal = "%.2f".format(usdPrice * zecBalance)
-                        text = "~$$usdTotal"
-                        visible()
-                    } catch (e: NumberFormatException) {
-                        gone()
-                    }
-                } else {
-                    gone()
-                    viewModel.initPrice()
+            text = when {
+                unminedCount > 0 -> "(excludes $unminedCount unconfirmed ${if (unminedCount > 1) "transactions" else "transaction"})"
+                availableBalance != -1L && (availableBalance < totalBalance) -> {
+                    val change =
+                        WalletZecFormmatter.toZecStringFull(totalBalance - availableBalance)
+                    val symbol = getString(R.string.symbol)
+                    "(${getString(R.string.home_banner_expecting)} +$change $symbol)".toColoredSpan(
+                        R.color.text_light,
+                        "+$change"
+                    )
                 }
-            } else {
-                text = when {
-                    unminedCount > 0 -> "(excludes $unminedCount unconfirmed ${if (unminedCount > 1) "transactions" else "transaction"})"
-                    availableBalance != -1L && (availableBalance < totalBalance) -> {
-                        val change =
-                            WalletZecFormmatter.toZecStringFull(totalBalance - availableBalance)
-                        val symbol = getString(R.string.symbol)
-                        "(${getString(R.string.home_banner_expecting)} +$change $symbol)".toColoredSpan(
-                            R.color.text_light,
-                            "+$change"
-                        )
-                    }
-                    else -> getString(R.string.home_instruction_enter_amount)
-                }
-                visible()
+                else -> calcBalUSD(availableBalance)
             }
+            visible()
+        }
+    }
+
+    private fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
+        if (viewModel.priceModel != null) {
+            return try {
+                val usdPrice = viewModel.priceModel?.price!!.toFloat()
+                val zecBalance = roundFloat(
+                    availableBalance.convertZatoshiToZecString().toFloat()
+                )
+                val usdTotal = "%.2f".format(usdPrice * zecBalance)
+                visible()
+                "~$$usdTotal"
+            } catch (e: NumberFormatException) {
+                gone()
+                ""
+            }
+        } else {
+            gone()
+            viewModel.initPrice()
+            return ""
         }
     }
 
