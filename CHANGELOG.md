@@ -7,7 +7,6 @@ Version 1.0.20
 - New: Automatically recover from more network failure states.
 - New: Link to play store from the build number.
 - New: Hide available/total toggle when there are no pending funds.
-- New: Easter Egg to access the testnet faucets.
 - New: Updated checkpoints for mainnet and testnet.
 - New: Address tabs with t-address support [Credit @herou].
 - New: Balance details screen [Credit @herou].
