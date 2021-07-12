@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.0.20
+Version 1.0.20 *(2021-07-12)*
 ------------------------------------
 - New: Added workflow for automatically shielding funds.
 - New: Automatically recover from more network failure states.
