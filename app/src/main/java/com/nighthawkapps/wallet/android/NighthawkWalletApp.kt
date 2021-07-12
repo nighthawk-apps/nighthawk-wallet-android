@@ -24,6 +24,8 @@ class NighthawkWalletApp : Application(), CameraXConfig.Provider {
         defaultNetwork = ZcashNetwork.from(resources.getInteger(R.integer.zcash_network_id))
         component = DaggerAppComponent.factory().create(this)
         component.inject(this)
+//        Set enabled to true to view SDK logs
+//        Twig.enabled(true)
     }
 
     override fun getCameraXConfig(): CameraXConfig {

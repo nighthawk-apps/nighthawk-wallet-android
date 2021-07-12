@@ -24,7 +24,7 @@ val INCLUDE_MEMO_PREFIXES_RECOGNIZED = arrayOf(
 // TODO: move this to the SDK
 inline fun ByteArray?.toUtf8Memo(): String {
 // TODO: make this more official but for now, this will do
-    return if (this == null || this[0] >= 0xF5) "" else try {
+    return if (this == null || this.isEmpty() || this[0] >= 0xF5) "" else try {
         // trim empty and "replacement characters" for codes that can't be represented in unicode
         String(this, StandardCharsets.UTF_8).trim('\u0000', '\uFFFD')
     } catch (t: Throwable) {

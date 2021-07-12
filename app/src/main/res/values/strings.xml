@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Nighthawk</string>
     <string name="blank" />
-    <string name="nighthawk_address_part">zs1nhawk....2dmr0sf</string>
-    <string name="nighthawk_address">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
+    <string name="nighthawk_address_part" translatable="false">zs1nhawk....2dmr0sf</string>
+    <string name="nighthawk_address" translatable="false">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
 
     <!-- Send Flow -->
     <string name="no_balance">No Balance</string>
@@ -20,7 +20,7 @@
     <string name="store_these_backup_words_securely">Store these backup words securely.</string>
     <string name="verify">Verify</string>
     <string name="confirm_send">Confirm Send</string>
-    <string name="zboto">$</string>
+    <string name="zboto" translatable="false">$</string>
     <string name="updating">Updating</string>
     <string name="available">Available</string>
     <string name="wallet_history">Wallet History</string>
@@ -347,5 +347,8 @@
     <string name="exclamation">!</string>
     <string name="share_address">Share Address</string>
     <string name="receive_zec">Receive ZEC</string>
+    <string name="plus_transparent">+ transparent</string>
+    <string name="total">Total</string>
+    <string name="as_of_block">as of block</string>
 
 </resources>

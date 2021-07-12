@@ -38,16 +38,16 @@
         android:layout_height="0dp"
         android:contentDescription="@string/content_description_settings_back"
         android:elevation="6dp"
-        app:tint="@color/text_light_dimmed"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.088"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065"
-        app:layout_constraintWidth_percent="0.08"
-        app:srcCompat="@drawable/ic_cancel" />
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
+        app:srcCompat="@drawable/ic_cancel"
+        app:tint="@color/text_light" />
 
     <TextView
         android:id="@+id/text_title"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon_exit"/>
+        app:layout_constraintTop_toBottomOf="@+id/icon_exit" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
@@ -89,9 +89,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_share_address"
+        style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        style="@style/Nighthawk.Button.OutlinedButton"
         android:gravity="center"
         android:text="@string/share_address"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"

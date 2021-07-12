@@ -10,8 +10,6 @@
     <!-- Guidelines -->
     <!--            -->
 
-    <!-- TODO: redo these keylines to match the designs, exactly -->
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_bottom_buttons"
         android:layout_width="wrap_content"
@@ -49,10 +47,12 @@
         android:contentDescription="@string/content_description_history_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065"
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
         app:srcCompat="@drawable/ic_arrow_back_black_24dp"
         app:tint="@color/text_light" />
 
@@ -60,6 +60,7 @@
         android:id="@+id/back_button_hit_area"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:layout_marginStart="16dp"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -134,6 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:paddingStart="0dp"
             android:paddingEnd="8dp"
             android:text="@string/history_address_label"
             android:textColor="@color/text_light_dimmed"

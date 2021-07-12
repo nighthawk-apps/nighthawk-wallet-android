@@ -99,6 +99,11 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
         mainActivity?.navController?.popBackStack(R.id.nav_send, false)
     }
 
+    private fun onSeeDetails() {
+        sendViewModel.reset()
+        mainActivity?.safeNavigate(R.id.action_nav_send_final_to_nav_history)
+    }
+
     private fun PendingTransaction.toUiModel() = UiModel().also { model ->
         when {
             isCancelled() -> {
@@ -126,7 +131,7 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
                     model.primaryAction = { onExit() }
                 } else {
                     model.primaryButtonText = "See Details"
-                    model.primaryAction = { onExit() }
+                    model.primaryAction = { onSeeDetails() }
                 }
             }
         }

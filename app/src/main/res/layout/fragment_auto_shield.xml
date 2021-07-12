@@ -29,15 +29,15 @@
         android:contentDescription="@string/content_description_send_final_back"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.088"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065"
-        app:layout_constraintWidth_percent="0.08"
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
         app:srcCompat="@drawable/ic_cancel"
-        app:tint="@color/zcashWhite_87"
+        app:tint="@color/text_light"
         tools:visibility="visible" />
 
     <View

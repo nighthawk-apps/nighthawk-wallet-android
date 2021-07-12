@@ -356,6 +356,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun copyDonationAddress(view: View? = null) {
+        lifecycleScope.launch {
+            clipboard.setPrimaryClip(
+                ClipData.newPlainText(
+                    "Z-Address",
+                    getString(R.string.nighthawk_address)
+                )
+            )
+            showMessage("Donation Address copied! Please return Send Zcash for sending the donation.")
+        }
+    }
+
     fun copyText(textToCopy: String, label: String = "ECC Wallet Text") {
         clipboard.setPrimaryClip(
             ClipData.newPlainText(label, textToCopy)

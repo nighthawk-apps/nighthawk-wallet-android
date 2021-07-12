@@ -169,10 +169,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065"
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
         app:srcCompat="@drawable/ic_close_black_24dp"
         app:tint="@color/text_light" />
 
@@ -180,6 +182,7 @@
         android:id="@+id/back_button_hit_area"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:layout_marginStart="24dp"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -194,13 +197,14 @@
         style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:autoSizeTextType="uniform"
         android:maxLines="1"
         android:text="@string/scan_recipient_address"
         android:textColor="@color/text_light"
         app:layout_constraintBottom_toBottomOf="@id/back_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/back_button_hit_area"
+        app:layout_constraintStart_toEndOf="@id/back_button"
         app:layout_constraintTop_toTopOf="@id/back_button" />
 
     <Space
