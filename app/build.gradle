@@ -2,10 +2,11 @@ import com.nighthawkapps.wallet.android.Deps
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 archivesBaseName = 'nighthawk-android-wallet'
+group = 'com.nighthawkapps.wallet.android'
+version = Deps.versionName
 android {
     ndkVersion "21.1.6352462"
     compileSdkVersion Deps.compileSdkVersion
@@ -52,19 +53,19 @@ android {
         release {
             minifyEnabled false
             shrinkResources false
-            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.placeholder
         }
         debug {
             minifyEnabled false
             shrinkResources false
-            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
+        // enable support for new language APIs but also fix the issue with zxing on API < 24
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -86,13 +87,8 @@ android {
 }
 
 apply from: "$rootDir/ktlint.gradle"
-
-afterEvaluate {
-    if (project.tasks.getByName("preBuild")) {
-        preBuild.dependsOn('ktlintFormat')
-        preBuild.dependsOn('ktlint')
-    }
-}
+preBuild.dependsOn('ktlintFormat')
+preBuild.dependsOn('ktlint')
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -122,13 +118,13 @@ dependencies {
     implementation Deps.AndroidX.CameraX.LIFECYCLE
     implementation Deps.AndroidX.CameraX.View.EXT
     implementation Deps.AndroidX.CameraX.View.VIEW
-    implementation Deps.AndroidX.Lifecycle.LIFECYCLE_EXTENSIONS
     implementation Deps.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_KTX
     implementation Deps.AndroidX.Navigation.FRAGMENT_KTX
     implementation Deps.AndroidX.Navigation.UI_KTX
     implementation Deps.AndroidX.Room.ROOM_KTX
     kapt Deps.AndroidX.Room.ROOM_COMPILER
     implementation Deps.AndroidX.SECURITY
+    coreLibraryDesugaring Deps.AndroidX.DESUGAR_JDK
 
     // Google
     implementation Deps.Google.GUAVA

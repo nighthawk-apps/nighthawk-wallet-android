@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/text_title"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/your_transparent_address"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/background_qr"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/content_description_receive_qr_background"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_background_qr"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_title"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintWidth_percent="0.64" />
+
+    <!-- QR code placeholder -->
+    <ImageView
+        android:id="@+id/receive_qr_code"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/content_description_receive_qr_code"
+        android:onClick="copyTransparentAddress"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/background_qr"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/background_qr"
+        app:layout_constraintStart_toStartOf="@id/background_qr"
+        app:layout_constraintTop_toTopOf="@id/background_qr"
+        app:layout_constraintWidth_percent="0.53"
+        tools:background="@color/zcashWhite"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/icon_qr_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/content_description_receive_qr_logo"
+        android:onClick="copyTransparentAddress"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_transparent_address"
+        app:layout_constraintBottom_toBottomOf="@id/receive_qr_code"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/receive_qr_code"
+        app:layout_constraintStart_toStartOf="@id/receive_qr_code"
+        app:layout_constraintTop_toTopOf="@id/receive_qr_code"
+        app:layout_constraintWidth_percent="0.14" />
+
+    <!-- Someday, there will be an advanced VirtualLayout that helps us do this without nesting but for now, this seems to be the only clean way to center all the fields -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/receive_address_parts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:foregroundGravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/receive_qr_code"
+        app:layout_constraintStart_toStartOf="@+id/receive_qr_code"
+        app:layout_constraintTop_toBottomOf="@+id/background_qr"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/text_address_part_1"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/text_address_part_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text=" ztestsaplin" />
+
+        <TextView
+            android:id="@+id/text_address_part_2"
+            style="@style/Nighthawk.TextAppearance.AddressPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/text_address_part_1"
+            app:layout_constraintTop_toBottomOf="@id/text_address_part_1"
+            tools:text=" jceuu9s2p6t" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

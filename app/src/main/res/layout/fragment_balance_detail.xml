@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_home">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hit_area_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hit_area_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.96" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_content_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_content_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_content_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hit_area_topp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <View
+        android:id="@+id/hit_area_exit"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="24dp"
+        android:alpha="0.3"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_hit_area_topp" />
+
+    <TextView
+        android:id="@+id/text_block_height_prefix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/as_of_block"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/tx_text_light_dimmed"
+        app:layout_constraintEnd_toStartOf="@id/text_block_height"
+        app:layout_constraintTop_toBottomOf="@id/icon_exit" />
+
+    <TextView
+        android:id="@+id/text_block_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/tx_text_light_dimmed_less"
+        app:layout_constraintBaseline_toBaselineOf="@id/text_block_height_prefix"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        tools:text="796,798/123,123" />
+
+    <View
+        android:id="@+id/background_group_outter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.5"
+        android:background="@drawable/background_gradient_balance_details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_content_top"
+        app:layout_constraintWidth_percent="0.9" />
+
+    <Switch
+        android:id="@+id/switch_funds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/background_group_outter" />
+
+    <TextView
+        android:id="@+id/text_switch_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:fontFamily="@font/inconsolata"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="16dp"
+        android:text="@string/total"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintBaseline_toBaselineOf="@id/text_switch_available"
+        app:layout_constraintEnd_toStartOf="@id/switch_funds" />
+
+    <TextView
+        android:id="@+id/text_switch_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/inconsolata"
+        android:paddingStart="4dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:text="@string/available"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintBaseline_toBaselineOf="@id/switch_funds"
+        app:layout_constraintStart_toEndOf="@id/switch_funds" />
+
+    <View
+        android:id="@+id/background_group_inner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="@id/background_group_outter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.318"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/background_group_outter"
+        app:layout_constraintWidth_percent="0.8382" />
+
+    <View
+        android:id="@+id/background_top"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#2c2c34"
+        app:layout_constraintBottom_toTopOf="@id/background_middle"
+        app:layout_constraintEnd_toEndOf="@id/background_group_inner"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="@id/background_group_inner"
+        app:layout_constraintTop_toTopOf="@id/background_group_inner"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <View
+        android:id="@+id/background_middle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.1"
+        android:background="@drawable/background_balance_details_transparent"
+        app:layout_constraintBottom_toTopOf="@id/background_bottom"
+        app:layout_constraintEnd_toEndOf="@id/background_top"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="@id/background_top"
+        app:layout_constraintTop_toBottomOf="@id/background_top" />
+
+    <View
+        android:id="@+id/background_bottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.1"
+        android:background="@drawable/background_balance_details_total"
+        app:layout_constraintBottom_toBottomOf="@id/background_group_inner"
+        app:layout_constraintEnd_toEndOf="@id/background_top"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="@id/background_top"
+        app:layout_constraintTop_toBottomOf="@id/background_middle" />
+
+    <ImageView
+        android:id="@+id/icon_exit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/content_description_settings_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
+        app:srcCompat="@drawable/ic_cancel"
+        app:tint="@color/text_light" />
+
+    <ImageView
+        android:id="@+id/icon_receive_funds"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toTopOf="@id/background_top"
+        app:layout_constraintWidth_percent="0.042"
+        app:srcCompat="@drawable/ic_receive_funds" />
+
+    <TextView
+        android:id="@+id/text_shielded_zec_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/inconsolata"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/zcashYellow"
+        app:layout_constraintBottom_toBottomOf="@+id/icon_receive_funds"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
+        app:layout_constraintStart_toEndOf="@+id/icon_receive_funds"
+        app:layout_constraintTop_toTopOf="@+id/icon_receive_funds"
+        tools:text="Shielded ZEC" />
+
+    <TextView
+        android:id="@+id/text_shield_amount"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fontFamily="@font/inconsolata"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textAppearance="@style/Nighthawk.TextAppearance.Zec"
+        android:textSize="32sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/background_top"
+        app:layout_constraintEnd_toEndOf="@+id/text_shielded_zec_title"
+        app:layout_constraintStart_toEndOf="@id/zec_sign_total"
+        app:layout_constraintTop_toBottomOf="@+id/text_shielded_zec_title"
+        tools:text="   1.11111111" />
+
+    <TextView
+        android:id="@+id/text_transparent_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/inconsolata"
+        android:paddingStart="4dp"
+        android:paddingEnd="0dp"
+        android:text="@string/plus_transparent"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:layout_constraintEnd_toEndOf="@+id/text_shield_amount"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toTopOf="@id/background_middle" />
+
+
+    <TextView
+        android:id="@+id/text_transparent_amount"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fontFamily="@font/inconsolata"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textAppearance="@style/Nighthawk.TextAppearance.Zec"
+        android:textSize="32sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/background_middle"
+        app:layout_constraintEnd_toEndOf="@+id/text_shielded_zec_title"
+        app:layout_constraintStart_toEndOf="@id/zec_sign_shielded"
+        app:layout_constraintTop_toBottomOf="@+id/text_transparent_title"
+        tools:text="9999.99999999" />
+
+    <TextView
+        android:id="@+id/text_total_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/inconsolata"
+        android:paddingStart="4dp"
+        android:text="= total"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:layout_constraintEnd_toEndOf="@+id/text_transparent_amount"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toTopOf="@id/background_bottom" />
+
+    <TextView
+        android:id="@+id/text_total_amount"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fontFamily="@font/inconsolata"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textAppearance="@style/Nighthawk.TextAppearance.Zec"
+        android:textSize="32sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/background_bottom"
+        app:layout_constraintEnd_toEndOf="@+id/text_shielded_zec_title"
+        app:layout_constraintStart_toEndOf="@id/zec_sign_total"
+        app:layout_constraintTop_toBottomOf="@+id/text_total_title"
+        tools:text="44.11223344" />
+
+    <!-- Z signs (possibly temporary) -->
+
+    <ImageView
+        android:id="@+id/zec_sign_shielded"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toTopOf="@id/text_shield_amount"
+        app:layout_constraintWidth_percent="0.042"
+        app:srcCompat="@drawable/ic_zec_symbol_right" />
+
+    <ImageView
+        android:id="@+id/zec_sign_transparent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toTopOf="@id/text_transparent_amount"
+        app:layout_constraintWidth_percent="0.042"
+        app:srcCompat="@drawable/ic_zec_symbol_right" />
+
+    <ImageView
+        android:id="@+id/zec_sign_total"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toTopOf="@id/text_total_amount"
+        app:layout_constraintWidth_percent="0.042"
+        app:srcCompat="@drawable/ic_zec_symbol_right" />
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/inconsolata"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/text_light_dimmed"
+        app:layout_constraintBottom_toTopOf="@+id/button_shield_transaparent_funds"
+        app:layout_constraintEnd_toEndOf="@id/background_group_inner"
+        app:layout_constraintStart_toStartOf="@id/background_group_inner"
+        app:layout_constraintTop_toBottomOf="@+id/background_group_outter"
+        tools:text="(2.427893 ZEC pending)\nadsf\nasdfasf\nasdfasdf\nadsfas\nasdf\nasdfas\nasdfas
+\nasdfas\nasdfas\nasdfas\nasdfas\nasdfas\nasdfas\nasdfas\nasdfas\nasdfas\nasdfas\nasdfas" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_shield_transaparent_funds"
+        style="@style/Nighthawk.Button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/selector_primary_button_activatable"
+        android:gravity="center"
+        android:text="@string/balance_detail_button_send_transparent_funds"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/selector_button_text_dark"
+        android:textSize="16sp"
+        android:translationY="-6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.088"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.838"
+        app:layout_constraintWidth_percent="0.7475728155" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

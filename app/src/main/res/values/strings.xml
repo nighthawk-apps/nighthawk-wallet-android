@@ -1,9 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Nighthawk</string>
-    <string name="app_name_full">Nighthawk Wallet</string>
     <string name="blank" />
-    <string name="nighthawk_address_part">zs1nhawk....2dmr0sf</string>
-    <string name="nighthawk_address">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
+    <string name="nighthawk_address_part" translatable="false">zs1nhawk....2dmr0sf</string>
+    <string name="nighthawk_address" translatable="false">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
 
     <!-- Send Flow -->
     <string name="no_balance">No Balance</string>
@@ -21,13 +20,14 @@
     <string name="store_these_backup_words_securely">Store these backup words securely.</string>
     <string name="verify">Verify</string>
     <string name="confirm_send">Confirm Send</string>
-    <string name="zboto">$</string>
+    <string name="zboto" translatable="false">$</string>
     <string name="updating">Updating</string>
     <string name="available">Available</string>
     <string name="wallet_history">Wallet History</string>
+    <string name="transparent_balance">Transparent Balance</string>
     <string name="shielded_address">Shielded address:</string>
     <string name="no_history_yet">No history yet.</string>
-    <string name="welcome_to_nighthawk_wallet">Welcome to Nighthawk Wallet!</string>
+    <string name="welcome_to_nighthawk_wallet">Welcome to Nighthawk!</string>
     <string name="restore">Restore</string>
     <string name="new_wallet">New</string>
     <string name="restoring_from_a_backup">Restoring from a backup</string>
@@ -86,15 +86,6 @@
     <string name="backup_instruction_store_words">Store these backup words securely.</string>
     <string name="backup_slogan">empowering\neveryone\nwith\neconomic\nfreedom</string>
     <string name="backup_verification_not_implemented">Backup verification coming soon!</string>
-
-    <!-- Screen: Feedback -->
-    <string name="feedback_hint_1">My experience was . . .</string>
-    <string name="feedback_hint_2">My balance was . . .</string>
-    <string name="feedback_hint_3">I\'d like . . .</string>
-    <string name="feedback_question_1">Any details you\'d like to share?</string>
-    <string name="feedback_question_2">Was your balance clear?</string>
-    <string name="feedback_question_3">What feature would you like to see next?</string>
-    <string name="feedback_thanks">Thanks for the feedback!</string>
 
     <!-- Screen: History -->
     <string name="history_address_label">Shielded address:</string>
@@ -204,6 +195,8 @@
     <string name="send_validation_error_no_available_funds" tools:ignore="MissingTranslation">@string/translated_balance_nofunds</string>
     <string name="send_validation_error_too_much">Please go back and enter no more than %1$s ZEC.</string>
     <string name="send_validation_error_unknown_funds">Available funds not found. Please try again in a moment.</string>
+    <string name="send_no_z_address_message">To add a memo, enter a shielded address.</string>
+    <string name="send_more_info">More Info</string>
 
     <!-- Screen: Settings-->
     <string name="settings_buttons_restore">Restore Defaults</string>
@@ -218,31 +211,33 @@
     <string name="settings_update">Update</string>
 
     <!-- Screen: Transaction details -->
-    <string name="transaction_address_paid_you">paid you</string>
-    <string name="transaction_address_you_paid">You paid</string>
-    <string name="transaction_block_height_prefix">"from block "</string>
-    <string name="transaction_confirmation_count_unavailable">Confirmation count temporarily unavailable</string>
-    <string name="transaction_details_button_explore">Explore</string>
-    <string name="transaction_details_total">Total Spent</string>
-    <string name="transaction_instruction_tap">tap to view</string>
-    <string name="transaction_prefix_from">reply-to</string>
-    <string name="transaction_prefix_to" tools:ignore="MissingTranslation">@string/translated_label_to</string>
-    <string name="transaction_received">Received</string>
-    <string name="transaction_status_confirmed">Confirmed</string>
-    <string name="transaction_status_confirming">of 10 confirmations</string>
-    <string name="transaction_status_expired">Expired</string>
-    <string name="transaction_status_pending">Pending confirmation</string>
-    <string name="transaction_status_sent">Sent</string>
-    <string name="transaction_story_from_shielded" tools:ignore="MissingTranslation">@string/translated_send_fromshielded</string>
-    <string name="transaction_story_inbound">You Received</string>
-    <string name="transaction_story_inbound_total">Total Received</string>
-    <string name="transaction_story_network_fee">+%1$s network fee</string>
-    <string name="transaction_story_outbound">You Sent</string>
-    <string name="transaction_story_outbound_total">Total Sent</string>
-    <string name="transaction_story_to_shielded">to your shielded wallet</string>
-    <string name="transaction_timestamp_unavailable">Details Unavailable</string>
-    <string name="transaction_title">Transaction Details</string>
-    <string name="transaction_with_memo">with a memo</string>
+    <string name="transaction_address_paid_you">@string/missing_transaction_address_paid_you</string>
+    <string name="transaction_address_you_paid">@string/missing_transaction_address_you_paid</string>
+    <string name="transaction_address_paying">@string/missing_transaction_address_paying</string>
+    <string name="transaction_block_height_prefix">@string/missing_transaction_block_height_prefix</string>
+    <string name="transaction_confirmation_count_unavailable">@string/missing_transaction_confirmation_count_unavailable</string>
+    <string name="transaction_details_button_explore">@string/missing_transaction_details_button_explore</string>
+    <string name="transaction_details_total">@string/missing_transaction_details_total</string>
+    <string name="transaction_instruction_tap">@string/missing_transaction_instruction_tap</string>
+    <string name="transaction_prefix_from">@string/missing_transaction_prefix_from</string>
+    <string name="transaction_prefix_to">@string/translated_label_to</string>
+    <string name="transaction_received">@string/missing_transaction_received</string>
+    <string name="transaction_received_from">@string/missing_transaction_received_from</string>
+    <string name="transaction_status_confirmed">@string/missing_transaction_status_confirmed</string>
+    <string name="transaction_status_confirming">@string/missing_transaction_status_confirming</string>
+    <string name="transaction_status_expired">@string/missing_transaction_status_expired</string>
+    <string name="transaction_status_pending">@string/missing_transaction_status_pending</string>
+    <string name="transaction_status_sent">@string/missing_transaction_status_sent</string>
+    <string name="transaction_story_from_shielded">@string/translated_send_fromshielded</string>
+    <string name="transaction_story_inbound">@string/missing_transaction_story_inbound</string>
+    <string name="transaction_story_inbound_total">@string/missing_transaction_story_inbound_total</string>
+    <string name="transaction_story_network_fee">%1$s network fee</string>
+    <string name="transaction_story_outbound">@string/missing_transaction_story_outbound</string>
+    <string name="transaction_story_outbound_total">@string/missing_transaction_story_outbound_total</string>
+    <string name="transaction_story_to_shielded">@string/missing_transaction_story_to_shielded</string>
+    <string name="transaction_timestamp_unavailable">@string/missing_transaction_timestamp_unavailable</string>
+    <string name="transaction_title">@string/missing_transaction_title</string>
+    <string name="transaction_with_memo">@string/missing_transaction_with_memo</string>
 
     <!--                      -->
     <!-- Content Descriptions -->
@@ -326,6 +321,10 @@
     <string name="dialog_rescan_wallet_button_neutral">Wipe</string>
     <string name="dialog_rescan_failed_title">Full Rescan Failed</string>
 
+    <!-- Screen: Balance Detail -->
+    <string name="balance_detail_button_send_transparent_funds" tools:ignore="MissingTranslation">Shield Transparent Funds</string>
+    <string name="balance_detail_text_total_title" tools:ignore="MissingTranslation">= TOTAL</string>
+
     <!--      -->
     <!-- Misc -->
     <!--      -->
@@ -335,9 +334,21 @@
     <string name="error_launch_url">Failed to open browser.</string>
     <string name="key_backspace"><![CDATA[<]]></string>
     <string name="key_decimal">.</string>
-    <!--    <string name="key_decimal">@string/custom_translation_decimal_key</string>-->
     <string name="mixpanel_project">a178e1ef062133fc121079cb12fa43c7</string>
     <string name="format_date_time">@string/custom_translation_format_date_time_brief</string>
+    <string name="format_transaction_history_date_time">@string/transaction_history_format_date_time_brief</string>
     <string name="loading">⏳ Loading…</string>
+    <string name="your_shielded_address">Your Shielded Address</string>
+    <string name="your_transparent_address">Your Transparent Address</string>
+    <string name="transaction_history_format_date_time_brief" tools:ignore="MissingTranslation">MM/dd/yy h:mma</string>
+    <string name="got_it">Got it</string>
+    <string name="you_ve_received_more_than_n1_zec_in_transparent_funds_n_nthis_won_t_take_but_a_moment">You\'ve received more than\n1 ZEC in transparent funds.\n\nThis won\'t take but a moment.</string>
+    <string name="shielding"><![CDATA[<<Shielding>>]]></string>
+    <string name="exclamation">!</string>
+    <string name="share_address">Share Address</string>
+    <string name="receive_zec">Receive ZEC</string>
+    <string name="plus_transparent">+ transparent</string>
+    <string name="total">Total</string>
+    <string name="as_of_block">as of block</string>
 
 </resources>

@@ -13,9 +13,11 @@ import dagger.Provides
 @Module(includes = [ViewModelsSynchronizerModule::class])
 class SynchronizerModule {
 
+    private var synchronizer: Synchronizer? = null
+
     @Provides
     @SynchronizerScope
     fun provideSynchronizer(initializer: Initializer): Synchronizer {
-        return Synchronizer(initializer)
+        return synchronizer ?: Synchronizer(initializer).also { synchronizer = it }
     }
 }

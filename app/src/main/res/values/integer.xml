@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="transaction_arrow_rotation_send">180</integer>
+    <integer name="transaction_arrow_rotation_pending">135</integer>
+    <integer name="transaction_arrow_rotation_received">315</integer>
+</resources>

@@ -5,18 +5,15 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagedList
-import androidx.recyclerview.widget.LinearLayoutManager
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
 import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
-import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
-import cash.z.ecc.android.sdk.ext.collectWith
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.ext.twig
-import cash.z.ecc.android.sdk.type.WalletBalance
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -26,33 +23,32 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
+import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
+import com.nighthawkapps.wallet.android.ext.transparentIf
 import com.nighthawkapps.wallet.android.ext.visible
+import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import com.nighthawkapps.wallet.android.ui.detail.TransactionAdapter
-import com.nighthawkapps.wallet.android.ui.detail.TransactionsFooter
-import com.nighthawkapps.wallet.android.ui.detail.WalletDetailViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.scanReduce
+import kotlinx.coroutines.flow.runningReduce
 import kotlinx.coroutines.isActive
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private lateinit var uiModel: HomeViewModel.UiModel
-    private lateinit var adapter: TransactionAdapter<ConfirmedTransaction>
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
-    private val walletViewModel: WalletDetailViewModel by activityViewModel()
 
     lateinit var snake: MagicSnakeLoader
 
-    override fun inflate(inflater: LayoutInflater): FragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
+    override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
+        FragmentHomeBinding.inflate(inflater)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -84,9 +80,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         snake = MagicSnakeLoader(binding.lottieButtonLoading)
         binding.hitAreaProfile.onClickNavTo(R.id.action_nav_home_to_nav_profile)
         binding.buttonSendAmount.setOnClickListener { onSend() }
+        binding.buttonSendAmount.text = getString(R.string.home_button_send_disconnected)
+        binding.buttonSendAmount.setTextColor(R.color.text_light.toAppColor())
         binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
-        binding.textMyAddress.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.textSideShift.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textMyAddress.paintFlags =
+            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textSideShift.paintFlags =
+            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textWalletHistory.onClickNavTo(R.id.action_nav_home_to_nav_history)
+        binding.textTransparentBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
+        binding.textWalletHistory.paintFlags =
+            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textTransparentBalance.paintFlags =
+            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.hitAreaBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
         binding.hitAreaInfo.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.visit_zcash_link_title))
@@ -130,71 +137,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         launchWhenSyncReady(::onSyncReady)
     }
 
+    fun setBanner(message: String = "", action: BannerAction = BannerAction.CLEAR) {
+        with(binding) {
+            val hasMessage = !message.isEmpty() || action != BannerAction.CLEAR
+            groupBalance.goneIf(hasMessage)
+            groupBanner.goneIf(!hasMessage)
+
+            textBannerMessage.text = message
+            textBannerAction.text = action.action
+        }
+    }
+
     private fun onSyncReady() {
         twig("Sync ready! Monitoring synchronizer state...")
-        monitorTransactions()
-        monitorBalance()
         monitorUiModelChanges()
-    }
-
-    private fun onBalanceUpdated(balance: WalletBalance) {
-        binding.textBalanceAvailable.text = balance.availableZatoshi.convertZatoshiToZecString()
-        val change = (balance.totalZatoshi - balance.availableZatoshi)
-        binding.textBalanceDescription.apply {
-            if (change <= 0L) {
-                if (walletViewModel.priceModel != null) {
-                    try {
-                        val usdPrice = walletViewModel.priceModel?.price!!.toFloat()
-                        val zecBalance = roundFloat(
-                            balance.availableZatoshi.convertZatoshiToZecString().toFloat()
-                        )
-                        val usdTotal = "%.2f".format(usdPrice * zecBalance)
-                        text = "~$$usdTotal"
-                        visible()
-                    } catch (e: NumberFormatException) {
-                        gone()
-                    }
-                } else {
-                    gone()
-                    walletViewModel.initPrice()
-                }
-            } else {
-                val changeString = change.convertZatoshiToZecString()
-                text = "(expecting +$changeString ZEC)".toColoredSpan(
-                    R.color.text_light,
-                    "+$changeString"
-                )
-                visible()
-            }
-        }
-    }
-
-    private fun roundFloat(number: Float): Float {
-        var pow = 10
-        for (i in 1 until 2) pow *= 10
-        val tmp = number * pow
-        return ((if (tmp - tmp.toInt() >= 0.5f) tmp + 1 else tmp).toInt()).toFloat() / pow
-    }
-
-    private fun monitorTransactions() {
-        adapter = TransactionAdapter()
-        binding.recyclerTransactions.apply {
-            layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(TransactionsFooter(binding.recyclerTransactions.context))
-            adapter = this@HomeFragment.adapter
-            scrollToTop()
-        }
-        walletViewModel.transactions.collectWith(resumedScope, ::onTransactionsUpdated)
-    }
-
-    private fun monitorBalance() {
-        walletViewModel.balance.collectWith(resumedScope, ::onBalanceUpdated)
     }
 
     private fun monitorUiModelChanges() {
         viewModel.initializeMaybe()
-        viewModel.uiModels.scanReduce { old, new ->
+        viewModel.uiModels.runningReduce { old, new ->
             onModelUpdated(old, new)
             new
         }.onCompletion {
@@ -203,30 +164,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             twig("exception while processing uiModels $e")
             throw e
         }.launchIn(resumedScope)
-    }
-
-    private fun onTransactionsUpdated(transactions: PagedList<ConfirmedTransaction>) {
-        twig("got a new paged list of transactions")
-        transactions.size.let { newCount ->
-            binding.groupEmptyViews.goneIf(newCount > 0)
-            val preSize = adapter.itemCount
-            adapter.submitList(transactions)
-            // don't rescroll while the user is looking at the list, unless it's initialization
-            // using 4 here because there might be headers or other things that make 0 a bad pick
-            // 4 is about how many can fit before scrolling becomes necessary on many screens
-            if (preSize < 4 && newCount > preSize) {
-                scrollToTop()
-            }
-        }
-    }
-
-    private fun scrollToTop() {
-        twig("scrolling to the top")
-        binding.recyclerTransactions.apply {
-            postDelayed({
-                smoothScrollToPosition(0)
-            }, 5L)
-        }
     }
 
     //
@@ -285,14 +222,75 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.buttonSendAmount.text = sendText
         twig("Send button set to: $sendText")
 
-        val resId = if (uiModel.isSynced) R.color.selector_button_text_dark else R.color.selector_button_text_light
+        val resId =
+            if (uiModel.isSynced) R.color.selector_button_text_dark else R.color.selector_button_text_light
         binding.buttonSendAmount.setTextColor(resources.getColorStateList(resId))
         binding.lottieButtonLoading.invisibleIf(uiModel.isDisconnected)
+    }
+
+    fun setAvailable(
+        availableBalance: Long = -1L,
+        totalBalance: Long = -1L,
+        availableTransparentBalance: Long = -1L,
+        unminedCount: Int = 0
+    ) {
+        val missingBalance = availableBalance < 0
+        val availableString =
+            if (missingBalance) getString(R.string.home_button_send_updating) else WalletZecFormmatter.toZecStringFull(
+                availableBalance
+            )
+        binding.textBalanceAvailable.text = availableString
+        binding.textBalanceAvailable.transparentIf(missingBalance)
+        binding.labelBalance.transparentIf(missingBalance)
+        binding.textBalanceDescription.apply {
+            text = when {
+                unminedCount > 0 -> "(excludes $unminedCount unconfirmed ${if (unminedCount > 1) "transactions" else "transaction"})"
+                availableBalance != -1L && (availableBalance < totalBalance) -> {
+                    val change =
+                        WalletZecFormmatter.toZecStringFull(totalBalance - availableBalance)
+                    val symbol = getString(R.string.symbol)
+                    "(${getString(R.string.home_banner_expecting)} +$change $symbol)".toColoredSpan(
+                        R.color.text_light,
+                        "+$change"
+                    )
+                }
+                else -> calcBalUSD(availableBalance)
+            }
+            visible()
+        }
+    }
+
+    private fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
+        if (viewModel.priceModel != null) {
+            return try {
+                val usdPrice = viewModel.priceModel?.price!!.toFloat()
+                val zecBalance = roundFloat(
+                    availableBalance.convertZatoshiToZecString().toFloat()
+                )
+                val usdTotal = "%.2f".format(usdPrice * zecBalance)
+                visible()
+                "~$$usdTotal"
+            } catch (e: NumberFormatException) {
+                gone()
+                ""
+            }
+        } else {
+            gone()
+            viewModel.initPrice()
+            return ""
+        }
     }
 
     //
     // Private UI Events
     //
+
+    private fun roundFloat(number: Float): Float {
+        var pow = 10
+        for (i in 1 until 2) pow *= 10
+        val tmp = number * pow
+        return ((if (tmp - tmp.toInt() >= 0.5f) tmp + 1 else tmp).toInt()).toFloat() / pow
+    }
 
     private fun onModelUpdated(old: HomeViewModel.UiModel?, new: HomeViewModel.UiModel) {
         logUpdate(old, new)
@@ -333,8 +331,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         )
                         append(")")
                     }
-                    if (old.availableBalance != new.availableBalance) append("${maybeComma()}availableBalance=${new.availableBalance}")
-                    if (old.totalBalance != new.totalBalance) append("${maybeComma()}totalBalance=${new.totalBalance}")
+                    if (old.saplingBalance.availableZatoshi != new.saplingBalance.availableZatoshi) append(
+                        "${maybeComma()}availableBalance=${new.saplingBalance.availableZatoshi}"
+                    )
+                    if (old.saplingBalance.totalZatoshi != new.saplingBalance.totalZatoshi) append("${maybeComma()}totalBalance=${new.saplingBalance.totalZatoshi}")
                     if (old.pendingSend != new.pendingSend) append("${maybeComma()}pendingSend=${new.pendingSend}")
                     append(")")
                 }
@@ -348,9 +348,77 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         snake.isSynced = true
+        if (!uiModel.hasSaplingBalance) {
+            onNoFunds()
+        } else {
+            setBanner("")
+            setAvailable(
+                uiModel.saplingBalance.availableZatoshi,
+                uiModel.saplingBalance.totalZatoshi,
+                uiModel.transparentBalance.availableZatoshi,
+                uiModel.unminedCount
+            )
+        }
+        autoShield(uiModel)
+    }
+
+    private fun autoShield(uiModel: HomeViewModel.UiModel) {
+        if (uiModel.hasAutoshieldFunds && canAutoshield()) {
+            twig("Autoshielding is available! Let's do this!!!")
+            mainActivity?.lastAutoShieldTime = System.currentTimeMillis()
+            mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_funds_available)
+        } else {
+            // troubleshooting logs
+            if (uiModel.transparentBalance.availableZatoshi > 0) {
+                twig(
+                    "Transparent funds are available but not enough to autoshield. Available: ${
+                        uiModel.transparentBalance.availableZatoshi.convertZatoshiToZecString(
+                            10
+                        )
+                    }  Required: ${
+                        NighthawkWalletApp.instance.autoshieldThreshold.convertZatoshiToZecString(
+                            8
+                        )
+                    }"
+                )
+            } else if (uiModel.transparentBalance.totalZatoshi > 0) {
+                twig("Transparent funds have been received but they require 10 confirmations for autoshielding.")
+            } else if (!canAutoshield()) {
+                twig("Could not autoshield probably because the last one occurred ${System.currentTimeMillis() - (mainActivity?.lastAutoShieldTime ?: 0)}ms ago which is less than the required cool off time of ${mainActivity?.maxAutoshieldFrequency}ms")
+            }
+        }
     }
 
     private fun onSend() {
         if (isSendEnabled) mainActivity?.safeNavigate(R.id.action_nav_home_to_send)
+    }
+
+    private fun onNoFunds() {
+        setBanner(getString(R.string.home_no_balance), BannerAction.FUND_NOW)
+    }
+
+    private fun canAutoshield(): Boolean {
+        return mainActivity?.let { main ->
+            System.currentTimeMillis().let { now ->
+                val delta = now - main.lastAutoShieldTime
+                return delta > main.maxAutoshieldFrequency
+            }
+        } ?: false
+    }
+
+    enum class BannerAction(val action: String) {
+        FUND_NOW(""),
+        CANCEL("Cancel"),
+        NONE(""),
+        CLEAR("clear");
+
+        companion object {
+            fun from(action: String?): BannerAction {
+                values().forEach {
+                    if (it.action == action) return it
+                }
+                throw IllegalArgumentException("Invalid BannerAction: $action")
+            }
+        }
     }
 }

@@ -88,6 +88,7 @@
         android:id="@+id/error_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:gravity="center"
         android:text="@string/failed_to_send_due_to_insufficient_funds"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -127,16 +128,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_primary" />
-
-    <ImageView
-        android:id="@+id/mini_nighthawk"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_f117_vector_black_no_bg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

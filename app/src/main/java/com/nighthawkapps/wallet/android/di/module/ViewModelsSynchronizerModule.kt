@@ -6,11 +6,13 @@ import com.nighthawkapps.wallet.android.di.annotation.SynchronizerScope
 import com.nighthawkapps.wallet.android.di.annotation.ViewModelKey
 import com.nighthawkapps.wallet.android.di.viewmodel.ViewModelFactory
 import com.nighthawkapps.wallet.android.ext.Const
-import com.nighthawkapps.wallet.android.ui.detail.WalletDetailViewModel
+import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
+import com.nighthawkapps.wallet.android.ui.home.BalanceDetailViewModel
 import com.nighthawkapps.wallet.android.ui.home.HomeViewModel
 import com.nighthawkapps.wallet.android.ui.profile.ProfileViewModel
 import com.nighthawkapps.wallet.android.ui.receive.ReceiveViewModel
 import com.nighthawkapps.wallet.android.ui.scan.ScanViewModel
+import com.nighthawkapps.wallet.android.ui.send.AutoShieldViewModel
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import com.nighthawkapps.wallet.android.ui.setup.SettingsViewModel
 import dagger.Binds
@@ -39,8 +41,8 @@ abstract class ViewModelsSynchronizerModule {
     @SynchronizerScope
     @Binds
     @IntoMap
-    @ViewModelKey(WalletDetailViewModel::class)
-    abstract fun bindWalletDetailViewModel(implementation: WalletDetailViewModel): ViewModel
+    @ViewModelKey(HistoryViewModel::class)
+    abstract fun bindHistoryViewModel(implementation: HistoryViewModel): ViewModel
 
     @SynchronizerScope
     @Binds
@@ -65,6 +67,18 @@ abstract class ViewModelsSynchronizerModule {
     @IntoMap
     @ViewModelKey(SettingsViewModel::class)
     abstract fun bindSettingsViewModel(implementation: SettingsViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(BalanceDetailViewModel::class)
+    abstract fun bindBalanceDetailViewModel(implementation: BalanceDetailViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(AutoShieldViewModel::class)
+    abstract fun bindAutoShieldViewModel(implementation: AutoShieldViewModel): ViewModel
 
     /**
      * Factory for view models that are not created until the Synchronizer exists. Only VMs that

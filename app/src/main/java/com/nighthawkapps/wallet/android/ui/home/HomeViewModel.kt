@@ -1,20 +1,36 @@
 package com.nighthawkapps.wallet.android.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.block.CompactBlockProcessor
-import cash.z.ecc.android.sdk.exception.RustLayerException
+import cash.z.ecc.android.sdk.db.entity.PendingTransaction
+import cash.z.ecc.android.sdk.db.entity.isMined
+import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
 import cash.z.ecc.android.sdk.ext.ZcashSdk.MINERS_FEE_ZATOSHI
 import cash.z.ecc.android.sdk.ext.ZcashSdk.ZATOSHI_PER_ZEC
 import cash.z.ecc.android.sdk.ext.twig
+import cash.z.ecc.android.sdk.type.WalletBalance
+import com.google.gson.Gson
+import com.nighthawkapps.wallet.android.NighthawkWalletApp
+import com.nighthawkapps.wallet.android.ui.util.price.PriceModel
+import com.squareup.okhttp.HttpUrl
+import com.squareup.okhttp.OkHttpClient
+import com.squareup.okhttp.Request
+import com.squareup.okhttp.ResponseBody
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
+import java.io.IOException
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -28,6 +44,41 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     lateinit var _typedChars: ConflatedBroadcastChannel<Char>
 
     var initialized = false
+
+    val balance get() = synchronizer.saplingBalances
+    var priceModel: PriceModel? = null
+
+    private val fetchPriceScope = CoroutineScope(Dispatchers.IO)
+
+    fun initPrice() {
+        fetchPriceScope.launch {
+            supervisorScope {
+                if (priceModel == null) {
+                    val client = OkHttpClient()
+                    val urlBuilder = HttpUrl.parse("https://api.lightwalletd.com/price.json").newBuilder()
+                    val url = urlBuilder.build().toString()
+                    val request: Request = Request.Builder().url(url).build()
+                    val gson = Gson()
+                    var responseBody: ResponseBody? = null
+
+                    try {
+                        responseBody = client.newCall(request).execute().body()
+                    } catch (e: IOException) {
+                        Log.e("initPrice + ${e.message}", "$responseBody")
+                    } catch (e: IllegalStateException) {
+                        Log.e("initPrice + ${e.message}", "$responseBody")
+                    }
+                    if (responseBody != null) {
+                        try {
+                            priceModel = gson.fromJson(responseBody.string(), PriceModel::class.java)
+                        } catch (e: IOException) {
+                            Log.e("initPrice + ${e.message}", "$priceModel")
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     fun initializeMaybe() {
         twig("init called")
@@ -69,8 +120,28 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
         twig("initializing view models stream")
         uiModels = synchronizer.run {
-            combine(status, processorInfo, balances, zec) { s, p, b, z ->
-                UiModel(s, p, b.availableZatoshi, b.totalZatoshi, z)
+            combine(
+                status,
+                processorInfo,
+                orchardBalances,
+                saplingBalances,
+                transparentBalances,
+                zec,
+                pendingTransactions.distinctUntilChanged()
+                // unfortunately we have to use an untyped array here rather than typed parameters because combine only supports up to 5 typed params
+            ) { flows ->
+                val unminedCount = (flows[6] as List<PendingTransaction>).count {
+                    it.isSubmitSuccess() && !it.isMined()
+                }
+                UiModel(
+                    status = flows[0] as Synchronizer.Status,
+                    processorInfo = flows[1] as CompactBlockProcessor.ProcessorInfo,
+                    orchardBalance = flows[2] as WalletBalance,
+                    saplingBalance = flows[3] as WalletBalance,
+                    transparentBalance = flows[4] as WalletBalance,
+                    pendingSend = flows[5] as String,
+                    unminedCount = unminedCount
+                )
             }.onStart { emit(UiModel()) }
         }.conflate()
     }
@@ -84,24 +155,19 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         _typedChars.send(c)
     }
 
-    suspend fun refreshBalance() {
-        try {
-            (synchronizer as SdkSynchronizer).refreshBalance()
-        } catch (e: RustLayerException.BalanceException) {
-            twig("Balance refresh failed. This is probably caused by a critical error but we'll give the app a chance to try to recover.")
-        }
-    }
-
     data class UiModel(
         val status: Synchronizer.Status = Synchronizer.Status.DISCONNECTED,
         val processorInfo: CompactBlockProcessor.ProcessorInfo = CompactBlockProcessor.ProcessorInfo(),
-        val availableBalance: Long = -1L,
-        val totalBalance: Long = -1L,
-        val pendingSend: String = "0"
+        val orchardBalance: WalletBalance = WalletBalance(),
+        val saplingBalance: WalletBalance = WalletBalance(),
+        val transparentBalance: WalletBalance = WalletBalance(),
+        val pendingSend: String = "0",
+        val unminedCount: Int = 0
     ) {
         // Note: the wallet is effectively empty if it cannot cover the miner's fee
-        val hasFunds: Boolean get() = availableBalance > (MINERS_FEE_ZATOSHI.toDouble() / ZATOSHI_PER_ZEC) // 0.00001
-        val hasBalance: Boolean get() = totalBalance > 0
+        val hasFunds: Boolean get() = saplingBalance.availableZatoshi > (MINERS_FEE_ZATOSHI.toDouble() / ZATOSHI_PER_ZEC) // 0.00001
+        val hasSaplingBalance: Boolean get() = saplingBalance.totalZatoshi > 0
+        val hasAutoshieldFunds: Boolean get() = transparentBalance.availableZatoshi > NighthawkWalletApp.instance.autoshieldThreshold
         val isSynced: Boolean get() = status == Synchronizer.Status.SYNCED
         val isSendEnabled: Boolean get() = isSynced && hasFunds
 
@@ -110,42 +176,33 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         val isScanning = status == Synchronizer.Status.SCANNING
         val isValidating = status == Synchronizer.Status.VALIDATING
         val isDisconnected = status == Synchronizer.Status.DISCONNECTED
-        val downloadProgress: Int
-            get() {
-                return processorInfo.run {
-                    if (lastDownloadRange.isEmpty()) {
-                        100
-                    } else {
-                        val progress =
-                            (((lastDownloadedHeight - lastDownloadRange.first + 1).coerceAtLeast(0)
-                                .toFloat() / (lastDownloadRange.last - lastDownloadRange.first + 1)) * 100.0f).coerceAtMost(
-                                100.0f
-                            ).roundToInt()
-                        progress
-                    }
+        val downloadProgress: Int get() {
+            return processorInfo.run {
+                if (lastDownloadRange.isEmpty()) {
+                    100
+                } else {
+                    val progress =
+                        (((lastDownloadedHeight - lastDownloadRange.first + 1).coerceAtLeast(0).toFloat() / (lastDownloadRange.last - lastDownloadRange.first + 1)) * 100.0f).coerceAtMost(
+                            100.0f
+                        ).roundToInt()
+                    progress
                 }
             }
-        val scanProgress: Int
-            get() {
-                return processorInfo.run {
-                    if (lastScanRange.isEmpty()) {
-                        100
-                    } else {
-                        val progress =
-                            (((lastScannedHeight - lastScanRange.first + 1).coerceAtLeast(0)
-                                .toFloat() / (lastScanRange.last - lastScanRange.first + 1)) * 100.0f).coerceAtMost(
-                                100.0f
-                            ).roundToInt()
-                        progress
-                    }
+        }
+        val scanProgress: Int get() {
+            return processorInfo.run {
+                if (lastScanRange.isEmpty()) {
+                    100
+                } else {
+                    val progress = (((lastScannedHeight - lastScanRange.first + 1).coerceAtLeast(0).toFloat() / (lastScanRange.last - lastScanRange.first + 1)) * 100.0f).coerceAtMost(100.0f).roundToInt()
+                    progress
                 }
             }
-        val totalProgress: Float
-            get() {
-                val downloadWeighted =
-                    0.40f * (downloadProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
-                val scanWeighted = 0.60f * (scanProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
-                return downloadWeighted.coerceAtLeast(0.0f) + scanWeighted.coerceAtLeast(0.0f)
-            }
+        }
+        val totalProgress: Float get() {
+            val downloadWeighted = 0.40f * (downloadProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
+            val scanWeighted = 0.60f * (scanProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
+            return downloadWeighted.coerceAtLeast(0.0f) + scanWeighted.coerceAtLeast(0.0f)
+        }
     }
 }

@@ -26,15 +26,34 @@
             android:id="@+id/action_nav_home_to_nav_profile"
             app:destination="@id/nav_profile" />
         <action
+            android:id="@+id/action_nav_home_to_nav_history"
+            app:destination="@id/nav_history" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_balance_detail"
+            app:destination="@id/nav_balance_detail" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_funds_available"
+            app:destination="@id/nav_funds_available" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_shield_final"
+            app:destination="@id/nav_shield_final" />
+        <action
             android:id="@+id/action_nav_scan_to_nav_receive"
             app:destination="@id/nav_receive"
             app:exitAnim="@anim/anim_fade_out_medium" />
     </fragment>
-
+    <fragment
+        android:id="@+id/nav_balance_detail"
+        android:name="com.nighthawkapps.wallet.android.ui.home.BalanceDetailFragment"
+        tools:layout="@layout/fragment_balance_detail">
+        <action
+            android:id="@+id/action_nav_balance_detail_to_shield_final"
+            app:destination="@id/nav_shield_final" />
+    </fragment>
     <fragment
         android:id="@+id/nav_receive"
-        android:name="com.nighthawkapps.wallet.android.ui.receive.ReceiveFragment"
-        tools:layout="@layout/fragment_receive_new">
+        android:name="com.nighthawkapps.wallet.android.ui.tabs.TabLayoutFragment"
+        tools:layout="@layout/fragment_tab_layout">
         <action
             android:id="@+id/action_nav_receive_to_nav_scan"
             app:destination="@id/nav_scan"
@@ -59,6 +78,18 @@
             app:popUpTo="@id/nav_scan"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.nighthawkapps.wallet.android.ui.history.HistoryFragment"
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_nav_history_to_nav_transaction"
+            app:destination="@id/nav_transaction" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_transaction"
+        android:name="com.nighthawkapps.wallet.android.ui.history.TransactionFragment"
+        tools:layout="@layout/fragment_transaction" />
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.nighthawkapps.wallet.android.ui.profile.ProfileFragment"
@@ -103,10 +134,47 @@
         android:name="com.nighthawkapps.wallet.android.ui.send.SendFinalFragment"
         tools:layout="@layout/fragment_send_final">
         <action
+            android:id="@+id/action_nav_send_final_to_nav_history"
+            app:destination="@id/nav_history"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="false"/>
+        <action
             android:id="@+id/action_nav_send_final_to_nav_home"
             app:destination="@id/nav_home"
             app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_funds_available"
+        android:name="com.nighthawkapps.wallet.android.ui.send.FundsAvailableFragment"
+        tools:layout="@layout/fragment_funds_available">
+        <action
+            android:id="@+id/action_nav_funds_available_to_nav_shield_final"
+            app:destination="@id/nav_shield_final"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_shield_final"
+        android:name="com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment"
+        tools:layout="@layout/fragment_auto_shield" >
+        <action
+            android:id="@+id/action_nav_shield_final_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_nav_shield_final_to_nav_history"
+            app:destination="@id/nav_history"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_nav_shield_final_to_balance_detail"
+            app:destination="@id/nav_balance_detail"
+            app:popUpTo="@id/nav_balance_detail"
+            app:popUpToInclusive="false"/>
     </fragment>
 
     <!--                         -->

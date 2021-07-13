@@ -243,7 +243,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         super.onResume()
         updateClipboardBanner()
         updateLastUsedBanner()
-        sendViewModel.synchronizer.balances.collectWith(resumedScope) {
+        sendViewModel.synchronizer.saplingBalances.collectWith(resumedScope) {
             onBalanceUpdated(it)
         }
         binding.inputZcashAddress.text.toString().let {

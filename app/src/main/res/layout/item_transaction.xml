@@ -5,6 +5,7 @@
     android:id="@+id/container_transaction"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
     android:background="@color/background_banner"
     android:elevation="1dp"
     tools:ignore="RtlSymmetry">
@@ -17,90 +18,122 @@
         android:id="@+id/divider_top"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/text_light_dimmed"
+        android:background="@color/zcashYellow"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/divider_left"
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:background="@color/text_light_dimmed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/divider_right"
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:background="@color/text_light_dimmed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/indicator"
-        android:layout_width="3dp"
+        android:layout_width="4dp"
         android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/background_indicator_inbound"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/tx_primary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_transaction_top"
+    <View
+        android:id="@+id/transaction_arrow_background"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:autoSizeTextType="uniform"
-        android:maxLines="1"
-        android:textColor="@color/text_light"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/text_transaction_amount"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/background_circle_solid"
+        android:backgroundTint="@color/tx_circle_icon_bg"
+        app:layout_constraintBottom_toBottomOf="@id/layout_transaction_text"
+        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintStart_toEndOf="@id/indicator"
-        app:layout_constraintTop_toTopOf="@id/indicator"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_goneMarginStart="16dp"
-        tools:text="This is a very long sentence and it better not messup the UI" />
+        app:layout_constraintTop_toTopOf="@id/layout_transaction_text" />
 
-    <TextView
-        android:id="@+id/text_transaction_bottom"
+    <ImageView
+        android:id="@+id/image_transaction_arrow"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/content_description_transaction_details_direction"
+        android:src="@drawable/ic_arrow_back_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/transaction_arrow_background"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="@id/transaction_arrow_background"
+        app:layout_constraintStart_toStartOf="@id/transaction_arrow_background"
+        app:layout_constraintTop_toTopOf="@id/transaction_arrow_background"
+        app:tint="@color/text_light" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_transaction_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:autoSizeTextType="uniform"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:paddingEnd="16dp"
-        android:textColor="@color/text_light_dimmed"
-        android:textSize="12sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@id/indicator"
         app:layout_constraintEnd_toStartOf="@id/text_transaction_amount"
-        app:layout_constraintStart_toEndOf="@id/indicator"
-        app:layout_constraintTop_toBottomOf="@id/text_transaction_top"
-        tools:text="This is a very long sentence and it better not messup the UI" />
+        app:layout_constraintStart_toEndOf="@id/transaction_arrow_background"
+        app:layout_constraintTop_toTopOf="@id/indicator">
+
+        <TextView
+            android:id="@+id/text_transaction_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@color/text_light"
+            android:textSize="16sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_goneMarginStart="16dp"
+            tools:text="This is a very long sentence and it better not messup the UI" />
+
+        <TextView
+            android:id="@+id/text_transaction_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:ellipsize="end"
+            android:gravity="top"
+            android:maxLines="1"
+            android:paddingEnd="2dp"
+            android:textColor="@color/text_light_dimmed"
+            android:textSize="14sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toStartOf="@id/image_memo"
+            app:layout_constraintStart_toStartOf="@+id/text_transaction_top"
+            app:layout_constraintTop_toBottomOf="@id/text_transaction_top"
+            tools:text="This is a very long sentence and it better not messup the UI" />
+
+        <ImageView
+            android:id="@+id/image_memo"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="3dp"
+            android:src="@drawable/ic_memo"
+            app:layout_constraintBottom_toBottomOf="@id/text_transaction_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/text_transaction_bottom" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/text_transaction_amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:gravity="end"
         android:maxLines="1"
-        android:paddingStart="12dp"
+        android:paddingStart="8dp"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
+        android:textSize="16sp"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="8sp"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@id/indicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/indicator"
-        app:layout_constraintWidth_percent="0.25"
-        tools:text="+ 434.2444234" />
+        app:layout_constraintWidth_percent="0.23"
+        tools:text="+ 434888.12345678" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

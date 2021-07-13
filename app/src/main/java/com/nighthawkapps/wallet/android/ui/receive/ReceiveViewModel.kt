@@ -11,6 +11,7 @@ class ReceiveViewModel @Inject constructor() : ViewModel() {
     lateinit var synchronizer: Synchronizer
 
     suspend fun getAddress(): String = synchronizer.getAddress()
+    suspend fun getTranparentAddress(): String = synchronizer.getTransparentAddress()
 
     override fun onCleared() {
         super.onCleared()
