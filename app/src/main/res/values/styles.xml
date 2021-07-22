@@ -43,6 +43,11 @@
         <item name="strokeColor">@color/colorPrimary</item>
     </style>
 
+    <style name="Nighthawk.TextInput.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/zcashWhite</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+
     <!-- Text Appearances -->
 
     <style name="Nighthawk.TextAppearance.NumberPad" parent="TextAppearance.MaterialComponents.Body1">

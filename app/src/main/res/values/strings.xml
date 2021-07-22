@@ -408,5 +408,9 @@
     <string name="button_seedetails">See Details</string>
     <string name="button_back">Go Back</string>
     <string name="screen_wallethistory">Your Wallet History</string>
+    <string name="export_pdf">Export Pdf</string>
+    <string name="pdf_dialog_sub_heading">Export the seed words as a password protected PDF which can be uploaded to the cloud.</string>
+    <string name="pdf_password_hint">Please Enter Password</string>
+    <string name="proceed">Proceed</string>
 
 </resources>
