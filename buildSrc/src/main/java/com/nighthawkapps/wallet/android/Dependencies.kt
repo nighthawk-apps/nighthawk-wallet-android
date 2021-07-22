@@ -95,6 +95,10 @@ object Deps {
         const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta15"
     }
 
+    object Pdf {
+        const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.13"
+    }
+
     object Misc {
         const val LOTTIE = "com.airbnb.android:lottie:3.7.0"
 

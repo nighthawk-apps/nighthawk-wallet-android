@@ -1,17 +1,27 @@
 package com.nighthawkapps.wallet.android.ui.setup
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.twig
+import com.itextpdf.kernel.geom.PageSize
+import com.itextpdf.kernel.pdf.EncryptionConstants
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.kernel.pdf.WriterProperties
+import com.itextpdf.layout.Document
+import com.itextpdf.layout.element.Paragraph
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentBackupBinding
@@ -21,15 +31,23 @@ import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
 import com.nighthawkapps.wallet.android.ui.util.AddressPartNumberSpan
+import com.nighthawkapps.wallet.android.ui.util.EncryptedPdfDialog
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.lang.StringBuilder
+import kotlin.jvm.Throws
 
-class BackupFragment : BaseFragment<FragmentBackupBinding>() {
+class BackupFragment : BaseFragment<FragmentBackupBinding>(),
+    EncryptedPdfDialog.OnPdfClickListener {
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
@@ -53,7 +71,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
             )
         }
         binding.buttonPositive.setOnClickListener {
-            onEnterWallet()
+            showEnterPasswordDialog()
         }
         if (hasBackUp) {
             binding.buttonPositive.text = getString(R.string.backup_button_done)
@@ -126,8 +144,82 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
     private suspend fun loadSeedWords(): List<CharArray> = withContext(Dispatchers.IO) {
         val lockBox = LockBox(NighthawkWalletApp.instance)
         val mnemonics = Mnemonics()
-        val seedPhrase = lockBox.getCharsUtf8(Const.Backup.SEED_PHRASE) ?: throw RuntimeException("Seed Phrase expected but not found in storage!!")
+        val seedPhrase = lockBox.getCharsUtf8(Const.Backup.SEED_PHRASE)
+            ?: throw RuntimeException("Seed Phrase expected but not found in storage!!")
         val result = mnemonics.toWordList(seedPhrase)
         result
+    }
+
+    private fun showEnterPasswordDialog() {
+        EncryptedPdfDialog().also {
+            it.isCancelable = false
+            it.setClickListener(this)
+        }.show(parentFragmentManager, "Pdf Dialog")
+    }
+
+    override fun onPositiveClicked(password: String) {
+        try {
+            makePasswordProtectedPdf(password)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Pdf creation failed $e", Toast.LENGTH_SHORT).show()
+            twig(e)
+        }
+    }
+
+    @Throws(FileNotFoundException::class, SecurityException::class)
+    private fun makePasswordProtectedPdf(password: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val stringBuilder = StringBuilder()
+            try {
+                loadSeedWords().forEach {
+                    stringBuilder.append(it.concatToString()).append(" ")
+                }
+                val filePath = "${requireContext().cacheDir.absolutePath}/SeedWords.pdf"
+                if (File(filePath).exists()) {
+                    File(filePath).delete()
+                }
+                val writerProperties = WriterProperties().setStandardEncryption(
+                    password.toByteArray(),
+                    password.toByteArray(),
+                    EncryptionConstants.ALLOW_PRINTING,
+                    EncryptionConstants.ENCRYPTION_AES_256
+                )
+                val pdfWriter = PdfWriter(FileOutputStream(filePath), writerProperties)
+                val document = Document(PdfDocument(pdfWriter), PageSize.A4, true)
+                document.add(Paragraph(stringBuilder.toString()))
+                document.close()
+                withContext(Dispatchers.Main) {
+                    if (File(filePath).exists()) {
+                        shareFile(File(filePath))
+                        Toast.makeText(requireContext(), "Pdf generated", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: SecurityException) {
+                Toast.makeText(requireContext(), "Pdf creation failed $e", Toast.LENGTH_SHORT)
+                    .show()
+                twig(e)
+            }
+        }
+    }
+
+    private fun shareFile(file: File) {
+        try {
+            Intent(Intent.ACTION_SEND).apply {
+                type = "application/pdf"
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                val fileURI = FileProvider.getUriForFile(
+                    requireContext(), requireContext().packageName + ".fileprovider",
+                    file
+                )
+                putExtra(Intent.EXTRA_STREAM, fileURI)
+            }.run {
+                startActivity(Intent.createChooser(this, "Share File"))
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Pdf sharing failed $e", Toast.LENGTH_SHORT).show()
+            twig(e)
+        }
     }
 }
