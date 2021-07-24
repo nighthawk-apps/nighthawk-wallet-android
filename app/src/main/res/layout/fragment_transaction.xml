@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -69,16 +68,20 @@
     <!-- Close Button -->
     <ImageView
         android:id="@+id/close_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/content_description_transaction_details_back"
-        app:tint="@color/zcashWhite_40"
-        app:layout_constraintBottom_toTopOf="@id/text_timestamp"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_cancel" />
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
+        app:srcCompat="@drawable/ic_cancel"
+        app:tint="@color/text_light" />
 
     <View
         android:id="@+id/back_button_hit_area"
@@ -199,15 +202,15 @@
         android:id="@+id/top_box_icon"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@string/content_description_transaction_details_direction"
         android:src="@drawable/ic_arrow_back_black_24dp"
-        app:tint="@color/text_light"
         app:layout_constraintBottom_toBottomOf="@id/top_box_icon_background"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="@id/top_box_icon_background"
         app:layout_constraintHeight_percent="0.0408"
         app:layout_constraintStart_toStartOf="@id/top_box_icon_background"
         app:layout_constraintTop_toTopOf="@id/top_box_icon_background"
-        android:contentDescription="@string/content_description_transaction_details_direction" />
+        app:tint="@color/text_light" />
 
     <TextView
         android:id="@+id/top_box_label"
@@ -228,8 +231,8 @@
         android:id="@+id/top_box_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:maxLines="1"
         android:textAppearance="@style/Nighthawk.TextAppearance.Zec"
         android:textColor="@color/text_light"
@@ -290,6 +293,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="4dp"
+        android:contentDescription="@string/content_description_transaction_details_memo"
         android:src="@drawable/ic_expand_memo_enabled"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/subway_label_memo"
@@ -297,8 +301,7 @@
         app:layout_constraintEnd_toEndOf="@id/space_spots_memo"
         app:layout_constraintStart_toStartOf="@id/space_spots_memo"
         app:layout_constraintTop_toTopOf="@id/subway_label_memo"
-        tools:visibility="visible"
-        android:contentDescription="@string/content_description_transaction_details_memo" />
+        tools:visibility="visible" />
 
     <View
         android:id="@+id/subway_spot_address"
@@ -338,10 +341,10 @@
         android:textColor="@color/tx_text_light_dimmed"
         android:textSize="18sp"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="@id/subway_line"
         app:layout_constraintTop_toTopOf="@id/subway_line"
-        tools:text="+0.00001 network fee" />
+        tools:text="+0.00001 network fee"
+        tools:visibility="visible" />
 
 
     <TextView
@@ -363,8 +366,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:paddingEnd="8dp"
         android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:text="@string/transaction_with_memo"
         android:textSize="18sp"
         android:visibility="invisible"
@@ -396,12 +399,12 @@
         android:id="@+id/icon_memo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/content_description_transaction_details_memo_icon"
         android:src="@drawable/ic_memo"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/spacer_memo_icon"
         app:layout_constraintStart_toEndOf="@id/spacer_memo_icon"
-        app:layout_constraintTop_toTopOf="@id/spacer_memo_icon"
-        android:contentDescription="@string/content_description_transaction_details_memo_icon" />
+        app:layout_constraintTop_toTopOf="@id/spacer_memo_icon" />
 
     <View
         android:id="@+id/hit_area_memo_subway"
@@ -446,8 +449,8 @@
         android:id="@+id/subway_label_confirmations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="24dp"
         android:textColor="@color/tx_text_light_dimmed"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/bottom_box_background"
@@ -498,11 +501,10 @@
         android:id="@+id/bottom_box_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         android:maxLines="1"
-        tools:text="$4.32"
         android:textAppearance="@style/Nighthawk.TextAppearance.Zec"
         android:textColor="@color/text_light"
         android:textSize="36sp"
@@ -512,7 +514,8 @@
         app:layout_constraintBottom_toBottomOf="@id/bottom_box_background"
         app:layout_constraintEnd_toEndOf="@id/bottom_box_background"
         app:layout_constraintStart_toStartOf="@id/bottom_box_label"
-        app:layout_constraintTop_toBottomOf="@id/bottom_box_label" />
+        app:layout_constraintTop_toBottomOf="@id/bottom_box_label"
+        tools:text="$4.32" />
 
     <!--        -->
     <!-- Footer -->
@@ -520,9 +523,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_explore"
+        style="@style/Nighthawk.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/Nighthawk.Button.OutlinedButton"
         android:gravity="center"
         android:padding="12dp"
         android:text="@string/transaction_details_button_explore"

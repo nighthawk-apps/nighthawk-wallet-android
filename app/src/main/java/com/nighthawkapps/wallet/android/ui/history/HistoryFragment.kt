@@ -54,7 +54,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private fun onBalanceUpdated(balance: WalletBalance) {
         if (balance.availableZatoshi < 0) {
-            binding.textBalanceAvailable.text = "Updating"
+            binding.textBalanceAvailable.text = getString(R.string.updating)
             return
         }
 

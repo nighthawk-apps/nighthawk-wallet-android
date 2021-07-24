@@ -1,21 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Nighthawk</string>
     <string name="blank" />
-    <string name="nighthawk_address_part" translatable="false">zs1nhawk....2dmr0sf</string>
-    <string name="nighthawk_address" translatable="false">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
 
     <!-- Send Flow -->
     <string name="no_balance">No Balance</string>
     <string name="fund_now">Fund Now</string>
-    <string name="view_my_address">View My Address</string>
-    <string name="side_shift">Fund with Sideshift</string>
-    <string name="donate_to_nighthawk">Donate to Nighthawk</string>
+    <string name="receive_zcash">Receive Zcash</string>
+    <string name="side_shift">Fund via Sideshift</string>
     <string name="backup_wallet">Backup Wallet</string>
-    <string name="profile_rescan_wallet">Rescan Wallet</string>
-    <string name="nighthawkwallet">\@nighthawkwallet</string>
+    <string name="nighthawkwallet" translatable="false">\@nighthawkwallet</string>
     <string name="my_zcash_address">My Zcash Address</string>
     <string name="scan_recipient_address">Scan Recipient Address</string>
-    <string name="_12">12</string>
     <string name="send_address">send address</string>
     <string name="store_these_backup_words_securely">Store these backup words securely.</string>
     <string name="verify">Verify</string>
@@ -24,7 +19,7 @@
     <string name="updating">Updating</string>
     <string name="available">Available</string>
     <string name="wallet_history">Wallet History</string>
-    <string name="transparent_balance">Transparent Balance</string>
+    <string name="available_balance">Available Balance</string>
     <string name="shielded_address">Shielded address:</string>
     <string name="no_history_yet">No history yet.</string>
     <string name="welcome_to_nighthawk_wallet">Welcome to Nighthawk!</string>
@@ -76,45 +71,41 @@
     <string name="send">Send</string>
     <string name="failed_to_send_due_to_insufficient_funds">Oops! Failed to send due to insufficient funds!</string>
 
-    <!-- Address -->
-    <string name="address_label_shielded">Your Shielded Address</string>
-
     <!-- Screen: Backup -->
-    <string name="backup_button_done" tools:ignore="MissingTranslation">@string/translated_button_done</string>
-    <string name="backup_button_primary">@string/custom_translation_verify</string>
-    <string name="backup_format_birthday_height">@string/custom_translation_birthday</string>
+    <string name="backup_button_done" translatable="false">@string/button_done</string>
+    <string name="backup_button_primary" translatable="false">@string/custom_translation_verify</string>
+    <string name="backup_format_birthday_height" translatable="false">@string/custom_translation_birthday</string>
     <string name="backup_instruction_store_words">Store these backup words securely.</string>
-    <string name="backup_slogan">empowering\neveryone\nwith\neconomic\nfreedom</string>
     <string name="backup_verification_not_implemented">Backup verification coming soon!</string>
 
     <!-- Screen: History -->
     <string name="history_address_label">Shielded address:</string>
-    <string name="history_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_available</string>
+    <string name="history_balance_available" translatable="false">@string/balance_available</string>
     <string name="history_balance_updating">Updating</string>
     <string name="history_empty_text">No history yet.</string>
-    <string name="history_header_transactions" tools:ignore="MissingTranslation">@string/translated_screen_wallethistory</string>
-    <string name="history_instruction_enter_amount" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
+    <string name="history_header_transactions" translatable="false">@string/screen_wallethistory</string>
+    <string name="history_instruction_enter_amount" translatable="false">@string/balance_amounttosend</string>
 
     <!-- Screen: Home -->
-    <string name="home_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_available</string>
+    <string name="home_balance_available" translatable="false">@string/balance_available</string>
     <string name="home_balance_updating">Updating</string>
-    <string name="home_banner_expecting">@string/custom_translation_expecting</string>
-    <string name="home_button_send_disconnected">Reconnecting . . .</string>
-    <string name="home_button_send_downloading">@string/custom_translation_syncing</string>
-    <string name="home_button_send_has_funds" tools:ignore="MissingTranslation">@string/translated_button_sendamount</string>
+    <string name="home_banner_expecting" translatable="false">@string/custom_translation_expecting</string>
+    <string name="home_button_send_disconnected">Connecting . . .</string>
+    <string name="home_button_send_downloading" translatable="false">@string/custom_translation_syncing</string>
+    <string name="home_button_send_has_funds" translatable="false">@string/button_sendamount</string>
     <string name="home_button_send_idle">IDLE</string>
-    <string name="home_button_send_no_funds" tools:ignore="MissingTranslation">@string/translated_balance_nofunds</string>
-    <string name="home_button_send_scanning">@string/custom_translation_scanning</string>
+    <string name="home_button_send_no_funds" translatable="false">@string/balance_nofunds</string>
+    <string name="home_button_send_scanning" translatable="false">@string/custom_translation_scanning</string>
     <string name="home_button_send_updating">Updating</string>
     <string name="home_button_send_validating">Validating . . .</string>
     <string name="home_dialog_no_balance_button_positive">View Address</string>
     <string name="home_dialog_no_balance_message">To make full use of this wallet, deposit funds to your address.</string>
-    <string name="home_dialog_no_balance_title" tools:ignore="MissingTranslation">@string/translated_balance_nofunds</string>
-    <string name="home_history_button_text" tools:ignore="MissingTranslation">@string/translated_button_wallethistory</string>
-    <string name="home_instruction_enter_amount" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
+    <string name="home_dialog_no_balance_title" translatable="false">@string/balance_nofunds</string>
+    <string name="home_history_button_text" translatable="false">@string/button_wallethistory</string>
+    <string name="home_instruction_enter_amount" translatable="false">@string/balance_amounttosend</string>
     <string name="home_instruction_fund_now">Fund Now</string>
-    <string name="home_no_balance">@string/translated_balance_nofunds</string>
-    <string name="home_title" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
+    <string name="home_no_balance" translatable="false">@string/balance_nofunds</string>
+    <string name="home_title" translatable="false">@string/balance_amounttosend</string>
 
     <!-- Screen: Landing -->
     <string name="landing_backup_skipped_message_1">Are you sure? Without a backup, funds can be lost FOREVER!</string>
@@ -122,77 +113,70 @@
     <string name="landing_button_backup_skipped_1">Later</string>
     <string name="landing_button_backup_skipped_2">I\'ve been warned</string>
     <string name="landing_button_primary">New</string>
-    <string name="landing_button_primary_create_success" tools:ignore="MissingTranslation">@string/translated_button_backup</string>
+    <string name="landing_button_primary_create_success" translatable="false">@string/button_backup</string>
     <string name="landing_button_progress_create">Creating</string>
     <string name="landing_button_secondary">Restore</string>
-    <string name="landing_button_secondary_create_success" tools:ignore="MissingTranslation">@string/translated_button_skip</string>
-    <string name="landing_button_secondary_import_success" tools:ignore="MissingTranslation">@string/translated_button_skip</string>
+    <string name="landing_button_secondary_create_success" translatable="false">@string/button_skip</string>
+    <string name="landing_button_secondary_import_success" translatable="false">@string/button_skip</string>
     <string name="landing_create_success_message">Wallet created! Congratulations!</string>
     <string name="landing_import_success_message">Wallet imported! Congratulations!</string>
-    <string name="landing_import_success_primary_button" tools:ignore="MissingTranslation">@string/translated_button_backup</string>
+    <string name="landing_import_success_primary_button" translatable="false">@string/button_backup</string>
     <string name="landing_title">Welcome to the Nighthawk Wallet!</string>
 
     <!-- Screen: Profile -->
-    <string name="profile_app_version">v1.0.9</string>
-    <string name="profile_backup_wallet" tools:ignore="MissingTranslation">@string/translated_button_backup_wallet</string>
-    <string name="profile_ecc_wallet" tools:ignore="MissingTranslation">@string/translated_app_name</string>
-    <string name="profile_see_application_logs" tools:ignore="MissingTranslation">@string/translated_button_applicationlogs</string>
-    <string name="profile_send_feedback" tools:ignore="MissingTranslation">@string/translated_button_feedback</string>
-    <string name="profile_share_log_title">Share Log Files</string>
-    <string name="profile_shielded_user" tools:ignore="MissingTranslation">@string/translated_profile_screen</string>
     <string name="biometric_backup_phrase_title">Authenticate to proceed</string>
     <string name="biometric_backup_phrase_description">Load backup phrase</string>
 
     <!-- Screen: Receive -->
-    <string name="receive_address_label_shielded" tools:ignore="MissingTranslation">@string/translated_address_shielded</string>
+    <string name="receive_address_label_shielded" translatable="false">@string/address_shielded</string>
     <string name="receive_address_title">Receive Funds</string>
-    <string name="scan_address_title" tools:ignore="MissingTranslation">@string/translated_send_scanqr</string>
+    <string name="scan_address_title" translatable="false">@string/send_scanqr</string>
 
     <!-- Screen: Scan -->
     <string name="scan_invalid_address">"Invalid Zcash %1$s address:\n%2$s"</string>
 
     <!-- Screen: Send Flow -->
-    <string name="send_address_hint" tools:ignore="MissingTranslation">@string/translated_label_to</string>
-    <string name="send_banner_address_unknown" tools:ignore="MissingTranslation">@string/translated_send_unknown</string>
-    <string name="send_banner_address_user" tools:ignore="MissingTranslation">@string/translated_address_shielded</string>
-    <string name="send_button_primary" tools:ignore="MissingTranslation">@string/translated_button_send</string>
-    <string name="send_checkbox_include_address" tools:ignore="MissingTranslation">@string/translated_label_replyto</string>
-    <string name="send_complete_button_text" tools:ignore="MissingTranslation">@string/translated_button_seedetails</string>
-    <string name="send_confirmation_prompt">@string/custom_translation_send_confirm</string>
-    <string name="send_failed_button_text">Retry</string>
-    <string name="send_final_button_primary_back" tools:ignore="MissingTranslation">@string/translated_button_back</string>
+    <string name="send_address_hint" translatable="false">@string/label_to</string>
+    <string name="send_banner_address_unknown" translatable="false">@string/send_unknown</string>
+    <string name="send_banner_address_user" translatable="false">@string/address_shielded</string>
+    <string name="send_button_primary" translatable="false">@string/button_send</string>
+    <string name="send_checkbox_include_address" translatable="false">@string/label_replyto</string>
+    <string name="send_complete_button_text" translatable="false">@string/button_seedetails</string>
+    <string name="send_confirmation_prompt" translatable="false">@string/custom_translation_send_confirm</string>
+    <string name="send_failed_button_text" >Retry</string>
+    <string name="send_final_button_primary_back" translatable="false">@string/button_back</string>
     <string name="send_final_button_primary_cancel">Cancel</string>
-    <string name="send_final_button_primary_details" tools:ignore="MissingTranslation">@string/translated_button_seedetails</string>
+    <string name="send_final_button_primary_details" translatable="false">@string/button_seedetails</string>
     <string name="send_final_button_primary_failed">Failed.</string>
     <string name="send_final_button_primary_retry">Retry</string>
-    <string name="send_final_button_primary_sent" tools:ignore="MissingTranslation">@string/translated_send_sent</string>
+    <string name="send_final_button_primary_sent" translatable="false">@string/send_sent</string>
     <string name="send_final_error_encoding">The transaction could not be encoded.</string>
     <string name="send_final_error_submitting">Unable to submit transaction to the network.</string>
-    <string name="send_final_result_cancelled" tools:ignore="MissingTranslation">@string/translated_send_cancelled</string>
-    <string name="send_final_sending">@string/custom_translation_sending</string>
-    <string name="send_final_to" tools:ignore="MissingTranslation">@string/translated_label_to</string>
+    <string name="send_final_result_cancelled" translatable="false">@string/send_cancelled</string>
+    <string name="send_final_sending" translatable="false">@string/custom_translation_sending</string>
+    <string name="send_final_to" translatable="false">@string/label_to</string>
     <string name="send_fund_source_highlight">shielded</string>
-    <string name="send_fund_source_prefix">@string/custom_translation_from_your</string>
-    <string name="send_fund_source_suffix">@string/custom_translation_wallet</string>
+    <string name="send_fund_source_prefix" translatable="false">@string/custom_translation_from_your</string>
+    <string name="send_fund_source_suffix" translatable="false">@string/custom_translation_wallet</string>
     <string name="send_hint_input_zcash_address">Enter a shielded Zcash address</string>
-    <string name="send_hint_input_zcash_amount" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
-    <string name="send_history_clipboard" tools:ignore="MissingTranslation">@string/translated_send_onclipboard</string>
-    <string name="send_history_last" tools:ignore="MissingTranslation">@string/translated_send_lastused</string>
+    <string name="send_hint_input_zcash_amount" translatable="false">@string/balance_amounttosend</string>
+    <string name="send_history_clipboard" translatable="false">@string/send_onclipboard</string>
+    <string name="send_history_last" translatable="false">@string/send_lastused</string>
     <string name="send_history_last_and_clipboard">"Last Used and On Clipboard"</string>
-    <string name="send_memo_chars_abbreviation">@string/custom_translation_chars</string>
+    <string name="send_memo_chars_abbreviation" translatable="false">@string/custom_translation_chars</string>
     <string name="send_memo_excluded_message">Your transaction is shielded and your address is not available to the recipient</string>
     <string name="send_memo_hint">Memo</string>
     <string name="send_memo_included_message">Your transaction is shielded but your address will be sent to the recipient via the memo</string>
     <string name="send_pending_button_text">Cancel</string>
     <string name="send_validation_address_invalid">This address appears to be invalid</string>
-    <string name="send_validation_address_self" tools:ignore="MissingTranslation">@string/translated_feedback_sameaddress</string>
-    <string name="send_validation_address_valid_taddr" tools:ignore="MissingTranslation">@string/translated_feedback_transparentaddress</string>
-    <string name="send_validation_address_valid_zaddr" tools:ignore="MissingTranslation">@string/translated_feedback_shieldedaddress</string>
-    <string name="send_validation_error_address_invalid" tools:ignore="MissingTranslation">@string/translated_feedback_default</string>
+    <string name="send_validation_address_self" translatable="false">@string/feedback_sameaddress</string>
+    <string name="send_validation_address_valid_taddr" translatable="false">@string/feedback_transparentaddress</string>
+    <string name="send_validation_address_valid_zaddr" translatable="false">@string/feedback_shieldedaddress</string>
+    <string name="send_validation_error_address_invalid" translatable="false">@string/feedback_default</string>
     <string name="send_validation_error_amount_minimum">Please go back and enter at least 1 Zatoshi.</string>
     <string name="send_validation_error_dust">Insufficient funds to cover miner\'s fee.</string>
     <string name="send_validation_error_memo_length">Memo must be less than %1$d in length.</string>
-    <string name="send_validation_error_no_available_funds" tools:ignore="MissingTranslation">@string/translated_balance_nofunds</string>
+    <string name="send_validation_error_no_available_funds" translatable="false">@string/balance_nofunds</string>
     <string name="send_validation_error_too_much">Please go back and enter no more than %1$s ZEC.</string>
     <string name="send_validation_error_unknown_funds">Available funds not found. Please try again in a moment.</string>
     <string name="send_no_z_address_message">To add a memo, enter a shielded address.</string>
@@ -210,35 +194,6 @@
     <string name="settings_toast_change_server_success">Successfully changed server!</string>
     <string name="settings_update">Update</string>
 
-    <!-- Screen: Transaction details -->
-    <string name="transaction_address_paid_you">@string/missing_transaction_address_paid_you</string>
-    <string name="transaction_address_you_paid">@string/missing_transaction_address_you_paid</string>
-    <string name="transaction_address_paying">@string/missing_transaction_address_paying</string>
-    <string name="transaction_block_height_prefix">@string/missing_transaction_block_height_prefix</string>
-    <string name="transaction_confirmation_count_unavailable">@string/missing_transaction_confirmation_count_unavailable</string>
-    <string name="transaction_details_button_explore">@string/missing_transaction_details_button_explore</string>
-    <string name="transaction_details_total">@string/missing_transaction_details_total</string>
-    <string name="transaction_instruction_tap">@string/missing_transaction_instruction_tap</string>
-    <string name="transaction_prefix_from">@string/missing_transaction_prefix_from</string>
-    <string name="transaction_prefix_to">@string/translated_label_to</string>
-    <string name="transaction_received">@string/missing_transaction_received</string>
-    <string name="transaction_received_from">@string/missing_transaction_received_from</string>
-    <string name="transaction_status_confirmed">@string/missing_transaction_status_confirmed</string>
-    <string name="transaction_status_confirming">@string/missing_transaction_status_confirming</string>
-    <string name="transaction_status_expired">@string/missing_transaction_status_expired</string>
-    <string name="transaction_status_pending">@string/missing_transaction_status_pending</string>
-    <string name="transaction_status_sent">@string/missing_transaction_status_sent</string>
-    <string name="transaction_story_from_shielded">@string/translated_send_fromshielded</string>
-    <string name="transaction_story_inbound">@string/missing_transaction_story_inbound</string>
-    <string name="transaction_story_inbound_total">@string/missing_transaction_story_inbound_total</string>
-    <string name="transaction_story_network_fee">%1$s network fee</string>
-    <string name="transaction_story_outbound">@string/missing_transaction_story_outbound</string>
-    <string name="transaction_story_outbound_total">@string/missing_transaction_story_outbound_total</string>
-    <string name="transaction_story_to_shielded">@string/missing_transaction_story_to_shielded</string>
-    <string name="transaction_timestamp_unavailable">@string/missing_transaction_timestamp_unavailable</string>
-    <string name="transaction_title">@string/missing_transaction_title</string>
-    <string name="transaction_with_memo">@string/missing_transaction_with_memo</string>
-
     <!--                      -->
     <!-- Content Descriptions -->
     <!--                      -->
@@ -252,7 +207,7 @@
     <string name="content_description_profile_copy">copy</string>
     <string name="content_description_profile_settings">settings</string>
     <string name="content_description_profile_zebra">zebra</string>
-    <string name="content_description_receive_back" tools:ignore="MissingTranslation">@string/translated_button_back</string>
+    <string name="content_description_receive_back" translatable="false">@string/button_back</string>
     <string name="content_description_receive_qr_background">QR background</string>
     <string name="content_description_receive_qr_code">QR code</string>
     <string name="content_description_receive_qr_logo">QR logo</string>
@@ -284,6 +239,7 @@
     <string name="dialog_error_invalid_seed_phrase_button_positive">Retry</string>
     <string name="dialog_error_invalid_seed_phrase_message">That seed phrase appears to be invalid! Please double-check it and try again.\n\n%1$s</string>
     <string name="dialog_error_invalid_seed_phrase_title">Oops! Invalid Seed Phrase</string>
+    <string name="dialog_error_processor_critical_button_positive">Retry</string>
     <string name="dialog_error_processor_critical_button_negative">Exit</string>
     <string name="dialog_error_processor_critical_button_wait">Wait</string>
     <string name="dialog_error_processor_critical_button_rescan">Rescan</string>
@@ -322,25 +278,25 @@
     <string name="dialog_rescan_failed_title">Full Rescan Failed</string>
 
     <!-- Screen: Balance Detail -->
-    <string name="balance_detail_button_send_transparent_funds" tools:ignore="MissingTranslation">Shield Transparent Funds</string>
-    <string name="balance_detail_text_total_title" tools:ignore="MissingTranslation">= TOTAL</string>
+    <string name="balance_detail_button_send_transparent_funds">Shield Transparent Funds</string>
+    <string name="balance_detail_text_total_title">= TOTAL</string>
 
     <!--      -->
     <!-- Misc -->
     <!--      -->
 
-    <string name="biometric_prompt_title" tools:ignore="MissingTranslation">@string/translated_send_securityauth</string>
+    <string name="biometric_prompt_title">Authenticate to send</string>
     <string name="camera_permission_denied">Well, this is awkward. You denied permission for the camera.</string>
     <string name="error_launch_url">Failed to open browser.</string>
     <string name="key_backspace"><![CDATA[<]]></string>
     <string name="key_decimal">.</string>
     <string name="mixpanel_project">a178e1ef062133fc121079cb12fa43c7</string>
-    <string name="format_date_time">@string/custom_translation_format_date_time_brief</string>
-    <string name="format_transaction_history_date_time">@string/transaction_history_format_date_time_brief</string>
+    <string name="format_date_time" translatable="false">@string/custom_translation_format_date_time_brief</string>
+    <string name="format_transaction_history_date_time" translatable="false">@string/transaction_history_format_date_time_brief</string>
     <string name="loading">⏳ Loading…</string>
     <string name="your_shielded_address">Your Shielded Address</string>
     <string name="your_transparent_address">Your Transparent Address</string>
-    <string name="transaction_history_format_date_time_brief" tools:ignore="MissingTranslation">MM/dd/yy h:mma</string>
+    <string name="transaction_history_format_date_time_brief">MM/dd/yy h:mma</string>
     <string name="got_it">Got it</string>
     <string name="you_ve_received_more_than_n1_zec_in_transparent_funds_n_nthis_won_t_take_but_a_moment">You\'ve received more than\n1 ZEC in transparent funds.\n\nThis won\'t take but a moment.</string>
     <string name="shielding"><![CDATA[<<Shielding>>]]></string>
@@ -350,5 +306,107 @@
     <string name="plus_transparent">+ transparent</string>
     <string name="total">Total</string>
     <string name="as_of_block">as of block</string>
+    <string name="autoshield_achievement_unlocked">Autoshield Achievement unlocked!</string>
+
+    <!-- Screen: Profile -->
+    <string name="profile_rescan_wallet">Rescan Wallet</string>
+
+    <!-- Screen: Transaction details -->
+    <string name="transaction_address_paid_you">paid you</string>
+    <string name="transaction_address_you_paid">You paid</string>
+    <string name="transaction_address_paying">Paying</string>
+    <string name="transaction_block_height_prefix">"from block "</string>
+    <string name="transaction_confirmation_count_unavailable">Confirmation count temporarily unavailable</string>
+    <string name="transaction_details_button_explore">Explore</string>
+    <string name="transaction_details_total">Total Spent</string>
+    <string name="transaction_instruction_tap">tap to view</string>
+    <string name="transaction_prefix_from">reply-to</string>
+    <string name="transaction_prefix_to">To</string>
+    <string name="transaction_received">Received</string>
+    <string name="transaction_received_from">Received from</string>
+    <string name="transaction_status_confirmed">Confirmed</string>
+    <string name="transaction_status_confirming">of 10 confirmations</string>
+    <string name="transaction_status_expired">Expired</string>
+    <string name="transaction_status_pending">Pending confirmation</string>
+    <string name="transaction_status_sent">Sent</string>
+    <string name="transaction_story_inbound">You Received</string>
+    <string name="transaction_story_inbound_total">Total Received</string>
+    <string name="transaction_story_network_fee">+ %1$s network fee</string>
+    <string name="transaction_story_outbound">You Sent</string>
+    <string name="transaction_story_outbound_total">Total Sent</string>
+    <string name="transaction_story_to_shielded">to your shielded wallet</string>
+    <string name="transaction_timestamp_unavailable">Pending</string>
+    <string name="transaction_title">Transaction Details</string>
+    <string name="transaction_with_memo">with a memo</string>
+
+    <!--         -->
+    <!-- Dialogs -->
+    <!--         -->
+
+    <string name="loadingtext">Loading</string>
+    <string name="welcometext">Welcome</string>
+    <string name="fiattext">Fiat</string>
+    <string name="title_backupseed">Your backup seed</string>
+    <string name="copy_backupseed">We recommend a paper backup and a password vault.</string>
+    <string name="feedback_walletbackupstatus">Your wallet needs to be backed up.</string>
+    <string name="seed_verify">Verify your backup.</string>
+    <string name="seed_verifytext">Please fill out the missing seed words to verify your backup.</string>
+    <string name="seed_restore">Restoring from a Backup</string>
+    <string name="seed_restoretext">You will need to enter all 24 seed words in order.</string>
+    <string name="seed_reminder">Your funds are at risk!</string>
+    <string name="seed_remindertext">Remember, with Zcash YOU are the bank. Anyone with your seed phrase has access to your wallet.</string>
+    <string name="seed_remindertext2">You should back this up immediately as no one else can restore it for you.</string>
+    <string name="seed_accepted">Seed accepted, scanning!</string>
+    <string name="seed_birthdaytext">We are scanning the blockchain for transactions pertaining to your wallet. If you can provide a birthday date for this wallet we can speed it up.</string>
+    <string name="seed_enterdate">Enter Date</string>
+    <string name="seed_birthday">Birthday</string>
+    <string name="button_dontknow">I don\'t know</string>
+    <string name="button_backup">Backup</string>
+    <string name="button_skip">Skip for now</string>
+    <string name="balance_screen">Balance Screen</string>
+    <string name="balance_amounttosend">Enter an amount to send</string>
+    <string name="balance_expecting">expecting XX ZEC</string>
+    <string name="balance_available">Available</string>
+    <string name="balance_nofunds">No funds available</string>
+    <string name="balance_syncing">Syncing … %</string>
+    <string name="balance_scanning">Scanning … %</string>
+    <string name="button_sendamount">Send Amount</string>
+    <string name="button_wallethistory">Wallet History</string>
+    <string name="address_screen">Your Address</string>
+    <string name="address_shielded">Your Shielded Address</string>
+    <string name="address_transparent">Your Transparent Address</string>
+    <string name="feedback_addresscopied">Address Copied!</string>
+    <string name="button_copytoclipboard">Copy to clipboard</string>
+    <string name="profile_screen">Shielded User</string>
+    <string name="button_feedback">Send Feedback</string>
+    <string name="button_backup_wallet">Backup Wallet</string>
+    <string name="button_applicationlogs">See Application Logs</string>
+    <string name="button_close">Close</string>
+    <string name="send_screen">Send Screen</string>
+    <string name="button_send">Send</string>
+    <string name="send_fromshielded">from your shielded wallet</string>
+    <string name="send_fromtransparent">from your transparent wallet</string>
+    <string name="send_fromboth">from both wallets</string>
+    <string name="label_to">To</string>
+    <string name="feedback_default">Enter a valid Zcash address</string>
+    <string name="feedback_shieldedaddress">This is a valid shielded address</string>
+    <string name="feedback_transparentaddress">This is a valid transparent address</string>
+    <string name="feedback_sameaddress">Warning, this appears to be your address!</string>
+    <string name="feedback_invalidaddress">Warning, this address is not valid!</string>
+    <string name="label_memo">Memo</string>
+    <string name="label_charactercount">chars (characters)</string>
+    <string name="label_replyto">include reply-to</string>
+    <string name="send_onclipboard">On Clipboard</string>
+    <string name="send_lastused">Last Used</string>
+    <string name="send_unknown">Unknown</string>
+    <string name="send_scanqr">Scan Recipient Address</string>
+    <string name="send_securityauth2">Please confirm you want to send XX ZEC to</string>
+    <string name="send_sending">Sending XX ZEC to</string>
+    <string name="send_cancelled">Cancelled</string>
+    <string name="send_sent">Sent!</string>
+    <string name="button_done">Done</string>
+    <string name="button_seedetails">See Details</string>
+    <string name="button_back">Go Back</string>
+    <string name="screen_wallethistory">Your Wallet History</string>
 
 </resources>

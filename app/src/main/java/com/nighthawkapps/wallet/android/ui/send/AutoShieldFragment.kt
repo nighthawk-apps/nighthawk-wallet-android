@@ -69,6 +69,7 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
             binding.lottieShielding.invisibleIf(!showShielding)
             if (pauseShielding) binding.lottieShielding.pauseAnimation()
             binding.lottieSuccess.invisibleIf(!showSuccess)
+            binding.imageFailed.invisibleIf(!isFailure)
             binding.textStatus.text = statusMessage
 
             binding.textStatus.text = when {
@@ -83,6 +84,12 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
             binding.buttonMoreInfo.text = moreInfoButtonText
             binding.buttonMoreInfo.goneIf(!showMoreInfoButton)
             binding.buttonMoreInfo.setOnClickListener { moreInfoAction() }
+        }
+
+        if (showSuccess) {
+            if (viewModel.updateAutoshieldAchievement()) {
+                mainActivity?.showSnackbar(getString(R.string.autoshield_achievement_unlocked), "View")
+            }
         }
     }
 
@@ -125,8 +132,9 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
                     )
                 model.showShielding = false
                 model.showSuccess = false
+                model.isFailure = true
                 model.showStatusDetails = false
-                model.primaryButtonText = getString(R.string.translated_button_back)
+                model.primaryButtonText = getString(R.string.button_back)
                 model.primaryAction = { mainActivity?.navController?.popBackStack() }
                 model.showMoreInfoButton = errorMessage != null
                 model.moreInfoButtonText = getString(R.string.send_more_info)
@@ -144,11 +152,11 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
             isCreated() -> {
                 model.showStatusMessage = true
                 model.statusMessage = "Submitting transaction..."
-                model.primaryButtonText = getString(R.string.translated_button_back)
+                model.primaryButtonText = getString(R.string.button_back)
                 model.primaryAction = { mainActivity?.navController?.popBackStack() }
             }
             else -> {
-                model.primaryButtonText = getString(R.string.translated_button_back)
+                model.primaryButtonText = getString(R.string.button_back)
                 model.primaryAction = { mainActivity?.navController?.popBackStack() }
             }
         }
@@ -173,6 +181,7 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
         var showShielding: Boolean = true,
         var pauseShielding: Boolean = false,
         var showSuccess: Boolean = false,
+        var isFailure: Boolean = false,
         var statusMessage: String = "",
         var statusDetails: String = "",
         var showStatusDetails: Boolean = false,

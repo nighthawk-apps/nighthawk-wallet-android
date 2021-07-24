@@ -356,19 +356,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun copyDonationAddress(view: View? = null) {
-        lifecycleScope.launch {
-            clipboard.setPrimaryClip(
-                ClipData.newPlainText(
-                    "Z-Address",
-                    getString(R.string.nighthawk_address)
-                )
-            )
-            showMessage("Donation Address copied! Please return Send Zcash for sending the donation.")
-        }
-    }
-
-    fun copyText(textToCopy: String, label: String = "ECC Wallet Text") {
+    fun copyText(textToCopy: String, label: String = "Nighthawk Wallet Text") {
         clipboard.setPrimaryClip(
             ClipData.newPlainText(label, textToCopy)
         )
@@ -414,12 +402,12 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, if (linger) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
 
-    fun showSnackbar(message: String, action: String = getString(android.R.string.ok)): Snackbar {
+    fun showSnackbar(message: String, actionLabel: String = getString(android.R.string.ok), action: () -> Unit = {}): Snackbar {
         return if (snackbar == null) {
             val view = findViewById<View>(R.id.main_activity_container)
             val snacks = Snackbar
                 .make(view, "$message", Snackbar.LENGTH_INDEFINITE)
-                .setAction(action) { /*auto-close*/ }
+                .setAction(actionLabel) { action() }
 
             val snackBarView = snacks.view as ViewGroup
             val navigationBarHeight = resources.getDimensionPixelSize(
@@ -440,7 +428,7 @@ class MainActivity : AppCompatActivity() {
             snackBarView.getChildAt(0).setLayoutParams(params)
             snacks
         } else {
-            snackbar!!.setText(message).setAction(action) { /*auto-close*/ }
+            snackbar!!.setText(message).setAction(actionLabel) { action() }
         }.also {
             if (!it.isShownOrQueued) it.show()
         }
