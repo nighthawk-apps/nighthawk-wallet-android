@@ -70,5 +70,4 @@
         app:layout_constraintEnd_toStartOf="@id/btnPositive"
         app:layout_constraintTop_toTopOf="@id/btnPositive" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
