@@ -1,9 +1,12 @@
 package com.nighthawkapps.wallet.android.ext
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
+import androidx.viewbinding.ViewBinding
 import com.nighthawkapps.wallet.android.ui.MainActivity
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
@@ -75,4 +78,10 @@ fun View.clicks() = channelFlow<View> {
     awaitClose {
         setOnClickListener(null)
     }
+}
+
+inline fun <T : ViewBinding> ViewGroup.viewBinding(
+    crossinline inflater: (LayoutInflater, ViewGroup) -> T
+): T {
+    return inflater.invoke(LayoutInflater.from(context), this)
 }

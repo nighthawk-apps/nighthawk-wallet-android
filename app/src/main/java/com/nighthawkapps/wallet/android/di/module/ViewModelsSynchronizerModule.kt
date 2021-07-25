@@ -14,6 +14,7 @@ import com.nighthawkapps.wallet.android.ui.receive.ReceiveViewModel
 import com.nighthawkapps.wallet.android.ui.scan.ScanViewModel
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldViewModel
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
+import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.SettingsViewModel
 import dagger.Binds
 import dagger.Module
@@ -79,6 +80,12 @@ abstract class ViewModelsSynchronizerModule {
     @IntoMap
     @ViewModelKey(AutoShieldViewModel::class)
     abstract fun bindAutoShieldViewModel(implementation: AutoShieldViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(PasswordViewModel::class)
+    abstract fun bindPasswordViewModel(implementation: PasswordViewModel): ViewModel
 
     /**
      * Factory for view models that are not created until the Synchronizer exists. Only VMs that

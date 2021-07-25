@@ -52,4 +52,12 @@ object Const {
             const val PORT = 9067
         }
     }
+
+    /**
+    * Constants for setting PIN
+    */
+    object PIN {
+        const val PASSWORD = "const.pin.password"
+        const val IS_BIO_METRIC_OR_FACE_ID_ENABLED = "const.pin.is_biometric_or_face_id"
+    }
 }

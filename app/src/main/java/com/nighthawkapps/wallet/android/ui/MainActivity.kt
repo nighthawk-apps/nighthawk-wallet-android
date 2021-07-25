@@ -69,6 +69,7 @@ import com.nighthawkapps.wallet.android.ext.showCriticalProcessorError
 import com.nighthawkapps.wallet.android.ext.showScanFailure
 import com.nighthawkapps.wallet.android.ext.showUninitializedError
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
+import com.nighthawkapps.wallet.android.ui.home.HomeFragmentDirections
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -157,6 +158,8 @@ class MainActivity : AppCompatActivity() {
         for (listener in navInitListeners) {
             listener()
         }
+        val action = HomeFragmentDirections.actionNavHomeToEnterPinFragment(forNewPinSetup = false)
+        navController?.navigate(action)
         navInitListeners.clear()
     }
 

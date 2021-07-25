@@ -41,6 +41,9 @@
             android:id="@+id/action_nav_scan_to_nav_receive"
             app:destination="@id/nav_receive"
             app:exitAnim="@anim/anim_fade_out_medium" />
+        <action
+            android:id="@+id/action_nav_home_to_enterPinFragment"
+            app:destination="@id/enterPinFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_balance_detail"
@@ -198,7 +201,11 @@
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.nighthawkapps.wallet.android.ui.setup.SettingsFragment"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_nav_settings_to_enterPinFragment"
+            app:destination="@id/enterPinFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_backup"
@@ -214,6 +221,16 @@
             app:destination="@id/nav_home"
             app:popUpTo="@id/nav_landing"
             app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/enterPinFragment"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.EnterPinFragment"
+        tools:layout="@layout/fragment_enter_pin" >
+        <argument
+            android:name="forNewPinSetup"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <!--                -->

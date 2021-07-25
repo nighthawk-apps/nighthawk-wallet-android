@@ -1,14 +1,17 @@
 package com.nighthawkapps.wallet.android.ui.setup
 
+import android.app.Dialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import cash.z.ecc.android.sdk.exception.LightWalletException
 import cash.z.ecc.android.sdk.ext.collectWith
 import cash.z.ecc.android.sdk.ext.twig
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSettingsBinding
@@ -26,6 +29,8 @@ import kotlinx.coroutines.launch
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     private val viewModel: SettingsViewModel by viewModel()
+    private val passwordViewModel: PasswordViewModel by viewModel()
+    private var dialog: Dialog? = null
 
     override fun inflate(inflater: LayoutInflater): FragmentSettingsBinding =
         FragmentSettingsBinding.inflate(inflater)
@@ -46,6 +51,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             }
             inputTextLightwalletdPort.doAfterTextChanged {
                 viewModel.pendingPortText = it.toString()
+            }
+            textSetChangePasscode.setOnClickListener(::onSetChangePassWordSelected)
+            switchEnableDisableBiometric.setOnCheckedChangeListener { buttonView, isChecked ->
+                onBioMetricSwitchedChanged(buttonView, isChecked)
             }
         }
     }
@@ -74,6 +83,23 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 binding.loadingView.requestFocus()
                 viewModel.submit()
             }
+        }
+    }
+
+    private fun onSetChangePassWordSelected(unused: View?) {
+        val action = SettingsFragmentDirections.actionNavSettingsToEnterPinFragment(forNewPinSetup = true)
+        mainActivity?.navController?.navigate(action)
+    }
+
+    private fun onBioMetricSwitchedChanged(buttonView: CompoundButton?, checked: Boolean) {
+        if (checked) {
+            if (passwordViewModel.isBioMetricEnabledOnMobile()) {
+                passwordViewModel.setBioMetricOrFaceIdEnableStatus(checked)
+            } else {
+                showDialogToEnableBioMetricOrFaceId()
+            }
+        } else {
+            passwordViewModel.setBioMetricOrFaceIdEnableStatus(checked)
         }
     }
 
@@ -149,5 +175,17 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             R.color.zcashRed
         }
         return ColorStateList.valueOf(color.toAppColor())
+    }
+
+    private fun showDialogToEnableBioMetricOrFaceId() {
+        dialog?.dismiss()
+        dialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.dialog_bio_metric_not_enabled_title))
+            .setMessage(getString(R.string.dialog_bio_metric_not_enabled_message))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                binding.switchEnableDisableBiometric.isChecked = false
+                dialog.dismiss()
+            }.show()
     }
 }

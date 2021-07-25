@@ -353,5 +353,17 @@
     <string name="export_pdf">Export PDF</string>
     <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be uploaded to the cloud.</string>
     <string name="pdf_password_hint">Please Enter Password</string>
+    <string name="enter_six_digit_passcode">Enter Six Digit Passcode</string>
+    <string name="choose_six_digit_passcode">Choose a Six Digit Passcode</string>
+    <string name="enter_the_same_six_digits">Enter the Same Six Digits</string>
+    <string name="choose_passcode">Choose Passcode</string>
+    <string name="verify_passcode">Verify Passcode</string>
+    <string name="wrong_passcode">Wrong Passcode</string>
+    <string name="wrong_passcode_message">Your passcode didn\'t match with previous passcode</string>
+    <string name="ok">OK</string>
+    <string name="set_change_passcode">Set/Change Passcode</string>
+    <string name="enable_face_id_touch_id">Enable Face ID/Touch ID</string>
+    <string name="dialog_bio_metric_not_enabled_title">Face ID Touch ID Error</string>
+    <string name="dialog_bio_metric_not_enabled_message">Couldn\'t enable this option. It seems that Face ID or Touch ID is not enabled in your mobile.</string>
 
 </resources>

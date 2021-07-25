@@ -23,6 +23,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="NighthawkTheme.PrimaryHighlight">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+    </style>
+
     <!-- Widgets -->
 
     <style name="Nighthawk.TextView.NumberPad" parent="Widget.AppCompat.TextView">
@@ -41,6 +45,12 @@
 
     <style name="Nighthawk.Button.OutlinedButton.Primary" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="DigitImageButton">
+        <item name="android:theme">@style/NighthawkTheme.PrimaryHighlight</item>
+        <item name="srcCompat">@drawable/unfilled_password_digit</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
     <style name="Nighthawk.TextInput.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
