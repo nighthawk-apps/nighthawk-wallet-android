@@ -136,6 +136,9 @@ dependencies {
     kapt Deps.Dagger.ANDROID_PROCESSOR
     kapt Deps.Dagger.COMPILER
 
+    // iText7
+    implementation Deps.Pdf.I_TEXT_CORE
+
     // grpc-java
     implementation Deps.Grpc.ANDROID
     implementation Deps.Grpc.OKHTTP

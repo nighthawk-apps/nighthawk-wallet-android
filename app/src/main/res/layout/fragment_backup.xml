@@ -363,7 +363,7 @@
         style="@style/Nighthawk.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/verify"
+        android:text="@string/export_pdf"
         android:textColor="@color/text_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -21,7 +21,10 @@ import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
 import com.nighthawkapps.wallet.android.ui.util.AddressPartNumberSpan
+import com.nighthawkapps.wallet.android.ui.util.EncryptedPdfDialog
+import com.nighthawkapps.wallet.android.ui.util.PdfUtil
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -29,7 +32,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BackupFragment : BaseFragment<FragmentBackupBinding>() {
+class BackupFragment : BaseFragment<FragmentBackupBinding>(),
+    EncryptedPdfDialog.OnPdfClickListener {
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
@@ -53,7 +57,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
             )
         }
         binding.buttonPositive.setOnClickListener {
-            onEnterWallet()
+            showEnterPasswordDialog()
         }
         if (hasBackUp) {
             binding.buttonPositive.text = getString(R.string.backup_button_done)
@@ -126,8 +130,26 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>() {
     private suspend fun loadSeedWords(): List<CharArray> = withContext(Dispatchers.IO) {
         val lockBox = LockBox(NighthawkWalletApp.instance)
         val mnemonics = Mnemonics()
-        val seedPhrase = lockBox.getCharsUtf8(Const.Backup.SEED_PHRASE) ?: throw RuntimeException("Seed Phrase expected but not found in storage!!")
+        val seedPhrase = lockBox.getCharsUtf8(Const.Backup.SEED_PHRASE)
+            ?: throw RuntimeException("Seed Phrase expected but not found in storage!!")
         val result = mnemonics.toWordList(seedPhrase)
         result
+    }
+
+    private fun showEnterPasswordDialog() {
+        EncryptedPdfDialog().also {
+            it.isCancelable = false
+            it.setClickListener(this)
+        }.show(parentFragmentManager, "Pdf Dialog")
+    }
+
+    override fun onPositiveClicked(password: String) {
+        makePasswordProtectedPdf(password)
+    }
+
+    private fun makePasswordProtectedPdf(password: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            PdfUtil.exportPasswordProtectedPdf(requireContext(), password, loadSeedWords(), calculateBirthday())
+        }
     }
 }
