@@ -1,21 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Nighthawk</string>
     <string name="blank" />
-    <string name="nighthawk_address_part" translatable="false">zs1nhawk....2dmr0sf</string>
-    <string name="nighthawk_address" translatable="false">zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf</string>
 
     <!-- Send Flow -->
     <string name="no_balance">No Balance</string>
     <string name="fund_now">Fund Now</string>
-    <string name="view_my_address">View My Address</string>
-    <string name="side_shift">Fund with Sideshift</string>
-    <string name="donate_to_nighthawk">Donate to Nighthawk</string>
+    <string name="receive_zcash">Receive Zcash</string>
+    <string name="side_shift">Fund via Sideshift</string>
     <string name="backup_wallet">Backup Wallet</string>
-    <string name="profile_rescan_wallet">Rescan Wallet</string>
-    <string name="nighthawkwallet">\@nighthawkwallet</string>
+    <string name="nighthawkwallet" translatable="false">\@nighthawkwallet</string>
     <string name="my_zcash_address">My Zcash Address</string>
     <string name="scan_recipient_address">Scan Recipient Address</string>
-    <string name="_12">12</string>
     <string name="send_address">send address</string>
     <string name="store_these_backup_words_securely">Store these backup words securely.</string>
     <string name="verify">Verify</string>
@@ -24,7 +19,7 @@
     <string name="updating">Updating</string>
     <string name="available">Available</string>
     <string name="wallet_history">Wallet History</string>
-    <string name="transparent_balance">Transparent Balance</string>
+    <string name="available_balance">Available Balance</string>
     <string name="shielded_address">Shielded address:</string>
     <string name="no_history_yet">No history yet.</string>
     <string name="welcome_to_nighthawk_wallet">Welcome to Nighthawk!</string>
@@ -69,7 +64,7 @@
     <string name="sideshift_affiliate_link">https://sideshift.ai/a/EqcQp4iUM</string>
     <string name="zcash_learn_more_link">https://z.cash/the-basics/</string>
     <string name="visit_zcash_link_description">Visit Z.cash website to learn more!</string>
-    <string name="visit_zcash_link_title">Zcash is digital money</string>
+    <string name="visit_zcash_link_title">Zcash is digital money.</string>
     <string name="last_used">Last Used</string>
     <string name="on_clipboard">On clipboard</string>
     <string name="include_reply_to">Include Reply-to</string>
@@ -99,7 +94,7 @@
     <string name="home_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_available</string>
     <string name="home_balance_updating">Updating</string>
     <string name="home_banner_expecting">@string/custom_translation_expecting</string>
-    <string name="home_button_send_disconnected">Reconnecting . . .</string>
+    <string name="home_button_send_disconnected">Connecting . . .</string>
     <string name="home_button_send_downloading">@string/custom_translation_syncing</string>
     <string name="home_button_send_has_funds" tools:ignore="MissingTranslation">@string/translated_button_sendamount</string>
     <string name="home_button_send_idle">IDLE</string>
@@ -133,12 +128,11 @@
     <string name="landing_title">Welcome to the Nighthawk Wallet!</string>
 
     <!-- Screen: Profile -->
-    <string name="profile_app_version">v1.0.9</string>
+    <string name="profile_rescan_wallet">Rescan Wallet</string>
     <string name="profile_backup_wallet" tools:ignore="MissingTranslation">@string/translated_button_backup_wallet</string>
     <string name="profile_ecc_wallet" tools:ignore="MissingTranslation">@string/translated_app_name</string>
     <string name="profile_see_application_logs" tools:ignore="MissingTranslation">@string/translated_button_applicationlogs</string>
     <string name="profile_send_feedback" tools:ignore="MissingTranslation">@string/translated_button_feedback</string>
-    <string name="profile_share_log_title">Share Log Files</string>
     <string name="profile_shielded_user" tools:ignore="MissingTranslation">@string/translated_profile_screen</string>
     <string name="biometric_backup_phrase_title">Authenticate to proceed</string>
     <string name="biometric_backup_phrase_description">Load backup phrase</string>
@@ -284,6 +278,7 @@
     <string name="dialog_error_invalid_seed_phrase_button_positive">Retry</string>
     <string name="dialog_error_invalid_seed_phrase_message">That seed phrase appears to be invalid! Please double-check it and try again.\n\n%1$s</string>
     <string name="dialog_error_invalid_seed_phrase_title">Oops! Invalid Seed Phrase</string>
+    <string name="dialog_error_processor_critical_button_positive">Retry</string>
     <string name="dialog_error_processor_critical_button_negative">Exit</string>
     <string name="dialog_error_processor_critical_button_wait">Wait</string>
     <string name="dialog_error_processor_critical_button_rescan">Rescan</string>
@@ -350,6 +345,7 @@
     <string name="plus_transparent">+ transparent</string>
     <string name="total">Total</string>
     <string name="as_of_block">as of block</string>
+    <string name="autoshield_complete">Autoshielding completed successfully!</string>
     <string name="export_pdf">Export PDF</string>
     <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be uploaded to the cloud.</string>
     <string name="pdf_password_hint">Please Enter Password</string>

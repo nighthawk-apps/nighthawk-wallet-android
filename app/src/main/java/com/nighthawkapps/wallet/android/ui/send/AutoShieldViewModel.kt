@@ -58,15 +58,26 @@ class AutoShieldViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    /**
+     * Update the autoshielding achievement and return true if this is the first time.
+     */
+    fun updateAutoshieldAchievement(): Boolean {
+        val existingValue = lockBox.getBoolean(Const.App.TRIGGERED_SHIELDING)
+        return if (!existingValue) {
+            lockBox.setBoolean(Const.App.TRIGGERED_SHIELDING, true)
+            true
+        } else {
+            false
+        }
+    }
+
     fun shieldFunds(): Flow<PendingTransaction> {
         return lockBox.getBytes(Const.Backup.SEED)?.let {
             val sk = DerivationTool.deriveSpendingKeys(it, synchronizer.network)[0]
             val tsk = DerivationTool.deriveTransparentSecretKey(it, synchronizer.network)
             val addr = DerivationTool.deriveTransparentAddressFromPrivateKey(tsk, synchronizer.network)
-            synchronizer.shieldFunds(sk, tsk, "${ZcashSdk.DEFAULT_SHIELD_FUNDS_MEMO_PREFIX}\nAll UTXOs from $addr").onEach {
-                twig("Received shielding txUpdate: ${it?.toString()}")
-//                updateMetrics(it)
-//                reportFailures(it)
+            synchronizer.shieldFunds(sk, tsk, "${ZcashSdk.DEFAULT_SHIELD_FUNDS_MEMO_PREFIX}\nAll UTXOs from $addr").onEach { tx ->
+                twig("Received shielding txUpdate: ${tx?.toString()}")
             }
         } ?: throw IllegalStateException("Seed was expected but it was not found!")
     }

@@ -38,6 +38,7 @@ object Const {
      */
     object App {
         const val LAST_VERSION = "const.app.LAST_VERSION"
+        const val TRIGGERED_SHIELDING = "const.app.TRIGGERED_SHIELDING"
     }
 
     /**
