@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="api_block_explorer">https://blockchair.com/zcash/transaction/%1$s</string>
+    <string name="api_block_explorer" translatable="false">https://zcashblockexplorer.com/transactions/%1$s</string>
     <string name="symbol" translatable="false">ZEC</string>
     <string name="play_store_url" translatable="false">https://play.google.com/store/apps/details?id=com.nighthawkapps.wallet.android</string>
 </resources>

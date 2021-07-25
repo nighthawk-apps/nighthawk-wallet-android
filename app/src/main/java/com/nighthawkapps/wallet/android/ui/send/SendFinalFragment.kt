@@ -19,6 +19,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentSendFinalBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -48,7 +49,7 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity?.apply {
-            sendViewModel.send().onEach {
+            sendViewModel.send().filter { it.isFailure() }.onEach {
                 onPendingTxUpdated(it)
             }.launchIn(lifecycleScope)
         }

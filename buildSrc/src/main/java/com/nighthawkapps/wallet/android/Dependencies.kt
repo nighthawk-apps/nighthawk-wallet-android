@@ -3,14 +3,14 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.5.20"
+    const val kotlinVersion = "1.5.21"
     const val navigationVersion =   "2.3.5"
     const val compileSdkVersion = 30
     const val buildToolsVersion = "30.0.3"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.20"
-    const val versionCode = 1_00_20_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.21"
+    const val versionCode = 1_00_21_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
