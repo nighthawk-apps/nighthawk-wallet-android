@@ -2,6 +2,8 @@ package com.nighthawkapps.wallet.android.ui.util
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import cash.z.ecc.android.sdk.ext.twig
@@ -110,18 +112,32 @@ object PdfUtil {
 
     private fun shareFile(context: Context, file: File) {
         try {
+            val fileURI = FileProvider.getUriForFile(
+                context, context.packageName + ".fileprovider",
+                file
+            )
             Intent(Intent.ACTION_SEND).apply {
                 type = "application/pdf"
                 flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                val fileURI = FileProvider.getUriForFile(
-                    context, context.packageName + ".fileprovider",
-                    file
-                )
                 putExtra(Intent.EXTRA_STREAM, fileURI)
             }.run {
-                context.startActivity(Intent.createChooser(this, "Share File"))
+                val intentChooser = Intent.createChooser(this, "Share File")
+
+                val resInfoList: List<ResolveInfo> = context.packageManager
+                    .queryIntentActivities(intentChooser, PackageManager.MATCH_DEFAULT_ONLY)
+
+                for (resolveInfo in resInfoList) {
+                    val packageName = resolveInfo.activityInfo.packageName
+                    context.grantUriPermission(
+                        packageName,
+                        fileURI,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                }
+                context.startActivity(intentChooser)
             }
         } catch (e: Exception) {
             Toast.makeText(context, "PDF sharing failed", Toast.LENGTH_SHORT).show()
