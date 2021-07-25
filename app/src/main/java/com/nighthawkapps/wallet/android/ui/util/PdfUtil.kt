@@ -45,7 +45,7 @@ object PdfUtil {
                 seedWords.forEachIndexed { index, chars ->
                     stringBuilder.append(index + 1).append(". ").append(chars.concatToString()).append("     ")
                 }
-                val filePath = "${context.cacheDir.absolutePath}/SeedWords.pdf"
+                val filePath = "${context.cacheDir.absolutePath}/NighthawkSeedWords.pdf"
                 if (File(filePath).exists()) {
                     File(filePath).delete()
                 }
@@ -63,7 +63,7 @@ object PdfUtil {
                 // Add seed words
                 document.add(
                     Paragraph(
-                        Text("These are seed phrase used to restore Zcash based Nighthawk Wallet: \n")
+                        Text("These are seed words used to restore your Zcash in Nighthawk Wallet: \n")
                             .setFontSize(headingFontSize)
                             .setFontColor(headingColor)
                     )
@@ -74,7 +74,7 @@ object PdfUtil {
                 // Add birthday
                 val birthdayParaGraph = Paragraph()
                 birthdayParaGraph.add(
-                    Text("Birthday: ")
+                    Text("Wallet Birthday: ")
                         .setFontSize(headingFontSize)
                         .setFontColor(headingColor)
                 )
@@ -84,7 +84,7 @@ object PdfUtil {
                 // Add pdf generated time
                 val generatedAtParaGraph = Paragraph()
                 generatedAtParaGraph.add(
-                    Text("GeneratedAt: ")
+                    Text("Generated At: ")
                         .setFontSize(headingFontSize)
                         .setFontColor(headingColor)
                 )
@@ -102,7 +102,7 @@ object PdfUtil {
                     }
                 }
             } catch (e: Exception) {
-                Toast.makeText(context, "Pdf creation failed $e", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "PDF creation failed", Toast.LENGTH_SHORT).show()
                 twig(e)
             }
         }
@@ -124,7 +124,7 @@ object PdfUtil {
                 context.startActivity(Intent.createChooser(this, "Share File"))
             }
         } catch (e: Exception) {
-            Toast.makeText(context, "Pdf sharing failed $e", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "PDF sharing failed", Toast.LENGTH_SHORT).show()
             twig(e)
         }
     }

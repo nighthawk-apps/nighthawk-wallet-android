@@ -350,9 +350,8 @@
     <string name="plus_transparent">+ transparent</string>
     <string name="total">Total</string>
     <string name="as_of_block">as of block</string>
-    <string name="export_pdf">Export Pdf</string>
-    <string name="pdf_dialog_sub_heading">Export the seed words as a password protected PDF which can be uploaded to the cloud.</string>
+    <string name="export_pdf">Export PDF</string>
+    <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be uploaded to the cloud.</string>
     <string name="pdf_password_hint">Please Enter Password</string>
-    <string name="proceed">Proceed</string>
 
 </resources>
