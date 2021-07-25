@@ -88,7 +88,7 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
 
         if (showSuccess) {
             if (viewModel.updateAutoshieldAchievement()) {
-                mainActivity?.showSnackbar(getString(R.string.autoshield_achievement_unlocked), "View")
+                mainActivity?.showSnackbar(getString(R.string.autoshield_complete), "View")
             }
         }
     }
@@ -134,7 +134,7 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
                 model.showSuccess = false
                 model.isFailure = true
                 model.showStatusDetails = false
-                model.primaryButtonText = getString(R.string.button_back)
+                model.primaryButtonText = getString(R.string.translated_button_back)
                 model.primaryAction = { mainActivity?.navController?.popBackStack() }
                 model.showMoreInfoButton = errorMessage != null
                 model.moreInfoButtonText = getString(R.string.send_more_info)
@@ -152,11 +152,11 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
             isCreated() -> {
                 model.showStatusMessage = true
                 model.statusMessage = "Submitting transaction..."
-                model.primaryButtonText = getString(R.string.button_back)
+                model.primaryButtonText = getString(R.string.translated_button_back)
                 model.primaryAction = { mainActivity?.navController?.popBackStack() }
             }
             else -> {
-                model.primaryButtonText = getString(R.string.button_back)
+                model.primaryButtonText = getString(R.string.translated_button_back)
                 model.primaryAction = { mainActivity?.navController?.popBackStack() }
             }
         }

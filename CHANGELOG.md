@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.21 *(2021-07-25)*
+------------------------------------
+- New: Export Wallet Seed Words to a Password Protected PDF.
+- New: Default to ZcashBlockExplorer.com for tx details.
+- Upgrade dependencies.
+
 Version 1.0.20 *(2021-07-12)*
 ------------------------------------
 - New: Added workflow for automatically shielding funds.

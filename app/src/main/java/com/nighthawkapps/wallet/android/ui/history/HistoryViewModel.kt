@@ -135,7 +135,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                     bottomValue = "\$${WalletZecFormmatter.toZecStringFull(tx?.value?.plus(ZcashSdk.MINERS_FEE_ZATOSHI))}"
                     iconRotation = 135f
                     fee = "+ 0.00001 network fee"
-                    source = getString(R.string.send_fromshielded)
+                    source = getString(R.string.transaction_story_from_shielded)
                     address = tx?.toAddress
                 }
                 null -> {

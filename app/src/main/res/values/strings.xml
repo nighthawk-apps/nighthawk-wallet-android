@@ -64,7 +64,7 @@
     <string name="sideshift_affiliate_link">https://sideshift.ai/a/EqcQp4iUM</string>
     <string name="zcash_learn_more_link">https://z.cash/the-basics/</string>
     <string name="visit_zcash_link_description">Visit Z.cash website to learn more!</string>
-    <string name="visit_zcash_link_title">Zcash is digital money</string>
+    <string name="visit_zcash_link_title">Zcash is digital money.</string>
     <string name="last_used">Last Used</string>
     <string name="on_clipboard">On clipboard</string>
     <string name="include_reply_to">Include Reply-to</string>
@@ -345,5 +345,6 @@
     <string name="plus_transparent">+ transparent</string>
     <string name="total">Total</string>
     <string name="as_of_block">as of block</string>
+    <string name="autoshield_complete">Autoshielding completed successfully!</string>
 
 </resources>
