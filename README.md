@@ -63,7 +63,7 @@ There are some known areas for improvement:
 See the [Wallet App Threat Model](https://zcash.readthedocs.io/en/latest/rtd_pages/wallet_threat_model.html)
 for more information about the security and privacy limitations of the wallet.
 
-## Donate to Nighthawk Devs
+## Contact Nighthawk Devs
 zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf
 
 ### License
