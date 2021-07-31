@@ -67,4 +67,4 @@ for more information about the security and privacy limitations of the wallet.
 zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf
 
 ### License
-MIT
+Apache License 2.0
