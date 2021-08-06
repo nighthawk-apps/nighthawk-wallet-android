@@ -36,8 +36,8 @@
 
     <View
         android:id="@+id/hit_area_settings"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:alpha="0.3"
@@ -51,14 +51,15 @@
         android:id="@+id/icon_settings"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="44dp"
         android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.064"
-        app:layout_constraintWidth_percent="0.08"
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
         app:srcCompat="@drawable/ic_settings" />
 
     <ImageView

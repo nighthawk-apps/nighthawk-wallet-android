@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.22 *(2021-08-06)*
+------------------------------------
+- Upgrade SDK & dependencies.
+- UI fixes.
+- Add fastlane setup.
+
 Version 1.0.21 *(2021-07-25)*
 ------------------------------------
 - New: Export Wallet Seed Words to a Password Protected PDF.
