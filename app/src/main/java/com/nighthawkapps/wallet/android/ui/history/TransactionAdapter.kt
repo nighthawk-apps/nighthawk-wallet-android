@@ -2,13 +2,13 @@ package com.nighthawkapps.wallet.android.ui.history
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import com.nighthawkapps.wallet.android.R
 
 class TransactionAdapter<T : ConfirmedTransaction> :
-    PagedListAdapter<T, TransactionViewHolder<T>>(
+    ListAdapter<T, TransactionViewHolder<T>>(
         object : DiffUtil.ItemCallback<T>() {
             override fun areItemsTheSame(
                 oldItem: T,

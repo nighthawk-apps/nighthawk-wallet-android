@@ -1,0 +1,28 @@
+Nighthawk is a shielded Zcash light-wallet with support for Z-addresses, including sending & receiving shielded transactions, memo support & optional t-addresses support with Auto-Shielding technology.
+
+Zcash is digital money:
+- Fast and confidential with low fees — built for Internet and Mobile transactions
+
+Choose Privacy by Default with Nighthawk:
+- Nighthawk is a Z-address native wallet for preserving Privacy, funds can be sent out via your Shielded Address only.
+
+Nighthawk is powered by ECC reference mobile wallets:
+- ECC supports Zcash through research and development, engineering, partnerships and regulatory efforts.
+
+Nighthawk is a light-wallet:
+- Using Nighthawk requires trust in the lightwalletd server(that stores the Zcash blockchain) to display accurate transaction information.
+
+Nighthawk is a non-custodial wallet for Zcash:
+- You have sole responsibility over their funds stored on Nighthawk. Please immediately and securely backup the seed words upon creating a wallet.
+
+Custom lightwalletd server in Android:
+- You can change the default lightwalletd server on Android!
+
+As a non-custodial wallet for Zcash, you have sole responsibility over its funds. Please immediately and securely back up the seed words upon creating a wallet.
+
+Zcash is a digital currency, or cryptocurrency, like Bitcoin. (In fact, Zcash was built on the original Bitcoin code base) It was conceived by scientists at MIT, Johns Hopkins and other respected academic and scientific institutions.
+More info is available at https://z.cash
+
+NOTE: As a light wallet, Nighthawk requires trust in the lightwalletd server to display accurate transaction information.
+
+This software is provided 'as is', without warranty of any kind, express or implied.
