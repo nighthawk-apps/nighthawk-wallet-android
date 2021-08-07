@@ -2,16 +2,16 @@ package com.nighthawkapps.wallet.android.ui.setup
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentEnterPinBinding
-import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
+import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
 
     private lateinit var numberPad: List<TextView>
-    private val viewModel: PasswordViewModel by viewModel()
+    private val viewModel: PasswordViewModel by activityViewModel()
     private var chosenPassword: String? = null
     private val args: EnterPinFragmentArgs by navArgs()
     private var dialog: Dialog? = null
@@ -32,7 +32,7 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("EnterPinFragment", "fragment created ${viewModel.isBioMetricEnabledOnMobile()}")
+        twig("EnterPinFragment created ${viewModel.isBioMetricEnabledOnMobile()}")
 
         updateUI()
         checkBioMetricAndFaceId()
@@ -59,11 +59,18 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
         binding.hitAreaClose.setOnClickListener {
             handleCloseClick()
         }
+
+        mainActivity?.onFragmentBackPressed(this) {
+            if (!args.forNewPinSetup) {
+                twig("EnterPinFragment: User clicked back button")
+                mainActivity?.finish()
+            }
+        }
     }
 
     private fun checkBioMetricAndFaceId() {
         CoroutineScope(Dispatchers.Main).launch {
-            if (viewModel.isBioMetricOrFaceIdEnabled()) {
+            if (!args.forNewPinSetup && viewModel.isBioMetricOrFaceIdEnabled()) {
                 mainActivity?.let {
                     it.authenticate("", getString(R.string.biometric_backup_phrase_title)) {
                         handleNextNavigation()
@@ -113,7 +120,6 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
     }
 
     private fun onInt(number: Int) {
-        Log.d("EnterPinFragment", "onInt $number")
         val isNewDigitAdded = binding.viewPassword.onNewDigit(number)
         if (!isNewDigitAdded) {
             return
@@ -132,7 +138,10 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
     private fun verifyPassword(enteredPassword: String) {
         if (chosenPassword == enteredPassword) {
             // Password Verified
-            viewModel.savePassword(enteredPassword)
+            if (args.forNewPinSetup) {
+                viewModel.savePassword(enteredPassword)
+                mainActivity?.showMessage(getString(R.string.passcode_setup_done))
+            }
             handleNextNavigation()
         } else { // Wrong password entered.
             if (args.forNewPinSetup) {
@@ -140,6 +149,7 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
             } else {
                 updateUI()
             }
+            mainActivity?.vibrate(0, 50, 100, 50, 100)
         }
     }
 
@@ -156,7 +166,12 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
     }
 
     private fun handleNextNavigation() {
-        mainActivity?.navController?.popBackStack()
+        viewModel.updateCheckForPin(checkPin = false)
+        if (args.forNewPinSetup) {
+            mainActivity?.navController?.popBackStack()
+        } else {
+            onEnterAppWallet()
+        }
     }
 
     private fun onEnterAppWallet() {

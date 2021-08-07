@@ -14,12 +14,14 @@ class PasswordViewModel @Inject constructor(val context: Context) : ViewModel() 
     @Named(Const.Name.APP_PREFS)
     lateinit var prefs: LockBox
 
+    private var checkForPin = true
+
     fun verifyPassword(enteredPassword: String): Boolean {
         return enteredPassword.equals(getPassword(), false)
     }
 
     fun getPassword(): String {
-        return prefs.get<String>(Const.PIN.PASSWORD) ?: ""
+        return prefs[Const.PIN.PASSWORD] ?: ""
     }
 
     fun savePassword(password: String) {
@@ -27,17 +29,37 @@ class PasswordViewModel @Inject constructor(val context: Context) : ViewModel() 
     }
 
     fun isPinCodeEnabled(): Boolean {
-        return prefs.get<Boolean>(Const.PIN.PASSWORD) ?: false
+        return getPassword().isNotEmpty()
     }
 
+    /**
+     * @return Check whether we have to show enter again to EnterPinFragment
+     */
+    fun needToCheckPin(): Boolean {
+        return checkForPin
+    }
+
+    /**
+     * We are entering in EnterPinFragment from HomeFragment and will use this to update variable not to enter again for Pin
+     */
+    fun updateCheckForPin(checkPin: Boolean) {
+        checkForPin = checkPin
+    }
+
+    /**
+     * @return check user has enabled option of BioMetric/FaceId from App
+     */
     fun isBioMetricOrFaceIdEnabled(): Boolean {
-        return prefs.get<Boolean>(Const.PIN.IS_BIO_METRIC_OR_FACE_ID_ENABLED) ?: false
+        return prefs[Const.PIN.IS_BIO_METRIC_OR_FACE_ID_ENABLED] ?: false
     }
 
     fun setBioMetricOrFaceIdEnableStatus(isEnabled: Boolean) {
         prefs[Const.PIN.IS_BIO_METRIC_OR_FACE_ID_ENABLED] = isEnabled
     }
 
+    /**
+     * @return check whether mobile has BioMetric available or not
+     */
     fun isBioMetricEnabledOnMobile(): Boolean {
         return BiometricManager.from(context).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
     }

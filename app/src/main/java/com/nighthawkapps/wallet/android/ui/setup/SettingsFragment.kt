@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSettingsBinding
+import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
@@ -29,7 +30,7 @@ import kotlinx.coroutines.launch
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     private val viewModel: SettingsViewModel by viewModel()
-    private val passwordViewModel: PasswordViewModel by viewModel()
+    private val passwordViewModel: PasswordViewModel by activityViewModel()
     private var dialog: Dialog? = null
 
     override fun inflate(inflater: LayoutInflater): FragmentSettingsBinding =
@@ -53,6 +54,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 viewModel.pendingPortText = it.toString()
             }
             textSetChangePasscode.setOnClickListener(::onSetChangePassWordSelected)
+            switchEnableDisableBiometric.isChecked = passwordViewModel.isBioMetricOrFaceIdEnabled()
             switchEnableDisableBiometric.setOnCheckedChangeListener { buttonView, isChecked ->
                 onBioMetricSwitchedChanged(buttonView, isChecked)
             }
@@ -93,6 +95,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     private fun onBioMetricSwitchedChanged(buttonView: CompoundButton?, checked: Boolean) {
         if (checked) {
+            if (!passwordViewModel.isPinCodeEnabled()) {
+                mainActivity?.showSnackbar(getString(R.string.set_passcode_request))
+                binding.switchEnableDisableBiometric.isChecked = false
+                return
+            }
             if (passwordViewModel.isBioMetricEnabledOnMobile()) {
                 passwordViewModel.setBioMetricOrFaceIdEnableStatus(checked)
             } else {

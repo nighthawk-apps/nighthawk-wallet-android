@@ -234,7 +234,7 @@
         <action
             android:id="@+id/action_enter_pin_to_nav_home"
             app:destination="@id/nav_home"
-            app:popUpTo="@id/nav_landing"
+            app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true" />
     </fragment>
 

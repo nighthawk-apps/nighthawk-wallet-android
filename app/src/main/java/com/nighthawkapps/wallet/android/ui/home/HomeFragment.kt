@@ -45,7 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
-    private val passwordViewModel: PasswordViewModel by viewModel()
+    private val passwordViewModel: PasswordViewModel by activityViewModel()
 
     lateinit var snake: MagicSnakeLoader
 
@@ -69,7 +69,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 mainActivity?.setLoading(true)
                 try {
                     mainActivity?.startSync(walletSetup.openStoredWallet())
-                    if (passwordViewModel.isPinCodeEnabled() || passwordViewModel.isBioMetricOrFaceIdEnabled()) {
+                    if (passwordViewModel.isPinCodeEnabled() && passwordViewModel.needToCheckPin()) {
                         mainActivity?.setLoading(false)
                         mainActivity?.safeNavigate(R.id.action_nav_home_to_enterPinFragment)
                     }

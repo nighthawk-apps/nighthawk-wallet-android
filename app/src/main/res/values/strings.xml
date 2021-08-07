@@ -362,5 +362,7 @@
     <string name="enable_face_id_touch_id">Enable Face ID/Touch ID</string>
     <string name="dialog_bio_metric_not_enabled_title">Face ID Touch ID Error</string>
     <string name="dialog_bio_metric_not_enabled_message">Couldn\'t enable this option. It seems that Face ID or Touch ID is not enabled in your mobile.</string>
+    <string name="set_passcode_request">Please set Passcode first</string>
+    <string name="passcode_setup_done">Pin Code set up successfully!</string>
 
 </resources>

@@ -397,7 +397,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun showMessage(message: String, linger: Boolean = false) {
+    fun showMessage(message: String, linger: Boolean = false) {
         twig("toast: $message")
         Toast.makeText(this, message, if (linger) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
