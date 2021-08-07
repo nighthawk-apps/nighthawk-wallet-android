@@ -10,9 +10,9 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 10022800,
-      "versionName": "1.0.22",
-      "outputFile": "nighthawk-android-wallet-v1.0.22-release.apk"
+      "versionCode": 10023800,
+      "versionName": "1.0.23",
+      "outputFile": "nighthawk-android-wallet-v1.0.23-release.apk"
     }
   ]
 }

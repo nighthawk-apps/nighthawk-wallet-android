@@ -10,17 +10,13 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-update_fastlane
-
 default_platform(:android)
 
 platform :android do
   desc "Submit Build"
-  lane :build
+  lane :build do |options|
     gradle(task: "clean assembleZcashMainnetRelease")
-  end
-
-  upload_to_app_center(api_token: options[:api_token], app_name: options[:app_name], notes: "Author: #{commit[:author]}, changes: #{commit[:message]}")
+    upload_to_app_center(api_token: options[:api_token], app_name: options[:app_name], notes: "Author: #{commit[:author]}, changes: #{commit[:message]}")
   end
 
   private_lane :upload_to_app_center do |options|
