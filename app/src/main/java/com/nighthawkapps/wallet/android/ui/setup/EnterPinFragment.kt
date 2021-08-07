@@ -158,4 +158,8 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
     private fun handleNextNavigation() {
         mainActivity?.navController?.popBackStack()
     }
+
+    private fun onEnterAppWallet() {
+        mainActivity?.safeNavigate(R.id.action_enter_pin_to_nav_home)
+    }
 }

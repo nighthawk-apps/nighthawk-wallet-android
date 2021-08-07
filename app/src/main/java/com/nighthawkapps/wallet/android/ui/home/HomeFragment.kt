@@ -29,6 +29,7 @@ import com.nighthawkapps.wallet.android.ext.transparentIf
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
 import kotlinx.coroutines.flow.catch
@@ -44,6 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
+    private val passwordViewModel: PasswordViewModel by viewModel()
 
     lateinit var snake: MagicSnakeLoader
 
@@ -67,6 +69,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 mainActivity?.setLoading(true)
                 try {
                     mainActivity?.startSync(walletSetup.openStoredWallet())
+                    if (passwordViewModel.isPinCodeEnabled() || passwordViewModel.isBioMetricOrFaceIdEnabled()) {
+                        mainActivity?.setLoading(false)
+                        mainActivity?.safeNavigate(R.id.action_nav_home_to_enterPinFragment)
+                    }
                 } catch (e: UnsatisfiedLinkError) {
                     mainActivity?.showSharedLibraryCriticalError(e)
                 }

@@ -26,6 +26,10 @@ class PasswordViewModel @Inject constructor(val context: Context) : ViewModel() 
         prefs[Const.PIN.PASSWORD] = password
     }
 
+    fun isPinCodeEnabled(): Boolean {
+        return prefs.get<Boolean>(Const.PIN.PASSWORD) ?: false
+    }
+
     fun isBioMetricOrFaceIdEnabled(): Boolean {
         return prefs.get<Boolean>(Const.PIN.IS_BIO_METRIC_OR_FACE_ID_ENABLED) ?: false
     }
