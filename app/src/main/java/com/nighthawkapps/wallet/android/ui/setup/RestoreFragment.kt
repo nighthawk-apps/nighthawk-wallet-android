@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui.setup
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.seedInput.addTextChangedListener(textWatcher)
+        binding.seedInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
         binding.buttonDone.setOnClickListener {
             onDone()
         }

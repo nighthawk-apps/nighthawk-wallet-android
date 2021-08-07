@@ -12,7 +12,6 @@ android {
     ndkVersion "21.1.6352462"
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
-    viewBinding.enabled = true
     defaultConfig {
         applicationId Deps.packageName
         minSdkVersion Deps.minSdkVersion
@@ -22,6 +21,9 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testInstrumentationRunnerArguments clearPackageData: 'true'
         multiDexEnabled true
+    }
+    buildFeatures {
+        viewBinding true
     }
     flavorDimensions 'network'
     lintOptions{
@@ -43,9 +45,9 @@ android {
         }
     }
     signingConfigs {
-        placeholder {
-            storeFile file("${rootProject.projectDir}/placeholder.keystore")
-            keyAlias "androiddebugkey"
+        nighthawkpublic {
+            storeFile file("${rootProject.projectDir}/nighthawkpublic.keystore")
+            keyAlias "key0"
             keyPassword "android"
             storePassword "android"
         }
@@ -55,7 +57,7 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.placeholder
+            signingConfig signingConfigs.nighthawkpublic
         }
         debug {
             minifyEnabled false
@@ -137,9 +139,6 @@ dependencies {
     kapt Deps.Dagger.ANDROID_PROCESSOR
     kapt Deps.Dagger.COMPILER
 
-    // iText7
-    implementation Deps.Pdf.I_TEXT_CORE
-
     // grpc-java
     implementation Deps.Grpc.ANDROID
     implementation Deps.Grpc.OKHTTP
@@ -148,6 +147,7 @@ dependencies {
     implementation Deps.JavaX.JAVA_ANNOTATION
 
     // Misc.
+    implementation Deps.Misc.I_TEXT_CORE
     implementation Deps.Misc.LOTTIE
     implementation Deps.Misc.Plugins.QR_SCANNER
 

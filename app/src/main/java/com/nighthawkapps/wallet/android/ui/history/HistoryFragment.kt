@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nighthawkapps.wallet.android.R
@@ -54,7 +53,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private fun onBalanceUpdated(balance: WalletBalance) {
         if (balance.availableZatoshi < 0) {
-            binding.textBalanceAvailable.text = "Updating"
+            binding.textBalanceAvailable.text = getString(R.string.updating)
             return
         }
 
@@ -81,7 +80,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         }
     }
 
-    private fun onTransactionsUpdated(transactions: PagedList<ConfirmedTransaction>) {
+    private fun onTransactionsUpdated(transactions: List<ConfirmedTransaction>) {
         twig("HistoryFragment.onTransactionsUpdated")
         transactions.size.let { newCount ->
             twig("got a new paged list of transactions of length $newCount")

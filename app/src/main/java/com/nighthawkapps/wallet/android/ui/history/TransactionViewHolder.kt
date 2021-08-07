@@ -11,6 +11,7 @@ import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.isShielded
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
+import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.locale
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
@@ -49,90 +50,102 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
             var arrowBackgroundTint: Int = R.color.text_light
             var isLineOneSpanned = false
 
-            transaction?.apply {
-                itemView.setOnClickListener {
-                    onTransactionClicked(this)
-                }
-                itemView.setOnLongClickListener {
-                    onTransactionLongPressed(this)
-                    true
-                }
-                amountZec = WalletZecFormmatter.toZecStringShort(value)
-                // TODO: these might be good extension functions
-                val timestamp = formatter.format(blockTimeInSeconds * 1000L)
-                val isMined = blockTimeInSeconds != 0L
-                when {
-                    !toAddress.isNullOrEmpty() -> {
-                        indicatorBackground = if (isMined) R.color.zcashRed else R.color.zcashGray
-                        lineOne = "${if (isMined) str(R.string.transaction_address_you_paid) else str(R.string.transaction_address_paying)} ${toAddress?.toAbbreviatedAddress()}"
-                        lineTwo = if (isMined) "${str(R.string.transaction_status_sent)} $timestamp" else str(R.string.transaction_status_pending)
-                        // TODO: this logic works but is sloppy. Find a more robust solution to displaying information about expiration (such as expires in 1 block, etc). Then if it is way beyond expired, remove it entirely. Perhaps give the user a button for that (swipe to dismiss?)
-                        if (!isMined && (expiryHeight != null) && (expiryHeight!! < mainActivity.latestHeight ?: -1)) lineTwo = str(R.string.transaction_status_expired)
-                        amountDisplay = "- $amountZec"
-                        if (isMined) {
-                            arrowRotation = R.integer.transaction_arrow_rotation_send
-                            amountColor = R.color.transaction_sent
-                            if (toAddress.isShielded()) {
+            try {
+                transaction?.apply {
+                    itemView.setOnClickListener {
+                        onTransactionClicked(this)
+                    }
+                    itemView.setOnLongClickListener {
+                        onTransactionLongPressed(this)
+                        true
+                    }
+                    amountZec = WalletZecFormmatter.toZecStringShort(value)
+                    // TODO: these might be good extension functions
+                    val timestamp = formatter.format(blockTimeInSeconds * 1000L)
+                    val isMined = blockTimeInSeconds != 0L
+                    when {
+                        !toAddress.isNullOrEmpty() -> {
+                            indicatorBackground =
+                                if (isMined) R.color.zcashRed else R.color.zcashGray
+                            lineOne = "${
+                                if (isMined) str(R.string.transaction_address_you_paid) else str(R.string.transaction_address_paying)
+                            } ${toAddress?.toAbbreviatedAddress()}"
+                            lineTwo =
+                                if (isMined) "${str(R.string.transaction_status_sent)} $timestamp" else str(
+                                    R.string.transaction_status_pending
+                                )
+                            // TODO: this logic works but is sloppy. Find a more robust solution to displaying information about expiration (such as expires in 1 block, etc). Then if it is way beyond expired, remove it entirely. Perhaps give the user a button for that (swipe to dismiss?)
+                            if (!isMined && (expiryHeight != null) && (expiryHeight!! < mainActivity.latestHeight ?: -1)) lineTwo =
+                                str(R.string.transaction_status_expired)
+                            amountDisplay = "- $amountZec"
+                            if (isMined) {
+                                arrowRotation = R.integer.transaction_arrow_rotation_send
+                                amountColor = R.color.transaction_sent
+                                if (toAddress.isShielded()) {
+                                    lineOneColor = R.color.zcashYellow
+                                } else {
+                                    toAddress?.toAbbreviatedAddress()?.let {
+                                        lineOne = lineOne.toColoredSpan(R.color.zcashBlueDark, it)
+                                    }
+                                }
+                            } else {
+                                arrowRotation = R.integer.transaction_arrow_rotation_pending
+                            }
+                        }
+                        toAddress.isNullOrEmpty() && value > 0L && minedHeight > 0 -> {
+                            indicatorBackground = R.color.zcashGreen
+                            val senderAddress = mainActivity.getSender(transaction)
+                            lineOne = "${str(R.string.transaction_received_from)} $senderAddress"
+                            lineTwo = "${str(R.string.transaction_received)} $timestamp"
+                            amountDisplay = "+ $amountZec"
+                            if (senderAddress.isShielded()) {
+                                amountColor = R.color.zcashYellow
                                 lineOneColor = R.color.zcashYellow
                             } else {
-                                toAddress?.toAbbreviatedAddress()?.let {
-                                    lineOne = lineOne.toColoredSpan(R.color.zcashBlueDark, it)
+                                senderAddress.toAbbreviatedAddress().let {
+                                    lineOne =
+                                        if (senderAddress.equals(str(R.string.unknown), true)) {
+                                            lineOne.toColoredSpan(R.color.zcashYellow, it)
+                                        } else {
+                                            lineOne.toColoredSpan(R.color.zcashBlueDark, it)
+                                        }
                                 }
                             }
-                        } else {
-                            arrowRotation = R.integer.transaction_arrow_rotation_pending
+                            arrowRotation = R.integer.transaction_arrow_rotation_received
+                        }
+                        else -> {
+                            lineOne = str(R.string.unknown)
+                            lineTwo = str(R.string.unknown)
+                            amountDisplay = amountZec
+                            amountColor = R.color.text_light
+                            arrowRotation = R.integer.transaction_arrow_rotation_received
                         }
                     }
-                    toAddress.isNullOrEmpty() && value > 0L && minedHeight > 0 -> {
-                        indicatorBackground = R.color.zcashGreen
-                        val senderAddress = mainActivity.getSender(transaction)
-                        lineOne = "${str(R.string.transaction_received_from)} $senderAddress"
-                        lineTwo = "${str(R.string.transaction_received)} $timestamp"
-                        amountDisplay = "+ $amountZec"
-                        if (senderAddress.isShielded()) {
-                            amountColor = R.color.zcashYellow
-                            lineOneColor = R.color.zcashYellow
-                        } else {
-                            senderAddress.toAbbreviatedAddress().let {
-                                lineOne = if (senderAddress.equals(str(R.string.unknown), true)) {
-                                    lineOne.toColoredSpan(R.color.zcashYellow, it)
-                                } else {
-                                    lineOne.toColoredSpan(R.color.zcashBlueDark, it)
-                                }
-                            }
-                        }
-                        arrowRotation = R.integer.transaction_arrow_rotation_received
-                    }
-                    else -> {
-                        lineOne = str(R.string.unknown)
-                        lineTwo = str(R.string.unknown)
-                        amountDisplay = amountZec
-                        amountColor = R.color.text_light
-                        arrowRotation = R.integer.transaction_arrow_rotation_received
+                    // sanitize amount
+                    if (value < ZcashSdk.MINERS_FEE_ZATOSHI * 10) amountDisplay = "< 0.0001"
+                    else if (amountZec.length > 10) { // 10 allows 3 digits to the left and 6 to the right of the decimal
+                        amountDisplay = str(R.string.transaction_instruction_tap)
                     }
                 }
-                // sanitize amount
-                if (value < ZcashSdk.MINERS_FEE_ZATOSHI * 10) amountDisplay = "< 0.0001"
-                else if (amountZec.length > 10) { // 10 allows 3 digits to the left and 6 to the right of the decimal
-                    amountDisplay = str(R.string.transaction_instruction_tap)
+
+                topText.text = lineOne
+                bottomText.text = lineTwo
+                amountText.text = amountDisplay
+                amountText.setTextColor(amountColor.toAppColor())
+                if (!isLineOneSpanned) {
+                    topText.setTextColor(lineOneColor.toAppColor())
                 }
-            }
+                bottomText.setTextColor(lineTwoColor.toAppColor())
+                indicator.setBackgroundColor(indicatorBackground.toAppColor())
+                transactionArrow.setColorFilter(arrowBackgroundTint.toAppColor())
+                transactionArrow.rotation = arrowRotation.toAppInt().toFloat()
 
-            topText.text = lineOne
-            bottomText.text = lineTwo
-            amountText.text = amountDisplay
-            amountText.setTextColor(amountColor.toAppColor())
-            if (!isLineOneSpanned) {
-                topText.setTextColor(lineOneColor.toAppColor())
+                var bottomTextRightDrawable: Drawable? = null
+                iconMemo.goneIf(!transaction?.memo.toUtf8Memo().isNotEmpty())
+                bottomText.setCompoundDrawablesWithIntrinsicBounds(null, null, bottomTextRightDrawable, null)
+            } catch (t: Throwable) {
+                twig("Failed to parse the transaction due to $t")
             }
-            bottomText.setTextColor(lineTwoColor.toAppColor())
-            indicator.setBackgroundColor(indicatorBackground.toAppColor())
-            transactionArrow.setColorFilter(arrowBackgroundTint.toAppColor())
-            transactionArrow.rotation = arrowRotation.toAppInt().toFloat()
-
-            val bottomTextRightDrawable: Drawable? = null
-            iconMemo.goneIf(!transaction?.memo.toUtf8Memo().isNotEmpty())
-            bottomText.setCompoundDrawablesWithIntrinsicBounds(null, null, bottomTextRightDrawable, null)
         }
     }
 

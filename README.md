@@ -17,16 +17,23 @@ To run, clone the repo, open it in Android Studio and press play. It should just
 - A device or emulator
 
 ### Install from Android Studio
-1. Download Android studio and setup an emulator
+1. Download Android Studio and setup an emulator
 2. `Import` the zcash-android-wallet folder.  
     It will be recognized as an Android project.
-3. Press play (once it is done opening and indexing)
+3. Change Build Variant on Bottom Left of Android Studio IDE to zcashmainnetDebug or zcashtestnetDebug to select mainnet/testnet targets.
+4. Press play to install (once it is done opening and indexing)
 
 ### OR Install from the command line
 To build from the command line, [setup ADB](https://www.xda-developers.com/install-adb-windows-macos-linux/) and connect your device. Then simply run this and it will both build and install the app:
 ```bash
 cd /path/to/zcash-android-wallet
 ./gradlew
+```
+
+To build Nighthawk to run on Testnet:
+```bash
+cd /path/to/zcash-android-wallet
+./gradlew :app:assembleZcashTestnetDebug
 ```
 
 ## Disclosure Policy
@@ -56,8 +63,8 @@ There are some known areas for improvement:
 See the [Wallet App Threat Model](https://zcash.readthedocs.io/en/latest/rtd_pages/wallet_threat_model.html)
 for more information about the security and privacy limitations of the wallet.
 
-## Donate to Nighthawk Devs
+## Contact Nighthawk Devs
 zs1nhawkewaslscuey9qhnv9e4wpx77sp73kfu0l8wh9vhna7puazvfnutyq5ymg830hn5u2dmr0sf
 
 ### License
-MIT
+Apache License 2.0

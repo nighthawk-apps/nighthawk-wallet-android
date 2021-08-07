@@ -13,17 +13,19 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.18" />
 
-    <!-- Back Button -->
     <ImageView
         android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065"
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
         app:srcCompat="@drawable/ic_arrow_back_black_24dp"
         app:tint="@color/text_light" />
 
@@ -400,11 +402,11 @@
                     android:id="@+id/last_used_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="zasdfaksfjaslfjaslfkjaslk;kfjaslkfjasld;kfjaslfjdasflja"
                     android:textColor="@color/text_light"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/image_last_used_shield"
-                    app:layout_constraintTop_toBottomOf="@id/last_used_address_label" />
+                    app:layout_constraintTop_toBottomOf="@id/last_used_address_label"
+                    tools:text="zasdfaksfjaslfjaslfkjaslk;kfjaslkfjasld;kfjaslfjdasflja" />
 
                 <ImageView
                     android:id="@+id/image_last_used_address_selected"

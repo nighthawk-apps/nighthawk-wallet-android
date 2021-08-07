@@ -1,0 +1,33 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+default_platform(:android)
+
+platform :android do
+  desc "Submit Build"
+  lane :build do |options|
+    gradle(task: "clean assembleZcashMainnetRelease")
+    upload_to_app_center(api_token: options[:api_token], app_name: options[:app_name], notes: "Author: #{commit[:author]}, changes: #{commit[:message]}")
+  end
+
+  private_lane :upload_to_app_center do |options|
+    appcenter_upload(
+        api_token: options[:api_token],
+        app_name: options[:app_name],
+        owner_name: "Horizontal-Systems",
+        owner_type: "organization",
+        release_notes: options[:notes],
+        notify_testers: true
+      )
+  end
+
+end
