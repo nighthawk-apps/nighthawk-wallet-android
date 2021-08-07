@@ -1,1 +1,1 @@
-Nighthawk is a Shielded wallet for Zcash with optional support for T-address & Auto-Shielding technology.
+Shielded Wallet for Zcash with T-address support & Auto-Shielding technology.
