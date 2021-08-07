@@ -1,0 +1,1 @@
+- NEW: Set up Pin code and Face/Touch ID to access the wallet.
