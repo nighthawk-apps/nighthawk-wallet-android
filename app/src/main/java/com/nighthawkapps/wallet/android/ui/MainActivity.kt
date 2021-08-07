@@ -14,7 +14,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -293,7 +292,7 @@ class MainActivity : AppCompatActivity() {
                     ERROR_LOCKOUT_PERMANENT -> doNothing("Whoa. Waaaay too many attempts!")
                     ERROR_CANCELED -> doNothing("I just can't right now. Please try again.")
                     ERROR_NEGATIVE_BUTTON -> doNothing("Authentication cancelled", false)
-                    ERROR_USER_CANCELED -> doNothing("Cancelled", false)
+                    ERROR_USER_CANCELED -> doNothing("Face/Touch ID Authentication Cancelled", false)
                     ERROR_NO_SPACE -> doNothing("Not enough storage space!")
                     ERROR_TIMEOUT -> doNothing("Oops. It timed out.")
                     ERROR_UNABLE_TO_PROCESS -> doNothing(".")
@@ -329,7 +328,7 @@ class MainActivity : AppCompatActivity() {
                 prepare()
                 start()
             } catch (t: Throwable) {
-                Log.e("SDK_ERROR", "ERROR: unable to play sound due to $t")
+                twig("SDK_ERROR: unable to play sound due to $t")
             }
         }
     }
@@ -397,7 +396,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun showMessage(message: String, linger: Boolean = false) {
+    fun showMessage(message: String, linger: Boolean = false) {
         twig("toast: $message")
         Toast.makeText(this, message, if (linger) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }

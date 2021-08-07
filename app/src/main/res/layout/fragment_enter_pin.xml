@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_home">
+
+    <View
+        android:id="@+id/guide_keys"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.3"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.38196601125"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintWidth_percent="0.7475728155" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hit_area_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_pin_code_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.13132694" />
+
+    <!--            -->
+    <!-- Number Pad -->
+    <!--            -->
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_1"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="1"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_4"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toTopOf="@id/guide_keys"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_2"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="2"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_5"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toTopOf="@id/guide_keys"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_3"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="3"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_6"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintTop_toTopOf="@id/guide_keys"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_4"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="4"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_7"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_1"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_5"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="5"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_8"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_2"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_6"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="6"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_9"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_3"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_7"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="7"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_decimal"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_4"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_8"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="8"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_0"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_5"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_9"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="9"
+        app:layout_constraintBottom_toTopOf="@id/button_number_pad_back"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_6"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_decimal"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingBottom="2dp"
+        android:text="@string/key_decimal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_keys"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_7"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_0"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@id/guide_keys"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintStart_toStartOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_8"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_number_pad_back"
+        style="@style/Nighthawk.TextView.NumberPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/key_backspace"
+        app:layout_constraintBottom_toBottomOf="@id/guide_keys"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guide_keys"
+        app:layout_constraintTop_toBottomOf="@id/button_number_pad_9"
+        app:layout_constraintWidth_percent="@dimen/calculator_button_width_percent" />
+
+
+    <ImageView
+        android:id="@+id/icon_close"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/content_description_home_icon_profile"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.912"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.064"
+        app:layout_constraintWidth_percent="0.08"
+        app:srcCompat="@drawable/ic_cancel" />
+
+    <View
+        android:id="@+id/hit_area_close"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="24dp"
+        android:background="@android:color/transparent"
+        android:elevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_hit_area_top" />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:text="@string/choose_pin_code"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/text_light"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/icon_close"
+        app:layout_constraintEnd_toStartOf="@id/hit_area_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icon_close" />
+
+    <ImageView
+        android:id="@+id/icon_lock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/content_description_home_icon_profile"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/text_pin_code_msg"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.1"
+        app:srcCompat="@drawable/ic_lock" />
+
+    <TextView
+        android:id="@+id/text_pin_code_msg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/enter_six_digit_pin_code"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/text_light"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@id/guide_keys"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_pin_code_msg" />
+
+    <com.nighthawkapps.wallet.android.ui.util.SixDigitPasswordView
+        android:id="@+id/view_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_pin_code_msg" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/title_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="text_title, icon_close" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

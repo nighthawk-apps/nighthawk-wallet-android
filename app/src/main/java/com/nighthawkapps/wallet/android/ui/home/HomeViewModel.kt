@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.block.CompactBlockProcessor
@@ -64,15 +63,15 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     try {
                         responseBody = client.newCall(request).execute().body()
                     } catch (e: IOException) {
-                        Log.e("initPrice + ${e.message}", "$responseBody")
+                        twig("initPrice + ${e.message}" + "$responseBody")
                     } catch (e: IllegalStateException) {
-                        Log.e("initPrice + ${e.message}", "$responseBody")
+                        twig("initPrice + ${e.message}" + "$responseBody")
                     }
                     if (responseBody != null) {
                         try {
                             priceModel = gson.fromJson(responseBody.string(), PriceModel::class.java)
                         } catch (e: IOException) {
-                            Log.e("initPrice + ${e.message}", "$priceModel")
+                            twig("initPrice + ${e.message}" + "$priceModel")
                         }
                     }
                 }
