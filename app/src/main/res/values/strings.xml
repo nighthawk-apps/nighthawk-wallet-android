@@ -203,6 +203,22 @@
     <string name="settings_toast_change_server_failure">Failed to change server!</string>
     <string name="settings_toast_change_server_success">Successfully changed server!</string>
     <string name="settings_update">Update</string>
+    <string name="enter_six_digit_pin_code">Enter Six Digit Pin code</string>
+    <string name="choose_six_digit_pin_code">Choose a Six Digit Pin code</string>
+    <string name="enter_the_same_six_digits">Enter the Same Six Digits</string>
+    <string name="choose_pin_code">Choose Pin code</string>
+    <string name="verify_pin_code">Verify Pin code</string>
+    <string name="wrong_pin_code">Wrong Pin code</string>
+    <string name="wrong_pin_code_message">Your pin code didn\'t match with the previous pin code.</string>
+    <string name="ok">OK</string>
+    <string name="set_change_pin_code">Set/Change Nighthawk Pin Code</string>
+    <string name="enable_face_id_touch_id">Enable Face ID/Touch ID</string>
+    <string name="dialog_bio_metric_not_enabled_title">Face ID Touch ID Error</string>
+    <string name="dialog_bio_metric_not_enabled_message">Couldn\'t enable this option. It seems that Face ID or Touch ID is not enabled in your mobile device.</string>
+    <string name="set_pin_code_request">Please set the Pin code first</string>
+    <string name="pin_code_setup_done">Pin code set up successfully!</string>
+    <string name="settings_toast_face_touch_id_enabled">Face/Touch ID enabled.</string>
+    <string name="settings_toast_face_touch_id_disabled">Face/Touch ID disabled.</string>
 
     <!-- Screen: Transaction details -->
     <string name="transaction_address_paid_you">@string/missing_transaction_address_paid_you</string>
@@ -350,19 +366,5 @@
     <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be uploaded to the cloud.</string>
     <string name="pdf_password_hint">Please Enter Password</string>
     <string name="wallet_birthday_helper_text">e.g. 1080000. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while.</string>
-    <string name="enter_six_digit_passcode">Enter Six Digit Passcode</string>
-    <string name="choose_six_digit_passcode">Choose a Six Digit Passcode</string>
-    <string name="enter_the_same_six_digits">Enter the Same Six Digits</string>
-    <string name="choose_passcode">Choose Passcode</string>
-    <string name="verify_passcode">Verify Passcode</string>
-    <string name="wrong_passcode">Wrong Passcode</string>
-    <string name="wrong_passcode_message">Your passcode didn\'t match with previous passcode</string>
-    <string name="ok">OK</string>
-    <string name="set_change_passcode">Set/Change Passcode</string>
-    <string name="enable_face_id_touch_id">Enable Face ID/Touch ID</string>
-    <string name="dialog_bio_metric_not_enabled_title">Face ID Touch ID Error</string>
-    <string name="dialog_bio_metric_not_enabled_message">Couldn\'t enable this option. It seems that Face ID or Touch ID is not enabled in your mobile.</string>
-    <string name="set_passcode_request">Please set Passcode first</string>
-    <string name="passcode_setup_done">Pin Code set up successfully!</string>
 
 </resources>

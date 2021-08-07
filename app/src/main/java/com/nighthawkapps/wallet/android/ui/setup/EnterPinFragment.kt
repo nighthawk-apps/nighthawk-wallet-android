@@ -85,11 +85,11 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
         if (args.forNewPinSetup) {
             binding.titleGroup.visible()
             if (chosenPassword.isNullOrEmpty()) {
-                binding.textTitle.text = getString(R.string.choose_passcode)
-                binding.textPasscodeMsg.text = getString(R.string.choose_six_digit_passcode)
+                binding.textTitle.text = getString(R.string.choose_pin_code)
+                binding.textPinCodeMsg.text = getString(R.string.choose_six_digit_pin_code)
             } else {
-                binding.textTitle.text = getString(R.string.verify_passcode)
-                binding.textPasscodeMsg.text = getString(R.string.enter_the_same_six_digits)
+                binding.textTitle.text = getString(R.string.verify_pin_code)
+                binding.textPinCodeMsg.text = getString(R.string.enter_the_same_six_digits)
             }
         } else { // password already saved, user is trying to verify password to enter in the app
             binding.titleGroup.gone()
@@ -140,7 +140,7 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
             // Password Verified
             if (args.forNewPinSetup) {
                 viewModel.savePassword(enteredPassword)
-                mainActivity?.showMessage(getString(R.string.passcode_setup_done))
+                mainActivity?.showMessage(getString(R.string.pin_code_setup_done))
             }
             handleNextNavigation()
         } else { // Wrong password entered.
@@ -157,8 +157,8 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
         binding.viewPassword.clear()
         dialog?.dismiss()
         dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.wrong_passcode))
-            .setMessage(getString(R.string.wrong_passcode_message))
+            .setTitle(getString(R.string.wrong_pin_code))
+            .setMessage(getString(R.string.wrong_pin_code_message))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
                 dialog.dismiss()

@@ -71,7 +71,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     mainActivity?.startSync(walletSetup.openStoredWallet())
                     if (passwordViewModel.isPinCodeEnabled() && passwordViewModel.needToCheckPin()) {
                         mainActivity?.setLoading(false)
-                        mainActivity?.safeNavigate(R.id.action_nav_home_to_enterPinFragment)
+                        mainActivity?.safeNavigate(R.id.action_nav_home_to_enter_pin_fragment)
                     }
                 } catch (e: UnsatisfiedLinkError) {
                     mainActivity?.showSharedLibraryCriticalError(e)

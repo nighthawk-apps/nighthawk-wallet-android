@@ -28,12 +28,11 @@
         app:layout_constraintGuide_percent="0.04" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_passcode_msg"
+        android:id="@+id/guideline_pin_code_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.13132694" />
-
 
     <!--            -->
     <!-- Number Pad -->
@@ -222,7 +221,6 @@
         app:layout_constraintWidth_percent="0.08"
         app:srcCompat="@drawable/ic_cancel" />
 
-
     <View
         android:id="@+id/hit_area_close"
         android:layout_width="68dp"
@@ -240,7 +238,7 @@
         android:layout_marginStart="24dp"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:text="@string/choose_passcode"
+        android:text="@string/choose_pin_code"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_light"
         app:autoSizeMaxTextSize="16sp"
@@ -257,7 +255,7 @@
         android:layout_height="0dp"
         android:contentDescription="@string/content_description_home_icon_profile"
         android:elevation="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/text_passcode_msg"
+        app:layout_constraintBottom_toTopOf="@+id/text_pin_code_msg"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -267,12 +265,12 @@
         app:srcCompat="@drawable/ic_lock" />
 
     <TextView
-        android:id="@+id/text_passcode_msg"
+        android:id="@+id/text_pin_code_msg"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
         android:maxLines="1"
-        android:text="@string/enter_six_digit_passcode"
+        android:text="@string/enter_six_digit_pin_code"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_light"
         app:autoSizeMaxTextSize="16sp"
@@ -282,7 +280,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.08"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_passcode_msg" />
+        app:layout_constraintTop_toTopOf="@id/guideline_pin_code_msg" />
 
     <com.nighthawkapps.wallet.android.ui.util.SixDigitPasswordView
         android:id="@+id/view_password"
@@ -291,13 +289,13 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_passcode_msg" />
+        app:layout_constraintTop_toBottomOf="@+id/text_pin_code_msg" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/title_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="text_title, icon_close"/>
+        app:constraint_referenced_ids="text_title, icon_close" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

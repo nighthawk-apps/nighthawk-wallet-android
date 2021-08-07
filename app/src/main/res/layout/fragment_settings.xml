@@ -160,7 +160,7 @@
         app:layout_constraintTop_toBottomOf="@id/barrier_server_view_bottom" />
 
     <TextView
-        android:id="@+id/text_set_change_passcode"
+        android:id="@+id/text_set_change_pin_code"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="24dp"
@@ -168,7 +168,7 @@
         android:layout_marginEnd="24dp"
         android:gravity="center_vertical"
         android:paddingEnd="10dp"
-        android:text="@string/set_change_passcode"
+        android:text="@string/set_change_pin_code"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_light"
         app:drawableEndCompat="@drawable/ic_arrow_right"
@@ -185,7 +185,7 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_light"
         app:layout_constraintHeight_min="40dp"
-        app:layout_constraintTop_toBottomOf="@id/text_set_change_passcode"
+        app:layout_constraintTop_toBottomOf="@id/text_set_change_pin_code"
         app:switchMinWidth="40dp"
         app:thumbTint="@color/switch_thumb_color"
         app:trackTint="@color/switch_tracker_color" />

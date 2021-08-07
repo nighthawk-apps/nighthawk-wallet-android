@@ -53,7 +53,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             inputTextLightwalletdPort.doAfterTextChanged {
                 viewModel.pendingPortText = it.toString()
             }
-            textSetChangePasscode.setOnClickListener(::onSetChangePassWordSelected)
+            textSetChangePinCode.setOnClickListener(::onSetChangePassWordSelected)
             switchEnableDisableBiometric.isChecked = passwordViewModel.isBioMetricOrFaceIdEnabled()
             switchEnableDisableBiometric.setOnCheckedChangeListener { buttonView, isChecked ->
                 onBioMetricSwitchedChanged(buttonView, isChecked)
@@ -96,16 +96,18 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     private fun onBioMetricSwitchedChanged(buttonView: CompoundButton?, checked: Boolean) {
         if (checked) {
             if (!passwordViewModel.isPinCodeEnabled()) {
-                mainActivity?.showSnackbar(getString(R.string.set_passcode_request))
+                mainActivity?.showSnackbar(getString(R.string.set_pin_code_request))
                 binding.switchEnableDisableBiometric.isChecked = false
                 return
             }
             if (passwordViewModel.isBioMetricEnabledOnMobile()) {
+                mainActivity?.showMessage(getString(R.string.settings_toast_face_touch_id_enabled))
                 passwordViewModel.setBioMetricOrFaceIdEnableStatus(checked)
             } else {
                 showDialogToEnableBioMetricOrFaceId()
             }
         } else {
+            mainActivity?.showMessage(getString(R.string.settings_toast_face_touch_id_disabled))
             passwordViewModel.setBioMetricOrFaceIdEnableStatus(checked)
         }
     }
@@ -150,8 +152,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         } else {
             if (uiModel.complete) {
                 binding.groupLoading.gone()
+                mainActivity?.showMessage(getString(R.string.settings_toast_change_server_success))
                 mainActivity?.safeNavigate(R.id.nav_home)
-                Toast.makeText(NighthawkWalletApp.instance, getString(R.string.settings_toast_change_server_success), Toast.LENGTH_SHORT).show()
                 true
             }
             false

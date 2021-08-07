@@ -42,7 +42,7 @@
             app:destination="@id/nav_receive"
             app:exitAnim="@anim/anim_fade_out_medium" />
         <action
-            android:id="@+id/action_nav_home_to_enterPinFragment"
+            android:id="@+id/action_nav_home_to_enter_pin_fragment"
             app:destination="@id/nav_enter_pin_fragment" />
     </fragment>
     <fragment

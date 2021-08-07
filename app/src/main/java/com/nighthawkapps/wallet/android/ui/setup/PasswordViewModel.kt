@@ -21,11 +21,11 @@ class PasswordViewModel @Inject constructor(val context: Context) : ViewModel() 
     }
 
     fun getPassword(): String {
-        return prefs[Const.PIN.PASSWORD] ?: ""
+        return prefs[Const.PIN.PIN_CODE] ?: ""
     }
 
     fun savePassword(password: String) {
-        prefs[Const.PIN.PASSWORD] = password
+        prefs[Const.PIN.PIN_CODE] = password
     }
 
     fun isPinCodeEnabled(): Boolean {
