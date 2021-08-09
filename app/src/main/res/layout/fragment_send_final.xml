@@ -94,7 +94,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:gravity="center"
-        android:text="@string/failed_to_send_due_to_insufficient_funds"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_dark"
         app:layout_constraintBottom_toTopOf="@id/button_primary"
@@ -111,7 +110,7 @@
         android:text="@string/cancel"
         android:textColor="@color/text_dark"
         android:translationY="-6dp"
-        app:layout_constraintBottom_toTopOf="@id/button_secondary"
+        app:layout_constraintBottom_toTopOf="@id/button_more_info"
         app:layout_constraintEnd_toEndOf="@id/guide_keys"
         app:layout_constraintStart_toStartOf="@id/guide_keys"
         app:layout_constraintTop_toBottomOf="@id/guide_keys"
@@ -120,17 +119,19 @@
         app:strokeColor="@color/text_dark" />
 
     <TextView
-        android:id="@+id/button_secondary"
+        android:id="@+id/button_more_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:padding="12dp"
-        android:text="@string/done"
+        android:gravity="center"
+        android:padding="16dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/text_dark"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_primary" />
+        app:layout_constraintEnd_toEndOf="@+id/button_primary"
+        app:layout_constraintStart_toStartOf="@+id/button_primary"
+        app:layout_constraintTop_toBottomOf="@id/button_primary"
+        tools:text="More Info"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

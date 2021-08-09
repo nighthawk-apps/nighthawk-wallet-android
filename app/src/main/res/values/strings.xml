@@ -17,7 +17,7 @@
     <string name="confirm_send">Confirm Send</string>
     <string name="zboto" translatable="false">$</string>
     <string name="updating">Updating</string>
-    <string name="available">Available</string>
+    <string name="spendable">@string/translated_balance_spendable</string>
     <string name="wallet_history">Wallet History</string>
     <string name="available_balance">Available Balance</string>
     <string name="shielded_address">Shielded address:</string>
@@ -84,14 +84,14 @@
 
     <!-- Screen: History -->
     <string name="history_address_label">Shielded address:</string>
-    <string name="history_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_available</string>
+    <string name="history_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_spendable</string>
     <string name="history_balance_updating">Updating</string>
     <string name="history_empty_text">No history yet.</string>
     <string name="history_header_transactions" tools:ignore="MissingTranslation">@string/translated_screen_wallethistory</string>
     <string name="history_instruction_enter_amount" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
 
     <!-- Screen: Home -->
-    <string name="home_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_available</string>
+    <string name="home_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_spendable</string>
     <string name="home_balance_updating">Updating</string>
     <string name="home_banner_expecting">@string/custom_translation_expecting</string>
     <string name="home_button_send_disconnected">Connecting . . .</string>
@@ -359,7 +359,7 @@
     <string name="share_address">Share Address</string>
     <string name="receive_zec">Receive ZEC</string>
     <string name="plus_transparent">+ transparent</string>
-    <string name="total">Total</string>
+    <string name="total_balance">Total Balance</string>
     <string name="as_of_block">as of block</string>
     <string name="autoshield_complete">Autoshielding completed successfully!</string>
     <string name="export_pdf">Export PDF</string>

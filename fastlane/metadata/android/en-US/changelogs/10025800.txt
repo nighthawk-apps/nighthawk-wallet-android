@@ -1,0 +1,1 @@
+- Fix error messaging when sending funds.

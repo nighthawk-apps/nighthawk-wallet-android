@@ -103,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="@string/available"
+        android:text="@string/spendable"
         android:textAppearance="@style/Nighthawk.TextAppearance.Body1"
         android:textColor="@color/zcashYellow"
         app:layout_constraintBaseline_toBaselineOf="@id/text_balance_available"

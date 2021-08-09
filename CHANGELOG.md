@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.25 *(2021-08-09)*
+------------------------------------
+- Fix error messaging when sending funds.
+
 Version 1.0.24 *(2021-08-08)*
 ------------------------------------
 - NEW: Set up Pin code and Face/Touch ID to access the wallet.

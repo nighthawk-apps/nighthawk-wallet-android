@@ -23,7 +23,7 @@
     <string name="translated_balance_screen">Pantalla de Balance</string>
     <string name="translated_balance_amounttosend">Ingresar un monto para enviar</string>
     <string name="translated_balance_expecting">esperando XX ZEC</string>
-    <string name="translated_balance_available">Disponible</string>
+    <string name="translated_balance_spendable">Disponible</string>
     <string name="translated_balance_nofunds">No hay fondos disponibles</string>
     <string name="translated_balance_syncing">Sincronizando .... %</string>
     <string name="translated_balance_scanning">Escaneando .... %</string>
