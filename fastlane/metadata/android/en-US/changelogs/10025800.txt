@@ -1,0 +1,2 @@
+- Fix error messaging when sending funds.
+- Upgrade Zcash SDK & dependencies.

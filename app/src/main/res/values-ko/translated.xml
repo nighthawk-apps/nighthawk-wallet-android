@@ -23,7 +23,7 @@
     <string name="translated_balance_screen">밸런스 화면</string>
     <string name="translated_balance_amounttosend">보낼 금액 입력</string>
     <string name="translated_balance_expecting">기대 XX ZEC</string>
-    <string name="translated_balance_available">사용 가능</string>
+    <string name="translated_balance_spendable">사용 가능</string>
     <string name="translated_balance_nofunds">사용할 수있는 자금 없습니다</string>
     <string name="translated_balance_syncing">동기화</string>
     <string name="translated_balance_scanning">스캐닝</string>

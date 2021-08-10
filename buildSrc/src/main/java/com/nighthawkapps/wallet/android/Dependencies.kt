@@ -9,8 +9,8 @@ object Deps {
     const val buildToolsVersion = "30.0.3"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.24"
-    const val versionCode = 1_00_24_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.25"
+    const val versionCode = 1_00_25_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -39,7 +39,7 @@ object Deps {
         }
 
         object Lifecycle : Version("2.2.0") {
-            val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha02"
+            val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha03"
         }
 
         object Navigation : Version("2.3.5") {
@@ -92,7 +92,7 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.1"
-        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta17"
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta18"
     }
 
     object Misc {

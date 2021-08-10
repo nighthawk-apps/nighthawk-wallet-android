@@ -23,7 +23,7 @@
     <string name="translated_balance_screen">余额扫描</string>
     <string name="translated_balance_amounttosend">输入您想发送的数额</string>
     <string name="translated_balance_expecting">预计为 XX ZEC</string>
-    <string name="translated_balance_available">可用</string>
+    <string name="translated_balance_spendable">可用</string>
     <string name="translated_balance_nofunds">暂无可用的款项</string>
     <string name="translated_balance_syncing">正在同步 ...%</string>
     <string name="translated_balance_scanning">正在扫描 ...%</string>

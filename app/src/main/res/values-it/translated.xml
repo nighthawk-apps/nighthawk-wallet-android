@@ -3,7 +3,7 @@
     <string name="translated_address_shielded">Il tuo indirizzo blindato</string>
     <string name="translated_address_transparent">Il tuo indirizzo trasparente</string>
     <string name="translated_balance_amounttosend">Inserisci un importo da inviare</string>
-    <string name="translated_balance_available">Disponibile</string>
+    <string name="translated_balance_spendable">Disponibile</string>
     <string name="translated_balance_expecting">aspettando %@ ZEC</string>
     <string name="translated_balance_nofunds">Nessun fondo disponibile</string>
     <string name="translated_balance_screen">Bilancio</string>

@@ -23,7 +23,7 @@
     <string name="translated_balance_screen">Экран баланса</string>
     <string name="translated_balance_amounttosend">Введите сумму для отправки</string>
     <string name="translated_balance_expecting">Ожидание XX ZEC</string>
-    <string name="translated_balance_available">Доступно</string>
+    <string name="translated_balance_spendable">Доступно</string>
     <string name="translated_balance_nofunds">Нет доступных средств</string>
     <string name="translated_balance_syncing">Синхронизация ... %</string>
     <string name="translated_balance_scanning">Сканирование ... %</string>
