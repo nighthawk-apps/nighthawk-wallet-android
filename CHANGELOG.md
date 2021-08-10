@@ -1,9 +1,10 @@
 Change Log
 ==========
 
-Version 1.0.25 *(2021-08-09)*
+Version 1.0.25 *(2021-08-10)*
 ------------------------------------
 - Fix error messaging when sending funds.
+- Upgrade Zcash SDK & dependencies.
 
 Version 1.0.24 *(2021-08-08)*
 ------------------------------------
