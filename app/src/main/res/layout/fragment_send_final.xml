@@ -25,6 +25,7 @@
         android:id="@+id/back_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@string/content_description_send_final_back"
         android:elevation="6dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,7 +36,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.059"
         app:layout_constraintWidth_percent="0.0887"
-        app:srcCompat="@drawable/ic_close_black_24dp"
+        app:srcCompat="@drawable/ic_cancel"
+        app:tint="@color/zcashBlack_87"
         tools:visibility="visible" />
 
     <View
@@ -44,6 +46,7 @@
         android:layout_height="56dp"
         android:layout_marginStart="8dp"
         android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.01"
@@ -56,13 +59,13 @@
         style="@style/TextAppearance.MaterialComponents.Headline5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autoSizeTextType="uniform"
         android:gravity="center"
         android:maxLines="3"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:textColor="@color/text_dark"
         android:textStyle="bold"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +103,25 @@
         app:layout_constraintEnd_toEndOf="@id/button_primary"
         app:layout_constraintStart_toStartOf="@id/button_primary"
         app:layout_constraintTop_toBottomOf="@id/lottie_sending" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/guide_keys"
+        app:layout_constraintEnd_toEndOf="@+id/error_message"
+        app:layout_constraintStart_toStartOf="@+id/error_message"
+        app:layout_constraintTop_toBottomOf="@+id/error_message">
+
+        <TextView
+            android:id="@+id/text_more_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/text_dark" />
+
+    </ScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_primary"
