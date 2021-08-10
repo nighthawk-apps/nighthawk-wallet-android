@@ -187,7 +187,7 @@
     <string name="send_validation_error_dust">Insufficient funds to cover miner\'s fee.</string>
     <string name="send_validation_error_memo_length">Memo must be less than %1$d in length.</string>
     <string name="send_validation_error_no_available_funds" tools:ignore="MissingTranslation">@string/translated_balance_nofunds</string>
-    <string name="send_validation_error_too_much">Please go back and enter no more than %1$s ZEC.</string>
+    <string name="send_validation_error_too_much">@string/missing_send_validation_error_too_much</string>
     <string name="send_validation_error_unknown_funds">Available funds not found. Please try again in a moment.</string>
     <string name="send_no_z_address_message">To add a memo, enter a shielded address.</string>
     <string name="send_more_info">More Info</string>

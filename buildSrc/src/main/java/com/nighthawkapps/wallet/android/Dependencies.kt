@@ -39,7 +39,7 @@ object Deps {
         }
 
         object Lifecycle : Version("2.2.0") {
-            val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha02"
+            val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha03"
         }
 
         object Navigation : Version("2.3.5") {
@@ -92,7 +92,7 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.1"
-        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta17"
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta18"
     }
 
     object Misc {

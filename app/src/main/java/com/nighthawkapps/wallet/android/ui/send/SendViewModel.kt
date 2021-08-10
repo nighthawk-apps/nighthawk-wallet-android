@@ -9,6 +9,7 @@ import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.tool.DerivationTool
 import cash.z.ecc.android.sdk.type.AddressType
+import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
@@ -87,20 +88,10 @@ class SendViewModel @Inject constructor() : ViewModel() {
                 emit(context.getString(R.string.send_validation_error_dust))
             }
             maxZatoshi != null && zatoshiAmount > maxZatoshi -> {
-                emit(
-                    context.getString(
-                        R.string.send_validation_error_too_much,
-                        WalletZecFormmatter.toZecStringFull(maxZatoshi)
-                    )
-                )
+                emit(context.getString(R.string.send_validation_error_too_much, WalletZecFormmatter.toZecStringFull(maxZatoshi), NighthawkWalletApp.instance.getString(R.string.symbol)))
             }
             createMemoToSend().length > ZcashSdk.MAX_MEMO_SIZE -> {
-                emit(
-                    context.getString(
-                        R.string.send_validation_error_memo_length,
-                        ZcashSdk.MAX_MEMO_SIZE
-                    )
-                )
+                emit(context.getString(R.string.send_validation_error_memo_length, ZcashSdk.MAX_MEMO_SIZE))
             }
             else -> emit(null)
         }
