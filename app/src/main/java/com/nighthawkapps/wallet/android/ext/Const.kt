@@ -61,4 +61,10 @@ object Const {
         const val PIN_CODE = "const.pin.code"
         const val IS_BIO_METRIC_OR_FACE_ID_ENABLED = "const.pin.is_biometric_or_face_id"
     }
+
+    object AppConstants {
+        const val ZEC_MAX_AMOUNT = 21000000
+        const val AMOUNT_QUERY = "amount"
+        const val MEMO_QUERY = "memo"
+    }
 }

@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -78,8 +79,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var clipboard: ClipboardManager
 
-    @Inject
-    lateinit var mainViewModel: MainViewModel
+    val mainViewModel: MainViewModel by viewModels()
 
     val isInitialized get() = ::synchronizerComponent.isInitialized
 
@@ -130,6 +130,8 @@ class MainActivity : AppCompatActivity() {
         )
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, false)
+
+        mainViewModel.setIntentData(intent?.data)
     }
 
     private fun setWindowFlag(bits: Int, on: Boolean) {

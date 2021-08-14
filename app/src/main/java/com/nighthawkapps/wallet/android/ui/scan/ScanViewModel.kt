@@ -1,8 +1,10 @@
 package com.nighthawkapps.wallet.android.ui.scan
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.ext.twig
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import javax.inject.Inject
 
 class ScanViewModel @Inject constructor() : ViewModel() {
@@ -12,7 +14,7 @@ class ScanViewModel @Inject constructor() : ViewModel() {
 
     val networkName get() = synchronizer.network.networkName
 
-    suspend fun parse(qrCode: String): String? {
+    suspend fun parse(qrCode: String): DeepLinkUtil.SendDeepLinkData? {
         // Temporary parse code to allow both plain addresses and those that start with Zcash
         // TODO: Replace with more robust ZIP-321 handling of QR codes
         val address = if (qrCode.startsWith("zcash:")) {
@@ -20,7 +22,8 @@ class ScanViewModel @Inject constructor() : ViewModel() {
         } else {
             qrCode
         }
-        return if (synchronizer.validateAddress(address).isNotValid) null else address
+        val data = DeepLinkUtil.getSendDeepLinkData(Uri.parse(qrCode))
+        return if (synchronizer.validateAddress(data?.address ?: "").isNotValid) null else data
     }
 
     override fun onCleared() {

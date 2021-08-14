@@ -28,11 +28,14 @@ import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ext.transparentIf
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
+import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -46,6 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
     private val passwordViewModel: PasswordViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by activityViewModel()
 
     lateinit var snake: MagicSnakeLoader
 
@@ -133,6 +137,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         if (::uiModel.isInitialized) {
             twig("uiModel exists!")
             onModelUpdated(null, uiModel)
+        }
+
+        lifecycleScope.launchWhenResumed {
+            mainViewModel.intentData.collect { uri ->
+                uri?.let {
+                    val data = DeepLinkUtil.getSendDeepLinkData(uri = it)
+                    if (data == null) {
+                        mainActivity?.showMessage("Error: No sufficient data to proceed this transaction")
+                    } else {
+                        mainViewModel.setSendZecDeepLinkData(data)
+                        mainActivity?.safeNavigate(R.id.action_nav_home_to_send)
+                        mainViewModel.setIntentData(null)
+                    }
+                }
+            }
         }
     }
 

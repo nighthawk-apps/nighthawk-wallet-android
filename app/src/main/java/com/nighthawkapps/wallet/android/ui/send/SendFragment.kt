@@ -14,6 +14,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.ImageViewCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.collectWith
@@ -33,8 +34,11 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onClickNavUp
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.visible
+import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -45,7 +49,8 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     private var minZatoshi: Long = 1.toLong()
     private var availableZatoshi: Long? = null
 
-    val sendViewModel: SendViewModel by activityViewModel()
+    private val sendViewModel: SendViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by activityViewModel()
 
     override fun inflate(inflater: LayoutInflater): FragmentSendBinding =
         FragmentSendBinding.inflate(inflater)
@@ -99,6 +104,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         }
 
         binding.textLayoutAddress.setEndIconOnClickListener {
+            clearPreFilledData()
             mainActivity?.maybeOpenScan()
         }
 
@@ -115,6 +121,12 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         }
         binding.containerLastUsed.setOnClickListener {
             onReuse()
+        }
+
+        lifecycleScope.launchWhenResumed {
+            mainViewModel.sendZecDeepLinkData.collect {
+                onDataReceivedFromDeepLink(it)
+            }
         }
     }
 
@@ -140,6 +152,22 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
                 }, 10L)
             }
         }
+    }
+
+    private fun onDataReceivedFromDeepLink(data: DeepLinkUtil.SendDeepLinkData?) {
+        data?.let {
+            sendViewModel.toAddress = data.address
+            sendViewModel.memo = data.memo ?: ""
+            sendViewModel.zatoshiAmount = data.amount.toBigDecimal().convertZecToZatoshi()
+            applyViewModel(sendViewModel)
+        }
+    }
+
+    private fun clearPreFilledData() {
+        binding.inputZcashAddress.text = null
+        binding.inputZcashAmount.text = null
+        binding.inputZcashMemo.text = null
+        mainViewModel.setSendZecDeepLinkData(null)
     }
 
     private fun applyViewModel(model: SendViewModel) {
