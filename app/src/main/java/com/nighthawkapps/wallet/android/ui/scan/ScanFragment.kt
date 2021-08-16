@@ -13,7 +13,6 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
 import cash.z.ecc.android.sdk.ext.twig
 import com.google.common.util.concurrent.ListenableFuture
 import com.nighthawkapps.wallet.android.R
@@ -129,8 +128,8 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                 binding.textScanError.text = ""
                 sendViewModel.toAddress = parsed.address
                 sendViewModel.memo = parsed.memo ?: ""
-                sendViewModel.zatoshiAmount = parsed.amount.toBigDecimal().convertZecToZatoshi()
-                mainActivity?.safeNavigate(R.id.action_nav_scan_to_nav_send_address)
+                sendViewModel.zatoshiAmount = parsed.amount
+                mainActivity?.navController?.popBackStack()
             }
         }
     }

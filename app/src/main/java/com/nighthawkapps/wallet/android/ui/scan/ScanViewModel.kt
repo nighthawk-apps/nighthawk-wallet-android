@@ -23,7 +23,7 @@ class ScanViewModel @Inject constructor() : ViewModel() {
             qrCode
         }
         val data = DeepLinkUtil.getSendDeepLinkData(Uri.parse(qrCode))
-        return if (synchronizer.validateAddress(data?.address ?: address).isNotValid) null else data ?: DeepLinkUtil.SendDeepLinkData(address, 0f, null)
+        return if (synchronizer.validateAddress(data?.address ?: address).isNotValid) null else data ?: DeepLinkUtil.SendDeepLinkData(address, 0, null)
     }
 
     override fun onCleared() {

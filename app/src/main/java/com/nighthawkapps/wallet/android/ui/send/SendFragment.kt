@@ -37,6 +37,7 @@ import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -51,15 +52,13 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
 
     private val sendViewModel: SendViewModel by activityViewModel()
     private val mainViewModel: MainViewModel by activityViewModel()
+    lateinit var addressJob: Job
 
     override fun inflate(inflater: LayoutInflater): FragmentSendBinding =
         FragmentSendBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Apply View Model
-        applyViewModel(sendViewModel)
 
         // Apply behaviors
 
@@ -99,7 +98,6 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         binding.backButtonHitArea.onClickNavUp()
 
         binding.inputZcashMemo.doAfterTextChanged {
-            sendViewModel.memo = binding.inputZcashMemo.text?.toString() ?: ""
             onMemoUpdated()
         }
 
@@ -158,16 +156,14 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         data?.let {
             sendViewModel.toAddress = data.address
             sendViewModel.memo = data.memo ?: ""
-            sendViewModel.zatoshiAmount = data.amount.toBigDecimal().convertZecToZatoshi()
+            sendViewModel.zatoshiAmount = data.amount
             applyViewModel(sendViewModel)
         }
     }
 
     private fun clearPreFilledData() {
-        binding.inputZcashAddress.text = null
-        binding.inputZcashAmount.text = null
-        binding.inputZcashMemo.text = null
         mainViewModel.setSendZecDeepLinkData(null)
+        sendViewModel.reset()
     }
 
     private fun applyViewModel(model: SendViewModel) {
@@ -205,7 +201,10 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     }
 
     private fun onAddressChanged(address: String) {
-        resumedScope.launch {
+        if (this::addressJob.isInitialized && !addressJob.isCompleted && !addressJob.isCancelled) {
+            addressJob.cancel()
+        }
+        addressJob = resumedScope.launch {
             val validation = sendViewModel.validateAddress(address)
             binding.buttonSend.isActivated = !validation.isNotValid
             var type = when (validation) {
@@ -239,6 +238,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
 
     private fun onSubmit(unused: EditText? = null) {
         sendViewModel.toAddress = binding.inputZcashAddress.text.toString()
+        sendViewModel.memo = binding.inputZcashMemo.text?.toString() ?: ""
         sendViewModel.zatoshiAmount = binding.inputZcashAmount.text.toString().safelyConvertToBigDecimal().convertZecToZatoshi()
         binding.inputZcashAmount.convertZecToZatoshi()?.let { sendViewModel.zatoshiAmount = it }
         applyViewModel(sendViewModel)
@@ -265,6 +265,8 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     override fun onDetach() {
         super.onDetach()
         mainActivity?.clipboard?.removePrimaryClipChangedListener(this)
+        mainViewModel.setSendZecDeepLinkData(null)
+        mainViewModel.setIntentData(null)
     }
 
     override fun onResume() {
@@ -275,8 +277,10 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             onBalanceUpdated(it)
         }
         binding.inputZcashAddress.text.toString().let {
-            if (!it.isNullOrEmpty()) onAddressChanged(it)
+            if (it.isNotEmpty()) onAddressChanged(it)
         }
+        // Apply View Model
+        applyViewModel(sendViewModel)
     }
 
     private fun onBalanceUpdated(balance: WalletBalance) {

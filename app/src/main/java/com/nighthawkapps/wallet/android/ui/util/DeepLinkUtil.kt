@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui.util
 
 import android.net.Uri
 import android.text.TextUtils
+import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
 import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.ext.Const
 
@@ -16,7 +17,7 @@ object DeepLinkUtil {
             val queryData = query.split("&") // to check memo
             if (queryData.isNullOrEmpty()) return null
             val amountString = queryData[0].replace("${Const.AppConstants.AMOUNT_QUERY}=", "") // amount=0.001 -> 0.001
-            val amount = amountString.toFloat()
+            val amount = amountString.toBigDecimal().convertZecToZatoshi()
             if (amount > Const.AppConstants.ZEC_MAX_AMOUNT || amount < 0) return null
             var memo: String? = null
             if (queryData.size > 1) { // memo is also available -> memo=c2RrZmp3cw
@@ -36,5 +37,5 @@ object DeepLinkUtil {
         }
     }
 
-    data class SendDeepLinkData(val address: String, val amount: Float, val memo: String?)
+    data class SendDeepLinkData(val address: String, val amount: Long, val memo: String?)
 }
