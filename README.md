@@ -3,8 +3,12 @@ Zcash wallet using the Zcash Android SDK that is maintained by nighthawk apps.
 
 ### Download
 
-<a href="https://play.google.com/store/apps/details?id=com.nighthawkapps.wallet.android">
-<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="50px"/></a>
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.nighthawkapps.wallet.android/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=com.nighthawkapps.wallet.android)
 
 ### Setup
 To run, clone the repo, open it in Android Studio and press play. It should just work.™
