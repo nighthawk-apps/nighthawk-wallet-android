@@ -158,6 +158,10 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             sendViewModel.memo = data.memo ?: ""
             sendViewModel.zatoshiAmount = data.amount
             applyViewModel(sendViewModel)
+            binding.inputZcashAddress.apply {
+                setSelection(text?.length ?: 0)
+                requestFocus()
+            }
         }
     }
 
