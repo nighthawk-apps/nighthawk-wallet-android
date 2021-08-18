@@ -60,6 +60,9 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Apply View Model
+        applyViewModel(sendViewModel)
+
         // Apply behaviors
 
         binding.buttonSend.setOnClickListener {
@@ -158,10 +161,6 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             sendViewModel.memo = data.memo ?: ""
             sendViewModel.zatoshiAmount = data.amount
             applyViewModel(sendViewModel)
-            binding.inputZcashAddress.apply {
-                setSelection(text?.length ?: 0)
-                requestFocus()
-            }
         }
     }
 
@@ -271,6 +270,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         mainActivity?.clipboard?.removePrimaryClipChangedListener(this)
         mainViewModel.setSendZecDeepLinkData(null)
         mainViewModel.setIntentData(null)
+        sendViewModel.reset()
     }
 
     override fun onResume() {
@@ -281,10 +281,8 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             onBalanceUpdated(it)
         }
         binding.inputZcashAddress.text.toString().let {
-            if (it.isNotEmpty()) onAddressChanged(it)
+            if (!it.isNullOrEmpty()) onAddressChanged(it)
         }
-        // Apply View Model
-        applyViewModel(sendViewModel)
     }
 
     private fun onBalanceUpdated(balance: WalletBalance) {
