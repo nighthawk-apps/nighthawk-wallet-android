@@ -6,6 +6,7 @@ import com.nighthawkapps.wallet.android.di.annotation.SynchronizerScope
 import com.nighthawkapps.wallet.android.di.annotation.ViewModelKey
 import com.nighthawkapps.wallet.android.di.viewmodel.ViewModelFactory
 import com.nighthawkapps.wallet.android.ext.Const
+import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.home.BalanceDetailViewModel
 import com.nighthawkapps.wallet.android.ui.home.HomeViewModel
@@ -26,6 +27,12 @@ import javax.inject.Named
  */
 @Module
 abstract class ViewModelsSynchronizerModule {
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun bindMainViewModel(implementation: MainViewModel): ViewModel
 
     @SynchronizerScope
     @Binds

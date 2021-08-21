@@ -1,7 +1,9 @@
 package com.nighthawkapps.wallet.android.ui
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.ext.twig
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,9 +13,13 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     private val _loadingMessage = MutableStateFlow<String?>("\u23F3 Loading...")
     private val _syncReady = MutableStateFlow(false)
+    private val _intentData = MutableStateFlow<Uri?>(null)
+    private val _sendZecDeepLinkData = MutableStateFlow<DeepLinkUtil.SendDeepLinkData?>(null)
 
     val loadingMessage: StateFlow<String?> get() = _loadingMessage
     val isLoading get() = loadingMessage.value != null
+    val intentData get() = _intentData
+    val sendZecDeepLinkData get() = _sendZecDeepLinkData
 
     /**
      * A flow of booleans representing whether or not the synchronizer has been started. This is
@@ -35,5 +41,13 @@ class MainViewModel @Inject constructor() : ViewModel() {
     fun setSyncReady(isReady: Boolean) {
         twig("MainViewModel.setSyncReady: $isReady")
         _syncReady.value = isReady
+    }
+
+    fun setIntentData(uri: Uri?) {
+        _intentData.value = uri
+    }
+
+    fun setSendZecDeepLinkData(data: DeepLinkUtil.SendDeepLinkData?) {
+        _sendZecDeepLinkData.value = data
     }
 }

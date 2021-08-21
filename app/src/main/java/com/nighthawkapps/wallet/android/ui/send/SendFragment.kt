@@ -14,6 +14,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.ImageViewCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.collectWith
@@ -33,8 +34,12 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.onClickNavUp
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.visible
+import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -45,7 +50,9 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     private var minZatoshi: Long = 1.toLong()
     private var availableZatoshi: Long? = null
 
-    val sendViewModel: SendViewModel by activityViewModel()
+    private val sendViewModel: SendViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by activityViewModel()
+    lateinit var addressJob: Job
 
     override fun inflate(inflater: LayoutInflater): FragmentSendBinding =
         FragmentSendBinding.inflate(inflater)
@@ -94,11 +101,11 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         binding.backButtonHitArea.onClickNavUp()
 
         binding.inputZcashMemo.doAfterTextChanged {
-            sendViewModel.memo = binding.inputZcashMemo.text?.toString() ?: ""
             onMemoUpdated()
         }
 
         binding.textLayoutAddress.setEndIconOnClickListener {
+            clearPreFilledData()
             mainActivity?.maybeOpenScan()
         }
 
@@ -115,6 +122,12 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         }
         binding.containerLastUsed.setOnClickListener {
             onReuse()
+        }
+
+        lifecycleScope.launchWhenResumed {
+            mainViewModel.sendZecDeepLinkData.collect {
+                onDataReceivedFromDeepLink(it)
+            }
         }
     }
 
@@ -140,6 +153,20 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
                 }, 10L)
             }
         }
+    }
+
+    private fun onDataReceivedFromDeepLink(data: DeepLinkUtil.SendDeepLinkData?) {
+        data?.let {
+            sendViewModel.toAddress = data.address
+            sendViewModel.memo = data.memo ?: ""
+            sendViewModel.zatoshiAmount = data.amount
+            applyViewModel(sendViewModel)
+        }
+    }
+
+    private fun clearPreFilledData() {
+        mainViewModel.setSendZecDeepLinkData(null)
+        sendViewModel.reset()
     }
 
     private fun applyViewModel(model: SendViewModel) {
@@ -177,7 +204,10 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     }
 
     private fun onAddressChanged(address: String) {
-        resumedScope.launch {
+        if (this::addressJob.isInitialized && !addressJob.isCompleted && !addressJob.isCancelled) {
+            addressJob.cancel()
+        }
+        addressJob = resumedScope.launch {
             val validation = sendViewModel.validateAddress(address)
             binding.buttonSend.isActivated = !validation.isNotValid
             var type = when (validation) {
@@ -211,6 +241,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
 
     private fun onSubmit(unused: EditText? = null) {
         sendViewModel.toAddress = binding.inputZcashAddress.text.toString()
+        sendViewModel.memo = binding.inputZcashMemo.text?.toString() ?: ""
         sendViewModel.zatoshiAmount = binding.inputZcashAmount.text.toString().safelyConvertToBigDecimal().convertZecToZatoshi()
         binding.inputZcashAmount.convertZecToZatoshi()?.let { sendViewModel.zatoshiAmount = it }
         applyViewModel(sendViewModel)
@@ -237,6 +268,9 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     override fun onDetach() {
         super.onDetach()
         mainActivity?.clipboard?.removePrimaryClipChangedListener(this)
+        mainViewModel.setSendZecDeepLinkData(null)
+        mainViewModel.setIntentData(null)
+        sendViewModel.reset()
     }
 
     override fun onResume() {

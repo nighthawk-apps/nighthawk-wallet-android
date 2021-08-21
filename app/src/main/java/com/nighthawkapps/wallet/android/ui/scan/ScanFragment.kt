@@ -20,6 +20,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentScanBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
+import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
     private val viewModel: ScanViewModel by viewModel()
 
     private val sendViewModel: SendViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by activityViewModel()
 
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
 
@@ -126,8 +128,11 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                 image.close()
             } else { /* continue scanning*/
                 binding.textScanError.text = ""
-                sendViewModel.toAddress = parsed
-                mainActivity?.safeNavigate(R.id.action_nav_scan_to_nav_send_address)
+                sendViewModel.toAddress = parsed.address
+                sendViewModel.memo = parsed.memo ?: ""
+                sendViewModel.zatoshiAmount = parsed.amount
+                mainViewModel.setSendZecDeepLinkData(parsed)
+                mainActivity?.navController?.popBackStack()
             }
         }
     }
