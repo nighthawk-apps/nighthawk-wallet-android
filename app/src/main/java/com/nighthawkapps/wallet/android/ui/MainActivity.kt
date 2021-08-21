@@ -134,11 +134,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.setIntentData(intent?.data)
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        mainViewModel.setIntentData(intent?.data)
-    }
-
     private fun setWindowFlag(bits: Int, on: Boolean) {
         val win = window
         val winParams = win.attributes
