@@ -174,7 +174,7 @@
         android:id="@+id/text_wallet_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="16dp"
@@ -186,6 +186,7 @@
         android:tint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/header"
+        app:layout_constraintEnd_toStartOf="@id/text_transparent_balance"
         app:layout_constraintStart_toStartOf="@id/guideline_keyline_start" />
 
     <TextView
@@ -197,13 +198,14 @@
         android:layout_marginBottom="16dp"
         android:elevation="6dp"
         android:padding="12dp"
-        android:text="@string/available_balance"
+        android:text="@string/wallet_balance"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/zcashWhite_light"
         android:tint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/header"
         app:layout_constraintEnd_toEndOf="@id/guideline_keyline_end"
+        app:layout_constraintStart_toEndOf="@+id/text_wallet_history"
         app:layout_goneMarginEnd="24dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -258,7 +260,6 @@
             android:id="@+id/text_my_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:elevation="6dp"
             android:padding="12dp"
@@ -267,24 +268,8 @@
             android:textColor="@color/zcashWhite_light"
             android:tint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_send_amount" />
-
-        <TextView
-            android:id="@+id/text_side_shift"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:elevation="6dp"
-            android:padding="12dp"
-            android:text="@string/side_shift"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/zcashWhite_light"
-            android:tint="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_my_address"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_send_amount" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

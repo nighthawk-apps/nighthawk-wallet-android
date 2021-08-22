@@ -1,0 +1,5 @@
+- NEW: Scan QR codes support on ZecPages.com
+- NEW: Deep Link integration with Zcash URI for Payments & Memos.
+- Add support for ZIP-321 with single output Zcash URI.
+- Minor UI fixes & cleanup.
+- Upgrade Gradle and Android dependencies.

@@ -6,11 +6,11 @@ object Deps {
     const val kotlinVersion = "1.5.21"
     const val navigationVersion =   "2.3.5"
     const val compileSdkVersion = 30
-    const val buildToolsVersion = "30.0.3"
+    const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
-    const val versionName = "1.0.25"
-    const val versionCode = 1_00_25_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.26"
+    const val versionCode = 1_00_26_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -27,12 +27,12 @@ object Deps {
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
 
-        object CameraX : Version("1.0.1") {
+        object CameraX : Version("1.1.0-alpha08") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
             val CORE = "androidx.camera:camera-core:$version"
             val LIFECYCLE = "androidx.camera:camera-lifecycle:$version"
 
-            object View : Version("1.0.0-alpha27") {
+            object View : Version("1.0.0-alpha28") {
                 val EXT = "androidx.camera:camera-extensions:$version"
                 val VIEW = "androidx.camera:camera-view:$version"
             }
@@ -42,7 +42,7 @@ object Deps {
             val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha03"
         }
 
-        object Navigation : Version("2.3.5") {
+        object Navigation : Version(navigationVersion) {
             val FRAGMENT_KTX = "androidx.navigation:navigation-fragment-ktx:$version"
             val UI_KTX = "androidx.navigation:navigation-ui-ktx:$version"
         }
@@ -53,7 +53,7 @@ object Deps {
         }
     }
 
-    object Dagger : Version("2.33") {
+    object Dagger : Version("2.38.1") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -67,7 +67,7 @@ object Deps {
         const val GSON = "com.google.code.gson:gson:2.8.7"
     }
 
-    object Grpc : Version("1.39.0") {
+    object Grpc : Version("1.40.0") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
@@ -96,7 +96,7 @@ object Deps {
     }
 
     object Misc {
-        const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.13"
+        const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.16"
         const val LOTTIE = "com.airbnb.android:lottie:4.0.0"
 
         object Plugins {

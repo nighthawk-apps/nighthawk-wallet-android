@@ -6,7 +6,7 @@
     <string name="no_balance">No Balance</string>
     <string name="fund_now">Fund Now</string>
     <string name="receive_zcash">Receive Zcash</string>
-    <string name="side_shift">Fund via Sideshift</string>
+    <string name="side_shift">Fund wallet via SideShift.ai</string>
     <string name="backup_wallet">Backup Wallet</string>
     <string name="nighthawkwallet" translatable="false">\@nighthawkwallet</string>
     <string name="my_zcash_address">My Zcash Address</string>
@@ -19,7 +19,7 @@
     <string name="updating">Updating</string>
     <string name="spendable">@string/translated_balance_spendable</string>
     <string name="wallet_history">Wallet History</string>
-    <string name="available_balance">Available Balance</string>
+    <string name="wallet_balance">Wallet Balance</string>
     <string name="shielded_address">Shielded address:</string>
     <string name="no_history_yet">No history yet.</string>
     <string name="welcome_to_nighthawk_wallet">Welcome to Nighthawk!</string>
@@ -129,6 +129,7 @@
 
     <!-- Screen: Profile -->
     <string name="profile_rescan_wallet">Rescan Wallet</string>
+    <string name="profile_viewing_key">Share Viewing Key</string>
     <string name="profile_backup_wallet" tools:ignore="MissingTranslation">@string/translated_button_backup_wallet</string>
     <string name="profile_ecc_wallet" tools:ignore="MissingTranslation">@string/translated_app_name</string>
     <string name="profile_see_application_logs" tools:ignore="MissingTranslation">@string/translated_button_applicationlogs</string>
@@ -321,10 +322,10 @@
     <string name="dialog_modify_server_message">WARNING: Entering an invalid or untrusted server might result in misconfiguration or loss of funds!</string>
     <string name="dialog_modify_server_title">Modify Lightwalletd Server?</string>
     <string name="dialog_not_again">Don\'t show me again</string>
-    <string name="dialog_nuke_wallet_button_negative">Erase Wallet</string>
-    <string name="dialog_nuke_wallet_button_positive">Cancel</string>
-    <string name="dialog_nuke_wallet_message">WARNING: Potential Loss of Funds\n\nClearing all wallet data and can result in a loss of funds, if you cannot locate your correct seed phrase.\n\nPlease confirm that you have your 24-word seed phrase available before proceeding.</string>
-    <string name="dialog_nuke_wallet_title">Nuke Wallet?</string>
+    <string name="dialog_delete_wallet_button_negative">Erase Wallet</string>
+    <string name="dialog_delete_wallet_button_positive">Cancel</string>
+    <string name="dialog_delete_wallet_message">WARNING: Potential Loss of Funds\n\nClearing all wallet data and can result in a loss of funds, if you cannot locate your correct seed phrase.\n\nPlease confirm that you have your 24-word seed phrase available before proceeding.</string>
+    <string name="dialog_delete_wallet_title">Delete Wallet?</string>
     <string name="dialog_rescan_wallet_title">Rescan This Wallet?</string>
     <string name="dialog_rescan_wallet_message"><![CDATA[This fix may take a while!<br/><br/>A <b>FULL</b> scan will rewind %1$s blocks to this wallet\'s birthday and take around %2$s.<br/><br/>A <b>WIPE</b> is like a full scan but it first deletes all data then restores it from your backup seed words.]]></string>
     <string name="dialog_rescan_wallet_button_positive">Quick</string>
@@ -366,5 +367,8 @@
     <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be uploaded to the cloud.</string>
     <string name="pdf_password_hint">Please Enter Password</string>
     <string name="wallet_birthday_helper_text">e.g. 1080000. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while.</string>
+    <string name="profile_wipe_wallet_title">Are you sure?</string>
+    <string name="profile_wipe_wallet_text">Wiping your data will close the app. Since your seed is preserved, this operation is probably safe but please backup your seed anyway. \n\nContinue?</string>
+    <string name="profile_wipe_wallet_wipe">Wipe</string>
 
 </resources>
