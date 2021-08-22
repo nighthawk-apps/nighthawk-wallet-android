@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.0.26 *(2021-08-18)*
+Version 1.0.26 *(2021-08-21)*
 ------------------------------------
 - NEW: Scan QR codes support on ZecPages.com
 - NEW: Deep Link integration with Zcash URI for Payments & Memos.
