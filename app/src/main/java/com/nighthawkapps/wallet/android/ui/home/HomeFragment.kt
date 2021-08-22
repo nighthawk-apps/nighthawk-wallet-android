@@ -95,8 +95,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
         binding.textMyAddress.paintFlags =
             binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.textSideShift.paintFlags =
-            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.textWalletHistory.onClickNavTo(R.id.action_nav_home_to_nav_history)
         binding.textTransparentBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
         binding.textWalletHistory.paintFlags =
@@ -111,21 +109,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
                     mainActivity?.onLaunchUrl(getString(R.string.zcash_learn_more_link))
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-        }
-        binding.textSideShift.setOnClickListener {
-            mainActivity?.copyAddress()
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.fund_wallet_sideshift_title))
-                .setMessage(getString(R.string.fund_wallet_sideshift_description))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
-                    mainActivity?.onLaunchUrl(getString(R.string.sideshift_affiliate_link))
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->

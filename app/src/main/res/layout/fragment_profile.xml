@@ -135,6 +135,22 @@
         tools:background="@color/spacer" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_sideshift"
+        style="@style/Nighthawk.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/side_shift"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        app:layout_constraintTop_toBottomOf="@id/hit_area_address"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_feedback"
         style="@style/Nighthawk.Button"
         android:layout_width="0dp"
@@ -144,11 +160,9 @@
         android:text="@string/nighthawkwallet"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/hit_area_address"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toBottomOf="@id/button_sideshift" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_backup"
@@ -163,6 +177,20 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/button_feedback" />
+
+    <!--    <com.google.android.material.button.MaterialButton-->
+    <!--        android:id="@+id/button_viewing_key"-->
+    <!--        style="@style/Nighthawk.Button.OutlinedButton"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:gravity="center"-->
+    <!--        android:padding="12dp"-->
+    <!--        android:text="@string/profile_viewing_key"-->
+    <!--        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"-->
+    <!--        android:textColor="@color/text_light"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/guideline_content_start"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/button_backup" />-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_rescan"
@@ -196,7 +224,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/button_backup"
+        app:layout_constraintTop_toBottomOf="@id/button_rescan"
         app:layout_constraintVertical_bias="0.64" />
 
     <TextView

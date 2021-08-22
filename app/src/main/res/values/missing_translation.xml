@@ -120,7 +120,6 @@
     <string name="missing_transaction_title">Transaction Details</string>
     <string name="missing_transaction_with_memo">with a memo</string>
 
-
     <!--                      -->
     <!-- Content Descriptions -->
     <!--                      -->
@@ -196,11 +195,10 @@
     <string name="missing_dialog_rescan_wallet_button_negative">Full</string>
     <string name="missing_dialog_rescan_wallet_button_neutral">Wipe</string>
     <string name="missing_dialog_not_again">Don\'t show me again</string>
-    <string name="missing_dialog_nuke_wallet_button_negative">Erase Wallet</string>
-    <string name="missing_dialog_nuke_wallet_button_positive">Cancel</string>
-    <string name="missing_dialog_nuke_wallet_message">WARNING: Potential Loss of Funds\n\nClearing all wallet data and can result in a loss of funds, if you cannot locate your correct seed phrase.\n\nPlease confirm that you have your 24-word seed phrase available before proceeding.</string>
-    <string name="missing_dialog_nuke_wallet_title">Nuke Wallet?</string>
-
+    <string name="missing_dialog_delete_wallet_button_negative">Erase Wallet</string>
+    <string name="missing_dialog_delete_wallet_button_positive">Cancel</string>
+    <string name="missing_dialog_delete_wallet_message">WARNING: Potential Loss of Funds\n\nClearing all wallet data and can result in a loss of funds, if you cannot locate your correct seed phrase.\n\nPlease confirm that you have your 24-word seed phrase available before proceeding.</string>
+    <string name="missing_dialog_delete_wallet_title">Delete Wallet?</string>
 
     <!--      -->
     <!-- Misc -->

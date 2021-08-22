@@ -6,6 +6,36 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_home">
 
+    <View
+        android:id="@+id/hit_area_exit"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:alpha="0.3"
+        android:background="@android:color/transparent"
+        android:elevation="6dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/icon_exit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/content_description_settings_back"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.052"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintWidth_percent="0.0887"
+        app:srcCompat="@drawable/ic_cancel"
+        app:tint="@color/text_light" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_buttons"
         android:layout_width="wrap_content"
@@ -22,11 +52,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:foregroundGravity="center_vertical"
-        android:padding="16dp"
+        android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@id/text_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/icon_exit">
 
         <!--          -->
         <!-- Column 1 -->
@@ -341,7 +371,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.33333"
         app:layout_constraintWidth_percent="0.4053398058"
-        app:srcCompat="@drawable/ic_logo_landing" />
+        app:srcCompat="@drawable/ic_nighthawk_logo" />
 
     <TextView
         android:id="@+id/text_message"

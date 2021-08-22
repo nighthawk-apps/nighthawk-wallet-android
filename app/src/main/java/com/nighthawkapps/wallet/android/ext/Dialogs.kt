@@ -11,15 +11,15 @@ import com.nighthawkapps.wallet.android.R
 
 fun Context.showClearDataConfirmation(onDismiss: () -> Unit = {}, onCancel: () -> Unit = {}): Dialog {
     return MaterialAlertDialogBuilder(this)
-        .setTitle(R.string.dialog_nuke_wallet_title)
-        .setMessage(R.string.dialog_nuke_wallet_message)
+        .setTitle(R.string.dialog_delete_wallet_title)
+        .setMessage(R.string.dialog_delete_wallet_message)
         .setCancelable(false)
-        .setPositiveButton(R.string.dialog_nuke_wallet_button_positive) { dialog, _ ->
+        .setPositiveButton(R.string.dialog_delete_wallet_button_positive) { dialog, _ ->
             dialog.dismiss()
             onDismiss()
             onCancel()
         }
-        .setNegativeButton(R.string.dialog_nuke_wallet_button_negative) { dialog, _ ->
+        .setNegativeButton(R.string.dialog_delete_wallet_button_negative) { dialog, _ ->
             dialog.dismiss()
             onDismiss()
             getSystemService<ActivityManager>()?.clearApplicationUserData()

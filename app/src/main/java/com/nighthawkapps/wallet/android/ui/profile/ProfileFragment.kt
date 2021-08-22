@@ -32,8 +32,29 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.hitAreaSettings.onClickNavTo(R.id.action_nav_profile_to_nav_settings)
         binding.hitAreaClose.onClickNavBack()
+        binding.buttonSideshift.setOnClickListener {
+            mainActivity?.copyAddress()
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.fund_wallet_sideshift_title))
+                .setMessage(getString(R.string.fund_wallet_sideshift_description))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                    mainActivity?.onLaunchUrl(getString(R.string.sideshift_affiliate_link))
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+        binding.buttonFeedback.setOnClickListener {
+            val url = "https://twitter.com/nighthawkwallet"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        }
         binding.buttonBackup.setOnClickListener {
-            MaterialAlertDialogBuilder(view.context)
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle("View Seed Words?")
                 .setMessage("WARNING: Please make sure that you are the only one viewing your phone as your wallet seed key will be shown in the next screen.")
                 .setCancelable(false)
@@ -52,12 +73,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     dialog.dismiss()
                 }
                 .show()
-        }
-        binding.buttonFeedback.setOnClickListener {
-            val url = "https://twitter.com/nighthawkwallet"
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(url)
-            startActivity(i)
         }
         binding.buttonRescan.setOnClickListener {
             onRescanWallet()
@@ -108,11 +123,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private fun onWipe() {
         mainActivity?.showConfirmation(
-            "Are you sure?",
-            "Wiping your data will close the app. Since your seed is preserved, " +
-                    "this operation is probably safe but please backup your seed anyway." +
-                    "\n\nContinue?",
-            "Wipe"
+            getString(R.string.profile_wipe_wallet_title),
+            getString(R.string.profile_wipe_wallet_text),
+            getString(R.string.profile_wipe_wallet_wipe)
         ) {
             viewModel.wipe()
             mainActivity?.finish()

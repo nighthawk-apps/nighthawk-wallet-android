@@ -23,7 +23,7 @@
     <string name="translated_balance_screen">Balance Screen</string>
     <string name="translated_balance_amounttosend">Enter an amount to send</string>
     <string name="translated_balance_expecting">expecting XX ZEC</string>
-    <string name="translated_balance_spendable">Spendable Balance</string>
+    <string name="translated_balance_spendable">Spendable</string>
     <string name="translated_balance_nofunds">No funds available</string>
     <string name="translated_balance_syncing">Syncing … %</string>
     <string name="translated_balance_scanning">Scanning … %</string>

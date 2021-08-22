@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 1.0.26 *(2021-08-18)*
+------------------------------------
+- NEW: Scan QR codes support on ZecPages.com
+- NEW: Deep Link integration with Zcash URI for Payments & Memos.
+- Add support for ZIP-321 with single output Zcash URI.
+- Minor UI fixes & cleanup.
+- Upgrade Gradle and Android dependencies.
+
 Version 1.0.25 *(2021-08-10)*
 ------------------------------------
 - Fix error messaging when sending funds.
