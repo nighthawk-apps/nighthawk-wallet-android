@@ -12,6 +12,7 @@ import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.type.WalletBalance
 import com.google.gson.Gson
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
+import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ui.util.price.PriceModel
 import com.squareup.okhttp.HttpUrl
 import com.squareup.okhttp.OkHttpClient
@@ -48,6 +49,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     var priceModel: PriceModel? = null
 
     private val fetchPriceScope = CoroutineScope(Dispatchers.IO)
+
+    suspend fun getAddress() = synchronizer.getAddress()
 
     fun initPrice() {
         fetchPriceScope.launch {
@@ -203,5 +206,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             val scanWeighted = 0.60f * (scanProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
             return downloadWeighted.coerceAtLeast(0.0f) + scanWeighted.coerceAtLeast(0.0f)
         }
+    }
+
+    /**
+     * Configure the MoonPay url and return the final URL
+     */
+    fun getMoonPayUrl(address: String): String {
+        return "${Const.Default.Server.BUY_ZEC_BASE_URL}&currencyCode=zec&walletAddress=$address"
     }
 }

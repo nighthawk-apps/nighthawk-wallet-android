@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui.home
 
 import android.content.Context
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,7 @@ import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
+import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -97,6 +99,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
         binding.textMyAddress.paintFlags =
             binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textBuyZec.setOnClickListener { onBuyZecClicked() }
+        binding.textBuyZec.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.textWalletHistory.onClickNavTo(R.id.action_nav_home_to_nav_history)
         binding.textTransparentBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
         binding.textWalletHistory.paintFlags =
@@ -436,6 +440,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 return delta > main.maxAutoshieldFrequency
             }
         } ?: false
+    }
+
+    private fun onBuyZecClicked() {
+        lifecycleScope.launchWhenResumed {
+            val address = viewModel.getAddress()
+            val customTabIntent = Utils.createCustomTabIntent()
+            Utils.openCustomTab(requireActivity(), customTabIntent, Uri.parse(viewModel.getMoonPayUrl(address)))
+        }
     }
 
     enum class BannerAction(val action: String) {
