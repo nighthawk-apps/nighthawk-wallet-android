@@ -370,5 +370,6 @@
     <string name="profile_wipe_wallet_title">Are you sure?</string>
     <string name="profile_wipe_wallet_text">Wiping your data will close the app. Since your seed is preserved, this operation is probably safe but please backup your seed anyway. \n\nContinue?</string>
     <string name="profile_wipe_wallet_wipe">Wipe</string>
+    <string name="buy_zec">Buy ZEC</string>
 
 </resources>

@@ -26,6 +26,7 @@ object Deps {
         const val RECYCLER = "androidx.recyclerview:recyclerview:1.2.0"
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
+        const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.3.0"
 
         object CameraX : Version("1.1.0-alpha08") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
