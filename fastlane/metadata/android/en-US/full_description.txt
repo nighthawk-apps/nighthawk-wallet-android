@@ -18,17 +18,19 @@ Nighthawk is a light-wallet:
 Self-custody wallet for Zcash:
 - You have sole responsibility over their funds stored on Nighthawk. Please immediately and securely backup the seed words upon creating a wallet.
 
-Custom lightwalletd server:
-- You can change the default lightwalletd server on Android!
+PIN protection:
+- Set a 6 digit pin and even enable Face Id/Touch Id to open the wallet.
+
+Export Seed Words to PDF:
+- Generate a password protected PDF with the seed words for your wallet for backing up on a secure platform of your choice.
 
 Need Help?:
-- Connect with us via Twitter, z2z.to/NighthawkWallet
-
-As a non-custodial wallet for Zcash, you have sole responsibility over its funds. Please immediately and securely back up the seed words upon creating a wallet.
+- Connect with us via Twitter, https://z2z.to/NighthawkWallet
 
 Zcash is a digital currency, or cryptocurrency, like Bitcoin. (In fact, Zcash was built on the original Bitcoin code base) It was conceived by scientists at MIT, Johns Hopkins and other respected academic and scientific institutions.
 More info is available at https://z.cash
 
-NOTE: As a light wallet, Nighthawk requires trust in the lightwalletd server to display accurate transaction information.
+NOTE: As a light wallet, Nighthawk requires trust in the lightwalletd server to display accurate transaction information. You can change the default lightwalletd server under Profile > Settings.
+TROUBLESHOOTING: In case of issues with syncing or missing transactions, please try the Rescan Wallet option.
 
 This software is provided 'as is', without warranty of any kind, express or implied.

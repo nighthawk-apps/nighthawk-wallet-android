@@ -1,0 +1,3 @@
+- Improve Auto-Shielding.
+- Fix test-net build variants.
+- Upgrade dependencies to target Android 12.

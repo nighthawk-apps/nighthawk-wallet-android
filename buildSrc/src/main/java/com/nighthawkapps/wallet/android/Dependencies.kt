@@ -3,14 +3,14 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.5.21"
-    const val navigationVersion =   "2.3.5"
-    const val compileSdkVersion = 30
+    const val kotlinVersion = "1.5.30"
+    const val navigationVersion = "2.4.0-alpha08"
+    const val compileSdkVersion = 31
     const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
-    const val targetSdkVersion = 30
-    const val versionName = "1.0.26"
-    const val versionCode = 1_00_26_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val targetSdkVersion = 31
+    const val versionName = "1.0.27"
+    const val versionCode = 1_00_27_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -22,7 +22,7 @@ object Deps {
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.3.6"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
-        const val PAGING = "androidx.paging:paging-runtime-ktx:3.0.0"
+        const val PAGING = "androidx.paging:paging-runtime-ktx:3.0.1"
         const val RECYCLER = "androidx.recyclerview:recyclerview:1.2.0"
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
@@ -67,7 +67,7 @@ object Deps {
         const val GSON = "com.google.code.gson:gson:2.8.7"
     }
 
-    object Grpc : Version("1.40.0") {
+    object Grpc : Version("1.40.1") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
