@@ -6,6 +6,7 @@ import cash.z.ecc.android.sdk.block.CompactBlockProcessor
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isMined
 import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
+import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.type.WalletBalance
 import com.nighthawkapps.wallet.android.ext.pending
@@ -57,7 +58,7 @@ class BalanceDetailViewModel @Inject constructor() : ViewModel() {
     ) {
         /** Whether to make calculations based on total or available zatoshi */
 
-        val canAutoShield: Boolean = transparentBalance.availableZatoshi > 0L
+        val canAutoShield: Boolean = transparentBalance.availableZatoshi > ZcashSdk.MINERS_FEE_ZATOSHI
 
         val balanceShielded: String
             get() {

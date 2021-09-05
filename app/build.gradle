@@ -9,7 +9,6 @@ archivesBaseName = 'nighthawk-android-wallet'
 group = 'com.nighthawkapps.wallet.android'
 version = Deps.versionName
 android {
-    ndkVersion "21.1.6352462"
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
     defaultConfig {

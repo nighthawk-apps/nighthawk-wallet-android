@@ -354,15 +354,15 @@
     <string name="your_transparent_address">Your Transparent Address</string>
     <string name="transaction_history_format_date_time_brief" tools:ignore="MissingTranslation">MM/dd/yy h:mma</string>
     <string name="got_it">Got it</string>
-    <string name="you_ve_received_more_than_n1_zec_in_transparent_funds_n_nthis_won_t_take_but_a_moment">You\'ve received more than\n1 ZEC in transparent funds.\n\nThis won\'t take but a moment.</string>
-    <string name="shielding"><![CDATA[<<Shielding>>]]></string>
+    <string name="auto_shielding_message">You\'ve received more than\n1 ZEC in transparent funds.\n\nInitiating Auto-Shield!</string>
+    <string name="shielding">Shielding!</string>
     <string name="exclamation">!</string>
     <string name="share_address">Share Address</string>
     <string name="receive_zec">Receive ZEC</string>
     <string name="plus_transparent">+ transparent</string>
     <string name="total_balance">Total Balance</string>
     <string name="as_of_block">as of block</string>
-    <string name="autoshield_complete">Autoshielding completed successfully!</string>
+    <string name="auto_shield_complete">Auto-Shielding completed successfully!</string>
     <string name="export_pdf">Export PDF</string>
     <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be uploaded to the cloud.</string>
     <string name="pdf_password_hint">Please Enter Password</string>

@@ -1,2 +1,11 @@
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        jcenter()
+    }
+}
+
 rootProject.name = 'Nighthawk Wallet'
 include ':app', ':qrecycler', ':mnemonic', ':lockbox'

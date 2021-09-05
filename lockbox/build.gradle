@@ -3,11 +3,6 @@ import com.nighthawkapps.wallet.android.Deps
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-repositories {
-    google()
-    jcenter()
-}
-
 android {
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
