@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- ======================================================================================= -->
+    <!-- Strings that are missing translations. Individually, these can be moved into            -->
+    <!-- the 'translated-urls.xml' file, after they are translated to all supported languages    -->
+    <!-- ======================================================================================= -->
+    <string name="missing_autoshield_explanation_url">https://electriccoin.co/blog/unified-addresses-in-zcash-explained/</string>
+</resources>
