@@ -21,7 +21,15 @@ import kotlinx.coroutines.launch
 
 abstract class BaseFragment<T : ViewBinding> : Fragment() {
 
-    val mainActivity: MainActivity? get() = activity as MainActivity?
+    // Normally will be of type MainActivity, but will be null when run under automated tests.
+    // A future enhancement would be to move analytics.  For example, refactor it out of the Activity
+    // so that we don't have to cast.  Or at least put analytics into an interface, so that we're more
+    // explicitly casting to Analytics rather than MainActivity.
+    val mainActivity: MainActivity? get() = if (activity is MainActivity) {
+        activity as MainActivity
+    } else {
+        null
+    }
 
     lateinit var binding: T
 

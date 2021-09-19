@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui.util
 
 import android.net.Uri
 import android.text.TextUtils
+import android.util.Base64
 import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
 import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.ext.Const
@@ -22,6 +23,7 @@ object DeepLinkUtil {
             var memo: String? = null
             if (queryData.size > 1) { // memo is also available -> memo=c2RrZmp3cw
                 memo = queryData[1].replace("${Const.AppConstants.MEMO_QUERY}=", "")
+                memo = String(Base64.decode(memo, Base64.DEFAULT))
             }
             var uriString = uri.toString()
             uriString = uriString.removePrefix("${uri.scheme}:")

@@ -28,6 +28,8 @@ import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ext.transparentIf
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
+import com.nighthawkapps.wallet.android.preference.Preferences
+import com.nighthawkapps.wallet.android.preference.model.get
 import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
@@ -371,11 +373,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun autoShield(uiModel: HomeViewModel.UiModel) {
+        // TODO: Move the preference read to a suspending function
+        // First time SharedPreferences are hit, it'll perform disk IO
+        val isAutoshieldingAcknowledged =
+            Preferences.isAcknowledgedAutoshieldingInformationPrompt.get(requireContext().applicationContext)
+
         if (uiModel.hasAutoshieldFunds && canAutoshield()) {
             twig("Autoshielding is available! Let's do this!!!")
-            mainActivity?.lastAutoShieldTime = System.currentTimeMillis()
-            mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_funds_available)
+            if (!isAutoshieldingAcknowledged) {
+                mainActivity?.safeNavigate(
+                    HomeFragmentDirections.actionNavHomeToAutoshieldingInfo(
+                        true
+                    )
+                )
+            } else {
+                twig("Autoshielding is available! Let's do this!!!")
+                mainActivity?.lastAutoShieldTime = System.currentTimeMillis()
+                mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToNavFundsAvailable())
+            }
         } else {
+            if (!isAutoshieldingAcknowledged) {
+                mainActivity?.safeNavigate(
+                    HomeFragmentDirections.actionNavHomeToAutoshieldingInfo(
+                        false
+                    )
+                )
+            }
+
             // troubleshooting logs
             if (uiModel.transparentBalance.availableZatoshi > 0) {
                 twig(
