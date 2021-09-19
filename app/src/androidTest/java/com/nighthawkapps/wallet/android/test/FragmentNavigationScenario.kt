@@ -20,7 +20,7 @@ data class FragmentNavigationScenario<T : Fragment>(
             val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
 
             fragmentScenario.onFragment {
-                navController.setGraph(cash.z.ecc.android.R.navigation.mobile_navigation)
+                navController.setGraph(com.nighthawkapps.wallet.android.R.navigation.mobile_navigation)
                 navController.setCurrentDestination(currentDestination)
 
                 Navigation.setViewNavController(it.requireView(), navController)

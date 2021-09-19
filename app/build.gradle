@@ -162,10 +162,12 @@ dependencies {
     testImplementation Deps.Test.JUNIT
     testImplementation Deps.Test.MOKITO
     testImplementation Deps.Test.MOCKITO_KOTLIN
+    androidTestImplementation Deps.Test.Android.CORE
     androidTestImplementation Deps.Test.Android.JUNIT
     androidTestImplementation Deps.Test.Android.ESPRESSO
     androidTestImplementation Deps.Test.Android.ESPRESSO_INTENTS
     androidTestImplementation Deps.Test.Android.FRAGMENT
+    androidTestImplementation Deps.Test.Android.NAVIGATION
     androidTestImplementation Deps.Kotlin.REFLECT
     debugImplementation Deps.Test.Android.FRAGMENT
 }

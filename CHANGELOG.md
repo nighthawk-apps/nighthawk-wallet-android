@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.0.28 *(2021-09-18)*
+Version 1.0.28 *(2021-09-19)*
 ------------------------------------
 - Improve Auto-Shielding.
 - Decode memo field when scanning URIs.

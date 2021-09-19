@@ -59,13 +59,13 @@ class AutoshieldingInformationFragmentTest : UiTestPrerequisites() {
     fun clicking_more_info_launches_browser() {
         val fragmentNavigationScenario = newScenario(isAutoshieldAvailable = false)
 
-        onView(withId(cash.z.ecc.android.R.id.button_autoshield_more_info)).also {
+        onView(withId(com.nighthawkapps.wallet.android.R.id.button_autoshield_more_info)).also {
             it.perform(ViewActions.click())
         }
 
         assertThat(
             fragmentNavigationScenario.navigationController.currentDestination?.id,
-            equalTo(com.nighthawkapps.wallet.android.id.nav_autoshielding_info_details)
+            equalTo(com.nighthawkapps.wallet.android.R.id.nav_autoshielding_info_details)
         )
 
         // Note: it is difficult to verify that the browser is launched, because of how the
