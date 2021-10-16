@@ -444,9 +444,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onBuyZecClicked() {
         lifecycleScope.launchWhenResumed {
-            val address = viewModel.getAddress()
             val customTabIntent = Utils.createCustomTabIntent()
-            Utils.openCustomTab(requireActivity(), customTabIntent, Uri.parse(viewModel.getMoonPayUrl(address)))
+            Utils.openCustomTab(requireActivity(), customTabIntent, Uri.parse(viewModel.getMoonPayUrl()))
         }
     }
 

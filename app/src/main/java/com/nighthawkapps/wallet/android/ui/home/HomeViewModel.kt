@@ -50,8 +50,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private val fetchPriceScope = CoroutineScope(Dispatchers.IO)
 
-    suspend fun getAddress() = synchronizer.getAddress()
-
     fun initPrice() {
         fetchPriceScope.launch {
             supervisorScope {
@@ -211,7 +209,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     /**
      * Configure the MoonPay url and return the final URL
      */
-    fun getMoonPayUrl(address: String): String {
-        return "${Const.Default.Server.BUY_ZEC_BASE_URL}&currencyCode=zec&walletAddress=$address"
+    fun getMoonPayUrl(): String {
+        return "${Const.Default.Server.BUY_ZEC_BASE_URL}&currencyCode=zec"
     }
 }
