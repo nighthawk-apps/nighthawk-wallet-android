@@ -443,10 +443,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onBuyZecClicked() {
-        lifecycleScope.launchWhenResumed {
-            val customTabIntent = Utils.createCustomTabIntent()
-            Utils.openCustomTab(requireActivity(), customTabIntent, Uri.parse(viewModel.getMoonPayUrl()))
-        }
+        showBuyZecAlertDialog()
+    }
+
+    private fun showBuyZecAlertDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.buy_zec_dialog_title))
+            .setMessage(getString(R.string.buy_zec_dialog_msg))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                Utils.openCustomTab(requireActivity(), Utils.createCustomTabIntent(), Uri.parse(viewModel.getMoonPayUrl()))
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     enum class BannerAction(val action: String) {

@@ -67,6 +67,3 @@ fastlane/readme.md
 
 # rust
 .cargo/
-
-# ApiKey
-apikey.properties
