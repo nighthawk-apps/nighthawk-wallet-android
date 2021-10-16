@@ -8,11 +8,6 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 archivesBaseName = 'nighthawk-android-wallet'
 group = 'com.nighthawkapps.wallet.android'
 version = Deps.versionName
-
-def apikeyPropertiesFile = rootProject.file("apikey.properties")
-def apikeyProperties = new Properties()
-apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
-
 android {
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
@@ -64,7 +59,7 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.nighthawkpublic
-            buildConfigField "String", "MOON_PAY_KEY", apikeyProperties['MOON_PAY_PROD_KEY']
+            buildConfigField "String", "MOON_PAY_KEY", '"pk_live_SWNmrQMVF1fkyfdkQAX6nbzA2sCUXpMk"'
             buildConfigField "String", "MOON_PAY_BASE_URL", '"https://buy.moonpay.com/"'
         }
         debug {
