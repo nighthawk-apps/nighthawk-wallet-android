@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:elevation="8dp"
         android:gravity="center"
-        android:text="@string/you_ve_received_more_than_n1_zec_in_transparent_funds_n_nthis_won_t_take_but_a_moment"
+        android:text="@string/auto_shielding_message"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@id/card_background"
         app:layout_constraintEnd_toEndOf="@id/card_background"

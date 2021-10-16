@@ -169,7 +169,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         // Note: the wallet is effectively empty if it cannot cover the miner's fee
         val hasFunds: Boolean get() = saplingBalance.availableZatoshi > (MINERS_FEE_ZATOSHI.toDouble() / ZATOSHI_PER_ZEC) // 0.00001
         val hasSaplingBalance: Boolean get() = saplingBalance.totalZatoshi > 0
-        val hasAutoshieldFunds: Boolean get() = transparentBalance.availableZatoshi > NighthawkWalletApp.instance.autoshieldThreshold
+        val hasAutoshieldFunds: Boolean get() = transparentBalance.availableZatoshi >= NighthawkWalletApp.instance.autoshieldThreshold
         val isSynced: Boolean get() = status == Synchronizer.Status.SYNCED
         val isSendEnabled: Boolean get() = isSynced && hasFunds
 

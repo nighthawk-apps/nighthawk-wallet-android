@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import cash.z.ecc.android.sdk.Initializer
+import cash.z.ecc.android.sdk.type.ZcashNetwork
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
 import okio.Buffer
@@ -19,10 +20,11 @@ import org.junit.runner.RunWith
 class IntegrationTest {
 
     private lateinit var appContext: Context
+    private val network = ZcashNetwork.Testnet
     private val mnemonics = Mnemonics()
     private val phrase =
         "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor" +
-            " under absorb spirit hurdle animal original honey owner upper empower describe"
+                " under absorb spirit hurdle animal original honey owner upper empower describe"
 
     @Before
     fun start() {
@@ -35,7 +37,7 @@ class IntegrationTest {
         assertEquals(
             "Generated incorrect BIP-39 seed!",
             "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f" +
-                "5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe",
+                    "5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe",
             seed.toHex()
         )
     }
@@ -70,11 +72,10 @@ class IntegrationTest {
             acceptedSize--
         }
 
-        // 215 (max length of each word is 8)
-        val maxSeedPhraseLength = 8 * 24 + 23
+        val maxSeedPhraseLength = 8 * 24 + 23 // 215 (max length of each word is 8)
         assertTrue(
             "LockBox does not support the maximum length seed phrase." +
-                " Expected: $maxSeedPhraseLength but was: $acceptedSize",
+                    " Expected: $maxSeedPhraseLength but was: $acceptedSize",
             acceptedSize > maxSeedPhraseLength
         )
     }
@@ -82,19 +83,15 @@ class IntegrationTest {
     @Test
     fun testAddress() {
         val seed = mnemonics.toSeed(phrase.toCharArray())
-        val initializer = Initializer(appContext).apply {
-            new(
-                seed,
-                Initializer.DefaultBirthdayStore(appContext).newWalletBirthday,
-                overwrite = true
-            )
+        val initializer = Initializer(appContext) { config ->
+            config.newWallet(seed, network)
         }
         assertEquals(
             "Generated incorrect z-address!",
             "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c",
-            initializer.rustBackend.getAddress()
+            initializer.rustBackend.getShieldedAddress()
         )
-        initializer.clear()
+        initializer.erase()
     }
 
     private fun ByteArray.toHex(): String {

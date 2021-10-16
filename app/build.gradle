@@ -9,7 +9,6 @@ archivesBaseName = 'nighthawk-android-wallet'
 group = 'com.nighthawkapps.wallet.android'
 version = Deps.versionName
 android {
-    ndkVersion "21.1.6352462"
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
     defaultConfig {
@@ -19,8 +18,10 @@ android {
         versionCode = Deps.versionCode
         versionName = Deps.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        testInstrumentationRunnerArguments clearPackageData: 'true'
-        multiDexEnabled true
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        if (Boolean.parseBoolean(isUseTestOrchestrator)) {
+            testInstrumentationRunnerArguments clearPackageData: 'true'
+        }        multiDexEnabled true
     }
     buildFeatures {
         viewBinding true
@@ -79,6 +80,11 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
+    }
+    testOptions {
+        if (Boolean.parseBoolean(isUseTestOrchestrator)) {
+            execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        }
     }
     kapt {
         arguments {
@@ -161,8 +167,14 @@ dependencies {
     testImplementation Deps.Test.JUNIT
     testImplementation Deps.Test.MOKITO
     testImplementation Deps.Test.MOCKITO_KOTLIN
+    androidTestImplementation Deps.Test.Android.CORE
     androidTestImplementation Deps.Test.Android.JUNIT
     androidTestImplementation Deps.Test.Android.ESPRESSO
+    androidTestImplementation Deps.Test.Android.ESPRESSO_INTENTS
+    androidTestImplementation Deps.Test.Android.FRAGMENT
+    androidTestImplementation Deps.Test.Android.NAVIGATION
+    androidTestImplementation Deps.Kotlin.REFLECT
+    debugImplementation Deps.Test.Android.FRAGMENT
 }
 
 defaultTasks 'clean', 'installZcashmainnetRelease'

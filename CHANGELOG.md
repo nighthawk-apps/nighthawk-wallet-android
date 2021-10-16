@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+Version 1.0.28 *(2021-09-19)*
+------------------------------------
+- Improve Auto-Shielding.
+- Decode memo field when scanning URIs.
+- Upgrade dependencies.
+
+Version 1.0.27 *(2021-09-05)*
+------------------------------------
+- Improve Auto-Shielding.
+- Fix test-net build variants.
+- Upgrade dependencies to target Android 12.
+
 Version 1.0.26 *(2021-08-21)*
 ------------------------------------
 - NEW: Scan QR codes support on ZecPages.com

@@ -1,0 +1,3 @@
+- Improve Auto-Shielding.
+- Decode memo field when scanning URIs.
+- Upgrade dependencies.

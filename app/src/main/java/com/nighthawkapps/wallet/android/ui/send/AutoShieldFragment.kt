@@ -88,7 +88,7 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
 
         if (showSuccess) {
             if (viewModel.updateAutoshieldAchievement()) {
-                mainActivity?.showSnackbar(getString(R.string.autoshield_complete), "View")
+                mainActivity?.showSnackbar(getString(R.string.auto_shield_complete), "View")
             }
         }
     }

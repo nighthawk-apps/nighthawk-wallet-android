@@ -208,7 +208,10 @@
     <string name="missing_biometric_backup_phrase_description">Load backup phrase</string>
     <string name="missing_camera_permission_denied">Well, this is awkward. You denied permission for the camera.</string>
     <string name="missing_error_launch_url">Failed to open browser.</string>
-
+    <string name="missing_autoshielding_title_text">Nighthawk is now <b>Shielded by Default</b>. This is to ensure maximum privacy.</string>
+    <string name="missing_autoshielding_body_text"><b>Autoshielding</b> means any funds coming into your transparent address will automatically be moved to your shielded wallet.\n\nWe’ll always update you on the latest privacy-preserving best practices and recommendations.</string>
+    <string name="missing_autoshielding_button_positive">Great!</string>
+    <string name="missing_autoshielding_button_neutral">Learn more</string>
     <string name="missing_key_decimal">.</string>
 
 </resources>
