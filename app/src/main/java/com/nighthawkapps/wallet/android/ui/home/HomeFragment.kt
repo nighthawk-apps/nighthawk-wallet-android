@@ -99,7 +99,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
         binding.textMyAddress.paintFlags =
             binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.textBuyZec.setOnClickListener { onBuyZecClicked() }
+        binding.textBuyZec.setOnClickListener { showBuyZecAlertDialog() }
         binding.textBuyZec.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.textWalletHistory.onClickNavTo(R.id.action_nav_home_to_nav_history)
         binding.textTransparentBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
@@ -109,18 +109,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.hitAreaBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
         binding.hitAreaInfo.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.visit_zcash_link_title))
-                .setMessage(getString(R.string.visit_zcash_link_description))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
-                    mainActivity?.onLaunchUrl(getString(R.string.zcash_learn_more_link))
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            showOpenZcashSiteDialog()
         }
 
         if (::uiModel.isInitialized) {
@@ -442,17 +431,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         } ?: false
     }
 
-    private fun onBuyZecClicked() {
-        showBuyZecAlertDialog()
-    }
-
     private fun showBuyZecAlertDialog() {
+        mainActivity?.copyTransparentAddress()
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.buy_zec_dialog_title))
             .setMessage(getString(R.string.buy_zec_dialog_msg))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
                 Utils.openCustomTab(requireActivity(), Utils.createCustomTabIntent(), Uri.parse(viewModel.getMoonPayUrl()))
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showOpenZcashSiteDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.visit_zcash_link_title))
+            .setMessage(getString(R.string.visit_zcash_link_description))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                mainActivity?.onLaunchUrl(getString(R.string.zcash_learn_more_link))
                 dialog.dismiss()
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
