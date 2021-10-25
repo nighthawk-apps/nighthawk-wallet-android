@@ -51,6 +51,8 @@ object Const {
         object Server {
             const val HOST = BuildConfig.DEFAULT_SERVER_URL
             const val PORT = 9067
+            const val CHROME_PACKAGE = "com.android.chrome"
+            const val BUY_ZEC_BASE_URL = "${BuildConfig.MOON_PAY_BASE_URL}?apikey=${BuildConfig.MOON_PAY_KEY}"
         }
     }
 

@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui.home
 
 import android.content.Context
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,7 @@ import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
+import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -97,6 +99,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
         binding.textMyAddress.paintFlags =
             binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.textBuyZec.setOnClickListener { showBuyZecAlertDialog() }
+        binding.textBuyZec.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.textWalletHistory.onClickNavTo(R.id.action_nav_home_to_nav_history)
         binding.textTransparentBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
         binding.textWalletHistory.paintFlags =
@@ -105,18 +109,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.hitAreaBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
         binding.hitAreaInfo.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.visit_zcash_link_title))
-                .setMessage(getString(R.string.visit_zcash_link_description))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
-                    mainActivity?.onLaunchUrl(getString(R.string.zcash_learn_more_link))
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            showOpenZcashSiteDialog()
         }
 
         if (::uiModel.isInitialized) {
@@ -436,6 +429,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 return delta > main.maxAutoshieldFrequency
             }
         } ?: false
+    }
+
+    private fun showBuyZecAlertDialog() {
+        mainActivity?.copyTransparentAddress()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.buy_zec_dialog_title))
+            .setMessage(getString(R.string.buy_zec_dialog_msg))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                Utils.openCustomTab(requireActivity(), Utils.createCustomTabIntent(), Uri.parse(viewModel.getMoonPayUrl()))
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showOpenZcashSiteDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.visit_zcash_link_title))
+            .setMessage(getString(R.string.visit_zcash_link_description))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                mainActivity?.onLaunchUrl(getString(R.string.zcash_learn_more_link))
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     enum class BannerAction(val action: String) {

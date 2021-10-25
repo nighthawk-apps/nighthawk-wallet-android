@@ -268,8 +268,24 @@
             android:textColor="@color/zcashWhite_light"
             android:tint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/text_buy_zec"
+            app:layout_constraintTop_toBottomOf="@id/button_send_amount" />
+
+        <TextView
+            android:id="@+id/text_buy_zec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:text="@string/buy_zec"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/zcashWhite_light"
+            android:tint="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_my_address"
             app:layout_constraintTop_toBottomOf="@id/button_send_amount" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

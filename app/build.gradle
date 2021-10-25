@@ -59,11 +59,15 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.nighthawkpublic
+            buildConfigField "String", "MOON_PAY_KEY", '"pk_live_SWNmrQMVF1fkyfdkQAX6nbzA2sCUXpMk"'
+            buildConfigField "String", "MOON_PAY_BASE_URL", '"https://buy.moonpay.com/"'
         }
         debug {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "MOON_PAY_KEY", '"pk_test_2biYUwnJvOdHFel9jbvvUHorZlYg3dio"'
+            buildConfigField "String", "MOON_PAY_BASE_URL", '"https://buy-staging.moonpay.com/"'
         }
     }
 
@@ -134,6 +138,7 @@ dependencies {
     kapt Deps.AndroidX.Room.ROOM_COMPILER
     implementation Deps.AndroidX.SECURITY
     coreLibraryDesugaring Deps.AndroidX.DESUGAR_JDK
+    implementation Deps.AndroidX.CUSTOM_CHROME_TABS
 
     // Google
     implementation Deps.Google.GUAVA
