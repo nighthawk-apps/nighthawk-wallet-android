@@ -3,7 +3,7 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.5.30"
+    const val kotlinVersion = "1.5.31"
     const val navigationVersion = "2.3.5"
     const val compileSdkVersion = 31
     const val buildToolsVersion = "31.0.0"
