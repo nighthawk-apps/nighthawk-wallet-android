@@ -37,13 +37,6 @@ class AutoshieldingInformationFragment : BaseFragment<FragmentAutoShieldInformat
 
         binding.buttonAutoshieldDismiss.setOnClickListener {
             if (args.isStartAutoshield) {
-                // TODO: Move the call to track last autoshield time to the AutoShieldFragment
-                // Dislike this call here; it would likely be better to track last autoshield
-                // time from the fragment that actually does the autoshielding.  Then the tracking
-                // is guaranteed to be called at the right time and we don't have this call scattered
-                // in several different places (e.g. here and in HomeFragment).
-                mainActivity?.lastAutoShieldTime = System.currentTimeMillis()
-
                 findNavController().navigate(AutoshieldingInformationFragmentDirections.actionNavAutoshieldingInfoToAutoshield())
             } else {
                 findNavController().navigate(AutoshieldingInformationFragmentDirections.actionNavAutoshieldingInfoToHome())

@@ -13,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
-import android.text.format.DateUtils
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -108,10 +107,6 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
     } else {
         null
     }
-
-    // Autoshielding settings
-    val maxAutoshieldFrequency: Long = 30 * DateUtils.MINUTE_IN_MILLIS
-    var lastAutoShieldTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component = NighthawkWalletApp.component.mainActivitySubcomponent().create(this).also {
