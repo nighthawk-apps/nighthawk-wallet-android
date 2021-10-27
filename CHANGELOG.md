@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.29 *(2021-10-27)*
+------------------------------------
+- Add support to Buy ZEC via MoonPay.
+- Auto Shielding fixes.
+- Upgrade dependencies.
+
 Version 1.0.28 *(2021-09-19)*
 ------------------------------------
 - Improve Auto-Shielding.

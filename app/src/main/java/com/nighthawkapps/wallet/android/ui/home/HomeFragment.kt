@@ -23,6 +23,7 @@ import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
+import com.nighthawkapps.wallet.android.ext.requireApplicationContext
 import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
@@ -33,6 +34,7 @@ import com.nighthawkapps.wallet.android.preference.Preferences
 import com.nighthawkapps.wallet.android.preference.model.get
 import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
@@ -368,10 +370,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun autoShield(uiModel: HomeViewModel.UiModel) {
         // TODO: Move the preference read to a suspending function
         // First time SharedPreferences are hit, it'll perform disk IO
-        val isAutoshieldingAcknowledged =
-            Preferences.isAcknowledgedAutoshieldingInformationPrompt.get(requireContext().applicationContext)
+        val isAutoshieldingAcknowledged = Preferences.isAcknowledgedAutoshieldingInformationPrompt.get(requireContext().applicationContext)
+        val canAutoshield = AutoShieldFragment.canAutoshield(requireApplicationContext())
 
-        if (uiModel.hasAutoshieldFunds && canAutoshield()) {
+        if (uiModel.hasAutoshieldFunds && canAutoshield) {
             twig("Autoshielding is available! Let's do this!!!")
             if (!isAutoshieldingAcknowledged) {
                 mainActivity?.safeNavigate(
@@ -381,7 +383,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 )
             } else {
                 twig("Autoshielding is available! Let's do this!!!")
-                mainActivity?.lastAutoShieldTime = System.currentTimeMillis()
                 mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToNavFundsAvailable())
             }
         } else {
@@ -408,8 +409,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 )
             } else if (uiModel.transparentBalance.totalZatoshi > 0) {
                 twig("Transparent funds have been received but they require 10 confirmations for autoshielding.")
-            } else if (!canAutoshield()) {
-                twig("Could not autoshield probably because the last one occurred ${System.currentTimeMillis() - (mainActivity?.lastAutoShieldTime ?: 0)}ms ago which is less than the required cool off time of ${mainActivity?.maxAutoshieldFrequency}ms")
+            } else if (!canAutoshield) {
+                twig("Could not Autoshield probably because the last one occurred too recently")
             }
         }
     }
@@ -420,15 +421,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onNoFunds() {
         setBanner(getString(R.string.home_no_balance), BannerAction.FUND_NOW)
-    }
-
-    private fun canAutoshield(): Boolean {
-        return mainActivity?.let { main ->
-            System.currentTimeMillis().let { now ->
-                val delta = now - main.lastAutoShieldTime
-                return delta > main.maxAutoshieldFrequency
-            }
-        } ?: false
     }
 
     private fun showBuyZecAlertDialog() {

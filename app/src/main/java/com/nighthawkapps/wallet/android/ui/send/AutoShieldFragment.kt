@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui.send
 
 import android.content.Context
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
@@ -20,10 +21,15 @@ import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.databinding.FragmentAutoShieldBinding
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
+import com.nighthawkapps.wallet.android.ext.requireApplicationContext
+import com.nighthawkapps.wallet.android.preference.Preferences
+import com.nighthawkapps.wallet.android.preference.model.get
+import com.nighthawkapps.wallet.android.preference.model.put
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.time.Clock
 
 class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
 
@@ -33,6 +39,14 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
 
     override fun inflate(inflater: LayoutInflater): FragmentAutoShieldBinding =
         FragmentAutoShieldBinding.inflate(inflater)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (null == savedInstanceState) {
+            setAutoshield(requireApplicationContext())
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,11 +98,11 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
             binding.buttonMoreInfo.text = moreInfoButtonText
             binding.buttonMoreInfo.goneIf(!showMoreInfoButton)
             binding.buttonMoreInfo.setOnClickListener { moreInfoAction() }
-        }
 
-        if (showSuccess) {
-            if (viewModel.updateAutoshieldAchievement()) {
-                mainActivity?.showSnackbar(getString(R.string.auto_shield_complete), "View")
+            if (showSuccess) {
+                if (viewModel.updateAutoshieldAchievement()) {
+                    mainActivity?.showSnackbar(getString(R.string.auto_shield_complete), "View")
+                }
             }
         }
     }
@@ -192,4 +206,30 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
         var showMoreInfoButton: Boolean = false,
         var moreInfoAction: () -> Unit = {}
     )
+
+    companion object {
+        private const val maxAutoshieldFrequency: Long = 30 * DateUtils.MINUTE_IN_MILLIS
+
+        /**
+         * @param clock Optionally allows injecting a clock, in order to make this testable.
+         */
+        fun canAutoshield(context: Context, clock: Clock = Clock.systemUTC()): Boolean {
+            val currentEpochMillis = clock.millis()
+            val lastAutoshieldEpochMillis = Preferences.lastAutoshieldingEpochMillis.get(context)
+
+            val isLastAutoshieldOld =
+                (currentEpochMillis - lastAutoshieldEpochMillis) > maxAutoshieldFrequency
+            // Prevent a corner case where a user with a clock in the future during one autoshielding prompt
+            // could prevent all subsequent autoshielding prompts.
+            val isTimeTraveling = lastAutoshieldEpochMillis > currentEpochMillis
+
+            return isLastAutoshieldOld || isTimeTraveling
+        }
+
+        /**
+         * @param clock Optionally allows injecting a clock, in order to make this testable.
+         */
+        private fun setAutoshield(context: Context, clock: Clock = Clock.systemUTC()) =
+            Preferences.lastAutoshieldingEpochMillis.put(context, clock.millis())
+    }
 }

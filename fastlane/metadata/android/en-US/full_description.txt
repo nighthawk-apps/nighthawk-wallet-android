@@ -18,6 +18,9 @@ Nighthawk is a light-wallet:
 Self-custody wallet for Zcash:
 - You have sole responsibility over their funds stored on Nighthawk. Please immediately and securely backup the seed words upon creating a wallet.
 
+Buy ZEC via MoonPay:
+- Customers that are not US residents can purchase Zcash (ZEC) by registering with MoonPay. KYC, Terms & Conditions apply per MoonPay policies.
+
 PIN protection:
 - Set a 6 digit pin and even enable Face Id/Touch Id to open the wallet.
 

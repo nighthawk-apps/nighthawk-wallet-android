@@ -1,0 +1,3 @@
+- Add support to Buy ZEC via MoonPay.
+- Auto Shielding fixes.
+- Upgrade dependencies.
