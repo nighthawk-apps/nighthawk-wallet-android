@@ -101,6 +101,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         binding.backButtonHitArea.onClickNavUp()
 
         binding.inputZcashMemo.doAfterTextChanged {
+            sendViewModel.memo = binding.inputZcashMemo.text?.toString() ?: ""
             onMemoUpdated()
         }
 
