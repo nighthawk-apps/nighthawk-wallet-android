@@ -9,8 +9,8 @@ object Deps {
     const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
     const val targetSdkVersion = 31
-    const val versionName = "1.0.29"
-    const val versionCode = 1_00_29_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.30"
+    const val versionCode = 1_00_30_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -18,7 +18,7 @@ object Deps {
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.3.1"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha03"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.1"
-        const val CORE_KTX = "androidx.core:core-ktx:1.6.0"
+        const val CORE_KTX = "androidx.core:core-ktx:1.7.0"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.3.6"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
@@ -39,7 +39,7 @@ object Deps {
             }
         }
 
-        object Lifecycle : Version("2.4.0-rc01") {
+        object Lifecycle : Version("2.4.0") {
             val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         }
 
