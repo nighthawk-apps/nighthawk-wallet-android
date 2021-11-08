@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.30 *(2021-11-08)*
+------------------------------------
+- Long tap on transaction under Wallet History now copies tx. id to clipboard.
+- Fix char count when typing memo.
+- Upgrade dependencies.
+
 Version 1.0.29 *(2021-10-27)*
 ------------------------------------
 - Add support to Buy ZEC via MoonPay.

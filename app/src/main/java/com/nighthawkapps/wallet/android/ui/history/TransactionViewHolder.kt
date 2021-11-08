@@ -158,9 +158,18 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
 
     private fun onTransactionLongPressed(transaction: ConfirmedTransaction) {
         val mainActivity = itemView.context as MainActivity
-        transaction.toAddress?.let {
-            mainActivity.copyText(it, "Transaction Address")
+        toTxId(transaction.rawTransactionId).let {
+            mainActivity.copyText(it.toString(), "Transaction ID")
         }
+    }
+
+    private fun toTxId(tx: ByteArray?): String? {
+        if (tx == null) return null
+        val sb = StringBuilder(tx.size * 2)
+        for (i in (tx.size - 1) downTo 0) {
+            sb.append(String.format("%02x", tx[i]))
+        }
+        return sb.toString()
     }
 
     private inline fun str(@StringRes resourceId: Int) = itemView.context.getString(resourceId)

@@ -1,0 +1,3 @@
+- Long tap on transaction under Wallet History now copies tx. id to clipboard.
+- Fix char count when typing memo.
+- Upgrade dependencies.
