@@ -98,7 +98,7 @@ object Deps {
     }
 
     object Misc {
-        const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.16"
+        const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.17"
         const val LOTTIE = "com.airbnb.android:lottie:4.2.0"
 
         object Plugins {
