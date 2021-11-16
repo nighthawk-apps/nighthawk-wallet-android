@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.nighthawkapps.wallet.android.databinding.DialogEncryptedPdfBinding
 
@@ -29,6 +30,9 @@ class EncryptedPdfDialog : DialogFragment() {
     ): View {
         binding = DialogEncryptedPdfBinding.inflate(inflater, container, false)
 
+        binding.etPassword.doOnTextChanged { text, _, _, _ ->
+            updatePositiveButtonState(enable = text.isNullOrEmpty().not())
+        }
         binding.btnNegative.setOnClickListener {
             dismiss()
         }
@@ -38,6 +42,12 @@ class EncryptedPdfDialog : DialogFragment() {
         }
 
         return binding.root
+    }
+
+    private fun updatePositiveButtonState(enable: Boolean) {
+        binding.btnPositive.apply {
+            isEnabled = enable
+        }
     }
 
     override fun onStart() {
