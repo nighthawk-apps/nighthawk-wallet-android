@@ -72,6 +72,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>(),
             onEnterWallet(false)
         }
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         walletSetup.checkSeed().onEach {

@@ -51,7 +51,7 @@
         android:id="@+id/receive_address_parts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:foregroundGravity="center_vertical"
+        android:foregroundGravity="center_vertical|center_horizontal"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@id/text_message"
         app:layout_constraintEnd_toEndOf="parent"

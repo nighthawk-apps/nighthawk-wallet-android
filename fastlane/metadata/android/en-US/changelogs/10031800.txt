@@ -1,0 +1,2 @@
+- Add support to swap coins via StealthEx.io
+- Upgrade dependencies and PDF support library.
