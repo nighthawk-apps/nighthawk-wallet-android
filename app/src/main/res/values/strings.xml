@@ -6,9 +6,11 @@
     <string name="no_balance">No Balance</string>
     <string name="fund_now">Fund Now</string>
     <string name="receive_zcash">Receive Zcash</string>
-    <string name="side_shift">Fund wallet via SideShift.ai</string>
+    <string name="moon_pay">Buy ZEC with MoonPay</string>
+    <string name="side_shift">Swap coins via SideShift.ai</string>
+    <string name="stealth_ex">Swap coins via StealthEx.io</string>
     <string name="backup_wallet">Backup Wallet</string>
-    <string name="nighthawkwallet" translatable="false">\@nighthawkwallet</string>
+    <string name="nighthawkwallet" translatable="false">Tweet \@nighthawkwallet</string>
     <string name="my_zcash_address">My Zcash Address</string>
     <string name="scan_recipient_address">Scan Recipient Address</string>
     <string name="send_address">send address</string>
@@ -58,12 +60,15 @@
     <string name="unknown">Unknown</string>
     <string name="tap_to_view">Tap to View</string>
     <string name="fund_wallet_sideshift_title">Fund wallet with SideShift.ai?</string>
-    <string name="fund_wallet_sideshift_description">Your Z-Address has been copied to the clipboard.\n\nChoose \"Open Browser\" below, select \'Zcash (Shielded)\' as the receiving coin on the SideShift page, and then paste your Z-address.</string>
+    <string name="fund_wallet_sideshift_description">Your Z-Address has been copied to the clipboard.\n\nChoose \"Open Browser\" below, select \'Zcash (Shielded)\' as the receiving coin on the SideShift site, and then paste your Z-address.</string>
+    <string name="fund_wallet_stealthex_title">Fund wallet with StealthEx.io?</string>
+    <string name="fund_wallet_stealthex_description">Your T-Address has been copied to the clipboard.\n\nChoose \"Open Browser\" below, select \'Zcash\' as the receiving coin on the StealthEx site, and then paste your T-address.</string>
     <string name="link_to_ecc_title">Redirecting to ElectricCoin.co</string>
     <string name="link_to_ecc_description">Please confirm opening your device browser to learn more about Unified Addresses.</string>
     <string name="open_browser">Open Browser</string>
     <string name="cancel">Cancel</string>
     <string name="sideshift_affiliate_link">https://sideshift.ai/a/EqcQp4iUM</string>
+    <string name="stealthex_affiliate_link">https://stealthex.io/?ref=x80l5bu8wq</string>
     <string name="zcash_learn_more_link">https://z.cash/the-basics/</string>
     <string name="visit_zcash_link_description">Visit Z.cash website to learn more!</string>
     <string name="visit_zcash_link_title">Zcash is digital money.</string>
@@ -137,7 +142,7 @@
 
     <!-- Screen: Profile -->
     <string name="profile_rescan_wallet">Rescan Wallet</string>
-    <string name="profile_viewing_key">Share Viewing Key</string>
+    <string name="profile_viewing_key">Show Viewing Key</string>
     <string name="profile_backup_wallet" tools:ignore="MissingTranslation">@string/translated_button_backup_wallet</string>
     <string name="profile_ecc_wallet" tools:ignore="MissingTranslation">@string/translated_app_name</string>
     <string name="profile_see_application_logs" tools:ignore="MissingTranslation">@string/translated_button_applicationlogs</string>

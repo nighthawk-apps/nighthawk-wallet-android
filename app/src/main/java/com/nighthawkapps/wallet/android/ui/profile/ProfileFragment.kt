@@ -47,6 +47,21 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 }
                 .show()
         }
+        binding.buttonStealthex.setOnClickListener {
+            mainActivity?.copyTransparentAddress()
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.fund_wallet_stealthex_title))
+                .setMessage(getString(R.string.fund_wallet_stealthex_description))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
+                    mainActivity?.onLaunchUrl(getString(R.string.stealthex_affiliate_link))
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
         binding.buttonFeedback.setOnClickListener {
             val url = "https://twitter.com/nighthawkwallet"
             val i = Intent(Intent.ACTION_VIEW)

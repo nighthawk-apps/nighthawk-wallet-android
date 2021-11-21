@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.31 *(2021-11-21)*
+------------------------------------
+- Add support to swap coins via StealthEx.io
+- Upgrade dependencies and PDF export support library.
+
 Version 1.0.30 *(2021-11-08)*
 ------------------------------------
 - Long tap on transaction under Wallet History now copies tx. id to clipboard.
