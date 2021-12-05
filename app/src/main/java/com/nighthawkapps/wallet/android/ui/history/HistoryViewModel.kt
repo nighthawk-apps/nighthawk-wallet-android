@@ -68,7 +68,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
         var txId: String? = null
     )
 
-    private suspend fun ConfirmedTransaction?.toUiModel(latestHeight: Int? = null): UiModel = UiModel().apply {
+    private suspend fun ConfirmedTransaction?.toUiModel(latestHeight: Int? = this@HistoryViewModel.latestHeight): UiModel = UiModel().apply {
         this@toUiModel.let { tx ->
             txId = toTxId(tx?.rawTransactionId)
             isInbound = when {
