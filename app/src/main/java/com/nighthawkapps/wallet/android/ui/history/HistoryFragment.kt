@@ -19,7 +19,7 @@ import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.collectWith
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
-import cash.z.ecc.android.sdk.ext.twig
+import com.nighthawkapps.wallet.android.ext.twig
 import cash.z.ecc.android.sdk.type.WalletBalance
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.launch

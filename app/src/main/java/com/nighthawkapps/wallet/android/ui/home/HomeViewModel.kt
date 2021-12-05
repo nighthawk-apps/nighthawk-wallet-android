@@ -8,11 +8,11 @@ import cash.z.ecc.android.sdk.db.entity.isMined
 import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
 import cash.z.ecc.android.sdk.ext.ZcashSdk.MINERS_FEE_ZATOSHI
 import cash.z.ecc.android.sdk.ext.ZcashSdk.ZATOSHI_PER_ZEC
-import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.type.WalletBalance
 import com.google.gson.Gson
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.ext.Const
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.util.price.PriceModel
 import com.squareup.okhttp.HttpUrl
 import com.squareup.okhttp.OkHttpClient

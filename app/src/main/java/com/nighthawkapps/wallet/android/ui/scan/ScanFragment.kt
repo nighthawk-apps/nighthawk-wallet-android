@@ -13,13 +13,13 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import cash.z.ecc.android.sdk.ext.twig
 import com.google.common.util.concurrent.ListenableFuture
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentScanBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel

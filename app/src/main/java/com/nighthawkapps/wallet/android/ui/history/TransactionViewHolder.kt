@@ -11,7 +11,6 @@ import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.isShielded
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
-import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.locale
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
@@ -19,6 +18,7 @@ import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.toAppInt
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.MainActivity
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.launch

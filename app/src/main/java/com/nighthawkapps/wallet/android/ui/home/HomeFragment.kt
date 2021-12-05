@@ -12,7 +12,6 @@ import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
 import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
-import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
@@ -30,6 +29,7 @@ import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ext.transparentIf
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.preference.Preferences
 import com.nighthawkapps.wallet.android.preference.model.get
 import com.nighthawkapps.wallet.android.ui.MainViewModel

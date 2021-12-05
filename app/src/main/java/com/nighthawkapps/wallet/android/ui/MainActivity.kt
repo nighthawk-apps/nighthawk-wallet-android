@@ -54,7 +54,6 @@ import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.BatchMetrics
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
-import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
@@ -68,6 +67,7 @@ import com.nighthawkapps.wallet.android.ext.showCriticalMessage
 import com.nighthawkapps.wallet.android.ext.showCriticalProcessorError
 import com.nighthawkapps.wallet.android.ext.showScanFailure
 import com.nighthawkapps.wallet.android.ext.showUninitializedError
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import kotlinx.coroutines.flow.collect

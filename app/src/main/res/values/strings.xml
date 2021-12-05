@@ -24,7 +24,7 @@
     <string name="wallet_balance">Wallet Balance</string>
     <string name="shielded_address">Shielded address:</string>
     <string name="no_history_yet">No history yet.</string>
-    <string name="welcome_to_nighthawk_wallet">Welcome to Nighthawk!</string>
+    <string name="nighthawk_motto">Private Money in your pocket.</string>
     <string name="restore">Restore</string>
     <string name="new_wallet">New</string>
     <string name="restoring_from_a_backup">Restoring from a backup</string>

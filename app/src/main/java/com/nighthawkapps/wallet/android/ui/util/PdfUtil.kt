@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import cash.z.ecc.android.sdk.ext.twig
 import com.itextpdf.kernel.colors.DeviceRgb
 import com.itextpdf.kernel.geom.PageSize
 import com.itextpdf.kernel.pdf.EncryptionConstants
@@ -18,6 +17,7 @@ import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Text
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.locale
+import com.nighthawkapps.wallet.android.ext.twig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

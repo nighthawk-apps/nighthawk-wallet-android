@@ -9,14 +9,14 @@ object Deps {
     const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
     const val targetSdkVersion = 31
-    const val versionName = "1.0.31"
-    const val versionCode = 1_00_31_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.32"
+    const val versionCode = 1_00_32_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.3.0"
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.0"
-        const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha03"
+        const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha04"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.2"
         const val CORE_KTX = "androidx.core:core-ktx:1.7.0"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.4.0"
@@ -65,7 +65,7 @@ object Deps {
         // per this recommendation from Chris Povirk, given guava's decision to split ListenableFuture away from Guava: https://groups.google.com/d/msg/guava-discuss/GghaKwusjcY/bCIAKfzOEwAJ
         const val GUAVA = "com.google.guava:guava:31.0.1-android"
         const val MATERIAL = "com.google.android.material:material:1.4.0"
-        const val GSON = "com.google.code.gson:gson:2.8.8"
+        const val GSON = "com.google.code.gson:gson:2.8.9"
     }
 
     object Grpc : Version("1.42.1") {
@@ -94,12 +94,14 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.1"
-        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta18"
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta19"
     }
 
     object Misc {
         const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.17"
-        const val LOTTIE = "com.airbnb.android:lottie:4.2.1"
+        const val LOTTIE = "com.airbnb.android:lottie:4.2.2"
+        const val TIMBER = "com.jakewharton.timber:timber::4.7.1"
+
 
         object Plugins {
             const val SECURE_STORAGE = "com.github.gmale:secure-storage-android:0.0.3"
