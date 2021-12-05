@@ -27,14 +27,14 @@
 
     <TextView
         android:id="@+id/text_message"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:gravity="center"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
-        android:text="@string/welcome_to_nighthawk_wallet"
+        android:text="@string/nighthawk_motto"
         android:textColor="@color/zcashWhite"
         app:layout_constraintBottom_toTopOf="@id/guideline_buttons"
         app:layout_constraintEnd_toEndOf="parent"

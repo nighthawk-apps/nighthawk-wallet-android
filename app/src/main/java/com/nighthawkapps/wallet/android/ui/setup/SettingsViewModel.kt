@@ -3,8 +3,8 @@ package com.nighthawkapps.wallet.android.ui.setup
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Synchronizer
-import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.ext.Const
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject

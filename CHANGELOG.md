@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.32 *(2021-12-04)*
+------------------------------------
+- Fix tx confirmation count.
+- Update checkpoints, Zcash SDK & dependencies.
+
 Version 1.0.31 *(2021-11-21)*
 ------------------------------------
 - Add support to swap coins via StealthEx.io

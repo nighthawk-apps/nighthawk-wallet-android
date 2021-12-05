@@ -1,0 +1,2 @@
+- Fix tx confirmation count.
+- Update checkpoints, Zcash SDK & dependencies.

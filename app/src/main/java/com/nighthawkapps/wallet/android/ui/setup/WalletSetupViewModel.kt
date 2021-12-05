@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.exception.InitializerException
-import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.tool.DerivationTool
 import cash.z.ecc.android.sdk.tool.WalletBirthdayTool
 import cash.z.ecc.android.sdk.type.UnifiedViewingKey
@@ -16,6 +15,7 @@ import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.Const.HOST_PORT
 import com.nighthawkapps.wallet.android.ext.Const.HOST_SERVER
 import com.nighthawkapps.wallet.android.ext.failWith
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
 import kotlinx.coroutines.Dispatchers

@@ -9,13 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.transition.ChangeBounds
-import androidx.transition.ChangeClipBounds
-import androidx.transition.ChangeTransform
-import androidx.transition.Transition
-import androidx.transition.TransitionSet
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
-import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentTransactionBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -26,6 +20,7 @@ import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ext.visible
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
@@ -39,17 +34,6 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding>() {
 
     override fun inflate(inflater: LayoutInflater): FragmentTransactionBinding =
         FragmentTransactionBinding.inflate(inflater)
-
-    private fun createSharedElementTransition(duration: Long = 800L): Transition {
-        return TransitionSet().apply {
-            ordering = TransitionSet.ORDERING_TOGETHER
-            this.duration = duration
-//            interpolator = PathInterpolatorCompat.create(0.4f, 0f, 0.2f, 1f)
-            addTransition(ChangeBounds())
-            addTransition(ChangeClipBounds())
-            addTransition(ChangeTransform())
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

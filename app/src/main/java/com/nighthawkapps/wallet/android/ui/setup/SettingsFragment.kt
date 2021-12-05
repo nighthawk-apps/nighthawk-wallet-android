@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import cash.z.ecc.android.sdk.exception.LightWalletException
 import cash.z.ecc.android.sdk.ext.collectWith
-import cash.z.ecc.android.sdk.ext.twig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
@@ -23,6 +22,7 @@ import com.nighthawkapps.wallet.android.ext.showUpdateServerCriticalError
 import com.nighthawkapps.wallet.android.ext.showUpdateServerDialog
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.toAppString
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.launch

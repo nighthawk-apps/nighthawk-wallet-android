@@ -15,13 +15,13 @@ import cash.z.ecc.android.sdk.db.entity.isFailedEncoding
 import cash.z.ecc.android.sdk.db.entity.isFailure
 import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
 import cash.z.ecc.android.sdk.ext.collectWith
-import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.databinding.FragmentAutoShieldBinding
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.requireApplicationContext
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.preference.Preferences
 import com.nighthawkapps.wallet.android.preference.model.get
 import com.nighthawkapps.wallet.android.preference.model.put

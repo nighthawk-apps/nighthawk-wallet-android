@@ -11,13 +11,13 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.ext.ZcashSdk
-import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentBackupBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP

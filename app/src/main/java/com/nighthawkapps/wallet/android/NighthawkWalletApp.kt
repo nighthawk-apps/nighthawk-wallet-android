@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
-import cash.z.ecc.android.sdk.ext.Twig
+import com.nighthawkapps.wallet.android.ext.Twig
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.type.ZcashNetwork
 import com.nighthawkapps.wallet.android.di.component.AppComponent

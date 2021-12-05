@@ -7,10 +7,10 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.databinding.FragmentTabReceiveTransparentBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.distribute
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.qrecycler.QRecycler
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.util.AddressPartNumberSpan

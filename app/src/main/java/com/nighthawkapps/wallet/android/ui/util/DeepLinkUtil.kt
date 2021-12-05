@@ -4,8 +4,8 @@ import android.net.Uri
 import android.text.TextUtils
 import android.util.Base64
 import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
-import cash.z.ecc.android.sdk.ext.twig
 import com.nighthawkapps.wallet.android.ext.Const
+import com.nighthawkapps.wallet.android.ext.twig
 
 object DeepLinkUtil {
 

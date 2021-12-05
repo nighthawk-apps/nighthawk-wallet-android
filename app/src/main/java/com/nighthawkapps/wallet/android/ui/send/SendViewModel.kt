@@ -6,13 +6,13 @@ import androidx.lifecycle.viewModelScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.ext.ZcashSdk
-import cash.z.ecc.android.sdk.ext.twig
 import cash.z.ecc.android.sdk.tool.DerivationTool
 import cash.z.ecc.android.sdk.type.AddressType
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
 import kotlinx.coroutines.flow.Flow

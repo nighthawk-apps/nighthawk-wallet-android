@@ -248,7 +248,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         applyViewModel(sendViewModel)
         sendViewModel.validate(requireContext(), availableZatoshi, maxZatoshi).onFirstWith(resumedScope) { errorMessage ->
             if (errorMessage == null) {
-                mainActivity?.authenticate("Please confirm that you want to send ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC to\n${sendViewModel.toAddress.toAbbreviatedAddress()}") {
+                mainActivity?.authenticate("Please confirm that you want to send ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC") {
                     mainActivity?.safeNavigate(R.id.action_nav_send_to_nav_send_final)
                 }
             } else {
