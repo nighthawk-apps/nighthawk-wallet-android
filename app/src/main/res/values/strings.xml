@@ -67,8 +67,8 @@
     <string name="link_to_ecc_description">Please confirm opening your device browser to learn more about Unified Addresses.</string>
     <string name="open_browser">Open Browser</string>
     <string name="cancel">Cancel</string>
-    <string name="sideshift_affiliate_link">https://sideshift.ai/a/EqcQp4iUM</string>
-    <string name="stealthex_affiliate_link">https://stealthex.io/?ref=x80l5bu8wq</string>
+    <string name="sideshift_affiliate_link">https://sideshift.ai/</string>
+    <string name="stealthex_affiliate_link">https://stealthex.io/</string>
     <string name="zcash_learn_more_link">https://z.cash/the-basics/</string>
     <string name="visit_zcash_link_description">Visit Z.cash website to learn more!</string>
     <string name="visit_zcash_link_title">Zcash is digital money.</string>

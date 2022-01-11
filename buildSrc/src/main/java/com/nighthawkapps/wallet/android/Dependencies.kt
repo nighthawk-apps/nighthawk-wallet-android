@@ -3,14 +3,14 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.6.0"
-    const val navigationVersion = "2.4.0-beta02"
+    const val kotlinVersion = "1.6.10"
+    const val navigationVersion = "2.4.0-rc01"
     const val compileSdkVersion = 31
     const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
     const val targetSdkVersion = 31
-    const val versionName = "1.0.32"
-    const val versionCode = 1_00_32_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.33"
+    const val versionCode = 1_00_33_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -54,7 +54,7 @@ object Deps {
         }
     }
 
-    object Dagger : Version("2.40.1") {
+    object Dagger : Version("2.40.5") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -68,7 +68,7 @@ object Deps {
         const val GSON = "com.google.code.gson:gson:2.8.9"
     }
 
-    object Grpc : Version("1.42.1") {
+    object Grpc : Version("1.43.2") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
@@ -84,7 +84,7 @@ object Deps {
         val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         val REFLECT = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
-        object Coroutines : Version("1.5.2") {
+        object Coroutines : Version("1.6.0") {
             val ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             val TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -100,8 +100,7 @@ object Deps {
     object Misc {
         const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.17"
         const val LOTTIE = "com.airbnb.android:lottie:4.2.2"
-        const val TIMBER = "com.jakewharton.timber:timber::4.7.1"
-
+        const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
 
         object Plugins {
             const val SECURE_STORAGE = "com.github.gmale:secure-storage-android:0.0.3"
