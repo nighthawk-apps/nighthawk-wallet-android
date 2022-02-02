@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.0.33 *(2022-01-21)*
+Version 1.0.33 *(2022-02-02)*
 ------------------------------------
 - Remove affiliate links.
 - Update checkpoints & dependencies.
