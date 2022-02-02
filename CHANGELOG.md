@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.33 *(2022-02-02)*
+------------------------------------
+- Remove affiliate links.
+- Update checkpoints & dependencies.
+
 Version 1.0.32 *(2021-12-04)*
 ------------------------------------
 - Fix tx confirmation count.
