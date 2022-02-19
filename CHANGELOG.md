@@ -3,7 +3,7 @@ Change Log
 
 Version 1.0.34 *(2022-02-19)*
 ------------------------------------
-- Update Zcash SDK.
+- Update dependencies & Zcash SDK.
 
 Version 1.0.33 *(2022-02-02)*
 ------------------------------------
