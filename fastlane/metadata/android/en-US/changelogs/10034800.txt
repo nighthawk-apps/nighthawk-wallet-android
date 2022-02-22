@@ -1,1 +1,1 @@
-- Update dependencies & Zcash SDK.
+- Update checkpoint, dependencies & Zcash SDK.
