@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.34 *(2022-02-22)*
+------------------------------------
+- Update checkpoint, dependencies & Zcash SDK.
+
 Version 1.0.33 *(2022-02-02)*
 ------------------------------------
 - Remove affiliate links.
