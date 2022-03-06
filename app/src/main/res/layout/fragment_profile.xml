@@ -136,14 +136,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_sideshift"
-        style="@style/Nighthawk.Button"
+        style="@style/Nighthawk.Button.Normal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="12dp"
         android:text="@string/side_shift"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
@@ -152,14 +150,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_stealthex"
-        style="@style/Nighthawk.Button"
+        style="@style/Nighthawk.Button.Normal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="12dp"
         android:text="@string/stealth_ex"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/button_sideshift"
@@ -167,14 +163,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_feedback"
-        style="@style/Nighthawk.Button"
+        style="@style/Nighthawk.Button.Normal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="12dp"
         android:text="@string/nighthawkwallet"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/button_stealthex" />
@@ -188,7 +182,6 @@
         android:padding="12dp"
         android:text="@string/backup_wallet"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/text_light"
         app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@id/guideline_content_start"
         app:layout_constraintTop_toBottomOf="@id/button_feedback" />
@@ -249,7 +242,7 @@
         android:layout_marginEnd="8dp"
         android:elevation="6dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/text_light_dimmed"
+        android:textColor="@color/ns_peach_100"
         app:layout_constraintBaseline_toBaselineOf="@id/text_banner_message"
         app:layout_constraintEnd_toEndOf="@id/text_banner_message" />
 
