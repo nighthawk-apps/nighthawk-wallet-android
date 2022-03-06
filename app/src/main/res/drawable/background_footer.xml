@@ -7,7 +7,7 @@
                 android:bottomRightRadius="10dp"
                 android:topLeftRadius="0dp"
                 android:topRightRadius="0dp" />
-            <solid android:color="@color/text_light_dimmed" />
+            <solid android:color="@color/ns_peach_80" />
         </shape>
     </item>
     <item
@@ -23,7 +23,7 @@
                 android:bottomRightRadius="10dp"
                 android:topLeftRadius="0dp"
                 android:topRightRadius="0dp" />
-            <solid android:color="@color/background_banner" />
+            <solid android:color="@color/ns_dark_navy" />
         </shape>
     </item>
 </layer-list>

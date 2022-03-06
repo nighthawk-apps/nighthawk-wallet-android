@@ -2,6 +2,138 @@
     <string name="app_name">Nighthawk</string>
     <string name="blank" />
 
+    <!-- ns -->
+
+    <!-- Start Flow -->
+    <string name="ns_nighthawk">Nighthawk</string>
+    <string name="ns_motto">Private money in your pocket.</string>
+    <string name="ns_powered_by">Powered by Zcash</string>
+    <string name="ns_get_started">Get Started</string>
+    <string name="ns_landing_text">If it\'s your first time using Nighthawk, you\'ll need to create a wallet. If you are returning to Nighthawk, you can try to restore your previous wallet.</string>
+    <string name="ns_landing_footer">By using this app you accept our\nTerms and Conditions</string>
+    <string name="ns_create_wallet">Create Wallet</string>
+    <string name="ns_create_wallet_title">Write down your backup seed</string>
+    <string name="ns_create_wallet_text">If you lose access to your phone or Nighthawk wallet, the only way you can regain access to your Zcash is if you have this 24 word phrase and wallet birthday code.\n\nWrite it down on paper and store it somewhere safe.</string>
+    <string name="ns_create_wallet_confirm_text">I confirm I have written down my seed phrase.</string>
+    <string name="ns_restore_from_backup">Restore from Backup</string>
+    <string name="ns_restore_wallet_text">Enter your 12 word seed phrase below. If you do not have this phrase, you will need to create a new wallet.</string>
+    <string name="ns_your_seed_phrase">Your seed phrase</string>
+    <string name="ns_wallet_birthday">Wallet Birthday: %s</string>
+    <string name="ns_your_seed_error">Error - This doesn\'t look like a valid seed phrase.</string>
+    <string name="ns_continue">Continue</string>
+
+    <!-- Wallet Screen -->
+    <string name="ns_wallet">Wallet</string>
+    <string name="ns_connecting">Connecting</string>
+    <string name="ns_reconnecting">Reconnecting</string>
+    <string name="ns_preparing_download">Preparing to download</string>
+    <string name="ns_downloading">Downloading</string>
+    <string name="ns_validating">Validating</string>
+    <string name="ns_preparing_scan">Preparing to scan</string>
+    <string name="ns_syncing">Currently syncing \nblock %s</string>
+    <string name="ns_finalizing">Finalizing</string>
+    <string name="ns_swipe_left">Swipe left to show your balance</string>
+    <string name="ns_zec">ZEC</string>
+    <string name="ns_around">around %s</string>
+    <string name="ns_total_balance">Total balance</string>
+    <string name="ns_shielded_balance">Shielded balance</string>
+    <string name="ns_sapling_balance">Sapling balance</string>
+    <string name="ns_transparent_balance">Transparent balance</string>
+    <string name="ns_shield_now">Shield Now</string>
+
+    <string name="ns_recent_activity">Recent activity</string>
+    <string name="ns_received">Received</string>
+    <string name="ns_sent">Sent</string>
+    <string name="ns_auto_shielded_funds">Auto-shielded funds</string>
+
+    <!-- Transaction Details Screen -->
+    <string name="ns_transaction_details">Transaction Details</string>
+    <string name="ns_show_memo">Show memo</string>
+    <string name="ns_received_from">Received from %s</string>
+    <string name="ns_sent_from">Sent from %s</string>
+    <string name="ns_transparent_wallet">transparent wallet</string>
+    <string name="ns_shielded_wallet">shielded wallet</string>
+
+    <string name="ns_pending">Pending</string>
+    <string name="ns_pending_confirmations">Pending %s</string>
+    <string name="ns_confirmed">Confirmed!</string>
+    <string name="ns_view_block_explorer">View on Blockexplorer</string>
+
+    <!-- Transfer Screen -->
+    <string name="ns_transfer">Transfer</string>
+    <string name="ns_transfer_title">Send and receive Zcash</string>
+    <string name="ns_send_money">Send money</string>
+    <string name="ns_send_money_text">Allow someone to scan the code to send money</string>
+    <string name="ns_receive_money">Receive money</string>
+    <string name="ns_receive_money_text">Your wallet address will be copied to the clipboard</string>
+    <string name="ns_top_up">Top up your wallet</string>
+    <string name="ns_top_up_text">Securely buy Zcash through our partners.</string>
+    <string name="ns_buy_moonpay">Buy from MoonPay</string>
+    <string name="ns_buy_moonpay_text">Buy ZEC with a credit card.</string>
+    <string name="ns_swap_sideshift">Swap with SideShift.ai</string>
+    <string name="ns_swap_sideshift_text">Swap between 30+ coins. No sign-up required.</string>
+    <string name="ns_swap_stealthex">Swap with StealthEx.io</string>
+    <string name="ns_swap_stealthex_text">Swap transparent coins without limits.</string>
+    <string name="ns_receive_money_securely">Receive money securely</string>
+    <string name="ns_show_qr_code">Show QR Code</string>
+    <string name="ns_show_qr_code_text">Allow someone to scan the code to send money</string>
+    <string name="ns_copy_private_address">Copy private address</string>
+    <string name="ns_copy_private_address_text">Your wallet address will be copied to the clipboard.</string>
+    <string name="ns_receive_money_publicly">Receive money publicly</string>
+    <string name="ns_copy_public_address">Copy a non-private address</string>
+    <string name="ns_receive_money_publicly_text">This will copy your t-address.</string>
+
+    <!-- Settings Screen -->
+    <string name="ns_settings">Settings</string>
+    <string name="ns_sync_notifications">Sync notifications</string>
+    <string name="ns_sync_notifications_text">Reminding you to keep the wallet up-to-date</string>
+    <string name="ns_sync_notifications_body">When Nighthawk wallet is closed for a long period of time, then it will take longer to start up when you do want to use it.\n\nAllow sync notifications to remind you to open the wallet every week.</string>
+    <string name="ns_backup_wallet">Backup your wallet</string>
+    <string name="ns_backup_wallet_text">Keep your wallet safe in case you lose your phone</string>
+    <string name="ns_backup_wallet_heading">Write down your backup seed</string>
+    <string name="ns_backup_wallet_body">If you lose access to your phone or Nighthawk wallet, the only way you can regain access to your Zcash is if you have this 24 word phrase and wallet birthday code.\n\nWrite it down on paper and store it somewhere safe.</string>
+    <string name="ns_backup_wallet_pdf">Save as PDF</string>
+    <string name="ns_rescan_wallet">Rescan wallet</string>
+    <string name="ns_rescan_wallet_text">Rescan wallet balances to troubleshoot issues.</string>
+    <string name="ns_rescan_wallet_body">![CDATA[This fix may take a while!<br/><br/>A <b>FULL</b> scan will rewind %1$s blocks to this wallet\'s birthday and take around %2$s.<br/><br/>A <b>WIPE</b> is like a full scan but it first deletes all data then restores it from your backup seed words.]]</string>
+    <string name="ns_rescan_wallet_full">Full rescan</string>
+    <string name="ns_rescan_wallet_wipe">Wipe &amp; restart</string>
+    <string name="ns_fiat_currency">Fiat Currency</string>
+    <string name="ns_fiat_currency_text">Choose your local currency</string>
+    <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, we fetch the exchange rate and use that to calculate values. We never send any of your fund amounts to a server.</string>
+    <string name="ns_change_server">Change server</string>
+    <string name="ns_change_server_text">Change backend lightwalletd server.</string>
+    <string name="ns_security">Security</string>
+    <string name="ns_security_text">Set/Change Pin Code &amp; Biometric</string>
+    <string name="ns_security_choose">Choose PIN code</string>
+    <string name="ns_security_try_again">Please try again</string>
+    <string name="ns_about">About</string>
+    <string name="ns_about_text">View licenses</string>
+
+    <!-- Send Flow -->
+    <string name="ns_scan_payment_request">Scan a Payment Request</string>
+    <string name="ns_scan_payment_request_text">If you have a payment request, you can scan the QR code here to auto-fill all the details.</string>
+    <string name="ns_choose_send">Choose how much to send</string>
+    <string name="ns_scan_payment_code">Scan a payment code</string>
+    <string name="ns_top_up_wallet">Toop up wallet</string>
+    <string name="ns_not_enough_zcash">Not enough Zcash</string>
+    <string name="ns_add_message">Add a message to your payment</string>
+    <string name="ns_write_something">Write something…</string>
+    <string name="ns_skip">Skip</string>
+    <string name="ns_choose_who">Choose who to send it to</string>
+    <string name="ns_review_and_send">Review and send</string>
+    <string name="ns_network_fee">Network Fee</string>
+    <string name="ns_send_zcash">Send Zcash</string>
+    <string name="ns_sending">Sending</string>
+    <string name="ns_cancel">Cancel</string>
+    <string name="ns_success">Success</string>
+    <string name="ns_done">Done</string>
+    <string name="ns_more_details">More Details</string>
+    <string name="ns_failed">Failed</string>
+    <string name="ns_try_again">Try Again</string>
+
+    <!-- 00000000 -->
+
     <!-- Send Flow -->
     <string name="no_balance">No Balance</string>
     <string name="fund_now">Fund Now</string>
@@ -10,7 +142,7 @@
     <string name="side_shift">Swap coins via SideShift.ai</string>
     <string name="stealth_ex">Swap coins via StealthEx.io</string>
     <string name="backup_wallet">Backup Wallet</string>
-    <string name="nighthawkwallet" translatable="false">Tweet \@nighthawkwallet</string>
+    <string name="nighthawkwallet" translatable="false">Tweet \@NighthawkWallet</string>
     <string name="my_zcash_address">My Zcash Address</string>
     <string name="scan_recipient_address">Scan Recipient Address</string>
     <string name="send_address">send address</string>

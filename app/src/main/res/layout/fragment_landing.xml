@@ -10,12 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.667" />
+        app:layout_constraintGuide_percent="0.8" />
 
     <ImageView
         android:id="@+id/icon_profile"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="W,1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,42 +27,74 @@
 
     <TextView
         android:id="@+id/text_message"
-        style="@style/TextAppearance.MaterialComponents.Headline5"
+        style="@style/Nighthawk.MaterialComponents.Headline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:text="@string/nighthawk_motto"
-        android:textColor="@color/zcashWhite"
-        app:layout_constraintBottom_toTopOf="@id/guideline_buttons"
+        android:text="@string/ns_nighthawk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/icon_profile" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_negative"
-        style="@style/Nighthawk.Button.OutlinedButton"
+    <TextView
+        android:id="@+id/title_message"
+        style="@style/Nighthawk.MaterialComponents.Headline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/restore"
-        android:textColor="@color/text_light"
-        app:layout_constraintEnd_toStartOf="@id/button_positive"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginTop="72dp"
+        android:gravity="center"
+        android:text="@string/ns_get_started"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_buttons" />
+        app:layout_constraintTop_toBottomOf="@+id/text_message" />
+
+    <TextView
+        android:id="@+id/body_message"
+        style="@style/Nighthawk.MaterialComponents.Body"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="fill"
+        android:text="@string/ns_landing_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_message" />
+
+    <TextView
+        android:id="@+id/terms_message"
+        style="@style/Nighthawk.MaterialComponents.Body"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:gravity="center"
+        android:text="@string/ns_landing_footer"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/body_message" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_positive"
         style="@style/Nighthawk.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/new_wallet"
+        android:text="@string/ns_create_wallet"
         android:textColor="@color/text_dark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_negative"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline_buttons" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_negative"
+        style="@style/Nighthawk.Button.NoOutline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/ns_restore_from_backup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_positive" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -151,7 +151,7 @@
         android:id="@+id/background_top"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#2c2c34"
+        android:background="@color/ns_dark_navy"
         app:layout_constraintBottom_toTopOf="@id/background_middle"
         app:layout_constraintEnd_toEndOf="@id/background_group_inner"
         app:layout_constraintHeight_percent="0.1"

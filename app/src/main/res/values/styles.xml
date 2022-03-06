@@ -35,16 +35,33 @@
     </style>
 
     <style name="Nighthawk.Button" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/zcashYellow</item>
-        <item name="android:textColor">@color/text_dark</item>
+        <item name="backgroundTint">@color/ns_peach_100</item>
+        <item name="android:textColor">@color/ns_dark_navy</item>
+    </style>
+
+    <style name="Nighthawk.Button.Normal" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/ns_peach_100</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/ns_dark_navy</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+
     </style>
 
     <style name="Nighthawk.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/zcashWhite</item>
+        <item name="strokeColor">@color/ns_peach_100</item>
+        <item name="android:textColor">@color/ns_peach_100</item>
     </style>
 
     <style name="Nighthawk.Button.OutlinedButton.Primary" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Nighthawk.Button.NoOutline" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/ns_peach_100</item>
     </style>
 
     <style name="DigitImageButton">
@@ -118,17 +135,77 @@
     <style name="Nighthawk.ShapeAppearance.TextInputLayout" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">0dp</item>
+        <item name="backgroundColor">@color/ns_navy</item>
     </style>
 
     <!-- Theme Overlays -->
     <style name="Nighthawk.Overlay.TextInputLayout" parent="ThemeOverlay.MaterialComponents">
-        <item name="shapeAppearanceSmallComponent">
-            @style/Nighthawk.ShapeAppearance.TextInputLayout
-        </item>
+        <item name="shapeAppearanceSmallComponent">@style/Nighthawk.ShapeAppearance.TextInputLayout</item>
     </style>
 
     <style name="Nighthawk.Overlay.TextInputLayout.HelperTextAppearance" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- ns -->
+    <style name="Nighthawk.MaterialComponents.Headline1" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/ns_peach_100</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Nighthawk.MaterialComponents.Headline2" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/ns_peach_100</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Nighthawk.MaterialComponents.Body" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/ns_white</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Nighthawk.MaterialComponents.Text.Dark" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/ns_dark_navy</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Nighthawk.MaterialComponents.Text.Light" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/ns_peach_20</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Nighthawk.MaterialComponents.SubText" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/ns_white</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 
 </resources>

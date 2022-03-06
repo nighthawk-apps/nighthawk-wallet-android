@@ -5,5 +5,5 @@
         android:width="48dp"
         android:height="48dp"/>
     <solid
-        android:color="#fff" />
+        android:color="@color/ns_peach_60" />
 </shape>

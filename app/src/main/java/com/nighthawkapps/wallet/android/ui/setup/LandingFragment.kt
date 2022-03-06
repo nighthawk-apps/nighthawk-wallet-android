@@ -32,13 +32,13 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonPositive.setOnClickListener {
             when (binding.buttonPositive.text.toString().toLowerCase(locale())) {
-                R.string.landing_button_primary.toAppString(true) -> onNewWallet()
-                R.string.landing_button_primary_create_success.toAppString(true) -> onBackupWallet()
+                R.string.ns_create_wallet.toAppString(true) -> onNewWallet()
+                R.string.ns_backup_wallet.toAppString(true) -> onBackupWallet()
             }
         }
         binding.buttonNegative.setOnClickListener {
             when (binding.buttonNegative.text.toString().toLowerCase(locale())) {
-                R.string.landing_button_secondary.toAppString(true) -> onRestoreWallet()
+                R.string.ns_restore_from_backup.toAppString(true) -> onRestoreWallet()
                 else -> onSkip(++skipCount)
             }
         }
@@ -93,7 +93,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 binding.buttonPositive.isEnabled = true
                 binding.textMessage.setText(R.string.landing_create_success_message)
                 binding.buttonNegative.setText(R.string.landing_button_secondary_create_success)
-                binding.buttonPositive.setText(R.string.landing_button_primary_create_success)
+                binding.buttonPositive.setText(R.string.ns_backup_wallet)
                 mainActivity?.playSound("sound_receive_small.mp3")
                 mainActivity?.vibrateSuccess()
             } catch (e: UnsatisfiedLinkError) {
@@ -103,7 +103,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 mainActivity?.showSharedLibraryCriticalError(e)
             } catch (t: Throwable) {
                 binding.buttonPositive.isEnabled = true
-                binding.buttonPositive.setText(R.string.landing_button_primary)
+                binding.buttonPositive.setText(R.string.ns_create_wallet)
                 Toast.makeText(
                     context,
                     "Failed to create wallet. See logs for details. Try restarting the app.\n\nMessage: \n${t.message}",
