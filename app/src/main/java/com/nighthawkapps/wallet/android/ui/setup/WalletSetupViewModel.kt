@@ -23,19 +23,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Named
 
 class WalletSetupViewModel @Inject constructor() : ViewModel() {
 
-    @Inject
-    lateinit var mnemonics: Mnemonics
+    private val mnemonics by lazy { Mnemonics() }
 
-    @Inject
-    lateinit var lockBox: LockBox
-
-    @Inject
-    @Named(Const.Name.APP_PREFS)
-    lateinit var prefs: LockBox
+    private val lockBox by lazy { LockBox(NighthawkWalletApp.instance) }
 
     enum class WalletSetupState {
         SEED_WITH_BACKUP, SEED_WITHOUT_BACKUP, NO_SEED
@@ -123,8 +116,8 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
         val vk = loadUnifiedViewingKey() ?: onMissingViewingKey(network).also { overwriteVks = true }
         val birthdayHeight = loadBirthdayHeight() ?: onMissingBirthday(network)
         // TDDO: verify that we're using the same values that would get set by the user in settings
-        val host = prefs[HOST_SERVER] ?: Const.Default.Server.HOST
-        val port = prefs[HOST_PORT] ?: Const.Default.Server.PORT
+        val host = lockBox[HOST_SERVER] ?: Const.Default.Server.HOST
+        val port = lockBox[HOST_PORT] ?: Const.Default.Server.PORT
 
         twig("Done loading config variables")
         return Initializer.Config {

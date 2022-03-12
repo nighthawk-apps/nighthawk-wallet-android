@@ -41,8 +41,11 @@ import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
 import androidx.biometric.BiometricPrompt.ERROR_VENDOR
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigator
@@ -66,10 +69,14 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.showCriticalMessage
 import com.nighthawkapps.wallet.android.ext.showCriticalProcessorError
 import com.nighthawkapps.wallet.android.ext.showScanFailure
+import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ext.showUninitializedError
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
+import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
+import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -78,20 +85,21 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
 
     @Inject
     lateinit var clipboard: ClipboardManager
+    lateinit var component: MainActivitySubcomponent
+    lateinit var synchronizerComponent: SynchronizerSubcomponent
 
     val mainViewModel: MainViewModel by viewModels()
 
     val isInitialized get() = ::synchronizerComponent.isInitialized
 
     val historyViewModel: HistoryViewModel by activityViewModel()
+    private val walletSetup: WalletSetupViewModel by viewModels()
+    private val passwordViewModel: PasswordViewModel by activityViewModel()
 
     private val mediaPlayer: MediaPlayer = MediaPlayer()
     private var snackbar: Snackbar? = null
     private var dialog: Dialog? = null
     private var ignoreScanFailure: Boolean = false
-
-    lateinit var component: MainActivitySubcomponent
-    lateinit var synchronizerComponent: SynchronizerSubcomponent
 
     var navController: NavController? = null
     private val navInitListeners: MutableList<() -> Unit> = mutableListOf()
@@ -112,10 +120,16 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
         component = NighthawkWalletApp.component.mainActivitySubcomponent().create(this).also {
             it.inject(this)
         }
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
         initNavigation()
         initLoadScreen()
+
+        splashScreen.setKeepOnScreenCondition {
+            getNavStartingPoint()
+            mainViewModel.isAppStarting.value
+        }
 
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
@@ -140,22 +154,6 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
         win.attributes = winParams
     }
 
-    private fun initNavigation() {
-        navController = findNavController(R.id.nav_host_fragment)
-        navController!!.addOnDestinationChangedListener { _, _, _ ->
-            // hide the keyboard anytime we change destinations
-            getSystemService<InputMethodManager>()?.hideSoftInputFromWindow(
-                this@MainActivity.window.decorView.rootView.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
-        }
-
-        for (listener in navInitListeners) {
-            listener()
-        }
-        navInitListeners.clear()
-    }
-
     private fun initLoadScreen() {
         lifecycleScope.launchWhenResumed {
             mainViewModel.loadingMessage.collect { message ->
@@ -169,6 +167,70 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
         // TODO: replace with view binding
         findViewById<View>(R.id.container_loading).goneIf(message == null)
         findViewById<TextView>(R.id.text_message).text = message
+    }
+
+    private fun getNavStartingPoint() {
+        // this will call startSync either now or later (after initializing with newly created seed)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                walletSetup.checkSeed()
+                    .catch {
+                        twig(it)
+                    }
+                    .collect {
+                        twig("Checking seed")
+                        setLoading(false)
+                        var startDestination: Int = R.id.nav_home
+                        if (it == WalletSetupViewModel.WalletSetupState.NO_SEED) {
+                            // interact with user to create, backup and verify seed
+                            // leads to a call to startSync(), later (after accounts are created from seed)
+                            twig("Seed not found, therefore, launching seed creation flow")
+                            startDestination = R.id.nav_landing
+                        } else {
+                            twig("Found seed. Re-opening existing wallet")
+                            try {
+                                startSync(walletSetup.openStoredWallet())
+                                startDestination = if (passwordViewModel.isPinCodeEnabled() && passwordViewModel.needToCheckPin()) {
+                                    R.id.nav_enter_pin_fragment
+                                } else {
+                                    R.id.nav_home
+                                }
+                            } catch (e: UnsatisfiedLinkError) {
+                                showSharedLibraryCriticalError(e)
+                            }
+                        }
+                        mainViewModel.setStartingDestination(startDestination)
+                    }
+            }
+        }
+    }
+
+    private fun initNavigation() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                mainViewModel.startDestination.collect { startDestination ->
+                    startDestination?.let {
+                        setLoading(false)
+                        navController = findNavController(R.id.nav_host_fragment)
+                        val navGraph = navController?.navInflater?.inflate(R.navigation.mobile_navigation)
+                        navGraph?.setStartDestination(it)
+                        navController?.setGraph(navGraph!!, null)
+                        navController!!.addOnDestinationChangedListener { _, _, _ ->
+                            // hide the keyboard anytime we change destinations
+                            getSystemService<InputMethodManager>()?.hideSoftInputFromWindow(
+                                this@MainActivity.window.decorView.rootView.windowToken,
+                                InputMethodManager.HIDE_NOT_ALWAYS
+                            )
+                        }
+
+                        for (listener in navInitListeners) {
+                            listener()
+                        }
+                        navInitListeners.clear()
+                    }
+                }
+            }
+        }
     }
 
     fun popBackTo(@IdRes destination: Int, inclusive: Boolean = false) {
