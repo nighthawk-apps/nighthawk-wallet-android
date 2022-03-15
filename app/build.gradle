@@ -139,6 +139,7 @@ dependencies {
     implementation Deps.AndroidX.SECURITY
     coreLibraryDesugaring Deps.AndroidX.DESUGAR_JDK
     implementation Deps.AndroidX.CUSTOM_CHROME_TABS
+    implementation Deps.AndroidX.SPLASH_SCREEN
 
     // Google
     implementation Deps.Google.GUAVA

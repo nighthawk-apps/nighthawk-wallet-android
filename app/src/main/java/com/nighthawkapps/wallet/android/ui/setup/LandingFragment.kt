@@ -31,13 +31,13 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonPositive.setOnClickListener {
-            when (binding.buttonPositive.text.toString().toLowerCase(locale())) {
+            when (binding.buttonPositive.text.toString().lowercase(locale())) {
                 R.string.ns_create_wallet.toAppString(true) -> onNewWallet()
                 R.string.ns_backup_wallet.toAppString(true) -> onBackupWallet()
             }
         }
         binding.buttonNegative.setOnClickListener {
-            when (binding.buttonNegative.text.toString().toLowerCase(locale())) {
+            when (binding.buttonNegative.text.toString().lowercase(locale())) {
                 R.string.ns_restore_from_backup.toAppString(true) -> onRestoreWallet()
                 else -> onSkip(++skipCount)
             }
@@ -120,6 +120,6 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
 
     private fun onEnterWallet() {
         skipCount = 0
-        mainActivity?.navController?.popBackStack()
+        mainActivity?.safeNavigate(R.id.action_nav_landing_to_nav_home)
     }
 }

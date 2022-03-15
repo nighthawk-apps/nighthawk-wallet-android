@@ -15,11 +15,20 @@ class MainViewModel @Inject constructor() : ViewModel() {
     private val _syncReady = MutableStateFlow(false)
     private val _intentData = MutableStateFlow<Uri?>(null)
     private val _sendZecDeepLinkData = MutableStateFlow<DeepLinkUtil.SendDeepLinkData?>(null)
+    private val _isAppStarting = MutableStateFlow(true)
+    private val _startingDestination = MutableStateFlow<Int?>(null)
 
     val loadingMessage: StateFlow<String?> get() = _loadingMessage
     val isLoading get() = loadingMessage.value != null
     val intentData get() = _intentData
     val sendZecDeepLinkData get() = _sendZecDeepLinkData
+    val isAppStarting: StateFlow<Boolean> get() = _isAppStarting
+    val startDestination: StateFlow<Int?> get() = _startingDestination
+
+    fun setStartingDestination(destination: Int) {
+        _startingDestination.value = destination
+        _isAppStarting.value = false
+    }
 
     /**
      * A flow of booleans representing whether or not the synchronizer has been started. This is

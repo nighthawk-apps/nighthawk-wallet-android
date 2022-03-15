@@ -1,13 +1,11 @@
 package com.nighthawkapps.wallet.android.ui.home
 
-import android.content.Context
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
 import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
@@ -23,7 +21,6 @@ import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.invisibleIf
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.requireApplicationContext
-import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ext.transparentIf
@@ -32,19 +29,14 @@ import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.preference.Preferences
 import com.nighthawkapps.wallet.android.preference.model.get
-import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
-import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
-import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.runningReduce
 import kotlinx.coroutines.isActive
 
@@ -55,14 +47,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
     private val passwordViewModel: PasswordViewModel by activityViewModel()
-    private val mainViewModel: MainViewModel by activityViewModel()
 
     lateinit var snake: MagicSnakeLoader
 
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
         FragmentHomeBinding.inflate(inflater)
 
-    override fun onAttach(context: Context) {
+    /*override fun onAttach(context: Context) {
         super.onAttach(context)
 
         // this will call startSync either now or later (after initializing with newly created seed)
@@ -88,7 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         }.launchIn(lifecycleScope)
-    }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -119,7 +110,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             onModelUpdated(null, uiModel)
         }
 
-        lifecycleScope.launchWhenResumed {
+        /*lifecycleScope.launchWhenResumed {
             mainViewModel.intentData.collect { uri ->
                 uri?.let {
                     val data = DeepLinkUtil.getSendDeepLinkData(uri = it)
@@ -132,7 +123,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     }
                 }
             }
-        }
+        }*/
     }
 
     override fun onResume() {

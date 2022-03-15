@@ -2,9 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
-
+    android:id="@+id/mobile_navigation">
     <fragment
         android:id="@+id/nav_home"
         android:name="com.nighthawkapps.wallet.android.ui.home.HomeFragment"
@@ -12,9 +10,6 @@
         <action
             android:id="@+id/action_nav_home_to_nav_receive"
             app:destination="@id/nav_receive" />
-        <action
-            android:id="@+id/action_nav_home_to_create_wallet"
-            app:destination="@id/nav_landing" />
         <action
             android:id="@+id/action_nav_home_to_autoshielding_info"
             app:destination="@id/nav_autoshielding_info" />
@@ -44,9 +39,6 @@
             android:id="@+id/action_nav_scan_to_nav_receive"
             app:destination="@id/nav_receive"
             app:exitAnim="@anim/anim_fade_out_medium" />
-        <action
-            android:id="@+id/action_nav_home_to_enter_pin_fragment"
-            app:destination="@id/nav_enter_pin_fragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_balance_detail"
@@ -230,6 +222,11 @@
         <action
             android:id="@+id/action_nav_landing_to_nav_restore"
             app:destination="@id/nav_restore" />
+        <action
+            android:id="@+id/action_nav_landing_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_landing"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
