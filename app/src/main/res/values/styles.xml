@@ -18,6 +18,13 @@
 
     <style name="NighthawkTheme" parent="NighthawkBaseTheme" />
 
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/ns_dark_navy</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme">@style/NighthawkTheme</item>
+    </style>
+
+
     <style name="NighthawkTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -149,13 +156,17 @@
 
     <!-- ns -->
     <style name="Nighthawk.MaterialComponents.Headline1" parent="TextAppearance.AppCompat.Headline">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/noto_sans</item>
         <item name="android:textColor">@color/ns_peach_100</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">21sp</item>
         <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Nighthawk.MaterialComponents.Headline1.Bold" parent="Nighthawk.MaterialComponents.Headline1">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Nighthawk.MaterialComponents.Headline2" parent="TextAppearance.AppCompat.Headline">
@@ -169,9 +180,9 @@
     </style>
 
     <style name="Nighthawk.MaterialComponents.Body" parent="TextAppearance.AppCompat.Headline">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/noto_sans</item>
         <item name="android:textColor">@color/ns_white</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>

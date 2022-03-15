@@ -27,6 +27,7 @@ object Deps {
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
+        const val SPLASH_SCREEN = "androidx.core:core-splashscreen:1.0.0-beta01"
 
         object CameraX : Version("1.1.0-beta01") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
