@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
 import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
@@ -29,12 +30,15 @@ import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.preference.Preferences
 import com.nighthawkapps.wallet.android.preference.model.get
+import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.runningReduce
@@ -47,6 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
     private val passwordViewModel: PasswordViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by activityViewModel()
 
     lateinit var snake: MagicSnakeLoader
 
@@ -110,7 +115,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             onModelUpdated(null, uiModel)
         }
 
-        /*lifecycleScope.launchWhenResumed {
+        // TODO Need to use this for handling deepLink
+        lifecycleScope.launchWhenResumed {
             mainViewModel.intentData.collect { uri ->
                 uri?.let {
                     val data = DeepLinkUtil.getSendDeepLinkData(uri = it)
@@ -123,7 +129,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     }
                 }
             }
-        }*/
+        }
     }
 
     override fun onResume() {

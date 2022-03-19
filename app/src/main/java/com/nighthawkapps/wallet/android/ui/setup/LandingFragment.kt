@@ -12,6 +12,7 @@ import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.locale
 import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ext.toAppString
+import com.nighthawkapps.wallet.android.ext.toClickableSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITHOUT_BACKUP
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
@@ -41,6 +42,10 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 R.string.ns_restore_from_backup.toAppString(true) -> onRestoreWallet()
                 else -> onSkip(++skipCount)
             }
+        }
+        binding.termsMessage.toClickableSpan(getString(R.string.ns_terms_conditions)) {
+            // Todo navigate to particular web view and remove this toast
+            Toast.makeText(requireContext(), "Click Happened", Toast.LENGTH_SHORT).show()
         }
     }
     override fun onAttach(context: Context) {
