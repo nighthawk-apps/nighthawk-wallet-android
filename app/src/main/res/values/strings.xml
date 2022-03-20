@@ -113,6 +113,10 @@
     <string name="ns_about_text">View licenses</string>
     <string name="ns_privacy_policy_link">https://nighthawkwallet.com/privacypolicy/</string>
 
+    <!-- Backup Screen-->
+    <string name="ns_backup_done">Done</string>
+    <string name="ns_view_wallet">View Wallet</string>
+
     <!-- Send Flow -->
     <string name="ns_scan_payment_request">Scan a Payment Request</string>
     <string name="ns_scan_payment_request_text">If you have a payment request, you can scan the QR code here to auto-fill all the details.</string>

@@ -60,7 +60,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>(),
             }
         }
         if (hasBackUp) {
-            binding.buttonPositive.text = getString(R.string.backup_button_done)
+            binding.buttonPositive.text = getString(R.string.ns_backup_done)
         }
 
         if (args.showExportPdf) {

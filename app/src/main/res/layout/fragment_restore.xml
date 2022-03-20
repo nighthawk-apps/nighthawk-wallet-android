@@ -65,15 +65,12 @@
             android:id="@+id/seed_input"
             style="@style/Nighthawk.MaterialComponents.Body"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:layout_margin="16dp"
             android:background="@drawable/background_r4_empty_et"
             android:gravity="top"
             android:hint="@string/ns_your_seed_phrase"
-            android:paddingStart="16dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="4dp"
+            android:padding="16dp"
             android:scrollbars="vertical"
             android:textColorHint="@color/text_light_dimmed"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,16 +86,16 @@
             android:background="@drawable/background_r4_empty_et"
             android:gravity="center_vertical"
             android:hint="@string/ns_birthday_height"
-            android:paddingHorizontal="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:maxLength="8"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:textColorHint="@color/text_light_dimmed"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_min="54dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/seed_input"
-            android:singleLine="true"
-            android:textColorHint="@color/text_light_dimmed" />
+            app:layout_constraintTop_toBottomOf="@id/seed_input" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_done"
@@ -140,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="@string/success"
+            android:text="@string/ns_success"
             android:textColor="@color/text_light"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,7 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/view_wallet"
+            android:text="@string/ns_view_wallet"
             android:textColor="@color/text_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -179,4 +176,5 @@
             app:constraint_referenced_ids="icon_profile, text_message, title_message, body_message, seed_input, input_birthdate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.core.widget.NestedScrollView>
