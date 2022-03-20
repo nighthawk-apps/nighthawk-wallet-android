@@ -2,11 +2,11 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollView"
-    android:fillViewport="true"
-    android:background="@drawable/background_home">
+    android:background="@color/ns_dark_navy"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -66,7 +66,6 @@
             app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
             app:layout_constraintStart_toEndOf="@id/guideLineStart"
             app:layout_constraintTop_toBottomOf="@id/icon_exit" />
-
 
         <TextView
             android:id="@+id/tvSubHeading"
@@ -143,4 +142,5 @@
             app:layout_constraintWidth_min="152dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.core.widget.NestedScrollView>

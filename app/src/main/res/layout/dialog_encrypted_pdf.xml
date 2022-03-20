@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="8dp"
-    android:background="@drawable/background_home"
+    android:background="@color/ns_dark_navy"
     android:elevation="8dp"
     android:padding="16dp">
 
