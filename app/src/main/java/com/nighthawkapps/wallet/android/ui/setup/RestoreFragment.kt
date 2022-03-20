@@ -61,7 +61,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
             onEnterWallet()
         }
         binding.hitAreaExit.setOnClickListener {
-            onExit()
+            onBackPressed()
         }
         binding.inputBirthdate.doAfterTextChanged {
             var bgDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.background_r4_empty_et)
@@ -76,21 +76,25 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         super.onCreate(savedInstanceState)
 
         mainActivity?.onFragmentBackPressed(this) {
-            if (binding.seedInput.text.isNullOrBlank()) {
-                onExit()
-            } else {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setMessage(getString(R.string.ns_exit_restore_flow_text))
-                    .setTitle(getString(R.string.ns_exit_restore_flow_title))
-                    .setPositiveButton(getString(R.string.ns_stay)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.ns_exit)) { dialog, _ ->
-                        dialog.dismiss()
-                        onExit()
-                    }
-                    .show()
-            }
+            onBackPressed()
+        }
+    }
+
+    private fun onBackPressed() {
+        if (binding.seedInput.text.isNullOrBlank()) {
+            onExit()
+        } else {
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage(getString(R.string.ns_exit_restore_flow_text))
+                .setTitle(getString(R.string.ns_exit_restore_flow_title))
+                .setPositiveButton(getString(R.string.ns_stay)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.ns_exit)) { dialog, _ ->
+                    dialog.dismiss()
+                    onExit()
+                }
+                .show()
         }
     }
 
