@@ -14,8 +14,8 @@
 
         <View
             android:id="@+id/hit_area_exit"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="12dp"
             android:alpha="0.3"
@@ -31,7 +31,7 @@
             android:id="@+id/icon_exit"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="22dp"
             android:contentDescription="@string/content_description_settings_back"
             android:elevation="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -45,14 +45,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="16dp" />
+            app:layout_constraintGuide_begin="22dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLineEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="16dp" />
+            app:layout_constraintGuide_end="22dp" />
 
         <TextView
             android:id="@+id/tvHeading"
