@@ -60,6 +60,9 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         binding.buttonSuccess.setOnClickListener {
             onEnterWallet()
         }
+        binding.hitAreaExit.setOnClickListener {
+            onExit()
+        }
         binding.inputBirthdate.doAfterTextChanged {
             var bgDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.background_r4_empty_et)
             if (it.isNullOrEmpty().not()) {
