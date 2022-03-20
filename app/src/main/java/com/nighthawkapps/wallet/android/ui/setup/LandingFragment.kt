@@ -44,8 +44,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
             }
         }
         binding.termsMessage.toClickableSpan(getString(R.string.ns_terms_conditions)) {
-            // Todo navigate to particular web view and remove this toast
-            Toast.makeText(requireContext(), "Click Happened", Toast.LENGTH_SHORT).show()
+            mainActivity?.onLaunchUrl(getString(R.string.ns_privacy_policy_link))
         }
     }
     override fun onAttach(context: Context) {
