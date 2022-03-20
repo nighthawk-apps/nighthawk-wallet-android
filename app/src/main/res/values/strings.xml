@@ -113,9 +113,21 @@
     <string name="ns_about_text">View licenses</string>
     <string name="ns_privacy_policy_link">https://nighthawkwallet.com/privacypolicy/</string>
 
-    <!-- Backup Screen-->
+    <!-- Backup/Restore Screen-->
+    <string name="ns_landing_backup_skipped_message_1">Are you sure? Without a backup, funds can be lost FOREVER!</string>
+    <string name="ns_landing_backup_skipped_message_2">You can\'t backup later. You\'re probably going to lose your funds!</string>
+    <string name="ns_landing_button_backup_skipped_1">Later</string>
+    <string name="ns_landing_button_backup_skipped_2">I\'ve been warned</string>
+    <string name="ns_landing_button_progress_create">Creating</string>
+    <string name="ns_button_skip">Skip for now</string>
     <string name="ns_backup_done">Done</string>
     <string name="ns_view_wallet">View Wallet</string>
+    <string name="ns_exit_restore_flow_text">Are you sure? For security, the words that you have entered will be cleared!</string>
+    <string name="ns_exit_restore_flow_title">Abort Restore?</string>
+    <string name="ns_stay">Stay</string>
+    <string name="ns_exit">Exit</string>
+    <string name="ns_landing_create_success_message">Wallet created! Congratulations!</string>
+    <string name="ns_landing_import_success_message">Wallet imported! Congratulations!</string>
 
     <!-- Send Flow -->
     <string name="ns_scan_payment_request">Scan a Payment Request</string>

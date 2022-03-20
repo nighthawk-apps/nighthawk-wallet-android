@@ -77,12 +77,12 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
                 onExit()
             } else {
                 MaterialAlertDialogBuilder(requireContext())
-                    .setMessage("Are you sure? For security, the words that you have entered will be cleared!")
-                    .setTitle("Abort?")
-                    .setPositiveButton("Stay") { dialog, _ ->
+                    .setMessage(getString(R.string.ns_exit_restore_flow_text))
+                    .setTitle(getString(R.string.ns_exit_restore_flow_title))
+                    .setPositiveButton(getString(R.string.ns_stay)) { dialog, _ ->
                         dialog.dismiss()
                     }
-                    .setNegativeButton("Exit") { dialog, _ ->
+                    .setNegativeButton(getString(R.string.ns_exit)) { dialog, _ ->
                         dialog.dismiss()
                         onExit()
                     }

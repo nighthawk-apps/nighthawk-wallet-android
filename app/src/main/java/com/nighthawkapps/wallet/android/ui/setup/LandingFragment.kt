@@ -68,12 +68,12 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
     private fun onSkip(count: Int) {
         when (count) {
             1 -> {
-                binding.textMessage.setText(R.string.landing_backup_skipped_message_1)
-                binding.buttonNegative.setText(R.string.landing_button_backup_skipped_1)
+                binding.textMessage.setText(R.string.ns_landing_backup_skipped_message_1)
+                binding.buttonNegative.setText(R.string.ns_landing_button_backup_skipped_1)
             }
             2 -> {
-                binding.textMessage.setText(R.string.landing_backup_skipped_message_2)
-                binding.buttonNegative.setText(R.string.landing_button_backup_skipped_2)
+                binding.textMessage.setText(R.string.ns_landing_backup_skipped_message_2)
+                binding.buttonNegative.setText(R.string.ns_landing_button_backup_skipped_2)
             }
             else -> {
                 onEnterWallet()
@@ -87,7 +87,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
 
     private fun onNewWallet() {
         lifecycleScope.launch {
-            binding.buttonPositive.setText(R.string.landing_button_progress_create)
+            binding.buttonPositive.setText(R.string.ns_landing_button_progress_create)
             binding.buttonPositive.isEnabled = false
 
             try {
@@ -95,8 +95,8 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 mainActivity?.startSync(initializer)
 
                 binding.buttonPositive.isEnabled = true
-                binding.textMessage.setText(R.string.landing_create_success_message)
-                binding.buttonNegative.setText(R.string.landing_button_secondary_create_success)
+                binding.textMessage.setText(R.string.ns_landing_create_success_message)
+                binding.buttonNegative.setText(R.string.ns_button_skip)
                 binding.buttonPositive.setText(R.string.ns_backup_wallet)
                 mainActivity?.playSound("sound_receive_small.mp3")
                 mainActivity?.vibrateSuccess()
