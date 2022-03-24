@@ -98,6 +98,9 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 binding.textMessage.setText(R.string.ns_landing_create_success_message)
                 binding.buttonNegative.setText(R.string.ns_button_skip)
                 binding.buttonPositive.setText(R.string.ns_backup_wallet)
+                binding.titleMessage.visibility = View.GONE
+                binding.bodyMessage.visibility = View.GONE
+                binding.termsMessage.visibility = View.GONE
                 mainActivity?.playSound("sound_receive_small.mp3")
                 mainActivity?.vibrateSuccess()
             } catch (e: UnsatisfiedLinkError) {
