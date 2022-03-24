@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ns_dark_navy">
+    android:background="@drawable/background_main">
 
     <TextView
         android:layout_width="wrap_content"

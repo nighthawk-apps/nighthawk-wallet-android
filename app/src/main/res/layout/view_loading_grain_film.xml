@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<View xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewGrainFilm"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.5"
+    android:background="@drawable/grain_film"
+    android:backgroundTint="@color/zcashGray"
+    android:backgroundTintMode="add"
+    android:clickable="true"
+    android:elevation="16dp"
+    android:focusable="true" />

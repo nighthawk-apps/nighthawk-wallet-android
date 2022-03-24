@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -50,6 +49,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigator
 import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
@@ -57,6 +57,7 @@ import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.BatchMetrics
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
@@ -102,6 +103,7 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
     private var ignoreScanFailure: Boolean = false
 
     var navController: NavController? = null
+    var bottomNavView: BottomNavigationView? = null
     private val navInitListeners: MutableList<() -> Unit> = mutableListOf()
 
     private val hasCameraPermission
@@ -124,7 +126,6 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
         super.onCreate(savedInstanceState)
 
         initNavigation()
-        initLoadScreen()
 
         splashScreen.setKeepOnScreenCondition {
             getNavStartingPoint()
@@ -152,21 +153,6 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
             winParams.flags = winParams.flags and bits.inv()
         }
         win.attributes = winParams
-    }
-
-    private fun initLoadScreen() {
-        lifecycleScope.launchWhenResumed {
-            mainViewModel.loadingMessage.collect { message ->
-                onLoadingMessage(message)
-            }
-        }
-    }
-
-    private fun onLoadingMessage(message: String?) {
-        twig("Applying loading message: $message")
-        // TODO: replace with view binding
-        findViewById<View>(R.id.container_loading).goneIf(message == null)
-        findViewById<TextView>(R.id.text_message).text = message
     }
 
     private fun getNavStartingPoint() {
@@ -215,7 +201,12 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                         val navGraph = navController?.navInflater?.inflate(R.navigation.mobile_navigation)
                         navGraph?.setStartDestination(it)
                         navController?.setGraph(navGraph!!, null)
-                        navController!!.addOnDestinationChangedListener { _, _, _ ->
+                        bottomNavView = findViewById(R.id.bottomNavBar)
+                        bottomNavView?.setupWithNavController(navController!!)
+                        updateBottomNavVisibility(isMainScreen(it))
+                        updateTransferTab(false)
+                        navController!!.addOnDestinationChangedListener { _, destination, _ ->
+                            updateBottomNavVisibility(isMainScreen(destination.id))
                             // hide the keyboard anytime we change destinations
                             getSystemService<InputMethodManager>()?.hideSoftInputFromWindow(
                                 this@MainActivity.window.decorView.rootView.windowToken,
@@ -231,6 +222,18 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                 }
             }
         }
+    }
+
+    private fun isMainScreen(destinationID: Int): Boolean {
+        return destinationID == R.id.nav_home || destinationID == R.id.nav_transfer || destinationID == R.id.nav_settings
+    }
+
+    fun updateBottomNavVisibility(show: Boolean) {
+        bottomNavView?.goneIf(!show)
+    }
+
+    fun updateTransferTab(enable: Boolean) {
+        bottomNavView?.menu?.findItem(R.id.nav_transfer)?.isEnabled = enable
     }
 
     fun popBackTo(@IdRes destination: Int, inclusive: Boolean = false) {
