@@ -203,10 +203,10 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                         navController?.setGraph(navGraph!!, null)
                         bottomNavView = findViewById(R.id.bottomNavBar)
                         bottomNavView?.setupWithNavController(navController!!)
-                        updateBottomNavVisibility(isMainScreen(it))
+                        updateBottomNavVisibility(mainViewModel.isMainScreen(it))
                         updateTransferTab(false)
                         navController!!.addOnDestinationChangedListener { _, destination, _ ->
-                            updateBottomNavVisibility(isMainScreen(destination.id))
+                            updateBottomNavVisibility(mainViewModel.isMainScreen(destination.id))
                             // hide the keyboard anytime we change destinations
                             getSystemService<InputMethodManager>()?.hideSoftInputFromWindow(
                                 this@MainActivity.window.decorView.rootView.windowToken,
@@ -222,10 +222,6 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                 }
             }
         }
-    }
-
-    private fun isMainScreen(destinationID: Int): Boolean {
-        return destinationID == R.id.nav_home || destinationID == R.id.nav_transfer || destinationID == R.id.nav_settings
     }
 
     fun updateBottomNavVisibility(show: Boolean) {

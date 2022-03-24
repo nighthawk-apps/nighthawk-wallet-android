@@ -2,6 +2,7 @@ package com.nighthawkapps.wallet.android.ui
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,5 +59,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     fun setSendZecDeepLinkData(data: DeepLinkUtil.SendDeepLinkData?) {
         _sendZecDeepLinkData.value = data
+    }
+
+    fun isMainScreen(destinationID: Int): Boolean {
+        return destinationID == R.id.nav_home || destinationID == R.id.nav_transfer || destinationID == R.id.nav_settings
     }
 }
