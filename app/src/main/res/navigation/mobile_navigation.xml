@@ -241,7 +241,17 @@
     <fragment
         android:id="@+id/nav_backup"
         android:name="com.nighthawkapps.wallet.android.ui.setup.BackupFragment"
-        tools:layout="@layout/fragment_backup" />
+        tools:layout="@layout/fragment_backup" >
+        <argument
+            android:name="showExportPdf"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_nav_backup_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_backup"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_restore"

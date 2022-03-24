@@ -80,7 +80,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                             getString(R.string.biometric_backup_phrase_description),
                             getString(R.string.biometric_backup_phrase_title)
                         ) {
-                            main.safeNavigate(R.id.action_nav_profile_to_nav_backup)
+                            main.safeNavigate(ProfileFragmentDirections.actionNavProfileToNavBackup(showExportPdf = true))
                         }
                     }
                 }
