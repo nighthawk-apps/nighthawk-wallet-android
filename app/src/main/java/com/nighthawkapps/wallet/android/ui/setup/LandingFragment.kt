@@ -12,6 +12,7 @@ import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.locale
 import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ext.toAppString
+import com.nighthawkapps.wallet.android.ext.toClickableSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITHOUT_BACKUP
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetupState.SEED_WITH_BACKUP
@@ -42,6 +43,9 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 else -> onSkip(++skipCount)
             }
         }
+        binding.termsMessage.toClickableSpan(getString(R.string.ns_terms_conditions)) {
+            mainActivity?.onLaunchUrl(getString(R.string.ns_privacy_policy_link))
+        }
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -64,12 +68,12 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
     private fun onSkip(count: Int) {
         when (count) {
             1 -> {
-                binding.textMessage.setText(R.string.landing_backup_skipped_message_1)
-                binding.buttonNegative.setText(R.string.landing_button_backup_skipped_1)
+                binding.textMessage.setText(R.string.ns_landing_backup_skipped_message_1)
+                binding.buttonNegative.setText(R.string.ns_landing_button_backup_skipped_1)
             }
             2 -> {
-                binding.textMessage.setText(R.string.landing_backup_skipped_message_2)
-                binding.buttonNegative.setText(R.string.landing_button_backup_skipped_2)
+                binding.textMessage.setText(R.string.ns_landing_backup_skipped_message_2)
+                binding.buttonNegative.setText(R.string.ns_landing_button_backup_skipped_2)
             }
             else -> {
                 onEnterWallet()
@@ -83,7 +87,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
 
     private fun onNewWallet() {
         lifecycleScope.launch {
-            binding.buttonPositive.setText(R.string.landing_button_progress_create)
+            binding.buttonPositive.setText(R.string.ns_landing_button_progress_create)
             binding.buttonPositive.isEnabled = false
 
             try {
@@ -91,9 +95,12 @@ class LandingFragment : BaseFragment<FragmentLandingBinding>() {
                 mainActivity?.startSync(initializer)
 
                 binding.buttonPositive.isEnabled = true
-                binding.textMessage.setText(R.string.landing_create_success_message)
-                binding.buttonNegative.setText(R.string.landing_button_secondary_create_success)
+                binding.textMessage.setText(R.string.ns_landing_create_success_message)
+                binding.buttonNegative.setText(R.string.ns_button_skip)
                 binding.buttonPositive.setText(R.string.ns_backup_wallet)
+                binding.titleMessage.visibility = View.GONE
+                binding.bodyMessage.visibility = View.GONE
+                binding.termsMessage.visibility = View.GONE
                 mainActivity?.playSound("sound_receive_small.mp3")
                 mainActivity?.vibrateSuccess()
             } catch (e: UnsatisfiedLinkError) {

@@ -11,14 +11,16 @@
     <string name="ns_get_started">Get Started</string>
     <string name="ns_landing_text">If it\'s your first time using Nighthawk, you\'ll need to create a wallet. If you are returning to Nighthawk, you can try to restore your previous wallet.</string>
     <string name="ns_landing_footer">By using this app you accept our\nTerms and Conditions</string>
+    <string name="ns_terms_conditions">Terms and Conditions</string>
     <string name="ns_create_wallet">Create Wallet</string>
     <string name="ns_create_wallet_title">Write down your backup seed</string>
     <string name="ns_create_wallet_text">If you lose access to your phone or Nighthawk wallet, the only way you can regain access to your Zcash is if you have this 24 word phrase and wallet birthday code.\n\nWrite it down on paper and store it somewhere safe.</string>
     <string name="ns_create_wallet_confirm_text">I confirm I have written down my seed phrase.</string>
     <string name="ns_restore_from_backup">Restore from Backup</string>
-    <string name="ns_restore_wallet_text">Enter your 12 word seed phrase below. If you do not have this phrase, you will need to create a new wallet.</string>
+    <string name="ns_restore_wallet_text">Enter your 24 word seed phrase below. If you do not have this phrase, you will need to create a new wallet.</string>
     <string name="ns_your_seed_phrase">Your seed phrase</string>
     <string name="ns_wallet_birthday">Wallet Birthday: %s</string>
+    <string name="ns_birthday_height">Birthday Height</string>
     <string name="ns_your_seed_error">Error - This doesn\'t look like a valid seed phrase.</string>
     <string name="ns_continue">Continue</string>
 
@@ -109,6 +111,23 @@
     <string name="ns_security_try_again">Please try again</string>
     <string name="ns_about">About</string>
     <string name="ns_about_text">View licenses</string>
+    <string name="ns_privacy_policy_link">https://nighthawkwallet.com/privacypolicy/</string>
+
+    <!-- Backup/Restore Screen-->
+    <string name="ns_landing_backup_skipped_message_1">Are you sure? Without a backup, funds can be lost FOREVER!</string>
+    <string name="ns_landing_backup_skipped_message_2">You can\'t backup later. You\'re probably going to lose your funds!</string>
+    <string name="ns_landing_button_backup_skipped_1">Later</string>
+    <string name="ns_landing_button_backup_skipped_2">I\'ve been warned</string>
+    <string name="ns_landing_button_progress_create">Creating</string>
+    <string name="ns_button_skip">Skip for now</string>
+    <string name="ns_backup_done">Done</string>
+    <string name="ns_view_wallet">View Wallet</string>
+    <string name="ns_exit_restore_flow_text">Are you sure? For security, the words that you have entered will be cleared!</string>
+    <string name="ns_exit_restore_flow_title">Abort Restore?</string>
+    <string name="ns_stay">Stay</string>
+    <string name="ns_exit">Exit</string>
+    <string name="ns_landing_create_success_message">Wallet created! Congratulations!</string>
+    <string name="ns_landing_import_success_message">Wallet imported! Congratulations!</string>
 
     <!-- Send Flow -->
     <string name="ns_scan_payment_request">Scan a Payment Request</string>
@@ -518,5 +537,6 @@
     <string name="buy_zec">Buy Zcash</string>
     <string name="buy_zec_dialog_title">Buy ZEC from MoonPay</string>
     <string name="buy_zec_dialog_msg">Customers that are not US residents can purchase Zcash (ZEC) by registering with MoonPay.\n\nYour Zcash T-Address has been copied to the clipboard.\nChoose \"Open Browser\" below, Select \'Zcash (ZEC)\' as the receiving coin once MoonPay loads, and then paste your T-address.</string>
+    <string name="birthday_height_backup">Birthday Height:</string>
 
 </resources>

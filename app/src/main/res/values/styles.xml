@@ -42,8 +42,8 @@
     </style>
 
     <style name="Nighthawk.Button" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/ns_peach_100</item>
-        <item name="android:textColor">@color/ns_dark_navy</item>
+        <item name="android:backgroundTint">@color/selector_primary_button_background</item>
+        <item name="android:textColor">@color/selector_primary_button_text_color</item>
     </style>
 
     <style name="Nighthawk.Button.Normal" parent="Widget.MaterialComponents.Button">
@@ -170,7 +170,7 @@
     </style>
 
     <style name="Nighthawk.MaterialComponents.Headline2" parent="TextAppearance.AppCompat.Headline">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/noto_sans</item>
         <item name="android:textColor">@color/ns_peach_100</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
@@ -210,9 +210,9 @@
     </style>
 
     <style name="Nighthawk.MaterialComponents.SubText" parent="TextAppearance.AppCompat.Headline">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/noto_sans</item>
         <item name="android:textColor">@color/ns_white</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">12sp</item>

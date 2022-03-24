@@ -7,16 +7,15 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentBackupBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.Const
-import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
@@ -24,6 +23,8 @@ import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel.WalletSetu
 import com.nighthawkapps.wallet.android.ui.util.AddressPartNumberSpan
 import com.nighthawkapps.wallet.android.ui.util.EncryptedPdfDialog
 import com.nighthawkapps.wallet.android.ui.util.PdfUtil
+import com.nighthawkapps.wallet.android.ui.util.seedwords.SeedWord
+import com.nighthawkapps.wallet.android.ui.util.seedwords.SeedWordAdapter
 import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,37 +40,43 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>(),
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
     private var hasBackUp: Boolean = true // TODO: implement backup and then check for it here-ish
+    private val args: BackupFragmentArgs by navArgs()
 
     override fun inflate(inflater: LayoutInflater): FragmentBackupBinding =
         FragmentBackupBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.hitAreaExit.onClickNavBack()
-        with(binding) {
-            applySpan(
-                textAddressPart1, textAddressPart2, textAddressPart3,
-                textAddressPart4, textAddressPart5, textAddressPart6,
-                textAddressPart7, textAddressPart8, textAddressPart9,
-                textAddressPart10, textAddressPart11, textAddressPart12,
-                textAddressPart13, textAddressPart14, textAddressPart15,
-                textAddressPart16, textAddressPart17, textAddressPart18,
-                textAddressPart19, textAddressPart20, textAddressPart21,
-                textAddressPart22, textAddressPart23, textAddressPart24
-            )
+        showSeedWords()
+        binding.buttonPositive.text = getString(if (args.showExportPdf) R.string.ns_backup_wallet_pdf else R.string.ns_continue)
+        binding.hitAreaExit.setOnClickListener {
+            onEnterWallet()
         }
         binding.buttonPositive.setOnClickListener {
-            showEnterPasswordDialog()
+            if (args.showExportPdf) {
+                showEnterPasswordDialog()
+            } else {
+                onEnterWallet()
+            }
         }
         if (hasBackUp) {
-            binding.buttonPositive.text = getString(R.string.backup_button_done)
+            binding.buttonPositive.text = getString(R.string.ns_backup_done)
+        }
+
+        if (args.showExportPdf) {
+            binding.buttonPositive.isEnabled = true
+            binding.checkBoxConfirmation.visibility = View.GONE
+        } else {
+            binding.checkBoxConfirmation.setOnCheckedChangeListener { _, isChecked ->
+                binding.buttonPositive.isEnabled = isChecked
+            }
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mainActivity?.onBackPressedDispatcher?.addCallback(this) {
-            onEnterWallet(false)
+            onEnterWallet()
         }
     }
 
@@ -86,7 +93,7 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>(),
     override fun onResume() {
         super.onResume()
         resumedScope.launch {
-            binding.textBirtdate.text = getString(R.string.backup_format_birthday_height, calculateBirthday())
+            binding.textBirtdate.text = "${calculateBirthday()}"
         }
     }
 
@@ -110,11 +117,19 @@ class BackupFragment : BaseFragment<FragmentBackupBinding>(),
         return maxOf(storedBirthday, oldestTransactionHeight, activationHeight)
     }
 
-    private fun onEnterWallet(showMessage: Boolean = !this.hasBackUp) {
-        if (showMessage) {
-            Toast.makeText(activity, R.string.backup_verification_not_implemented, Toast.LENGTH_LONG).show()
+    private fun onEnterWallet() {
+        if (args.showExportPdf) {
+            mainActivity?.navController?.popBackStack()
+        } else {
+            mainActivity?.safeNavigate(R.id.action_nav_backup_to_nav_home)
         }
-        mainActivity?.navController?.popBackStack()
+    }
+
+    private fun showSeedWords() = viewLifecycleOwner.lifecycleScope.launch {
+        val seedWordsList =
+            loadSeedWords().mapIndexed { index, chars -> SeedWord(index + 1, String(chars)) }
+        val seedWordAdapter = SeedWordAdapter(requireContext(), seedWordsList)
+        binding.gridViewSeedWords.adapter = seedWordAdapter
     }
 
     private fun applySpan(vararg textViews: TextView) = lifecycleScope.launch {

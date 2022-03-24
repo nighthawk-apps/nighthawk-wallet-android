@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/background_home">
+    android:background="@color/ns_dark_navy">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_background"

@@ -2,18 +2,17 @@ package com.nighthawkapps.wallet.android.ui.setup
 
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentRestoreBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
-import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.showInvalidSeedPhraseError
 import com.nighthawkapps.wallet.android.ext.showSharedLibraryCriticalError
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
@@ -26,9 +25,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
     private val textWatcher: TextWatcher by lazy {
         object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (s != null && s.isNotEmpty()) {
-                    binding.groupDone.goneIf(binding.seedInput.text.isNullOrBlank())
-                }
+                onSeedWordEntered(s)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -39,6 +36,17 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         }
     }
 
+    private fun onSeedWordEntered(editable: Editable?) {
+        var enableDoneButton = false
+        var seedWordBg = ContextCompat.getDrawable(requireContext(), R.drawable.background_r4_empty_et)
+        if (editable?.trim()?.split(Const.SEED_WORDS_SEPERATOR)?.size == Const.NO_OF_SEED_WORDS) {
+            enableDoneButton = true
+            seedWordBg = ContextCompat.getDrawable(requireContext(), R.drawable.background_r4_complete_et)
+        }
+        binding.buttonDone.isEnabled = enableDoneButton
+        binding.seedInput.background = seedWordBg
+    }
+
     override fun inflate(inflater: LayoutInflater): FragmentRestoreBinding =
         FragmentRestoreBinding.inflate(inflater)
 
@@ -46,35 +54,47 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.seedInput.addTextChangedListener(textWatcher)
-        binding.seedInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
         binding.buttonDone.setOnClickListener {
             onDone()
         }
         binding.buttonSuccess.setOnClickListener {
             onEnterWallet()
         }
-        binding.groupDone.visibility = View.GONE
+        binding.hitAreaExit.setOnClickListener {
+            onBackPressed()
+        }
+        binding.inputBirthdate.doAfterTextChanged {
+            var bgDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.background_r4_empty_et)
+            if (it.isNullOrEmpty().not()) {
+                bgDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.background_r4_complete_et)
+            }
+            binding.inputBirthdate.background = bgDrawable
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         mainActivity?.onFragmentBackPressed(this) {
-            if (binding.seedInput.text.isNullOrBlank()) {
-                onExit()
-            } else {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setMessage("Are you sure? For security, the words that you have entered will be cleared!")
-                    .setTitle("Abort?")
-                    .setPositiveButton("Stay") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton("Exit") { dialog, _ ->
-                        dialog.dismiss()
-                        onExit()
-                    }
-                    .show()
-            }
+            onBackPressed()
+        }
+    }
+
+    private fun onBackPressed() {
+        if (binding.seedInput.text.isNullOrBlank()) {
+            onExit()
+        } else {
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage(getString(R.string.ns_exit_restore_flow_text))
+                .setTitle(getString(R.string.ns_exit_restore_flow_title))
+                .setPositiveButton(getString(R.string.ns_stay)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.ns_exit)) { dialog, _ ->
+                    dialog.dismiss()
+                    onExit()
+                }
+                .show()
         }
     }
 
@@ -92,9 +112,9 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         val seedPhrase = binding.seedInput.text.toString().trim()
         // we only use the default network here because the synchronizer doesn't exist yet
         val activation = NighthawkWalletApp.instance.defaultNetwork.saplingActivationHeight
-        var birthday = binding.root.findViewById<TextView>(R.id.input_birthdate).text.toString()
+        val birthday = binding.inputBirthdate.text.toString()
             .let { birthdateString ->
-                if (birthdateString.isNullOrEmpty()) activation else birthdateString.toInt()
+                if (birthdateString.isEmpty()) activation else birthdateString.toInt()
             }.coerceAtLeast(activation)
 
         try {
@@ -125,5 +145,10 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         binding.groupStart.visibility = View.GONE
         binding.groupSuccess.visibility = View.VISIBLE
         binding.buttonSuccess.isEnabled = false
+    }
+
+    object Const {
+        const val SEED_WORDS_SEPERATOR = " "
+        const val NO_OF_SEED_WORDS = 24
     }
 }
