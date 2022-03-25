@@ -41,6 +41,10 @@
             app:exitAnim="@anim/anim_fade_out_medium" />
     </fragment>
     <fragment
+        android:id="@+id/nav_transfer"
+        android:name="com.nighthawkapps.wallet.android.ui.transfer.TransferFragment"
+        tools:layout="@layout/fragment_transfer" />
+    <fragment
         android:id="@+id/nav_balance_detail"
         android:name="com.nighthawkapps.wallet.android.ui.home.BalanceDetailFragment"
         tools:layout="@layout/fragment_balance_detail">

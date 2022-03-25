@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home"
+        android:title="@string/ns_wallet"
+        android:icon="@drawable/ic_icon_wallet"/>
+
+    <item android:id="@+id/nav_transfer"
+        android:title="@string/ns_transfer"
+        android:icon="@drawable/ic_icon_transfer"/>
+
+    <item android:id="@+id/nav_settings"
+        android:title="@string/ns_settings"
+        android:icon="@drawable/ic_icon_settings"/>
+
+</menu>

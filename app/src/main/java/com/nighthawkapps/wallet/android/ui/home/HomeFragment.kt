@@ -350,6 +350,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         snake.isSynced = true
+        mainActivity?.updateTransferTab(enable = true)
         if (!uiModel.hasSaplingBalance) {
             onNoFunds()
         } else {
