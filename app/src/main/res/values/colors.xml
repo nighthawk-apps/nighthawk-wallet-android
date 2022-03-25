@@ -17,6 +17,7 @@
     <color name="ns_bright_blue">#7AA3F3</color>
     <color name="ns_bright_green">#9DEA79</color>
     <color name="ns_bright_red">#F53C3C</color>
+    <color name="ns_disabled">#33FFFFFF</color>
 
     <!--                  -->
     <!-- palette: Android -->

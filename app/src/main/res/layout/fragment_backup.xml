@@ -5,7 +5,7 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ns_dark_navy"
+    android:background="@drawable/background_main"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
