@@ -38,7 +38,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity?.preventBackPress(this)
         viewModel.init()
         binding.apply {
             groupLoading.gone()
