@@ -219,4 +219,10 @@
         <item name="android:letterSpacing">0</item>
     </style>
 
+    <style name="BottomNavigationView.TextAppearance" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+    </style>
+
+
 </resources>
