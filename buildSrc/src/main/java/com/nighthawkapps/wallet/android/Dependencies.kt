@@ -98,7 +98,7 @@ object Deps {
     }
 
     object Misc {
-        const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.17"
+        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.17.0"
         const val LOTTIE = "com.airbnb.android:lottie:4.2.2"
         const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
 
