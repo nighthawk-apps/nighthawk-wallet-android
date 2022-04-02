@@ -117,7 +117,7 @@ object PdfUtil {
                     // Pdf generated time
                     val dateFormatter = SimpleDateFormat(context.getString(R.string.transaction_history_format_date_time_brief), context.locale())
                     contentStream.newLineAtOffset(0f, -leading)
-                    contentStream.showText("Generated At: ${dateFormatter.format(Date())}")
+                    contentStream.showText("Backup PDF generated at: ${dateFormatter.format(Date())}")
 
                     contentStream.endText()
                     contentStream.close()
@@ -127,6 +127,7 @@ object PdfUtil {
                     document.save(filePath)
                     document.close()
                 } catch (e: IOException) {
+                    Toast.makeText(context, "PDF creation failed", Toast.LENGTH_SHORT).show()
                     twig("PdfBox Exception thrown while creating PDF for encryption $e")
                 }
 

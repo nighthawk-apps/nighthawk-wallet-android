@@ -21,7 +21,7 @@ Self-custody wallet for Zcash:
 Buy ZEC via MoonPay:
 - Customers that are not US residents can purchase Zcash (ZEC) by registering with MoonPay. KYC, Terms & Conditions apply per MoonPay policies.
 
-Swap ZEC via SideShift.ai & StealEx.io:
+Swap ZEC via SideShift.ai & StealthEx.io:
 - Swap between several supported crypto-currencies straight to your Z-address or T-address. KYC, Terms & Conditions apply per service providers.
 
 PIN protection:

@@ -377,9 +377,9 @@
     <string name="as_of_block">as of block</string>
     <string name="auto_shield_complete">Auto-Shielding completed successfully!</string>
     <string name="export_pdf">Export PDF</string>
-    <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be uploaded to the cloud.</string>
+    <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be backed up to user secured portable storage devices.</string>
     <string name="pdf_password_hint">Please Enter Password</string>
-    <string name="wallet_birthday_helper_text">e.g. 1080000. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while.</string>
+    <string name="wallet_birthday_helper_text">e.g. 1600000. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while.</string>
     <string name="profile_wipe_wallet_title">Are you sure?</string>
     <string name="profile_wipe_wallet_text">Wiping your data will close the app. Since your seed is preserved, this operation is probably safe but please backup your seed anyway. \n\nContinue?</string>
     <string name="profile_wipe_wallet_wipe">Wipe</string>
