@@ -4,13 +4,13 @@ object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
     const val kotlinVersion = "1.6.10"
-    const val navigationVersion = "2.4.0"
-    const val compileSdkVersion = 31
+    const val navigationVersion = "2.4.1"
+    const val compileSdkVersion = 32
     const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
-    const val targetSdkVersion = 31
-    const val versionName = "1.0.34"
-    const val versionCode = 1_00_34_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val targetSdkVersion = 32
+    const val versionName = "1.0.35"
+    const val versionCode = 1_00_35_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -18,28 +18,28 @@ object Deps {
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.1"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha04"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.3"
-        const val CORE_KTX = "androidx.core:core-ktx:1.8.0-alpha03"
+        const val CORE_KTX = "androidx.core:core-ktx:1.9.0-alpha02"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.4.1"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
-        const val PAGING = "androidx.paging:paging-runtime-ktx:3.1.0"
+        const val PAGING = "androidx.paging:paging-runtime-ktx:3.1.1"
         const val RECYCLER = "androidx.recyclerview:recyclerview:1.2.0"
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
 
-        object CameraX : Version("1.1.0-beta01") {
+        object CameraX : Version("1.1.0-beta02") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
             val CORE = "androidx.camera:camera-core:$version"
             val LIFECYCLE = "androidx.camera:camera-lifecycle:$version"
 
-            object View : Version("1.0.0-alpha31") {
+            object View : Version("1.1.0-beta02") {
                 val EXT = "androidx.camera:camera-extensions:$version"
                 val VIEW = "androidx.camera:camera-view:$version"
             }
         }
 
-        object Lifecycle : Version("2.4.0") {
+        object Lifecycle : Version("2.4.1") {
             val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         }
 
@@ -48,13 +48,13 @@ object Deps {
             val UI_KTX = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
-        object Room : Version("2.4.1") {
+        object Room : Version("2.4.2") {
             val ROOM_COMPILER = "androidx.room:room-compiler:$version"
             val ROOM_KTX = "androidx.room:room-ktx:$version"
         }
     }
 
-    object Dagger : Version("2.40.5") {
+    object Dagger : Version("2.41") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -63,12 +63,12 @@ object Deps {
     object Google {
         // solves error: Duplicate class com.google.common.util.concurrent.ListenableFuture found in modules jetified-guava-26.0-android.jar (com.google.guava:guava:26.0-android) and listenablefuture-1.0.jar (com.google.guava:listenablefuture:1.0)
         // per this recommendation from Chris Povirk, given guava's decision to split ListenableFuture away from Guava: https://groups.google.com/d/msg/guava-discuss/GghaKwusjcY/bCIAKfzOEwAJ
-        const val GUAVA = "com.google.guava:guava:31.0.1-android"
-        const val MATERIAL = "com.google.android.material:material:1.4.0"
-        const val GSON = "com.google.code.gson:gson:2.8.9"
+        const val GUAVA = "com.google.guava:guava:31.1-android"
+        const val MATERIAL = "com.google.android.material:material:1.5.0"
+        const val GSON = "com.google.code.gson:gson:2.9.0"
     }
 
-    object Grpc : Version("1.44.0") {
+    object Grpc : Version("1.45.1") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
@@ -98,8 +98,8 @@ object Deps {
     }
 
     object Misc {
-        const val I_TEXT_CORE = "com.itextpdf:itext7-core:7.1.17"
-        const val LOTTIE = "com.airbnb.android:lottie:4.2.2"
+        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.17.0"
+        const val LOTTIE = "com.airbnb.android:lottie:5.0.3"
         const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
 
         object Plugins {

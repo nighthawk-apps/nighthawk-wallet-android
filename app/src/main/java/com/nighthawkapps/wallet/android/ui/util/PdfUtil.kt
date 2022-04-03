@@ -4,28 +4,30 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import com.itextpdf.kernel.colors.DeviceRgb
-import com.itextpdf.kernel.geom.PageSize
-import com.itextpdf.kernel.pdf.EncryptionConstants
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfWriter
-import com.itextpdf.kernel.pdf.WriterProperties
-import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.Paragraph
-import com.itextpdf.layout.element.Text
+import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.locale
 import com.nighthawkapps.wallet.android.ext.twig
+import com.tom_roush.pdfbox.android.PDFBoxResourceLoader
+import com.tom_roush.pdfbox.pdmodel.PDDocument
+import com.tom_roush.pdfbox.pdmodel.PDPage
+import com.tom_roush.pdfbox.pdmodel.PDPageContentStream
+import com.tom_roush.pdfbox.pdmodel.encryption.AccessPermission
+import com.tom_roush.pdfbox.pdmodel.encryption.StandardProtectionPolicy
+import com.tom_roush.pdfbox.pdmodel.font.PDFont
+import com.tom_roush.pdfbox.pdmodel.font.PDType1Font
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.CoroutineExceptionHandler
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.File
-import java.io.FileOutputStream
-import java.lang.StringBuilder
+import java.io.IOException
+import java.security.Security
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -42,80 +44,114 @@ object PdfUtil {
         birthDay: Int
     ) {
         CoroutineScope(Dispatchers.IO).launch(coroutineExceptionHandler) {
+            PDFBoxResourceLoader.init(NighthawkWalletApp.instance.applicationContext)
             val stringBuilder = StringBuilder()
+            val listOfSeeds = mutableListOf<String>()
+            val noOfWordsPerLineToPrint = 6
             try {
                 seedWords.forEachIndexed { index, chars ->
                     stringBuilder.append(index + 1).append(". ").append(chars.concatToString()).append("     ")
+                    if ((index + 1) % noOfWordsPerLineToPrint == 0) {
+                        listOfSeeds.add(stringBuilder.toString())
+                        stringBuilder.clear()
+                    }
                 }
+                listOfSeeds.add(stringBuilder.toString())
                 val filePath = "${context.cacheDir.absolutePath}/NighthawkSeedWords.pdf"
                 if (File(filePath).exists()) {
                     File(filePath).delete()
                 }
-                val writerProperties = WriterProperties().setStandardEncryption(
-                    password.toByteArray(),
-                    password.toByteArray(),
-                    EncryptionConstants.ALLOW_PRINTING,
-                    EncryptionConstants.ENCRYPTION_AES_256
-                )
-                val pdfWriter = PdfWriter(FileOutputStream(filePath), writerProperties)
-                val document = Document(PdfDocument(pdfWriter), PageSize.A4, true)
-                val headingFontSize = 16f
-                val headingColor = DeviceRgb(0, 0, 0)
 
-                // Add seed words
-                document.add(
-                    Paragraph(
-                        Text("These are seed words used to restore your Zcash in Nighthawk Wallet: \n")
-                            .setFontSize(headingFontSize)
-                            .setFontColor(headingColor)
-                    )
-                )
-                document.add(Paragraph(stringBuilder.toString()))
-                document.add(Paragraph("\n"))
+                val keyLength = 128 // 128 bit is the highest currently supported
 
-                // Add birthday
-                val birthdayParaGraph = Paragraph()
-                birthdayParaGraph.add(
-                    Text("Wallet Birthday: ")
-                        .setFontSize(headingFontSize)
-                        .setFontColor(headingColor)
-                )
-                birthdayParaGraph.add("$birthDay")
-                document.add(birthdayParaGraph)
+                // Limit permissions of those without the password
+                val accessPermission = AccessPermission()
+                accessPermission.setCanPrint(false)
 
-                // Add pdf generated time
-                val generatedAtParaGraph = Paragraph()
-                generatedAtParaGraph.add(
-                    Text("Generated At: ")
-                        .setFontSize(headingFontSize)
-                        .setFontColor(headingColor)
-                )
-                val dateFormatter = SimpleDateFormat(context.getString(R.string.transaction_history_format_date_time_brief), context.locale())
-                generatedAtParaGraph.add(dateFormatter.format(Date()))
-                document.add(generatedAtParaGraph)
+                // Sets the owner password and user password
+                val standardProtectionPolicy = StandardProtectionPolicy(password, password, accessPermission)
 
-                // Close the doc
-                document.close()
+                // Setups up the encryption parameters
+
+                // Setups up the encryption parameters
+                standardProtectionPolicy.encryptionKeyLength = keyLength
+                standardProtectionPolicy.permissions = accessPermission
+                val provider = BouncyCastleProvider()
+                Security.addProvider(provider)
+
+                val font: PDFont = PDType1Font.HELVETICA
+                val document = PDDocument()
+                val page = PDPage()
+
+                document.addPage(page)
+
+                try {
+                    val contentStream = PDPageContentStream(document, page)
+                    val headingFontSize = 16f
+                    val subHeadingFontSize = 14f
+                    val bodyFontSize = 12f
+                    val leading: Float = 1.5f * headingFontSize
+                    val seedWordXOffset = 50f
+
+                    contentStream.beginText()
+                    contentStream.setNonStrokingColor(0, 0, 0) // Write Text in black color
+                    contentStream.setFont(font, headingFontSize)
+                    contentStream.newLineAtOffset(50f, 700f)
+
+                    // Title
+                    contentStream.showText("These are seed words used to restore your Zcash in Nighthawk Wallet: ")
+
+                    // Seed Words
+                    contentStream.setFont(font, bodyFontSize)
+                    contentStream.newLineAtOffset(seedWordXOffset, -leading)
+                    for (wordLine in listOfSeeds) {
+                        contentStream.newLineAtOffset(0f, -leading)
+                        contentStream.showText(wordLine)
+                    }
+
+                    // Wallet Birthday
+                    contentStream.setFont(font, subHeadingFontSize)
+                    contentStream.newLineAtOffset(-seedWordXOffset, -leading)
+                    contentStream.showText("Wallet Birthday: $birthDay")
+
+                    // Pdf generated time
+                    val dateFormatter = SimpleDateFormat(context.getString(R.string.transaction_history_format_date_time_brief), context.locale())
+                    contentStream.newLineAtOffset(0f, -leading)
+                    contentStream.showText("Backup PDF generated at: ${dateFormatter.format(Date())}")
+
+                    contentStream.endText()
+                    contentStream.close()
+
+                    // Save the final pdf document to a file
+                    document.protect(standardProtectionPolicy) // Apply the protections to the PDF
+                    document.save(filePath)
+                    document.close()
+                } catch (e: IOException) {
+                    Toast.makeText(context, "PDF creation failed", Toast.LENGTH_SHORT).show()
+                    twig("PdfBox Exception thrown while creating PDF for encryption $e")
+                }
 
                 // Share the file
-                withContext(Dispatchers.Main) {
-                    if (File(filePath).exists()) {
-                        shareFile(context, File(filePath))
+                if (File(filePath).exists()) {
+                    val fileURI = FileProvider.getUriForFile(
+                        context, context.packageName + ".fileprovider",
+                        File(filePath)
+                    )
+                    withContext(Dispatchers.Main) {
+                        shareFile(context, fileURI)
                     }
                 }
             } catch (e: Exception) {
-                Toast.makeText(context, "PDF creation failed", Toast.LENGTH_SHORT).show()
-                twig(e)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "PDF creation failed", Toast.LENGTH_SHORT).show()
+                    twig(e)
+                }
             }
         }
     }
 
-    private fun shareFile(context: Context, file: File) {
+    private fun shareFile(context: Context, fileURI: Uri) {
         try {
-            val fileURI = FileProvider.getUriForFile(
-                context, context.packageName + ".fileprovider",
-                file
-            )
             Intent(Intent.ACTION_SEND).apply {
                 type = "application/pdf"
                 flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
