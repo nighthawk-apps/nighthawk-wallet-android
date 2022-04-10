@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.35 *(2022-04-02)*
+------------------------------------
+- Update checkpoints & dependencies.
+- Migrate to PdfBox lib.
+
 Version 1.0.34 *(2022-02-22)*
 ------------------------------------
 - Update checkpoint, dependencies & Zcash SDK.
