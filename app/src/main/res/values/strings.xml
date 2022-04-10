@@ -150,6 +150,11 @@
     <string name="ns_more_details">More Details</string>
     <string name="ns_failed">Failed</string>
     <string name="ns_try_again">Try Again</string>
+    <string name="ns_zec_amount">%1s ZEC</string>
+    <string name="ns_format_date_time">dd/MM/yyyy</string>
+    <string name="ns_view_all_transactions">View transactions history</string>
+    <string name="ns_downloading_block">Currently downloading\n\nblock %1s of %2s</string>
+    <string name="ns_syncing_block">Currently syncing\n\nblock %1s of %2s</string>
 
     <!-- 00000000 -->
 

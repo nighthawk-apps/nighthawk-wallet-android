@@ -115,6 +115,12 @@
         <item name="android:textSize">36sp</item>
     </style>
 
+    <style name="Nighthawk.TextAppearance.H1.Bold" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/ns_white</item>
+    </style>
+
     <style name="Nighthawk.TextAppearance.Body1" parent="TextAppearance.AppCompat.Body2">
         <item name="fontFamily">sans-serif</item>
         <item name="android:fontFamily">sans-serif</item>
@@ -172,7 +178,7 @@
     <style name="Nighthawk.MaterialComponents.Headline2" parent="TextAppearance.AppCompat.Headline">
         <item name="fontFamily">@font/noto_sans</item>
         <item name="android:textColor">@color/ns_peach_100</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>

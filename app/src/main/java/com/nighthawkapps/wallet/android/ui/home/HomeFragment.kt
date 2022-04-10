@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.ui.home
 
-import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,25 +7,24 @@ import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
-import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
-import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
+import cash.z.ecc.android.sdk.Synchronizer.Status.PREPARING
+import cash.z.ecc.android.sdk.Synchronizer.Status.DOWNLOADING
+import cash.z.ecc.android.sdk.Synchronizer.Status.SCANNING
+import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.gone
-import com.nighthawkapps.wallet.android.ext.goneIf
-import com.nighthawkapps.wallet.android.ext.invisibleIf
+import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.requireApplicationContext
-import com.nighthawkapps.wallet.android.ext.toAppColor
-import com.nighthawkapps.wallet.android.ext.toColoredSpan
-import com.nighthawkapps.wallet.android.ext.transparentIf
 import com.nighthawkapps.wallet.android.ext.visible
-import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.preference.Preferences
 import com.nighthawkapps.wallet.android.preference.model.get
@@ -39,6 +37,7 @@ import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.runningReduce
@@ -53,63 +52,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val passwordViewModel: PasswordViewModel by activityViewModel()
     private val mainViewModel: MainViewModel by activityViewModel()
 
-    lateinit var snake: MagicSnakeLoader
+    lateinit var balanceViewPagerAdapter: BalanceViewPagerAdapter
 
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
         FragmentHomeBinding.inflate(inflater)
 
-    /*override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        // this will call startSync either now or later (after initializing with newly created seed)
-        walletSetup.checkSeed().onEach {
-            twig("Checking seed")
-            if (it == NO_SEED) {
-                // interact with user to create, backup and verify seed
-                // leads to a call to startSync(), later (after accounts are created from seed)
-                twig("Seed not found, therefore, launching seed creation flow")
-                mainActivity?.setLoading(false)
-                mainActivity?.safeNavigate(R.id.action_nav_home_to_create_wallet)
-            } else {
-                twig("Found seed. Re-opening existing wallet")
-                mainActivity?.setLoading(true)
-                try {
-                    mainActivity?.startSync(walletSetup.openStoredWallet())
-                    if (passwordViewModel.isPinCodeEnabled() && passwordViewModel.needToCheckPin()) {
-                        mainActivity?.setLoading(false)
-                        mainActivity?.safeNavigate(R.id.action_nav_home_to_enter_pin_fragment)
-                    }
-                } catch (e: UnsatisfiedLinkError) {
-                    mainActivity?.showSharedLibraryCriticalError(e)
-                }
-            }
-        }.launchIn(lifecycleScope)
-    }*/
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
-        snake = MagicSnakeLoader(binding.lottieButtonLoading)
-        binding.hitAreaProfile.onClickNavTo(R.id.action_nav_home_to_nav_profile)
-        binding.buttonSendAmount.setOnClickListener { onSend() }
-        binding.buttonSendAmount.text = getString(R.string.home_button_send_disconnected)
-        binding.buttonSendAmount.setTextColor(R.color.text_light.toAppColor())
-        binding.textMyAddress.onClickNavTo(R.id.action_nav_scan_to_nav_receive)
-        binding.textMyAddress.paintFlags =
-            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.textBuyZec.setOnClickListener { showBuyZecAlertDialog() }
-        binding.textBuyZec.paintFlags = binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.textWalletHistory.onClickNavTo(R.id.action_nav_home_to_nav_history)
-        binding.textTransparentBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
-        binding.textWalletHistory.paintFlags =
-            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.textTransparentBalance.paintFlags =
-            binding.textMyAddress.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        binding.hitAreaBalance.onClickNavTo(R.id.action_nav_home_to_nav_balance_detail)
-        binding.hitAreaInfo.setOnClickListener {
-            showOpenZcashSiteDialog()
-        }
-
+        binding.walletRecentActivityView.tvViewAllTransactions.onClickNavTo(R.id.action_nav_home_to_nav_history)
+        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_scan)
+        binding.buttonShieldNow.setOnClickListener { if (isAutoShieldFundsAvailable()) { autoShield(uiModel) } }
+        initViewPager()
         if (::uiModel.isInitialized) {
             twig("uiModel exists!")
             onModelUpdated(null, uiModel)
@@ -136,17 +90,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onResume()
         twig("HomeFragment.onResume  resumeScope.isActive: ${resumedScope.isActive}  $resumedScope")
         // Once the synchronizer is created, monitor state changes, while this fragment is resumed
-        launchWhenSyncReady(::onSyncReady)
+        launchWhenSyncReady {
+            onSyncReady()
+            viewModel.transactions.onEach { onTransactionsUpdated(it) }.launchIn(resumedScope)
+        }
     }
 
-    fun setBanner(message: String = "", action: BannerAction = BannerAction.CLEAR) {
-        with(binding) {
-            val hasMessage = !message.isEmpty() || action != BannerAction.CLEAR
-            groupBalance.goneIf(hasMessage)
-            groupBanner.goneIf(!hasMessage)
+    private suspend fun onTransactionsUpdated(confirmedTransaction: List<ConfirmedTransaction>) {
+        updateRecentActivityUI(viewModel.getRecentUIModel(confirmedTransaction))
+    }
 
-            textBannerMessage.text = message
-            textBannerAction.text = action.action
+    private fun updateRecentActivityUI(recentActivityUiModelList: List<HomeViewModel.RecentActivityUiModel>) {
+        with(binding) {
+            if (recentActivityUiModelList.isEmpty()) {
+                walletRecentActivityView.root.gone()
+                return@with
+            }
+            recentActivityUiModelList.forEachIndexed { index, recentUiModel ->
+                val binding = if (index == 0) walletRecentActivityView.receivedView else walletRecentActivityView.sentView
+                binding.ivLeftTransactionDirection.rotation = if (recentUiModel.transactionType == HomeViewModel.RecentActivityUiModel.TransactionType.RECEIVED) 0F else 180F
+                binding.tvTransactionDirection.text = if (recentUiModel.transactionType == HomeViewModel.RecentActivityUiModel.TransactionType.RECEIVED)
+                    R.string.ns_received.toAppString() else R.string.ns_sent.toAppString()
+                binding.ivTransactionType.setImageResource(if (recentUiModel.isTransactionShielded) R.drawable.ic_icon_shielded else R.drawable.ic_icon_transparent)
+                binding.tvTransactionDate.text = recentUiModel.transactionTime
+                binding.tvTransactionAmount.text = getString(R.string.ns_zec_amount, recentUiModel.amount)
+            }
+            walletRecentActivityView.root.visible()
+            if (recentActivityUiModelList.size < 2) {
+                walletRecentActivityView.sentView.root.gone()
+            }
         }
     }
 
@@ -168,98 +140,67 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }.launchIn(resumedScope)
     }
 
-    //
-    // Public UI API
-    //
-
-    var isSendEnabled = false
-    fun setSendEnabled(enabled: Boolean, isSynced: Boolean) {
-        isSendEnabled = enabled
-        binding.buttonSendAmount.apply {
-            if (enabled || !isSynced) {
-                isEnabled = true
-                isClickable = isSynced
-                binding.lottieButtonLoading.alpha = 1.0f
-            } else {
-                isEnabled = false
-                isClickable = false
-                binding.lottieButtonLoading.alpha = 0.32f
-            }
-        }
-    }
-
-    fun setProgress(uiModel: HomeViewModel.UiModel) {
+    private fun setProgress(uiModel: HomeViewModel.UiModel) {
         if (!uiModel.processorInfo.hasData && !uiModel.isDisconnected) {
             twig("Warning: ignoring progress update because the processor is still starting.")
             return
         }
 
-        snake.isSynced = uiModel.isSynced
-        if (!uiModel.isSynced) {
-            snake.downloadProgress = uiModel.downloadProgress
-            snake.scanProgress = uiModel.scanProgress
-        }
-
-        val sendText = when {
-            uiModel.status == DISCONNECTED -> "Reconnecting . . ."
-            uiModel.isSynced -> if (uiModel.hasFunds) "Send Zcash" else "NO FUNDS AVAILABLE"
-            uiModel.status == STOPPED -> "IDLE"
-            uiModel.isDownloading -> {
-                when (snake.downloadProgress) {
-                    0 -> "Preparing to download..."
-                    else -> "Downloading . . . ${snake.downloadProgress}%"
-                }
-            }
-            uiModel.isValidating -> "Validating . . ."
-            uiModel.isScanning -> {
-                when (snake.scanProgress) {
-                    0 -> "Preparing to scan..."
-                    100 -> "Finalizing..."
-                    else -> "Scanning . . . ${snake.scanProgress}%"
-                }
-            }
-            else -> "Updating"
-        }
-
-        binding.buttonSendAmount.text = sendText
-        twig("Send button set to: $sendText")
-
-        val resId =
-            if (uiModel.isSynced) R.color.selector_button_text_dark else R.color.selector_button_text_light
-        binding.buttonSendAmount.setTextColor(resources.getColorStateList(resId))
-        binding.lottieButtonLoading.invisibleIf(uiModel.isDisconnected)
+        updateProgressBar(uiModel.status)
     }
 
-    fun setAvailable(
-        availableBalance: Long = -1L,
-        totalBalance: Long = -1L,
-        availableTransparentBalance: Long = -1L,
-        unminedCount: Int = 0
-    ) {
-        val missingBalance = availableBalance < 0
-        val availableString =
-            if (missingBalance) getString(R.string.home_button_send_updating) else WalletZecFormmatter.toZecStringFull(
-                availableBalance
-            )
-        binding.textBalanceAvailable.text = availableString
-        binding.textBalanceAvailable.transparentIf(missingBalance)
-        binding.labelBalance.transparentIf(missingBalance)
-        binding.textBalanceDescription.apply {
-            text = when {
-                unminedCount > 0 -> "(excludes $unminedCount unconfirmed ${if (unminedCount > 1) "transactions" else "transaction"})"
-                availableBalance != -1L && (availableBalance < totalBalance) -> {
-                    val change =
-                        WalletZecFormmatter.toZecStringFull(totalBalance - availableBalance)
-                    val symbol = getString(R.string.symbol)
-                    "(${getString(R.string.home_banner_expecting)} +$change $symbol)".toColoredSpan(
-                        R.color.text_light,
-                        "+$change"
-                    )
+    private fun initViewPager() {
+        balanceViewPagerAdapter = BalanceViewPagerAdapter(this)
+        binding.viewPager.adapter = balanceViewPagerAdapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ ->
+        }.attach()
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.apply {
+                    binding.tabLayout.visibility = if (position != BalanceFragment.Companion.SectionType.SWIPE_LEFT_DIRECTION.sectionNo) View.VISIBLE else View.GONE
+                    binding.buttonShieldNow.visibility = if (position == BalanceFragment.Companion.SectionType.TRANSPARENT_BALANCE.sectionNo && isAutoShieldFundsAvailable()) View.VISIBLE else View.GONE
                 }
-                else -> calcBalUSD(availableBalance)
             }
-            visible()
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+    }
+
+    private fun updateProgressBar(status: Synchronizer.Status) {
+        when (status) {
+            Synchronizer.Status.SYNCED -> {
+                startAndStopProgressBar(startProgressbar = false, filledProgress = true)
+            }
+            PREPARING -> {}
+            else -> startAndStopProgressBar(startProgressbar = true, filledProgress = false)
         }
+    }
+
+    private fun startAndStopProgressBar(startProgressbar: Boolean, filledProgress: Boolean) {
+        binding.progressBarTop.apply {
+            if (startProgressbar) {
+                visibility = View.GONE
+                isIndeterminate = true
+                visibility = View.VISIBLE
+            } else {
+                isIndeterminate = false
+            }
+            if (filledProgress) {
+                progress = 100
+            }
+        }
+    }
+
+    private fun isAutoShieldFundsAvailable(): Boolean {
+        if (this@HomeFragment::uiModel.isInitialized) {
+            return uiModel.hasAutoshieldFunds
+        }
+        return false
     }
 
     private fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
@@ -299,7 +240,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         uiModel = new
         setProgress(uiModel) // TODO: we may not need to separate anymore
         if (new.status == Synchronizer.Status.SYNCED) onSynced(new) else onSyncing(new)
-        setSendEnabled(new.isSendEnabled, new.status == Synchronizer.Status.SYNCED)
     }
 
     private fun logUpdate(old: HomeViewModel.UiModel?, new: HomeViewModel.UiModel) {
@@ -346,22 +286,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onSyncing(uiModel: HomeViewModel.UiModel) {
+        var iconResourceId = R.drawable.ic_icon_connecting
+        var message = getString(R.string.ns_connecting)
+        when (uiModel.status) {
+            DOWNLOADING -> {
+                if (!viewModel.isValidBlock(uiModel.processorInfo.lastDownloadedHeight, uiModel.processorInfo.lastDownloadRange.last)) return
+                iconResourceId = R.drawable.ic_icon_syncing
+                message = getString(R.string.ns_downloading_block, "${uiModel.processorInfo.lastDownloadedHeight}".toString(), "${uiModel.processorInfo.lastDownloadRange.last}".toString())
+            }
+            SCANNING -> {
+                if (!viewModel.isValidBlock(uiModel.processorInfo.lastScannedHeight, uiModel.processorInfo.lastScanRange.last)) return
+                iconResourceId = R.drawable.ic_icon_syncing
+                message = getString(R.string.ns_syncing_block, "${uiModel.processorInfo.lastScannedHeight}".toString(), "${uiModel.processorInfo.lastScanRange.last}".toString())
+            }
+            else -> {}
+        }
+        binding.viewInit.apply {
+            icon.setImageResource(iconResourceId)
+            tvMessage.text = message
+        }
     }
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
-        snake.isSynced = true
         mainActivity?.updateTransferTab(enable = true)
-        if (!uiModel.hasSaplingBalance) {
-            onNoFunds()
-        } else {
-            setBanner("")
-            setAvailable(
-                uiModel.saplingBalance.availableZatoshi,
-                uiModel.saplingBalance.totalZatoshi,
-                uiModel.transparentBalance.availableZatoshi,
-                uiModel.unminedCount
-            )
-        }
+        binding.viewInit.root.gone()
+        binding.viewPager.visible()
         autoShield(uiModel)
     }
 
@@ -411,14 +360,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 twig("Could not Autoshield probably because the last one occurred too recently")
             }
         }
-    }
-
-    private fun onSend() {
-        if (isSendEnabled) mainActivity?.safeNavigate(R.id.action_nav_home_to_send)
-    }
-
-    private fun onNoFunds() {
-        setBanner(getString(R.string.home_no_balance), BannerAction.FUND_NOW)
     }
 
     private fun showBuyZecAlertDialog() {
