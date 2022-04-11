@@ -1,5 +1,6 @@
 package com.nighthawkapps.wallet.android.ui.home
 
+import android.text.format.DateFormat
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.block.CompactBlockProcessor
@@ -57,7 +58,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     val balance get() = synchronizer.saplingBalances
     var priceModel: PriceModel? = null
     val transactions get() = synchronizer.clearedTransactions
-    private val formatter by lazy { SimpleDateFormat(R.string.ns_format_date_time.toAppString(), Locale.getDefault()) }
+    private val formatter by lazy { SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), R.string.ns_format_date_time.toAppString()), Locale.getDefault()) }
 
     private val fetchPriceScope = CoroutineScope(Dispatchers.IO)
 

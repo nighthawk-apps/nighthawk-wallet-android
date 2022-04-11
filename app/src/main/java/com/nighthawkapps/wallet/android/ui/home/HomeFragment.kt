@@ -299,6 +299,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 iconResourceId = R.drawable.ic_icon_syncing
                 message = getString(R.string.ns_syncing_block, "${uiModel.processorInfo.lastScannedHeight}".toString(), "${uiModel.processorInfo.lastScanRange.last}".toString())
             }
+            Synchronizer.Status.DISCONNECTED -> {
+                message = getString(R.string.ns_reconnecting)
+            }
+            Synchronizer.Status.VALIDATING -> {
+                message = getString(R.string.ns_validating)
+            }
             else -> {}
         }
         binding.viewInit.apply {
