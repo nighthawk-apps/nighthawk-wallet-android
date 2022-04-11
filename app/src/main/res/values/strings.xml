@@ -31,8 +31,9 @@
     <string name="ns_preparing_download">Preparing to download</string>
     <string name="ns_downloading">Downloading</string>
     <string name="ns_validating">Validating</string>
+    <string name="ns_enhancing">Enhancing</string>
     <string name="ns_preparing_scan">Preparing to scan</string>
-    <string name="ns_syncing">Currently syncing \nblock %s</string>
+    <string name="ns_scanning">Scanning…%1$d%%</string>
     <string name="ns_finalizing">Finalizing</string>
     <string name="ns_swipe_left">Swipe left to show your balance</string>
     <string name="ns_zec">ZEC</string>

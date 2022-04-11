@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
-import cash.z.ecc.android.sdk.Synchronizer.Status.PREPARING
 import cash.z.ecc.android.sdk.Synchronizer.Status.DOWNLOADING
 import cash.z.ecc.android.sdk.Synchronizer.Status.SCANNING
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
@@ -141,11 +140,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setProgress(uiModel: HomeViewModel.UiModel) {
-        if (!uiModel.processorInfo.hasData && !uiModel.isDisconnected) {
-            twig("Warning: ignoring progress update because the processor is still starting.")
-            return
-        }
-
         updateProgressBar(uiModel.status)
     }
 
@@ -176,7 +170,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             Synchronizer.Status.SYNCED -> {
                 startAndStopProgressBar(startProgressbar = false, filledProgress = true)
             }
-            PREPARING -> {}
             else -> startAndStopProgressBar(startProgressbar = true, filledProgress = false)
         }
     }
@@ -291,7 +284,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         when (uiModel.status) {
             DOWNLOADING -> {
                 if (!viewModel.isValidBlock(uiModel.processorInfo.lastDownloadedHeight, uiModel.processorInfo.lastDownloadRange.last)) return
-                iconResourceId = R.drawable.ic_icon_syncing
+                iconResourceId = R.drawable.ic_icon_downloading
                 message = if (uiModel.downloadProgress == 0) {
                     getString(R.string.ns_preparing_download)
                 } else {
@@ -300,27 +293,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
             SCANNING -> {
                 if (!viewModel.isValidBlock(uiModel.processorInfo.lastScannedHeight, uiModel.processorInfo.lastScanRange.last)) return
-                iconResourceId = R.drawable.ic_icon_syncing
                 message = when (uiModel.scanProgress) {
                     0 -> {
+                        iconResourceId = R.drawable.ic_icon_preparing
                         getString(R.string.ns_preparing_scan)
                     }
                     100 -> {
+                        iconResourceId = R.drawable.ic_icon_finalizing
                         getString(R.string.ns_finalizing)
                     }
                     else -> {
+                        iconResourceId = R.drawable.ic_icon_syncing
                         getString(
-                            R.string.home_button_send_scanning,
+                            R.string.ns_scanning,
                             uiModel.scanProgress
                         )
                     }
                 }
             }
             Synchronizer.Status.DISCONNECTED -> {
+                iconResourceId = R.drawable.ic_icon_reconnecting
                 message = getString(R.string.ns_reconnecting)
             }
             Synchronizer.Status.VALIDATING -> {
+                iconResourceId = R.drawable.ic_icon_validating
                 message = getString(R.string.ns_validating)
+            }
+            Synchronizer.Status.ENHANCING -> {
+                iconResourceId = R.drawable.ic_icon_enhancing
+                message = getString(R.string.ns_enhancing)
             }
             else -> {}
         }
