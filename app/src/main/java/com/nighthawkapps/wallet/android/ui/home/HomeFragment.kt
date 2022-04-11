@@ -292,12 +292,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             DOWNLOADING -> {
                 if (!viewModel.isValidBlock(uiModel.processorInfo.lastDownloadedHeight, uiModel.processorInfo.lastDownloadRange.last)) return
                 iconResourceId = R.drawable.ic_icon_syncing
-                message = getString(R.string.ns_downloading_block, "${uiModel.processorInfo.lastDownloadedHeight}".toString(), "${uiModel.processorInfo.lastDownloadRange.last}".toString())
+                message = if (uiModel.downloadProgress == 0) {
+                    getString(R.string.ns_preparing_download)
+                } else {
+                    getString(R.string.home_button_send_downloading, uiModel.downloadProgress)
+                }
             }
             SCANNING -> {
                 if (!viewModel.isValidBlock(uiModel.processorInfo.lastScannedHeight, uiModel.processorInfo.lastScanRange.last)) return
                 iconResourceId = R.drawable.ic_icon_syncing
-                message = getString(R.string.ns_syncing_block, "${uiModel.processorInfo.lastScannedHeight}".toString(), "${uiModel.processorInfo.lastScanRange.last}".toString())
+                message = when (uiModel.scanProgress) {
+                    0 -> {
+                        getString(R.string.ns_preparing_scan)
+                    }
+                    100 -> {
+                        getString(R.string.ns_finalizing)
+                    }
+                    else -> {
+                        getString(
+                            R.string.home_button_send_scanning,
+                            uiModel.scanProgress
+                        )
+                    }
+                }
             }
             Synchronizer.Status.DISCONNECTED -> {
                 message = getString(R.string.ns_reconnecting)
