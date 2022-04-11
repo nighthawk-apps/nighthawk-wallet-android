@@ -176,15 +176,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun startAndStopProgressBar(startProgressbar: Boolean, filledProgress: Boolean) {
         binding.progressBarTop.apply {
-            if (startProgressbar) {
-                visibility = View.GONE
-                isIndeterminate = true
-                visibility = View.VISIBLE
-            } else {
-                isIndeterminate = false
-            }
-            if (filledProgress) {
-                progress = 100
+            when {
+                startProgressbar -> {
+                    isIndeterminate = true
+                    visibility = View.VISIBLE
+                }
+                filledProgress -> {
+                    progress = 100
+                    isIndeterminate = false
+                    visibility = View.GONE
+                }
+                else -> {
+                    isIndeterminate = false
+                    visibility = View.GONE
+                }
             }
         }
     }
@@ -231,7 +236,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun onModelUpdated(old: HomeViewModel.UiModel?, new: HomeViewModel.UiModel) {
         logUpdate(old, new)
         uiModel = new
-        setProgress(uiModel) // TODO: we may not need to separate anymore
+        setProgress(uiModel)
         if (new.status == Synchronizer.Status.SYNCED) onSynced(new) else onSyncing(new)
     }
 
