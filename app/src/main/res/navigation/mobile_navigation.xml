@@ -240,6 +240,9 @@
         <action
             android:id="@+id/action_nav_settings_to_enterPinFragment"
             app:destination="@id/nav_enter_pin_fragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_nav_profile"
+            app:destination="@id/nav_profile" />
     </fragment>
 
     <fragment

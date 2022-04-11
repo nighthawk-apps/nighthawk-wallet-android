@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_main">
@@ -73,6 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
+        app:layout_constraintBottom_toTopOf="@id/walletRecentActivityView"
         app:layout_constraintTop_toBottomOf="@id/text_message" />
 
     <androidx.viewpager2.widget.ViewPager2
@@ -80,12 +80,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="24dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_min="125dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_message"
+        app:layout_constraintBottom_toTopOf="@id/tabLayout"
+        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintWidth_percent="0.8" />
 
     <com.google.android.material.tabs.TabLayout
@@ -97,6 +98,7 @@
         app:layout_constraintEnd_toEndOf="@id/viewPager"
         app:layout_constraintStart_toStartOf="@id/viewPager"
         app:layout_constraintTop_toBottomOf="@id/viewPager"
+        app:layout_constraintBottom_toTopOf="@id/button_shield_now"
         app:tabBackground="@drawable/selector_tabs"
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp" />
@@ -113,6 +115,7 @@
         app:layout_constraintHeight_min="36dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintBottom_toTopOf="@id/walletRecentActivityView"
         app:layout_constraintWidth_min="150dp" />
 
     <include

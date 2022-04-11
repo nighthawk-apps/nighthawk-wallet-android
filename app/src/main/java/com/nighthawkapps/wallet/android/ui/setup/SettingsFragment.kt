@@ -17,6 +17,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentSettingsBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.gone
+import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.showUpdateServerCriticalError
 import com.nighthawkapps.wallet.android.ext.showUpdateServerDialog
@@ -44,6 +45,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             hitAreaClose.onClickNavBack()
             buttonReset.setOnClickListener(::onResetClicked)
             buttonUpdate.setOnClickListener(::onUpdateClicked)
+            tvProfile.onClickNavTo(R.id.action_nav_settings_to_nav_profile)
             buttonUpdate.isActivated = true
             buttonReset.isActivated = true
             inputTextLightwalletdServer.doAfterTextChanged {

@@ -189,4 +189,20 @@
         app:thumbTint="@color/switch_thumb_color"
         app:trackTint="@color/switch_tracker_color" />
 
+    <!--TODO: this is temporary just to launch Profile functionality -->
+    <TextView
+        android:id="@+id/tvProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:text="View Profile"
+        android:paddingEnd="4dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/text_light"
+        app:drawableEndCompat="@drawable/ic_arrow_right"
+        app:layout_constraintHeight_min="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/switch_enable_disable_biometric" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
