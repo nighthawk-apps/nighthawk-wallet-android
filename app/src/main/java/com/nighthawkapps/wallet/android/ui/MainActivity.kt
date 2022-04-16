@@ -79,6 +79,9 @@ import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -166,26 +169,27 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                     .collect {
                         twig("Checking seed")
                         setLoading(false)
-                        var startDestination: Int = R.id.nav_home
                         if (it == WalletSetupViewModel.WalletSetupState.NO_SEED) {
                             // interact with user to create, backup and verify seed
                             // leads to a call to startSync(), later (after accounts are created from seed)
                             twig("Seed not found, therefore, launching seed creation flow")
-                            startDestination = R.id.nav_landing
+                            mainViewModel.setStartingDestination(R.id.nav_landing)
                         } else {
                             twig("Found seed. Re-opening existing wallet")
                             try {
                                 startSync(walletSetup.openStoredWallet())
-                                startDestination = if (passwordViewModel.isPinCodeEnabled() && passwordViewModel.needToCheckPin()) {
-                                    R.id.nav_enter_pin_fragment
-                                } else {
-                                    R.id.nav_home
-                                }
+                                mainViewModel.syncReady.filter { isReady -> isReady }.onEach {
+                                    val startDestination = if (passwordViewModel.isPinCodeEnabled() && passwordViewModel.needToCheckPin()) {
+                                        R.id.nav_enter_pin_fragment
+                                    } else {
+                                        R.id.nav_home
+                                    }
+                                    mainViewModel.setStartingDestination(startDestination)
+                                }.first()
                             } catch (e: UnsatisfiedLinkError) {
                                 showSharedLibraryCriticalError(e)
                             }
                         }
-                        mainViewModel.setStartingDestination(startDestination)
                     }
             }
         }
