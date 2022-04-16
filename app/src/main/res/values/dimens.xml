@@ -3,6 +3,7 @@
     <dimen name="buttonCornerRadius">0dp</dimen>
     <dimen name="digit_size">24dp</dimen>
     <dimen name="keyline_1">16dp</dimen>
+    <dimen name="home_view_pager_min_height">125dp</dimen>
 
     <!-- Floats -->
 
