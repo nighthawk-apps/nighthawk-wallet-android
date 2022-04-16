@@ -31,8 +31,9 @@
     <string name="ns_preparing_download">Preparing to download</string>
     <string name="ns_downloading">Downloading</string>
     <string name="ns_validating">Validating</string>
+    <string name="ns_enhancing">Enhancing</string>
     <string name="ns_preparing_scan">Preparing to scan</string>
-    <string name="ns_syncing">Currently syncing \nblock %s</string>
+    <string name="ns_scanning">Scanning…%1$d%%</string>
     <string name="ns_finalizing">Finalizing</string>
     <string name="ns_swipe_left">Swipe left to show your balance</string>
     <string name="ns_zec">ZEC</string>
@@ -150,6 +151,11 @@
     <string name="ns_more_details">More Details</string>
     <string name="ns_failed">Failed</string>
     <string name="ns_try_again">Try Again</string>
+    <string name="ns_zec_amount">%1s ZEC</string>
+    <string name="ns_format_date_time">dd/MM/yyyy</string>
+    <string name="ns_view_all_transactions">View transaction history</string>
+    <string name="ns_downloading_block">Downloading\n\nBlock %1s of %2s</string>
+    <string name="ns_syncing_block">Syncing\n\nBlock %1s of %2s</string>
 
     <!-- 00000000 -->
 

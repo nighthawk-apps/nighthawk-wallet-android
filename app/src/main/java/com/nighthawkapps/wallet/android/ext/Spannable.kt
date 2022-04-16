@@ -14,6 +14,7 @@ import androidx.core.text.toSpannable
 fun CharSequence.toColoredSpan(@ColorRes colorResId: Int, coloredPortion: String): CharSequence {
     return toSpannable().apply {
         val start = this@toColoredSpan.indexOf(coloredPortion)
+        if (start == -1) return@apply
         setSpan(
             ForegroundColorSpan(colorResId.toAppColor()),
             start,

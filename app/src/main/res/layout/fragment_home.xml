@@ -1,306 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_main">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBarTop"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
+
     <ImageView
-        android:id="@+id/icon_info"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/icon_scan"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="22dp"
+        android:contentDescription="@string/ns_scan_payment_code"
         android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.052"
-        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.059"
-        app:layout_constraintWidth_percent="0.0887"
-        app:srcCompat="@drawable/ic_info_24dp"
-        app:tint="@color/text_light" />
+        app:layout_constraintVertical_bias="0.06"
+        app:srcCompat="@drawable/ic_icon_scan_qr" />
 
     <View
-        android:id="@+id/hit_area_info"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:layout_marginStart="24dp"
+        android:id="@+id/hit_area_scan"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
         android:alpha="0.3"
         android:background="@android:color/transparent"
         android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/icon_info" />
-
-    <ImageView
-        android:id="@+id/icon_profile"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="H,1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.912"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.064"
-        app:layout_constraintWidth_percent="0.08"
-        app:srcCompat="@drawable/ic_account_circle" />
-
-    <View
-        android:id="@+id/hit_area_profile"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/icon_profile" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_keyline_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.054" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_keyline_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.946" />
-
-    <TextView
-        android:id="@+id/text_balance_symbol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="2dp"
-        android:text="@string/zboto"
-        android:textAppearance="@style/Nighthawk.TextAppearance.Zboto"
-        android:textColor="@color/text_light"
-        app:layout_constraintBottom_toTopOf="@id/text_balance_description"
-        app:layout_constraintEnd_toStartOf="@id/text_balance_available"
-        app:layout_constraintTop_toTopOf="@+id/hit_area_balance" />
-
-    <TextView
-        android:id="@+id/text_balance_available"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/updating"
-        android:textAppearance="@style/Nighthawk.TextAppearance.Body1"
-        android:textColor="@color/text_light"
-        android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@id/label_balance"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/icon_profile" />
-
-    <TextView
-        android:id="@+id/label_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="@string/spendable"
-        android:textAppearance="@style/Nighthawk.TextAppearance.Body1"
-        android:textColor="@color/zcashYellow"
-        app:layout_constraintBaseline_toBaselineOf="@id/text_balance_available"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/text_balance_available" />
-
-    <TextView
-        android:id="@+id/text_banner_message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/background_banner"
-        android:elevation="6dp"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        android:text="@string/home_no_balance"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/text_light"
-        app:layout_constraintEnd_toEndOf="@id/icon_profile"
-        app:layout_constraintStart_toStartOf="@id/icon_info"
-        app:layout_constraintTop_toBottomOf="@id/text_balance_description" />
-
-    <TextView
-        android:id="@+id/text_banner_action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:elevation="6dp"
-        android:text="@string/home_instruction_fund_now"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintBaseline_toBaselineOf="@id/text_banner_message"
-        app:layout_constraintEnd_toEndOf="@id/text_banner_message" />
-
-    <View
-        android:id="@+id/hit_area_balance"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/text_balance_description"
-        app:layout_constraintEnd_toStartOf="@id/hit_area_profile"
-        app:layout_constraintStart_toEndOf="@id/text_balance_symbol"
-        app:layout_constraintTop_toTopOf="@id/text_balance_available" />
-
-    <TextView
-        android:id="@+id/text_balance_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        android:textColor="@color/text_light_dimmed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_balance_available" />
+        app:layout_constraintVertical_bias="0.035" />
 
     <ImageView
-        android:id="@+id/nighthawk_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_nighthawk_logo"
-        app:layout_constraintBottom_toTopOf="@+id/text_wallet_history"
-        app:layout_constraintEnd_toEndOf="@id/guideline_keyline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_keyline_start"
-        app:layout_constraintTop_toTopOf="@id/text_balance_description" />
+        android:id="@+id/icon_app_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintDimensionRatio="W,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icon_scan"
+        app:srcCompat="@drawable/ic_nighthawk_logo" />
 
     <TextView
-        android:id="@+id/text_wallet_history"
+        android:id="@+id/text_message"
+        style="@style/Nighthawk.MaterialComponents.Headline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="16dp"
-        android:elevation="6dp"
-        android:padding="12dp"
-        android:text="@string/wallet_history"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/zcashWhite_light"
-        android:tint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/header"
-        app:layout_constraintEnd_toStartOf="@id/text_transparent_balance"
-        app:layout_constraintStart_toStartOf="@id/guideline_keyline_start" />
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="@string/ns_nighthawk"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon_app_logo" />
 
-    <TextView
-        android:id="@+id/text_transparent_balance"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/viewInit"
+        layout="@layout/view_home_init_sync"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="16dp"
-        android:elevation="6dp"
-        android:padding="12dp"
-        android:text="@string/wallet_balance"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/zcashWhite_light"
-        android:tint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/header"
-        app:layout_constraintEnd_toEndOf="@id/guideline_keyline_end"
-        app:layout_constraintStart_toEndOf="@+id/text_wallet_history"
-        app:layout_goneMarginEnd="24dp" />
+        android:layout_margin="24dp"
+        app:layout_constraintBottom_toTopOf="@id/walletRecentActivityView"
+        app:layout_constraintTop_toBottomOf="@id/text_message" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/header"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="64dp"
-        android:background="@drawable/background_header"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline_keyline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_keyline_start">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie_button_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:elevation="6dp"
-            android:paddingStart="56dp"
-            android:paddingEnd="56dp"
-            android:paddingBottom="16dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="@id/button_send_amount"
-            app:layout_constraintStart_toStartOf="@id/button_send_amount"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintWidth_percent="1.0"
-            app:lottie_autoPlay="false"
-            app:lottie_loop="false"
-            app:lottie_rawRes="@raw/lottie_button_loading_new" />
-
-        <TextView
-            android:id="@+id/button_send_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:elevation="6dp"
-            android:paddingStart="32dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="32dp"
-            android:paddingBottom="16dp"
-            android:textColor="@color/selector_button_text_dark"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Downloading...5%" />
-
-        <TextView
-            android:id="@+id/text_my_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:elevation="6dp"
-            android:padding="12dp"
-            android:text="@string/receive_zcash"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/zcashWhite_light"
-            android:tint="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/text_buy_zec"
-            app:layout_constraintTop_toBottomOf="@id/button_send_amount" />
-
-        <TextView
-            android:id="@+id/text_buy_zec"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:elevation="6dp"
-            android:padding="12dp"
-            android:text="@string/buy_zec"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/zcashWhite_light"
-            android:tint="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_my_address"
-            app:layout_constraintTop_toBottomOf="@id/button_send_amount" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_balance"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="text_balance_available,label_balance" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_banner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:visibility="gone"
-        app:constraint_referenced_ids="text_banner_message, text_banner_action" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="125dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_message"
+        app:layout_constraintBottom_toTopOf="@id/tabLayout"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:background="#00ffffff"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/viewPager"
+        app:layout_constraintStart_toStartOf="@id/viewPager"
+        app:layout_constraintTop_toBottomOf="@id/viewPager"
+        app:layout_constraintBottom_toTopOf="@id/button_shield_now"
+        app:tabBackground="@drawable/selector_tabs"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_shield_now"
+        style="@style/Nighthawk.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/ns_shield_now"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintBottom_toTopOf="@id/walletRecentActivityView"
+        app:layout_constraintWidth_min="150dp" />
+
+    <include
+        android:id="@+id/walletRecentActivityView"
+        layout="@layout/view_recent_activity_wallet_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

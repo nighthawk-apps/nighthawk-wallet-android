@@ -1,18 +1,26 @@
 package com.nighthawkapps.wallet.android.ui.home
 
+import android.text.format.DateFormat
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.block.CompactBlockProcessor
+import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isMined
 import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
 import cash.z.ecc.android.sdk.ext.ZcashSdk.MINERS_FEE_ZATOSHI
 import cash.z.ecc.android.sdk.ext.ZcashSdk.ZATOSHI_PER_ZEC
+import cash.z.ecc.android.sdk.ext.isShielded
+import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import cash.z.ecc.android.sdk.type.WalletBalance
 import com.google.gson.Gson
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
+import com.nighthawkapps.wallet.android.R
+import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.twig
+import com.nighthawkapps.wallet.android.ext.toAppString
+import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import com.nighthawkapps.wallet.android.ui.util.price.PriceModel
 import com.squareup.okhttp.HttpUrl
 import com.squareup.okhttp.OkHttpClient
@@ -31,6 +39,8 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -47,6 +57,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     val balance get() = synchronizer.saplingBalances
     var priceModel: PriceModel? = null
+    val transactions get() = synchronizer.clearedTransactions
+    private val formatter by lazy { SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), R.string.ns_format_date_time.toAppString()), Locale.getDefault()) }
 
     private val fetchPriceScope = CoroutineScope(Dispatchers.IO)
 
@@ -204,6 +216,48 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             val scanWeighted = 0.60f * (scanProgress.toFloat() / 100.0f).coerceAtMost(1.0f)
             return downloadWeighted.coerceAtLeast(0.0f) + scanWeighted.coerceAtLeast(0.0f)
         }
+    }
+
+    suspend fun getRecentUIModel(transactionList: List<ConfirmedTransaction>): List<RecentActivityUiModel> {
+        val transactions = if (transactionList.size > 2) transactionList.subList(0, 2) else transactionList
+        return transactions.map { confirmedTransaction ->
+            val transactionType = if (confirmedTransaction.toAddress.isNullOrEmpty()) RecentActivityUiModel.TransactionType.RECEIVED else RecentActivityUiModel.TransactionType.SENT
+            val address = if (transactionType == RecentActivityUiModel.TransactionType.RECEIVED) getSender(confirmedTransaction) else confirmedTransaction.toAddress
+            RecentActivityUiModel(
+                transactionType = transactionType,
+                transactionTime = formatter.format(confirmedTransaction.blockTimeInSeconds * 1000L),
+                isTransactionShielded = address.isShielded(),
+                amount = WalletZecFormmatter.toZecStringShort(confirmedTransaction.value)
+            )
+        }
+    }
+
+    data class RecentActivityUiModel(
+        var transactionType: TransactionType? = null,
+        var transactionTime: String? = null,
+        var isTransactionShielded: Boolean = false,
+        var amount: String = "---"
+    ) {
+        enum class TransactionType {
+            SENT,
+            RECEIVED
+        }
+    }
+
+    private suspend fun getSender(transaction: ConfirmedTransaction?): String {
+        if (transaction == null) return R.string.unknown.toAppString()
+        return MemoUtil.findAddressInMemo(transaction, ::isValidAddress)?.toAbbreviatedAddress() ?: R.string.unknown.toAppString()
+    }
+
+    private suspend fun isValidAddress(address: String): Boolean {
+        try {
+            return !synchronizer.validateAddress(address).isNotValid
+        } catch (t: Throwable) { }
+        return false
+    }
+
+    fun isValidBlock(lastDownloadedHeight: Int, lastAvailableHeight: Int): Boolean {
+        return lastDownloadedHeight != -1 || lastAvailableHeight != -1
     }
 
     /**
