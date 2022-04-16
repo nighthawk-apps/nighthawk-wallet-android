@@ -20,6 +20,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.gone
+import com.nighthawkapps.wallet.android.ext.invisible
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
 import com.nighthawkapps.wallet.android.ext.requireApplicationContext
@@ -60,7 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         binding.walletRecentActivityView.tvViewAllTransactions.onClickNavTo(R.id.action_nav_home_to_nav_history)
-        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_scan)
+        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
         binding.buttonShieldNow.setOnClickListener { if (isAutoShieldFundsAvailable()) { autoShield(uiModel) } }
         initViewPager()
         if (::uiModel.isInitialized) {
@@ -102,7 +103,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun updateRecentActivityUI(recentActivityUiModelList: List<HomeViewModel.RecentActivityUiModel>) {
         with(binding) {
             if (recentActivityUiModelList.isEmpty()) {
-                walletRecentActivityView.root.gone()
+                walletRecentActivityView.root.invisible()
                 return@with
             }
             recentActivityUiModelList.forEachIndexed { index, recentUiModel ->
