@@ -13,7 +13,6 @@ import com.nighthawkapps.wallet.android.ext.onClickNavUp
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.collectWith
 import com.nighthawkapps.wallet.android.ext.twig
-import cash.z.ecc.android.sdk.type.WalletBalance
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
@@ -35,27 +34,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
     override fun onResume() {
         twig("HistoryFragment.onResume")
         super.onResume()
-        viewModel.balance.collectWith(resumedScope) {
-            onBalanceUpdated(it)
-        }
         viewModel.transactions.collectWith(resumedScope) { onTransactionsUpdated(it) }
-    }
-
-    private fun onBalanceUpdated(balance: WalletBalance) {
-        /*if (balance.availableZatoshi < 0) {
-            binding.textBalanceAvailable.text = getString(R.string.updating)
-            return
-        }
-
-        binding.textBalanceAvailable.text = WalletZecFormmatter.toZecStringShort(balance.availableZatoshi)
-        val change = balance.pending
-        binding.textBalanceDescription.apply {
-            goneIf(change <= 0L)
-            val changeString = WalletZecFormmatter.toZecStringFull(change)
-            val expecting = R.string.home_banner_expecting.toAppString(true)
-            val symbol = getString(R.string.symbol)
-            text = "($expecting +$changeString $symbol)".toColoredSpan(R.color.text_light, "+$changeString")
-        }*/
     }
 
     private fun initTransactionUI() {
