@@ -34,7 +34,7 @@ class TransactionAdapter<T : ConfirmedTransaction> :
         parent: ViewGroup,
         viewType: Int
     ) = TransactionViewHolder<T>(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.item_transaction_wallet_screen, parent, false)
     )
 
     override fun onBindViewHolder(

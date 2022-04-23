@@ -23,6 +23,8 @@
     <string name="ns_birthday_height">Birthday Height</string>
     <string name="ns_your_seed_error">Error - This doesn\'t look like a valid seed phrase.</string>
     <string name="ns_continue">Continue</string>
+    <string name="ns_receive">Receive</string>
+    <string name="ns_transaction_history">Transactions History</string>
 
     <!-- Wallet Screen -->
     <string name="ns_wallet">Wallet</string>

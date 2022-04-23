@@ -22,6 +22,7 @@ import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import com.nighthawkapps.wallet.android.ui.util.price.PriceModel
+import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import com.squareup.okhttp.HttpUrl
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
@@ -227,7 +228,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 transactionType = transactionType,
                 transactionTime = formatter.format(confirmedTransaction.blockTimeInSeconds * 1000L),
                 isTransactionShielded = address.isShielded(),
-                amount = WalletZecFormmatter.toZecStringShort(confirmedTransaction.value)
+                amount = WalletZecFormmatter.toZecStringShort(confirmedTransaction.value),
+                isMemoAvailable = confirmedTransaction.memo?.toUtf8Memo()?.isNotBlank() == true
             )
         }
     }
@@ -236,7 +238,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         var transactionType: TransactionType? = null,
         var transactionTime: String? = null,
         var isTransactionShielded: Boolean = false,
-        var amount: String = "---"
+        var amount: String = "---",
+        var isMemoAvailable: Boolean = false
     ) {
         enum class TransactionType {
             SENT,

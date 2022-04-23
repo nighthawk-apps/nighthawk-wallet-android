@@ -16,6 +16,7 @@
         android:id="@+id/ivLeftTransactionDirection"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_receive"
@@ -44,7 +45,6 @@
         app:layout_constraintEnd_toEndOf="@id/guideLineMiddle"
         app:layout_constraintStart_toEndOf="@id/tvTransactionDirection"
         app:layout_constraintTop_toTopOf="@id/tvTransactionDirection"
-        app:srcCompat="@drawable/ic_icon_shielded"
         app:tint="@color/ns_parmaviolet" />
 
     <TextView
@@ -65,7 +65,7 @@
         style="@style/Nighthawk.MaterialComponents.Headline2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/ns_white"
+        android:textColor="@color/ns_parmaviolet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toEndOf="@id/guideLineMiddle"
