@@ -158,6 +158,11 @@ dependencies {
     implementation Deps.Grpc.STUB
     implementation Deps.JavaX.JAVA_ANNOTATION
 
+    // Network
+    implementation Deps.Network.RETROFIT
+    implementation Deps.Network.RETROFIT_GSON
+    implementation Deps.Network.OKHTTP_LOGGING
+
     // Misc.
     implementation Deps.Misc.PDF_BOX
     implementation Deps.Misc.LOTTIE

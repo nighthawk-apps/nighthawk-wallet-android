@@ -20,7 +20,11 @@ import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.toAppString
+import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
+import com.nighthawkapps.wallet.android.network.repository.CoinMetricsRepository
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
+import com.nighthawkapps.wallet.android.ui.util.Resource
+import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.price.PriceModel
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import com.squareup.okhttp.HttpUrl
@@ -32,6 +36,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -42,6 +50,7 @@ import kotlinx.coroutines.supervisorScope
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.Calendar
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -49,6 +58,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     @Inject
     lateinit var synchronizer: Synchronizer
+    @Inject
+    lateinit var coinMetricsRepository: CoinMetricsRepository
 
     lateinit var uiModels: Flow<UiModel>
 
@@ -58,10 +69,39 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     val balance get() = synchronizer.saplingBalances
     var priceModel: PriceModel? = null
+    private var _coinMetricsMarketData = MutableStateFlow<CoinMetricsMarketResponse.CoinMetricsMarketData?>(null)
+    val coinMetricsMarketData: StateFlow<CoinMetricsMarketResponse.CoinMetricsMarketData?> get() = _coinMetricsMarketData
     val transactions get() = synchronizer.clearedTransactions
     private val formatter by lazy { SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), R.string.ns_format_date_time.toAppString()), Locale.getDefault()) }
 
     private val fetchPriceScope = CoroutineScope(Dispatchers.IO)
+
+    fun getZecMarketPrice(market: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (coinMetricsMarketData?.value != null) {
+                twig("response: coin metric data already available $coinMetricsMarketData")
+                return@launch
+            }
+            coinMetricsRepository.getZecMarketData(startTime = getStartTimeForCoinMetricsApi(), market = market)
+                .catch {
+                    twig("error in getZecMarket data: $it")
+                }
+                .collect {
+                    twig("response: $it")
+                    val response = extractCoinMarketData(it)?.data
+                    if (response?.isNotEmpty() == true) {
+                        _coinMetricsMarketData.value = response[0]
+                    }
+                }
+        }
+    }
+
+    private fun extractCoinMarketData(resource: Resource<CoinMetricsMarketResponse>): CoinMetricsMarketResponse? {
+        return when (resource) {
+            is Resource.Success -> resource.data
+            else -> null
+        }
+    }
 
     fun initPrice() {
         fetchPriceScope.launch {
@@ -224,12 +264,14 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         return transactions.map { confirmedTransaction ->
             val transactionType = if (confirmedTransaction.toAddress.isNullOrEmpty()) RecentActivityUiModel.TransactionType.RECEIVED else RecentActivityUiModel.TransactionType.SENT
             val address = if (transactionType == RecentActivityUiModel.TransactionType.RECEIVED) getSender(confirmedTransaction) else confirmedTransaction.toAddress
+            val toZecStringShort = WalletZecFormmatter.toZecStringShort(confirmedTransaction.value)
             RecentActivityUiModel(
                 transactionType = transactionType,
                 transactionTime = formatter.format(confirmedTransaction.blockTimeInSeconds * 1000L),
                 isTransactionShielded = address.isShielded(),
-                amount = WalletZecFormmatter.toZecStringShort(confirmedTransaction.value),
-                isMemoAvailable = confirmedTransaction.memo?.toUtf8Memo()?.isNotBlank() == true
+                amount = toZecStringShort,
+                isMemoAvailable = confirmedTransaction.memo?.toUtf8Memo()?.isNotBlank() == true,
+                zecConvertedValueText = Utils.getZecConvertedAmountText(toZecStringShort, coinMetricsMarketData.value)
             )
         }
     }
@@ -239,7 +281,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         var transactionTime: String? = null,
         var isTransactionShielded: Boolean = false,
         var amount: String = "---",
-        var isMemoAvailable: Boolean = false
+        var isMemoAvailable: Boolean = false,
+        var zecConvertedValueText: String? = null
     ) {
         enum class TransactionType {
             SENT,
@@ -268,5 +311,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
      */
     fun getMoonPayUrl(): String {
         return "${Const.Default.Server.BUY_ZEC_BASE_URL}&currencyCode=zec"
+    }
+
+    private fun getStartTimeForCoinMetricsApi(): String {
+        return DateFormat.format("yyyy-MM-dd", Calendar.getInstance().timeInMillis).toString()
     }
 }

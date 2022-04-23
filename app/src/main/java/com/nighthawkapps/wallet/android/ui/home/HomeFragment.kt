@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DOWNLOADING
@@ -38,6 +39,7 @@ import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.runningReduce
@@ -84,6 +86,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         }
+
+        viewModel.getZecMarketPrice("bitfinex-zec-usd-spot")
     }
 
     override fun onResume() {
@@ -92,7 +96,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         // Once the synchronizer is created, monitor state changes, while this fragment is resumed
         launchWhenSyncReady {
             onSyncReady()
-            viewModel.transactions.onEach { onTransactionsUpdated(it) }.launchIn(resumedScope)
+            combine(viewModel.transactions, viewModel.coinMetricsMarketData) { it1, it2 ->
+                twig("recentUI $it1 and $it2")
+                it1
+            }.onEach { onTransactionsUpdated(it) }.launchIn(resumedScope)
         }
     }
 
@@ -120,6 +127,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
                 binding.tvTransactionDate.text = recentUiModel.transactionTime
                 binding.tvTransactionAmount.text = getString(R.string.ns_zec_amount, recentUiModel.amount)
+                recentUiModel.zecConvertedValueText?.let {
+                    binding.tvTransactionConversionPrice.text = it
+                    binding.tvTransactionConversionPrice.isVisible = true
+                }
             }
             walletRecentActivityView.root.visible()
             if (recentActivityUiModelList.size < 2) {

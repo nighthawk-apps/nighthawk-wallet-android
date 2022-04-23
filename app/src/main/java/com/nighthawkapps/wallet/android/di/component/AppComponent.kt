@@ -1,13 +1,14 @@
 package com.nighthawkapps.wallet.android.di.component
 
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
+import com.nighthawkapps.wallet.android.di.module.ApiModule
 import com.nighthawkapps.wallet.android.di.module.AppModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class])
+@Component(modules = [AppModule::class, ApiModule::class])
 interface AppComponent {
 
     fun inject(nighthawkWalletApp: NighthawkWalletApp)

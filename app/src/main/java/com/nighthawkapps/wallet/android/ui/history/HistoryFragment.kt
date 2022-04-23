@@ -14,10 +14,12 @@ import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.collectWith
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.home.HomeViewModel
 
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private val viewModel: HistoryViewModel by activityViewModel()
+    private val homeViewModel: HomeViewModel by activityViewModel()
 
     private lateinit var transactionAdapter: TransactionAdapter<ConfirmedTransaction>
 
@@ -40,6 +42,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
     private fun initTransactionUI() {
         twig("HistoryFragment.initTransactionUI")
         transactionAdapter = TransactionAdapter()
+        transactionAdapter.setZecConversionValueText(homeViewModel.coinMetricsMarketData.value)
         transactionAdapter.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 

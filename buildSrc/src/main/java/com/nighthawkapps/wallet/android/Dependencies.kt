@@ -76,6 +76,12 @@ object Deps {
         val STUB = "io.grpc:grpc-stub:$version"
     }
 
+    object Network : Version("2.9.0") {
+        val RETROFIT = "com.squareup.retrofit2:retrofit:$version"
+        val RETROFIT_GSON = "com.squareup.retrofit2:converter-gson:$version"
+        val OKHTTP_LOGGING = "com.squareup.okhttp3:logging-interceptor:4.9.3"
+    }
+
     object JavaX {
         const val INJECT = "javax.inject:javax.inject:1"
         const val JAVA_ANNOTATION = "javax.annotation:javax.annotation-api:1.3.2"

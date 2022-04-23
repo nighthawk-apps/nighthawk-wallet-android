@@ -8,10 +8,11 @@ import androidx.browser.customtabs.CustomTabColorSchemeParams
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.toAppColor
+import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
+import java.text.DecimalFormat
 
-class Utils {
+object Utils {
 
-    companion object CustomTabs {
         fun createCustomTabIntent(toolBarColor: Int = R.color.colorPrimary.toAppColor(), secondaryToolBarColor: Int = R.color.colorPrimaryDark.toAppColor()): CustomTabsIntent {
             val customIntent = CustomTabsIntent.Builder()
 
@@ -36,5 +37,16 @@ class Utils {
                 activity.startActivity(Intent(Intent.ACTION_VIEW, uri))
             }
         }
+
+    fun getZecConvertedAmountText(toZecStringShort: String, coinMetricsMarketData: CoinMetricsMarketResponse.CoinMetricsMarketData?): String? {
+        if (coinMetricsMarketData == null) return null
+        return DecimalFormat("#.###").format((toZecStringShort.toFloatOrNull() ?: 0F).times(coinMetricsMarketData.price.toFloatOrNull() ?: 0F)) + " ${getCurrencySymbol()}"
+    }
+
+    /**
+     * Get currency symbol as per market selected. // TODO: need to change in this after all markets implemented
+     */
+    private fun getCurrencySymbol(): String {
+        return "USD"
     }
 }
