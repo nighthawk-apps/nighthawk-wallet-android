@@ -41,6 +41,7 @@ import androidx.biometric.BiometricPrompt.ERROR_VENDOR
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -454,6 +455,18 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                 }
             }
         )
+    }
+
+    override fun onBackPressed() {
+        if (bottomNavView?.isVisible == true) {
+            if (navController?.currentDestination?.id != R.id.nav_home) {
+                navController?.navigate(R.id.nav_home)
+            } else {
+                finish()
+            }
+        } else {
+            super.onBackPressed()
+        }
     }
 
     fun showMessage(message: String, linger: Boolean = false) {

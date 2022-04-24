@@ -111,7 +111,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 binding.ivLeftTransactionDirection.rotation = if (recentUiModel.transactionType == HomeViewModel.RecentActivityUiModel.TransactionType.RECEIVED) 0F else 180F
                 binding.tvTransactionDirection.text = if (recentUiModel.transactionType == HomeViewModel.RecentActivityUiModel.TransactionType.RECEIVED)
                     R.string.ns_received.toAppString() else R.string.ns_sent.toAppString()
-                binding.ivTransactionType.setImageResource(if (recentUiModel.isTransactionShielded) R.drawable.ic_icon_shielded else R.drawable.ic_icon_transparent)
+                if (recentUiModel.transactionType == HomeViewModel.RecentActivityUiModel.TransactionType.RECEIVED) {
+                    binding.ivTransactionType.setImageResource(if (recentUiModel.isTransactionShielded) R.drawable.ic_icon_shielded else R.drawable.ic_icon_transparent)
+                } else {
+                    if (recentUiModel.isMemoAvailable) {
+                        binding.ivTransactionType.setImageResource(R.drawable.ic_icon_memo)
+                    }
+                }
                 binding.tvTransactionDate.text = recentUiModel.transactionTime
                 binding.tvTransactionAmount.text = getString(R.string.ns_zec_amount, recentUiModel.amount)
             }

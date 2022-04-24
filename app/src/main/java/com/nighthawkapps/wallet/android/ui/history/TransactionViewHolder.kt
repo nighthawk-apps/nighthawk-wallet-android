@@ -1,38 +1,34 @@
 package com.nighthawkapps.wallet.android.ui.history
 
-import android.graphics.drawable.Drawable
+import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.isShielded
-import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import com.nighthawkapps.wallet.android.R
-import com.nighthawkapps.wallet.android.ext.locale
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
-import com.nighthawkapps.wallet.android.ext.toColoredSpan
-import com.nighthawkapps.wallet.android.ext.goneIf
-import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.ext.toAppInt
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.MainActivity
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val indicator = itemView.findViewById<View>(R.id.indicator)
-    private val amountText = itemView.findViewById<TextView>(R.id.text_transaction_amount)
-    private val topText = itemView.findViewById<TextView>(R.id.text_transaction_top)
-    private val bottomText = itemView.findViewById<TextView>(R.id.text_transaction_bottom)
-    private val transactionArrow = itemView.findViewById<ImageView>(R.id.image_transaction_arrow)
-    private val formatter = SimpleDateFormat(itemView.context.getString(R.string.format_transaction_history_date_time), itemView.context.locale())
-    private val iconMemo = itemView.findViewById<ImageView>(R.id.image_memo)
+    private val amountText = itemView.findViewById<TextView>(R.id.tvTransactionAmount)
+    private val topText = itemView.findViewById<TextView>(R.id.tvTransactionDirection)
+    private val bottomText = itemView.findViewById<TextView>(R.id.tvTransactionDate)
+    private val transactionArrow = itemView.findViewById<ImageView>(R.id.ivLeftTransactionDirection)
+    private val formatter = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), str(R.string.ns_format_date_time)), Locale.getDefault())
+    private val iconTransactionType = itemView.findViewById<ImageView>(R.id.ivTransactionType)
 
     fun bindTo(transaction: T?) {
         val mainActivity = itemView.context as MainActivity
@@ -42,13 +38,8 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
             var lineTwo = ""
             var amountZec = ""
             var amountDisplay = ""
-            var amountColor: Int = R.color.text_light
-            var lineOneColor: Int = R.color.text_light
-            var lineTwoColor: Int = R.color.text_light_dimmed
-            var indicatorBackground: Int = R.color.text_light_dimmed
             var arrowRotation: Int = R.integer.transaction_arrow_rotation_send
-            var arrowBackgroundTint: Int = R.color.text_light
-            var isLineOneSpanned = false
+            @DrawableRes var iconTransactionDrawable: Int? = null
 
             try {
                 transaction?.apply {
@@ -65,84 +56,45 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                     val isMined = blockTimeInSeconds != 0L
                     when {
                         !toAddress.isNullOrEmpty() -> {
-                            indicatorBackground =
-                                if (isMined) R.color.zcashRed else R.color.zcashGray
-                            lineOne = "${
-                                if (isMined) str(R.string.transaction_address_you_paid) else str(R.string.transaction_address_paying)
-                            } ${toAddress?.toAbbreviatedAddress()}"
-                            lineTwo =
-                                if (isMined) "${str(R.string.transaction_status_sent)} $timestamp" else str(
-                                    R.string.transaction_status_pending
-                                )
+                            lineOne = if (isMined) str(R.string.ns_sent) else str(R.string.ns_sending)
+                            lineTwo = if (isMined) timestamp else str(R.string.ns_pending_confirmation)
                             // TODO: this logic works but is sloppy. Find a more robust solution to displaying information about expiration (such as expires in 1 block, etc). Then if it is way beyond expired, remove it entirely. Perhaps give the user a button for that (swipe to dismiss?)
                             if (!isMined && (expiryHeight != null) && (expiryHeight!! < mainActivity.latestHeight ?: -1)) lineTwo =
-                                str(R.string.transaction_status_expired)
-                            amountDisplay = "- $amountZec"
-                            if (isMined) {
-                                arrowRotation = R.integer.transaction_arrow_rotation_send
-                                amountColor = R.color.transaction_sent
-                                if (toAddress.isShielded()) {
-                                    lineOneColor = R.color.zcashYellow
-                                } else {
-                                    toAddress?.toAbbreviatedAddress()?.let {
-                                        lineOne = lineOne.toColoredSpan(R.color.zcashBlueDark, it)
-                                    }
-                                }
-                            } else {
-                                arrowRotation = R.integer.transaction_arrow_rotation_pending
+                                str(R.string.ns_expired)
+                            amountDisplay = amountZec
+                            if (memo.toUtf8Memo().isNotBlank()) {
+                                iconTransactionDrawable = R.drawable.ic_icon_memo
                             }
+                            arrowRotation = R.integer.transaction_arrow_rotation_send
                         }
                         toAddress.isNullOrEmpty() && value > 0L && minedHeight > 0 -> {
-                            indicatorBackground = R.color.zcashGreen
                             val senderAddress = mainActivity.getSender(transaction)
-                            lineOne = "${str(R.string.transaction_received_from)} $senderAddress"
-                            lineTwo = "${str(R.string.transaction_received)} $timestamp"
-                            amountDisplay = "+ $amountZec"
-                            if (senderAddress.isShielded()) {
-                                amountColor = R.color.zcashYellow
-                                lineOneColor = R.color.zcashYellow
+                            lineOne = str(R.string.ns_received)
+                            lineTwo = timestamp
+                            amountDisplay = amountZec
+                            iconTransactionDrawable = if (senderAddress.isShielded()) {
+                                R.drawable.ic_icon_shielded
                             } else {
-                                senderAddress.toAbbreviatedAddress().let {
-                                    lineOne =
-                                        if (senderAddress.equals(str(R.string.unknown), true)) {
-                                            lineOne.toColoredSpan(R.color.zcashYellow, it)
-                                        } else {
-                                            lineOne.toColoredSpan(R.color.zcashBlueDark, it)
-                                        }
-                                }
+                                R.drawable.ic_icon_transparent
                             }
                             arrowRotation = R.integer.transaction_arrow_rotation_received
                         }
                         else -> {
-                            lineOne = str(R.string.unknown)
-                            lineTwo = str(R.string.unknown)
+                            lineOne = str(R.string.ns_unknown)
+                            lineTwo = str(R.string.ns_unknown)
                             amountDisplay = amountZec
-                            amountColor = R.color.text_light
                             arrowRotation = R.integer.transaction_arrow_rotation_received
                         }
                     }
                     // sanitize amount
                     if (value < ZcashSdk.MINERS_FEE_ZATOSHI * 10) amountDisplay = "< 0.0001"
-                    else if (amountZec.length > 10) { // 10 allows 3 digits to the left and 6 to the right of the decimal
-                        amountDisplay = str(R.string.transaction_instruction_tap)
-                    }
                 }
 
                 topText.text = lineOne
                 bottomText.text = lineTwo
-                amountText.text = amountDisplay
-                amountText.setTextColor(amountColor.toAppColor())
-                if (!isLineOneSpanned) {
-                    topText.setTextColor(lineOneColor.toAppColor())
-                }
-                bottomText.setTextColor(lineTwoColor.toAppColor())
-                indicator.setBackgroundColor(indicatorBackground.toAppColor())
-                transactionArrow.setColorFilter(arrowBackgroundTint.toAppColor())
+                amountText.text = itemView.context.getString(R.string.ns_zec_amount, amountDisplay)
                 transactionArrow.rotation = arrowRotation.toAppInt().toFloat()
-
-                var bottomTextRightDrawable: Drawable? = null
-                iconMemo.goneIf(!transaction?.memo.toUtf8Memo().isNotEmpty())
-                bottomText.setCompoundDrawablesWithIntrinsicBounds(null, null, bottomTextRightDrawable, null)
+                iconTransactionDrawable?.let { iconTransactionType.setImageResource(it) }
             } catch (t: Throwable) {
                 twig("Failed to parse the transaction due to $t")
             }
