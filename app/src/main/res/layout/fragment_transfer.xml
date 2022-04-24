@@ -1,18 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_main">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_main"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:textSize="24sp"
-        android:text="Feature in development..."/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/hit_area_exit"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="12dp"
+            android:alpha="0.3"
+            android:background="@android:color/transparent"
+            android:elevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.035" />
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="22dp"
+            android:contentDescription="@string/content_description_settings_back"
+            android:elevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.06"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            app:srcCompat="@drawable/ic_icon_back" />
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintDimensionRatio="W,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivBack"
+            app:srcCompat="@drawable/ic_nighthawk_logo" />
+
+        <TextView
+            android:id="@+id/tvMessage"
+            style="@style/Nighthawk.MaterialComponents.Headline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@string/ns_nighthawk"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_begin="16dp"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLineEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_end="16dp"
+            android:orientation="vertical"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/Nighthawk.MaterialComponents.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ns_send_and_receive_zcash"
+            app:layout_constraintTop_toBottomOf="@id/tvMessage"
+            android:textColor="@color/ns_parmaviolet"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            android:layout_marginTop="40dp"/>
+
+        <!--Landing View(Show option of Send, Receive and TopUp)-->
+        <include
+            android:id="@+id/viewSendMoney"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"/>
+
+        <include
+            android:id="@+id/viewReceiveMoney"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/viewSendMoney"/>
+
+        <include
+            android:id="@+id/viewTopUpWallet"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/viewReceiveMoney"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupLanding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="viewSendMoney, viewReceiveMoney, viewTopUpWallet"/>
+
+        <!--Receive View(QR Code, Private Address, Title, Non-Private address)-->
+        <include
+            android:id="@+id/viewShowQRCode"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"/>
+
+        <include
+            android:id="@+id/viewCopyPrivateAddress"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/viewShowQRCode"/>
+
+        <TextView
+            android:id="@+id/tvReceiveMoneyPublicly"
+            style="@style/Nighthawk.MaterialComponents.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ns_receive_money_publicly"
+            app:layout_constraintTop_toBottomOf="@id/viewCopyPrivateAddress"
+            android:textColor="@color/ns_parmaviolet"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            android:layout_marginTop="26dp"/>
+
+        <include
+            android:id="@+id/viewCopyNonPrivateAddress"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/tvReceiveMoneyPublicly"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupReceive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="viewShowQRCode, viewCopyPrivateAddress, tvReceiveMoneyPublicly, viewCopyNonPrivateAddress"/>
+
+        <!--TopUp Wallet(Moon Pay, SideShift, StealthExo)-->
+        <include
+            android:id="@+id/viewMoonPay"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"/>
+
+        <include
+            android:id="@+id/viewSideShift"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/viewMoonPay"/>
+
+        <include
+            android:id="@+id/viewStealthEx"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintTop_toBottomOf="@id/viewSideShift"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupTopUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="viewMoonPay, viewSideShift, viewStealthEx"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
