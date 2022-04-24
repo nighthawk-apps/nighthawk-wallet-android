@@ -577,7 +577,12 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                     runOnUiThread {
                         dialog = showScanFailure(
                             error,
-                            onCancel = { dialog = null },
+                            onRetry = {
+                                dialog = null
+                                lifecycleScope.launch {
+                                    historyViewModel.fullRescan()
+                                }
+                            },
                             onDismiss = { dialog = null }
                         )
                     }
@@ -590,14 +595,20 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                 if (dialog == null) {
                     notified = true
                     runOnUiThread {
-                        dialog = showCriticalProcessorError(error) {
-                            dialog = null
-                        }
+                        dialog = showCriticalProcessorError(
+                            error,
+                            onRetry = {
+                                dialog = null
+                                lifecycleScope.launch {
+                                    historyViewModel.fullRescan()
+                                }
+                            }
+                        )
                     }
                 }
             }
         }
-        twig("MainActivity has received an error${if (notified) " and notified the user" else ""} and reported it to bugsnag and mixpanel.")
+        twig("MainActivity has received an error${if (notified) " and notified the user" else ""}.")
         return true
     }
 
