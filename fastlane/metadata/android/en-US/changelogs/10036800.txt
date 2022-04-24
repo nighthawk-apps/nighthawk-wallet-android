@@ -1,0 +1,2 @@
+- Update checkpoints & dependencies.
+- Perform rescan on retry when block processor fails.
