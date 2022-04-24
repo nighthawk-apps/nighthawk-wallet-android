@@ -59,7 +59,7 @@ fun Context.showInvalidSeedPhraseError(error: Throwable? = null, onDismiss: () -
         .show()
 }
 
-fun Context.showScanFailure(error: Throwable?, onCancel: () -> Unit = {}, onDismiss: () -> Unit = {}): Dialog {
+fun Context.showScanFailure(error: Throwable?, onRetry: () -> Unit = {}, onDismiss: () -> Unit = {}): Dialog {
     val message = if (error == null) {
         "Unknown error"
     } else {
@@ -71,11 +71,10 @@ fun Context.showScanFailure(error: Throwable?, onCancel: () -> Unit = {}, onDism
         .setCancelable(true)
         .setPositiveButton(R.string.dialog_error_scan_failure_button_positive) { d, _ ->
             d.dismiss()
-            onDismiss()
+            onRetry()
         }
         .setNegativeButton(R.string.dialog_error_scan_failure_button_negative) { d, _ ->
             d.dismiss()
-            onCancel()
             onDismiss()
         }
         .show()

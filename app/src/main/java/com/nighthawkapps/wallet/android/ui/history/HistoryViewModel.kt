@@ -166,4 +166,13 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
         return tx.minedHeight > synchronizer.network.saplingActivationHeight &&
                 delta < threshold
     }
+
+    suspend fun fullRescan() {
+        rewindTo(synchronizer.latestBirthdayHeight)
+    }
+
+    private suspend fun rewindTo(targetHeight: Int) {
+        twig("TMP: rewinding to $targetHeight")
+        synchronizer.rewindToNearestHeight(targetHeight, true)
+    }
 }

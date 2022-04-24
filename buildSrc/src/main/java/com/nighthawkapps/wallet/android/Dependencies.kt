@@ -3,14 +3,14 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.6.10"
-    const val navigationVersion = "2.4.1"
+    const val kotlinVersion = "1.6.21"
+    const val navigationVersion = "2.4.2"
     const val compileSdkVersion = 32
     const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
     const val targetSdkVersion = 32
-    const val versionName = "1.0.35"
-    const val versionCode = 1_00_35_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.36"
+    const val versionCode = 1_00_36_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -28,12 +28,12 @@ object Deps {
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
 
-        object CameraX : Version("1.1.0-beta02") {
+        object CameraX : Version("1.1.0-beta03") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
             val CORE = "androidx.camera:camera-core:$version"
             val LIFECYCLE = "androidx.camera:camera-lifecycle:$version"
 
-            object View : Version("1.1.0-beta02") {
+            object View : Version("1.1.0-beta03") {
                 val EXT = "androidx.camera:camera-extensions:$version"
                 val VIEW = "androidx.camera:camera-view:$version"
             }
@@ -84,7 +84,7 @@ object Deps {
         val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         val REFLECT = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
-        object Coroutines : Version("1.6.0") {
+        object Coroutines : Version("1.6.1") {
             val ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             val TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -98,7 +98,7 @@ object Deps {
     }
 
     object Misc {
-        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.17.0"
+        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.19.0"
         const val LOTTIE = "com.airbnb.android:lottie:5.0.3"
         const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
 
@@ -121,7 +121,7 @@ object Deps {
             const val FRAGMENT = "androidx.fragment:fragment-testing:1.4.0-alpha08"
             const val ESPRESSO = "androidx.test.espresso:espresso-core:3.4.0"
             const val ESPRESSO_INTENTS = "androidx.test.espresso:espresso-intents:3.4.0"
-            const val NAVIGATION = "androidx.navigation:navigation-testing:2.3.0-alpha01"
+            const val NAVIGATION = "androidx.navigation:navigation-testing:2.4.2"
         }
     }
 }
