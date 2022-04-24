@@ -268,10 +268,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             RecentActivityUiModel(
                 transactionType = transactionType,
                 transactionTime = formatter.format(confirmedTransaction.blockTimeInSeconds * 1000L),
-                isTransactionShielded = address.isShielded(),
+                isTransactionShielded = address?.equals(R.string.unknown.toAppString(), true) == true || address.isShielded(),
                 amount = toZecStringShort,
                 isMemoAvailable = confirmedTransaction.memo?.toUtf8Memo()?.isNotBlank() == true,
-                zecConvertedValueText = Utils.getZecConvertedAmountText(toZecStringShort, coinMetricsMarketData.value)
+                zecConvertedValueText = Utils.getZecConvertedAmountText(toZecStringShort, coinMetricsMarketData.value),
+                confirmedTransaction = confirmedTransaction
             )
         }
     }
@@ -282,7 +283,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         var isTransactionShielded: Boolean = false,
         var amount: String = "---",
         var isMemoAvailable: Boolean = false,
-        var zecConvertedValueText: String? = null
+        var zecConvertedValueText: String? = null,
+        val confirmedTransaction: ConfirmedTransaction
     ) {
         enum class TransactionType {
             SENT,

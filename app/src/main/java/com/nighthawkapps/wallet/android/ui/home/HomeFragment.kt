@@ -31,6 +31,7 @@ import com.nighthawkapps.wallet.android.preference.Preferences
 import com.nighthawkapps.wallet.android.preference.model.get
 import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
@@ -53,6 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel: HomeViewModel by viewModel()
     private val passwordViewModel: PasswordViewModel by activityViewModel()
     private val mainViewModel: MainViewModel by activityViewModel()
+    private val historyViewModel: HistoryViewModel by activityViewModel()
 
     lateinit var balanceViewPagerAdapter: BalanceViewPagerAdapter
 
@@ -131,12 +133,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     binding.tvTransactionConversionPrice.text = it
                     binding.tvTransactionConversionPrice.isVisible = true
                 }
+                binding.root.setOnClickListener { onRecentItemClicked(recentUiModel.confirmedTransaction) }
             }
             walletRecentActivityView.root.visible()
             if (recentActivityUiModelList.size < 2) {
                 walletRecentActivityView.sentView.root.gone()
             }
         }
+    }
+
+    private fun onRecentItemClicked(confirmedTransaction: ConfirmedTransaction) {
+        historyViewModel.selectedTransaction.value = confirmedTransaction
+        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_transaction)
     }
 
     private fun onSyncReady() {

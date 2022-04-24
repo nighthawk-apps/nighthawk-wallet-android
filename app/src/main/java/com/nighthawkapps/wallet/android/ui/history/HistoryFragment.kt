@@ -15,6 +15,7 @@ import cash.z.ecc.android.sdk.ext.collectWith
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.home.HomeViewModel
+import com.nighthawkapps.wallet.android.ui.util.VerticalSpaceItemDecoration
 
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
@@ -49,6 +50,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         binding.recyclerTransactions.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = transactionAdapter
+            addItemDecoration(VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE))
         }
     }
 
@@ -65,5 +67,9 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
                 transactionAdapter.submitList(transactions as PagedList<ConfirmedTransaction>)
             }
         }
+    }
+
+    companion object {
+        const val VERTICAL_ITEM_SPACE = 18
     }
 }

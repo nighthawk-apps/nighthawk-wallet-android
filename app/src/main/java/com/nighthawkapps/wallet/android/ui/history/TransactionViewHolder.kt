@@ -14,6 +14,7 @@ import cash.z.ecc.android.sdk.ext.isShielded
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.toAppInt
+import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
 import com.nighthawkapps.wallet.android.ui.MainActivity
@@ -78,7 +79,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                             lineOne = str(R.string.ns_received)
                             lineTwo = timestamp
                             amountDisplay = amountZec
-                            iconTransactionDrawable = if (senderAddress.isShielded()) {
+                            iconTransactionDrawable = if (senderAddress.equals(R.string.unknown.toAppString(), true) || senderAddress.isShielded()) {
                                 R.drawable.ic_icon_shielded
                             } else {
                                 R.drawable.ic_icon_transparent
