@@ -147,6 +147,9 @@
     <string name="ns_network_fee">Network Fee</string>
     <string name="ns_send_zcash">Send Zcash</string>
     <string name="ns_sending">Sending</string>
+    <string name="ns_pending_confirmation">Pending confirmation</string>
+    <string name="ns_expired">Expired</string>
+    <string name="ns_unknown">Unknown</string>
     <string name="ns_cancel">Cancel</string>
     <string name="ns_success">Success</string>
     <string name="ns_done">Done</string>
