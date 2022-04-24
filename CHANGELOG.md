@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.36 *(2022-04-24)*
+------------------------------------
+- Update checkpoints & dependencies.
+- Perform rescan on retry when block processor fails.
+
 Version 1.0.35 *(2022-04-02)*
 ------------------------------------
 - Update checkpoints & dependencies.
