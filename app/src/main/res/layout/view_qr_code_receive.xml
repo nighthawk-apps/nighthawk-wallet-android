@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/ns_navy"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="22dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- QR code placeholder -->
+        <ImageView
+            android:id="@+id/receive_qr_code"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/content_description_receive_qr_code"
+            android:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.85"
+            tools:background="@color/zcashWhite"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/icon_qr_logo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/content_description_receive_qr_logo"
+            android:scaleType="fitCenter"
+            android:src="@drawable/selector_shielded_qr_code"
+            app:layout_constraintBottom_toBottomOf="@id/receive_qr_code"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toEndOf="@id/receive_qr_code"
+            app:layout_constraintStart_toStartOf="@id/receive_qr_code"
+            app:layout_constraintTop_toTopOf="@id/receive_qr_code"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/Nighthawk.MaterialComponents.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/ns_shielded_address"
+            android:textColor="@color/ns_parmaviolet"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/receive_qr_code"
+            app:layout_constraintStart_toStartOf="@id/receive_qr_code"
+            app:layout_constraintTop_toBottomOf="@id/receive_qr_code" />
+
+        <TextView
+            android:id="@+id/tvAddress"
+            style="@style/Nighthawk.MaterialComponents.SubText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@id/receive_qr_code"
+            app:layout_constraintStart_toStartOf="@id/receive_qr_code"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            tools:text="zs17vdkr0c59zvtxeqzlsypyufqd7s3xy98hujl8chuy7kyzz824hvudedu0e7zlx0cs7fz66mfu87" />
+
+        <Button
+            android:id="@+id/btnCopy"
+            style="@style/Nighthawk.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/ns_copy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/receive_qr_code"
+            app:layout_constraintHeight_min="36dp"
+            app:layout_constraintStart_toStartOf="@id/receive_qr_code"
+            app:layout_constraintTop_toBottomOf="@id/tvAddress"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintWidth_min="110dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
