@@ -404,15 +404,15 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
         }
     }
 
-    fun copyAddress(view: View? = null) {
+    fun copyAddress(view: View? = null, label: String = "Address") {
         lifecycleScope.launch {
-            copyText(synchronizerComponent.synchronizer().getAddress(), "Address")
+            copyText(synchronizerComponent.synchronizer().getAddress(), label)
         }
     }
 
-    fun copyTransparentAddress(view: View? = null) {
+    fun copyTransparentAddress(view: View? = null, label: String = "T-Address") {
         lifecycleScope.launch {
-            copyText(synchronizerComponent.synchronizer().getTransparentAddress(), "T-Address")
+            copyText(synchronizerComponent.synchronizer().getTransparentAddress(), label)
         }
     }
 

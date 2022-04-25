@@ -43,7 +43,11 @@
     <fragment
         android:id="@+id/nav_transfer"
         android:name="com.nighthawkapps.wallet.android.ui.transfer.TransferFragment"
-        tools:layout="@layout/fragment_transfer" />
+        tools:layout="@layout/fragment_transfer">
+        <action
+            android:id="@+id/action_nav_transfer_to_nav_receive"
+            app:destination="@id/nav_receive" />
+    </fragment>
     <fragment
         android:id="@+id/nav_balance_detail"
         android:name="com.nighthawkapps.wallet.android.ui.home.BalanceDetailFragment"

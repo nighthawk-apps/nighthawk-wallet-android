@@ -87,6 +87,8 @@
     <string name="ns_receive_money_publicly">Receive money publicly</string>
     <string name="ns_copy_public_address">Copy a non-private address</string>
     <string name="ns_receive_money_publicly_text">This will copy your t-address.</string>
+    <string name="ns_private_address">Private Address</string>
+    <string name="ns_non_private_address">Non-Private Address</string>
 
     <!-- Settings Screen -->
     <string name="ns_settings">Settings</string>
