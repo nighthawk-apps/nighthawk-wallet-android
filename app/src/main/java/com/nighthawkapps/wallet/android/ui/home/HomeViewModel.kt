@@ -103,7 +103,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun initPrice() {
+    suspend fun initPrice() {
         fetchPriceScope.launch {
             supervisorScope {
                 if (priceModel == null) {
@@ -114,18 +114,22 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     val gson = Gson()
                     var responseBody: ResponseBody? = null
 
-                    try {
-                        responseBody = client.newCall(request).execute().body()
-                    } catch (e: IOException) {
-                        twig("initPrice + ${e.message}" + "$responseBody")
-                    } catch (e: IllegalStateException) {
-                        twig("initPrice + ${e.message}" + "$responseBody")
-                    }
-                    if (responseBody != null) {
-                        try {
-                            priceModel = gson.fromJson(responseBody.string(), PriceModel::class.java)
-                        } catch (e: IOException) {
-                            twig("initPrice + ${e.message}" + "$priceModel")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        kotlin.runCatching {
+                            try {
+                                responseBody = client.newCall(request).execute().body()
+                            } catch (e: IOException) {
+                                twig("initPrice + ${e.message}" + "$responseBody")
+                            } catch (e: IllegalStateException) {
+                                twig("initPrice + ${e.message}" + "$responseBody")
+                            }
+                            if (responseBody != null) {
+                                try {
+                                    priceModel = gson.fromJson(responseBody!!.string(), PriceModel::class.java)
+                                } catch (e: IOException) {
+                                    twig("initPrice + ${e.message}" + "$priceModel")
+                                }
+                            }
                         }
                     }
                 }

@@ -65,7 +65,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         binding.walletRecentActivityView.tvViewAllTransactions.onClickNavTo(R.id.action_nav_home_to_nav_history)
-        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
         binding.buttonShieldNow.setOnClickListener { if (isAutoShieldFundsAvailable()) { autoShield(uiModel) } }
         initViewPager()
         if (::uiModel.isInitialized) {
@@ -227,7 +226,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return false
     }
 
-    private fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
+    private suspend fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
         if (viewModel.priceModel != null) {
             return try {
                 val usdPrice = viewModel.priceModel?.price!!.toFloat()
@@ -364,6 +363,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         mainActivity?.updateTransferTab(enable = true)
+        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
+        binding.iconScan.visibility = View.VISIBLE
         binding.viewInit.root.gone()
         binding.viewPager.visible()
         autoShield(uiModel)
