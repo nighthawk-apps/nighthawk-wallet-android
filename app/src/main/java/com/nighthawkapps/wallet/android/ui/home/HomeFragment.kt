@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
@@ -33,8 +32,6 @@ import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
-import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
-import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
@@ -50,9 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private lateinit var uiModel: HomeViewModel.UiModel
 
-    private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
-    private val passwordViewModel: PasswordViewModel by activityViewModel()
     private val mainViewModel: MainViewModel by activityViewModel()
     private val historyViewModel: HistoryViewModel by activityViewModel()
 
@@ -224,27 +219,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             return uiModel.hasAutoshieldFunds
         }
         return false
-    }
-
-    private suspend fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
-        if (viewModel.priceModel != null) {
-            return try {
-                val usdPrice = viewModel.priceModel?.price!!.toFloat()
-                val zecBalance = roundFloat(
-                    availableBalance.convertZatoshiToZecString().toFloat()
-                )
-                val usdTotal = "%.2f".format(usdPrice * zecBalance)
-                visible()
-                "~$$usdTotal"
-            } catch (e: NumberFormatException) {
-                gone()
-                ""
-            }
-        } else {
-            gone()
-            viewModel.initPrice()
-            return ""
-        }
     }
 
     //

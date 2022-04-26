@@ -13,7 +13,6 @@ import cash.z.ecc.android.sdk.ext.ZcashSdk.ZATOSHI_PER_ZEC
 import cash.z.ecc.android.sdk.ext.isShielded
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import cash.z.ecc.android.sdk.type.WalletBalance
-import com.google.gson.Gson
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
@@ -25,12 +24,7 @@ import com.nighthawkapps.wallet.android.network.repository.CoinMetricsRepository
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import com.nighthawkapps.wallet.android.ui.util.Resource
 import com.nighthawkapps.wallet.android.ui.util.Utils
-import com.nighthawkapps.wallet.android.ui.util.price.PriceModel
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
-import com.squareup.okhttp.HttpUrl
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
-import com.squareup.okhttp.ResponseBody
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -46,8 +40,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Calendar
@@ -68,7 +60,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     var initialized = false
 
     val balance get() = synchronizer.saplingBalances
-    var priceModel: PriceModel? = null
     private var _coinMetricsMarketData = MutableStateFlow<CoinMetricsMarketResponse.CoinMetricsMarketData?>(null)
     val coinMetricsMarketData: StateFlow<CoinMetricsMarketResponse.CoinMetricsMarketData?> get() = _coinMetricsMarketData
     val transactions get() = synchronizer.clearedTransactions
@@ -78,7 +69,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun getZecMarketPrice(market: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            if (coinMetricsMarketData?.value != null) {
+            if (coinMetricsMarketData.value != null) {
                 twig("response: coin metric data already available $coinMetricsMarketData")
                 return@launch
             }
@@ -100,40 +91,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         return when (resource) {
             is Resource.Success -> resource.data
             else -> null
-        }
-    }
-
-    suspend fun initPrice() {
-        fetchPriceScope.launch {
-            supervisorScope {
-                if (priceModel == null) {
-                    val client = OkHttpClient()
-                    val urlBuilder = HttpUrl.parse("https://api.lightwalletd.com/price.json").newBuilder()
-                    val url = urlBuilder.build().toString()
-                    val request: Request = Request.Builder().url(url).build()
-                    val gson = Gson()
-                    var responseBody: ResponseBody? = null
-
-                    CoroutineScope(Dispatchers.IO).launch {
-                        kotlin.runCatching {
-                            try {
-                                responseBody = client.newCall(request).execute().body()
-                            } catch (e: IOException) {
-                                twig("initPrice + ${e.message}" + "$responseBody")
-                            } catch (e: IllegalStateException) {
-                                twig("initPrice + ${e.message}" + "$responseBody")
-                            }
-                            if (responseBody != null) {
-                                try {
-                                    priceModel = gson.fromJson(responseBody!!.string(), PriceModel::class.java)
-                                } catch (e: IOException) {
-                                    twig("initPrice + ${e.message}" + "$priceModel")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
