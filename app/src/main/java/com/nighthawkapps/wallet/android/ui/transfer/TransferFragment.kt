@@ -67,7 +67,9 @@ class TransferFragment : BaseFragment<FragmentTransferBinding>() {
 
             updateTitleAndBackButton(getString(R.string.ns_send_and_receive_zcash), false)
 
-            viewSendMoney.updateTransferItemsData(R.drawable.ic_arrow_back_black_24dp, getString(R.string.ns_send_money), getString(R.string.ns_send_money_text), 180f) {}
+            viewSendMoney.updateTransferItemsData(R.drawable.ic_arrow_back_black_24dp, getString(R.string.ns_send_money), getString(R.string.ns_send_money_text), 180f) {
+                mainActivity?.safeNavigate(R.id.action_nav_transfer_to_nav_send_enter_amount)
+            }
 
             viewReceiveMoney.updateTransferItemsData(R.drawable.ic_arrow_back_black_24dp, getString(R.string.ns_receive_money), getString(R.string.ns_receive_money_publicly_text)) {
                 transferViewModel.updateUIScreen(TransferViewModel.UIScreen.RECEIVE)

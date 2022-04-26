@@ -50,6 +50,14 @@
         <action
             android:id="@+id/action_nav_transfer_to_nav_receive"
             app:destination="@id/nav_receive" />
+        <action
+            android:id="@+id/action_nav_transfer_to_nav_send_enter_amount"
+            app:destination="@id/nav_send_enter_amount" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_send_enter_amount"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendEnterAmountFragment"
+        tools:layout="@layout/fragment_send_enter_amount">
     </fragment>
     <fragment
         android:id="@+id/nav_balance_detail"

@@ -17,6 +17,8 @@ import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +30,9 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
     @Inject
     lateinit var synchronizer: Synchronizer
+
+    private val _enteredValue = MutableStateFlow("0")
+    val enteredValue: StateFlow<String> get() = _enteredValue
 
     var fromAddress: String = ""
     var toAddress: String = ""
@@ -42,6 +47,14 @@ class SendViewModel @Inject constructor() : ViewModel() {
             field = value
         }
     val isShielded get() = toAddress.startsWith("z")
+
+    fun onNewValueEntered(newValue: String) {
+        _enteredValue.value = newValue
+    }
+
+    fun isAmountValid(enteredZatoshi: Long, maxAvailableZatoshi: Long): Boolean {
+        return enteredZatoshi > ZcashSdk.MINERS_FEE_ZATOSHI && enteredZatoshi < maxAvailableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI
+    }
 
     fun send(): Flow<PendingTransaction> {
         val memoToSend = createMemoToSend()

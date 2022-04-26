@@ -46,6 +46,11 @@
         <item name="android:textColor">@color/selector_primary_button_text_color</item>
     </style>
 
+    <style name="Nighthawk.Button.Secondary" parent="Nighthawk.Button">
+        <item name="android:backgroundTint">@color/ns_navy</item>
+        <item name="android:textColor">@color/ns_parmaviolet</item>
+    </style>
+
     <style name="Nighthawk.Button.Normal" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/ns_peach_100</item>
         <item name="android:textColor">@color/ns_dark_navy</item>
