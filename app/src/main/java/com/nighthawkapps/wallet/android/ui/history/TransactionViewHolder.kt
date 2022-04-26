@@ -14,8 +14,11 @@ import cash.z.ecc.android.sdk.ext.isShielded
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.toAppInt
+import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.twig
+import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
 import com.nighthawkapps.wallet.android.ui.MainActivity
+import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -29,8 +32,12 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
     private val transactionArrow = itemView.findViewById<ImageView>(R.id.ivLeftTransactionDirection)
     private val formatter = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), str(R.string.ns_format_date_time)), Locale.getDefault())
     private val iconTransactionType = itemView.findViewById<ImageView>(R.id.ivTransactionType)
+    private val convertedValueTextView = itemView.findViewById<TextView>(R.id.tvTransactionConversionPrice)
 
-    fun bindTo(transaction: T?) {
+    fun bindTo(
+        transaction: T?,
+        coinMetricsMarketData: CoinMetricsMarketResponse.CoinMetricsMarketData?
+    ) {
         val mainActivity = itemView.context as MainActivity
         mainActivity.lifecycleScope.launch {
             // update view
@@ -72,7 +79,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                             lineOne = str(R.string.ns_received)
                             lineTwo = timestamp
                             amountDisplay = amountZec
-                            iconTransactionDrawable = if (senderAddress.isShielded()) {
+                            iconTransactionDrawable = if (senderAddress.equals(R.string.unknown.toAppString(), true) || senderAddress.isShielded()) {
                                 R.drawable.ic_icon_shielded
                             } else {
                                 R.drawable.ic_icon_transparent
@@ -94,6 +101,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                 bottomText.text = lineTwo
                 amountText.text = itemView.context.getString(R.string.ns_zec_amount, amountDisplay)
                 transactionArrow.rotation = arrowRotation.toAppInt().toFloat()
+                convertedValueTextView.text = Utils.getZecConvertedAmountText(amountZec, coinMetricsMarketData)
                 iconTransactionDrawable?.let { iconTransactionType.setImageResource(it) }
             } catch (t: Throwable) {
                 twig("Failed to parse the transaction due to $t")

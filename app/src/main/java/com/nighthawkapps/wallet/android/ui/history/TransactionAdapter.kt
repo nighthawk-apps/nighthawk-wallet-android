@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import com.nighthawkapps.wallet.android.R
+import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
 
 class TransactionAdapter<T : ConfirmedTransaction> :
     ListAdapter<T, TransactionViewHolder<T>>(
@@ -26,6 +27,7 @@ class TransactionAdapter<T : ConfirmedTransaction> :
         }
     ) {
 
+    private var coinMetricsMarketData: CoinMetricsMarketResponse.CoinMetricsMarketData? = null
     init {
         setHasStableIds(true)
     }
@@ -40,9 +42,13 @@ class TransactionAdapter<T : ConfirmedTransaction> :
     override fun onBindViewHolder(
         holder: TransactionViewHolder<T>,
         position: Int
-    ) = holder.bindTo(getItem(position))
+    ) = holder.bindTo(getItem(position), coinMetricsMarketData)
 
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id ?: -1
+    }
+
+    fun setZecConversionValueText(coinMetricsMarketData: CoinMetricsMarketResponse.CoinMetricsMarketData?) {
+        this.coinMetricsMarketData = coinMetricsMarketData
     }
 }
