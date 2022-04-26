@@ -19,6 +19,7 @@ import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.toAppString
+import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
 import com.nighthawkapps.wallet.android.network.repository.CoinMetricsRepository
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
@@ -52,6 +53,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     lateinit var synchronizer: Synchronizer
     @Inject
     lateinit var coinMetricsRepository: CoinMetricsRepository
+    @Inject
+    lateinit var lockBox: LockBox
 
     lateinit var uiModels: Flow<UiModel>
 
@@ -82,6 +85,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     val response = extractCoinMarketData(it)?.data
                     if (response?.isNotEmpty() == true) {
                         _coinMetricsMarketData.value = response[0]
+                        lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] = _coinMetricsMarketData.value?.price
                     }
                 }
         }

@@ -10,11 +10,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.type.WalletBalance
+import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendEnterAmountBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
+import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.convertZecToZatoshi
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
+import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -71,15 +75,30 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             tvScanPaymentCode.setOnClickListener {
                 mainActivity?.maybeOpenScan()
             }
+            btnContinue.setOnClickListener {
+                if (sendViewModel.isAmountValid(sendViewModel.zatoshiAmount, maxZatoshi)) {
+                    twig("Amount entered to send ${sendViewModel.zatoshiAmount}")
+                    mainActivity?.safeNavigate(R.id.action_nav_enter_amount_to_enter_address)
+                }
+            }
         }
     }
 
     private fun onAmountValueUpdated(newValue: String) {
         binding.tvBalance.let {
             it.text = newValue
-            it.convertZecToZatoshi()?.let { zatoshi ->  sendViewModel.zatoshiAmount = zatoshi }
+            it.convertZecToZatoshi()?.let { zatoshi ->
+                sendViewModel.zatoshiAmount = zatoshi
+                calculateZecConvertedAmount(zatoshi)
+            }
         }
         updateButtonsUI(newValue)
+    }
+
+    private fun calculateZecConvertedAmount(zatoshi: Long) {
+        sendViewModel.getZecMarketPrice()?.let {
+            binding.tvConvertedAmount.text = getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it))
+        }
     }
 
     private fun updateButtonsUI(value: String) {

@@ -56,6 +56,10 @@ class SendViewModel @Inject constructor() : ViewModel() {
         return enteredZatoshi > ZcashSdk.MINERS_FEE_ZATOSHI && enteredZatoshi < maxAvailableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI
     }
 
+    fun getZecMarketPrice(): String? {
+        return lockBox[Const.AppConstants.KEY_ZEC_AMOUNT]
+    }
+
     fun send(): Flow<PendingTransaction> {
         val memoToSend = createMemoToSend()
         val keys = DerivationTool.deriveSpendingKeys(
