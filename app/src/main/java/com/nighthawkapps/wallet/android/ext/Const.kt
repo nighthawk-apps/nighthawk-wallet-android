@@ -69,4 +69,9 @@ object Const {
         const val AMOUNT_QUERY = "amount"
         const val MEMO_QUERY = "memo"
     }
+
+    object Network {
+        const val COIN_METRICS_BASE_URL = "https://community-api.coinmetrics.io/v4/"
+        const val URL_GET_COIN_METRICS_MARKET_TRADE = "timeseries/market-trades"
+    }
 }

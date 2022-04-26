@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DOWNLOADING
@@ -30,6 +31,7 @@ import com.nighthawkapps.wallet.android.preference.Preferences
 import com.nighthawkapps.wallet.android.preference.model.get
 import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
@@ -38,6 +40,7 @@ import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.runningReduce
@@ -51,6 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel: HomeViewModel by viewModel()
     private val passwordViewModel: PasswordViewModel by activityViewModel()
     private val mainViewModel: MainViewModel by activityViewModel()
+    private val historyViewModel: HistoryViewModel by activityViewModel()
 
     lateinit var balanceViewPagerAdapter: BalanceViewPagerAdapter
 
@@ -61,7 +65,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         binding.walletRecentActivityView.tvViewAllTransactions.onClickNavTo(R.id.action_nav_home_to_nav_history)
-        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
         binding.buttonShieldNow.setOnClickListener { if (isAutoShieldFundsAvailable()) { autoShield(uiModel) } }
         initViewPager()
         if (::uiModel.isInitialized) {
@@ -84,6 +87,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         }
+
+        viewModel.getZecMarketPrice("bitfinex-zec-usd-spot")
     }
 
     override fun onResume() {
@@ -92,7 +97,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         // Once the synchronizer is created, monitor state changes, while this fragment is resumed
         launchWhenSyncReady {
             onSyncReady()
-            viewModel.transactions.onEach { onTransactionsUpdated(it) }.launchIn(resumedScope)
+            combine(viewModel.transactions, viewModel.coinMetricsMarketData) { it1, it2 ->
+                twig("recentUI $it1 and $it2")
+                it1
+            }.onEach { onTransactionsUpdated(it) }.launchIn(resumedScope)
         }
     }
 
@@ -120,12 +128,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
                 binding.tvTransactionDate.text = recentUiModel.transactionTime
                 binding.tvTransactionAmount.text = getString(R.string.ns_zec_amount, recentUiModel.amount)
+                recentUiModel.zecConvertedValueText?.let {
+                    binding.tvTransactionConversionPrice.text = it
+                    binding.tvTransactionConversionPrice.isVisible = true
+                }
+                binding.root.setOnClickListener { onRecentItemClicked(recentUiModel.confirmedTransaction) }
             }
             walletRecentActivityView.root.visible()
             if (recentActivityUiModelList.size < 2) {
                 walletRecentActivityView.sentView.root.gone()
             }
         }
+    }
+
+    private fun onRecentItemClicked(confirmedTransaction: ConfirmedTransaction) {
+        historyViewModel.selectedTransaction.value = confirmedTransaction
+        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_transaction)
     }
 
     private fun onSyncReady() {
@@ -208,7 +226,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return false
     }
 
-    private fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
+    private suspend fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
         if (viewModel.priceModel != null) {
             return try {
                 val usdPrice = viewModel.priceModel?.price!!.toFloat()
@@ -345,6 +363,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         mainActivity?.updateTransferTab(enable = true)
+        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
+        binding.iconScan.visibility = View.VISIBLE
         binding.viewInit.root.gone()
         binding.viewPager.visible()
         autoShield(uiModel)

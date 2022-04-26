@@ -39,6 +39,9 @@
             android:id="@+id/action_nav_scan_to_nav_receive"
             app:destination="@id/nav_receive"
             app:exitAnim="@anim/anim_fade_out_medium" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_transaction"
+            app:destination="@id/nav_transaction" />
     </fragment>
     <fragment
         android:id="@+id/nav_transfer"
