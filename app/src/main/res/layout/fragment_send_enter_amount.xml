@@ -77,7 +77,7 @@
     <TextView
         android:id="@+id/tvBalance"
         style="@style/Nighthawk.TextAppearance.H1.Bold"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical|end"
@@ -88,13 +88,13 @@
         app:layout_constraintStart_toStartOf="@id/guideLineStart"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintVertical_bias="0.15"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constrainedWidth="true"
         tools:text="200.99" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvZec"
         style="@style/Nighthawk.TextAppearance.H1.Bold"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:drawablePadding="8dp"
         android:gravity="center"
@@ -106,8 +106,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideLineEnd"
         app:layout_constraintStart_toEndOf="@id/tvBalance"
         app:layout_constraintTop_toTopOf="@id/tvBalance"
-        app:layout_constraintWidth_default="wrap"
-        app:layout_constraintWidth_max="wrap" />
+        app:layout_constrainedWidth="true" />
 
     <TextView
         android:id="@+id/tvConvertedAmount"
@@ -170,7 +169,7 @@
     <TextView
         android:id="@+id/tvScanPaymentCode"
         style="@style/Nighthawk.MaterialComponents.Body"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:background="@drawable/background_scan_code_tv"
@@ -182,7 +181,7 @@
         app:layout_constraintBottom_toTopOf="@id/guide_keys"
         app:layout_constraintEnd_toEndOf="@id/guideLineEnd"
         app:layout_constraintStart_toStartOf="@id/guideLineStart"
-        app:layout_constraintWidth_default="wrap" />
+        app:layout_constrainedWidth="true" />
 
     <!--            -->
     <!-- Number Pad -->

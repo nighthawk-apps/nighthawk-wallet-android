@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_main">
+
+    <View
+        android:id="@+id/hit_area_exit"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:alpha="0.3"
+        android:background="@android:color/transparent"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.035" />
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="22dp"
+        android:contentDescription="@string/content_description_settings_back"
+        android:elevation="6dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06"
+        app:srcCompat="@drawable/ic_icon_back" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivBack">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="24dp">
+
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/app_name"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_nighthawk_logo" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/Nighthawk.MaterialComponents.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/ns_review_and_send"
+                android:textColor="@color/ns_parmaviolet"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/ivLogo" />
+
+            <TextView
+                android:id="@+id/tvBalance"
+                style="@style/Nighthawk.TextAppearance.H1.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_vertical|end"
+                android:textColor="@color/ns_white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@id/tvZec"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                tools:text="200.99" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvZec"
+                style="@style/Nighthawk.TextAppearance.H1.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="@string/ns_zec"
+                android:textAllCaps="true"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="@id/tvBalance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvBalance"
+                app:layout_constraintTop_toTopOf="@id/tvBalance" />
+
+            <TextView
+                android:id="@+id/tvConvertedAmount"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintTop_toBottomOf="@id/tvZec"
+                tools:text="around 200.99 USD" />
+
+            <TextView
+                android:id="@+id/tvMemoTitle"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="78dp"
+                android:gravity="center"
+                android:text="@string/ns_memo"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintTop_toBottomOf="@id/tvConvertedAmount" />
+
+            <TextView
+                android:id="@+id/tvMemo"
+                style="@style/Nighthawk.MaterialComponents.Headline2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/ns_white"
+                app:layout_constraintTop_toBottomOf="@id/tvMemoTitle"
+                tools:text="Memo text" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupMemo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:constraint_referenced_ids="tvMemo, tvMemoTitle" />
+
+            <View
+                android:id="@+id/viewDummy"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="78dp"
+                android:background="#00ffffff"
+                app:layout_constraintTop_toBottomOf="@id/tvConvertedAmount" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrierMemo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="viewDummy, tvMemo" />
+
+            <View
+                android:id="@+id/viewNetworkTop"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="40dp"
+                android:background="@color/ns_parmaviolet"
+                app:layout_constraintTop_toBottomOf="@id/barrierMemo" />
+
+            <TextView
+                android:id="@+id/tvNetworkTitle"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ns_network"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewNetworkTop"
+                app:layout_constraintWidth_percent="0.5" />
+
+            <TextView
+                android:id="@+id/tvNetwork"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewNetworkTop"
+                app:layout_constraintWidth_percent="0.5"
+                tools:text="Orchard" />
+
+            <View
+                android:id="@+id/viewRecipientTop"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/ns_parmaviolet"
+                app:layout_constraintTop_toBottomOf="@id/tvNetwork" />
+
+            <TextView
+                android:id="@+id/tvRecipientTitle"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ns_recipient"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewRecipientTop"
+                app:layout_constraintWidth_percent="0.5" />
+
+            <TextView
+                android:id="@+id/tvRecipient"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewRecipientTop"
+                app:layout_constraintWidth_percent="0.5"
+                tools:text="Shielded" />
+
+            <TextView
+                android:id="@+id/tvAddressTitle"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ns_address"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvRecipientTitle"
+                app:layout_constraintWidth_percent="0.3" />
+
+            <TextView
+                android:id="@+id/tvAddress"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvRecipientTitle"
+                app:layout_constraintWidth_percent="0.65"
+                tools:text="zs1j29m7zdhhyy2eqrz89l4zhk0angqjh368gqkj2vgdyqmeuultteny36n3qsm47zn8du5sw3ts7f" />
+
+            <View
+                android:id="@+id/viewSubTotalTop"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/ns_parmaviolet"
+                app:layout_constraintTop_toBottomOf="@id/tvAddress" />
+
+            <TextView
+                android:id="@+id/tvSubTotalTitle"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ns_subtotal"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewSubTotalTop"
+                app:layout_constraintWidth_percent="0.5" />
+
+            <TextView
+                android:id="@+id/tvSubTotal"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewSubTotalTop"
+                app:layout_constraintWidth_percent="0.5"
+                tools:text="200.99 ZEC" />
+
+            <TextView
+                android:id="@+id/tvFeeTitle"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ns_network_fee"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSubTotal"
+                app:layout_constraintWidth_percent="0.5" />
+
+            <TextView
+                android:id="@+id/tvFee"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSubTotal"
+                app:layout_constraintWidth_percent="0.5"
+                tools:text="0.00001 ZEC" />
+
+            <View
+                android:id="@+id/viewTotalTop"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/ns_parmaviolet"
+                app:layout_constraintTop_toBottomOf="@id/tvFee" />
+
+            <TextView
+                android:id="@+id/tvTotalAmountTitle"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ns_total_amount"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewTotalTop"
+                app:layout_constraintWidth_percent="0.5" />
+
+            <TextView
+                android:id="@+id/tvTotalAmount"
+                style="@style/Nighthawk.MaterialComponents.SubText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:textColor="@color/ns_parmaviolet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewTotalTop"
+                app:layout_constraintWidth_percent="0.5"
+                tools:text="201 ZEC" />
+
+            <View
+                android:id="@+id/viewTotalBottom"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/ns_parmaviolet"
+                app:layout_constraintTop_toBottomOf="@id/tvTotalAmount" />
+
+            <Button
+                android:id="@+id/btnViewOnExplorer"
+                style="@style/Nighthawk.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/ns_view_block_explorer"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_min="36dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewTotalBottom"
+                app:layout_constraintWidth_min="193dp" />
+
+            <Button
+                android:id="@+id/btnSendZcash"
+                style="@style/Nighthawk.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/ns_send_zcash"
+                app:layout_constraintEnd_toEndOf="@id/btnViewOnExplorer"
+                app:layout_constraintHeight_min="36dp"
+                app:layout_constraintStart_toStartOf="@id/btnViewOnExplorer"
+                app:layout_constraintTop_toBottomOf="@id/btnViewOnExplorer"
+                app:layout_constraintWidth_min="193dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

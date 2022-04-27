@@ -17,26 +17,26 @@
     <TextView
         android:id="@+id/tvItemTitle"
         style="@style/Nighthawk.MaterialComponents.Headline2"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/ivLeftIcon"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constrainedWidth="true"
         tools:text="Show QR Code" />
 
     <TextView
         android:id="@+id/tvItemSubTitle"
         style="@style/Nighthawk.MaterialComponents.SubText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@id/tvItemTitle"
         app:layout_constraintTop_toBottomOf="@id/tvItemTitle"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constrainedWidth="true"
         tools:text="Allow someone to scan code and send money" />
 
 

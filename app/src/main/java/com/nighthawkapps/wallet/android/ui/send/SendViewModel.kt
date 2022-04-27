@@ -127,5 +127,6 @@ class SendViewModel @Inject constructor() : ViewModel() {
         memo = ""
         zatoshiAmount = -1L
         includeFromAddress = false
+        _enteredValue.value = "0"
     }
 }

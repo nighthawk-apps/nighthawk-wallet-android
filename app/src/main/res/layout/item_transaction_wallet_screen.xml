@@ -25,7 +25,7 @@
     <TextView
         android:id="@+id/tvTransactionDirection"
         style="@style/Nighthawk.MaterialComponents.Headline2"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         app:layout_constraintEnd_toStartOf="@id/ivTransactionType"
@@ -33,7 +33,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/ivLeftTransactionDirection"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constrainedWidth="true"
         tools:text="Received" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -50,38 +50,38 @@
     <TextView
         android:id="@+id/tvTransactionDate"
         style="@style/Nighthawk.MaterialComponents.SubText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/guideLineMiddle"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@id/tvTransactionDirection"
         app:layout_constraintTop_toBottomOf="@id/tvTransactionDirection"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constrainedWidth="true"
         tools:text="03/04/2022" />
 
     <TextView
         android:id="@+id/tvTransactionAmount"
         style="@style/Nighthawk.MaterialComponents.Headline2"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/ns_parmaviolet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toEndOf="@id/guideLineMiddle"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constrainedWidth="true"
         tools:text="--- ZEC" />
 
     <TextView
         android:id="@+id/tvTransactionConversionPrice"
         style="@style/Nighthawk.MaterialComponents.SubText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toEndOf="@id/guideLineMiddle"
         app:layout_constraintTop_toBottomOf="@id/tvTransactionAmount"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constrainedWidth="true"
         tools:text="--- EUR" />
 
     <View

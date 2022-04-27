@@ -12,12 +12,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import androidx.viewbinding.ViewBinding
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentTransferBinding
+import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.send.SendViewModel
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -25,9 +28,18 @@ import kotlinx.coroutines.launch
 class TransferFragment : BaseFragment<FragmentTransferBinding>() {
 
     private val transferViewModel: TransferViewModel by activityViewModels()
+    private val sendViewModel: SendViewModel by activityViewModel()
+    private val args: TransferFragmentArgs by navArgs()
 
     override fun inflate(inflater: LayoutInflater): FragmentTransferBinding {
         return FragmentTransferBinding.inflate(layoutInflater)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (args.forDirectTopUp) {
+            transferViewModel.updateUIScreen(TransferViewModel.UIScreen.TOP_UP)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,8 +58,16 @@ class TransferFragment : BaseFragment<FragmentTransferBinding>() {
     private fun onBackPressed() {
         viewLifecycleOwner.lifecycleScope.launch {
             when (transferViewModel.currentUIScreen.value) {
-                TransferViewModel.UIScreen.RECEIVE, TransferViewModel.UIScreen.TOP_UP -> transferViewModel.updateUIScreen(transferViewModel.lastShownScreen)
-                else -> { }
+                TransferViewModel.UIScreen.RECEIVE -> transferViewModel.updateUIScreen(TransferViewModel.UIScreen.LANDING)
+                TransferViewModel.UIScreen.TOP_UP -> {
+                    if (args.forDirectTopUp) {
+                        mainActivity?.navController?.popBackStack()
+                        transferViewModel.updateUIScreen(TransferViewModel.UIScreen.LANDING)
+                    } else {
+                        transferViewModel.updateUIScreen(transferViewModel.lastShownScreen)
+                    }
+                }
+                else -> { mainActivity?.navController?.popBackStack() }
             }
         }
     }
@@ -68,6 +88,7 @@ class TransferFragment : BaseFragment<FragmentTransferBinding>() {
             updateTitleAndBackButton(getString(R.string.ns_send_and_receive_zcash), false)
 
             viewSendMoney.updateTransferItemsData(R.drawable.ic_arrow_back_black_24dp, getString(R.string.ns_send_money), getString(R.string.ns_send_money_text), 180f) {
+                sendViewModel.reset()
                 mainActivity?.safeNavigate(R.id.action_nav_transfer_to_nav_send_enter_amount)
             }
 
