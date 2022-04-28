@@ -31,6 +31,8 @@ class SendViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var synchronizer: Synchronizer
 
+    val networkName get() = synchronizer.network.networkName
+
     private val _enteredValue = MutableStateFlow("0")
     val enteredValue: StateFlow<String> get() = _enteredValue
 

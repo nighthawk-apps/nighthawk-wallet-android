@@ -94,6 +94,14 @@
         android:id="@+id/nav_send_review"
         android:name="com.nighthawkapps.wallet.android.ui.send.SendReviewFragment"
         tools:layout="@layout/fragment_send_review">
+        <action
+            android:id="@+id/action_nav_send_review_to_send_status"
+            app:destination="@id/nav_send_status" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_send_status"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendStatusFragment"
+        tools:layout="@layout/fragment_send_status">
     </fragment>
     <fragment
         android:id="@+id/nav_balance_detail"
