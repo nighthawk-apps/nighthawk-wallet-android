@@ -3,12 +3,14 @@ package com.nighthawkapps.wallet.android.ui.send
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.ext.onFirstWith
 import cash.z.ecc.android.sdk.type.WalletBalance
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendReviewBinding
@@ -54,8 +56,7 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
     }
 
     private fun onSendClicked() {
-        // TODO: uncomment this code to execute send and comment last line mainActivity?.safeNavigate(R.id.action_nav_send_review_to_send_status)
-        /*sendViewModel.validate(requireContext(), availableZatoshi, maxZatoshi).onFirstWith(resumedScope) { errorMessage ->
+        sendViewModel.validate(requireContext(), availableZatoshi, maxZatoshi).onFirstWith(resumedScope) { errorMessage ->
             if (errorMessage == null) {
                 mainActivity?.authenticate("Please confirm that you want to send ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC") {
                     mainActivity?.safeNavigate(R.id.action_nav_send_review_to_send_status)
@@ -65,8 +66,7 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
                     Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }
-        }*/
-        mainActivity?.safeNavigate(R.id.action_nav_send_review_to_send_status)
+        }
     }
 
     private fun fillUI() {
