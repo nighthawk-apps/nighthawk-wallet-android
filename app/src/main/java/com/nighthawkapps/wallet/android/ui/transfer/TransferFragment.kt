@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.net.toUri
 import androidx.core.view.isInvisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -21,6 +22,7 @@ import com.nighthawkapps.wallet.android.ext.gone
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -39,6 +41,15 @@ class TransferFragment : BaseFragment<FragmentTransferBinding>() {
         super.onCreate(savedInstanceState)
         if (args.forDirectTopUp) {
             transferViewModel.updateUIScreen(TransferViewModel.UIScreen.TOP_UP)
+        }
+
+        if (args.forBuyZecDeeplink.isNotBlank()) {
+            val data = DeepLinkUtil.getSendDeepLinkData(uri = args.forBuyZecDeeplink.toUri())
+            data?.let {
+                sendViewModel.reset()
+                sendViewModel.setSendZecDeepLinkData(data)
+                mainActivity?.safeNavigate(R.id.action_nav_transfer_to_nav_send_enter_amount)
+            }
         }
     }
 

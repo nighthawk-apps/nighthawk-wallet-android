@@ -67,7 +67,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             onModelUpdated(null, uiModel)
         }
 
-        // TODO Need to use this for handling deepLink
         lifecycleScope.launchWhenResumed {
             mainViewModel.intentData.collect { uri ->
                 uri?.let {
@@ -76,8 +75,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         mainActivity?.showMessage("Error: No sufficient data to proceed this transaction")
                     } else {
                         mainViewModel.setSendZecDeepLinkData(data)
-                        mainActivity?.safeNavigate(R.id.action_nav_home_to_send)
-                        mainViewModel.setIntentData(null)
                     }
                 }
             }
@@ -342,6 +339,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.viewInit.root.gone()
         binding.viewPager.visible()
         autoShield(uiModel)
+        checkForDeepLink()
     }
 
     private fun autoShield(uiModel: HomeViewModel.UiModel) {
@@ -389,6 +387,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             } else if (!canAutoshield) {
                 twig("Could not Autoshield probably because the last one occurred too recently")
             }
+        }
+    }
+
+    private fun checkForDeepLink() {
+        lifecycleScope.launchWhenResumed {
+            if (mainViewModel.intentData.value == null || mainViewModel.sendZecDeepLinkData.value == null) return@launchWhenResumed
+            mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToTransfer(forBuyZecDeeplink = mainViewModel.intentData.value?.toString() ?: ""))
+            mainViewModel.setIntentData(null)
         }
     }
 

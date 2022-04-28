@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.type.WalletBalance
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendEnterAmountBinding
@@ -18,6 +19,7 @@ import com.nighthawkapps.wallet.android.ext.convertZecToZatoshi
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -47,6 +49,11 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
                 launch {
                     sendViewModel.synchronizer.saplingBalances.collect {
                         onBalanceUpdated(it)
+                    }
+                }
+                launch {
+                    sendViewModel.sendZecDeepLinkData.collect {
+                        onDataReceivedFromDeepLink(it)
                     }
                 }
             }
@@ -87,6 +94,17 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             binding.btnNotEnoughZCash.setOnClickListener {
                 mainActivity?.safeNavigate(R.id.action_nav_enter_amount_to_transfer)
             }
+        }
+    }
+
+    private fun onDataReceivedFromDeepLink(data: DeepLinkUtil.SendDeepLinkData?) {
+        data?.let {
+            sendViewModel.toAddress = data.address
+            sendViewModel.memo = data.memo ?: ""
+            sendViewModel.zatoshiAmount = data.amount
+            val newValue = sendViewModel.zatoshiAmount.convertZatoshiToZecString()
+            binding.tvBalance.text = newValue
+            onAmountValueUpdated(newValue)
         }
     }
 

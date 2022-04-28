@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_transaction"
             app:destination="@id/nav_transaction" />
+        <action
+            android:id="@+id/action_nav_home_to_transfer"
+            app:destination="@+id/nav_transfer"/>
     </fragment>
     <fragment
         android:id="@+id/nav_transfer"
@@ -51,6 +54,10 @@
             android:name="forDirectTopUp"
             app:argType="boolean"
             android:defaultValue="false"/>
+        <argument
+            android:name="forBuyZecDeeplink"
+            app:argType="string"
+            android:defaultValue=""/>
         <action
             android:id="@+id/action_nav_transfer_to_nav_receive"
             app:destination="@id/nav_receive" />

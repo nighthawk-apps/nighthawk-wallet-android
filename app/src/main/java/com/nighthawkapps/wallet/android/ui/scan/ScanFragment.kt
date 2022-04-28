@@ -131,7 +131,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                 sendViewModel.toAddress = parsed.address
                 sendViewModel.memo = parsed.memo ?: ""
                 sendViewModel.zatoshiAmount = parsed.amount
-                mainViewModel.setSendZecDeepLinkData(parsed)
+                sendViewModel.setSendZecDeepLinkData(parsed)
                 mainActivity?.navController?.popBackStack()
             }
         }

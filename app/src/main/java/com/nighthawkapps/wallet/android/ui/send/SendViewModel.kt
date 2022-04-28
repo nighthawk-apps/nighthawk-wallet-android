@@ -14,6 +14,7 @@ import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
+import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -35,6 +36,8 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
     private val _enteredValue = MutableStateFlow("0")
     val enteredValue: StateFlow<String> get() = _enteredValue
+    private val _sendZecDeepLinkData = MutableStateFlow<DeepLinkUtil.SendDeepLinkData?>(null)
+    val sendZecDeepLinkData: StateFlow<DeepLinkUtil.SendDeepLinkData?> get() = _sendZecDeepLinkData
 
     var fromAddress: String = ""
     var toAddress: String = ""
@@ -60,6 +63,10 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
     fun getZecMarketPrice(): String? {
         return lockBox[Const.AppConstants.KEY_ZEC_AMOUNT]
+    }
+
+    fun setSendZecDeepLinkData(data: DeepLinkUtil.SendDeepLinkData?) {
+        _sendZecDeepLinkData.value = data
     }
 
     fun send(): Flow<PendingTransaction> {
@@ -130,5 +137,6 @@ class SendViewModel @Inject constructor() : ViewModel() {
         zatoshiAmount = -1L
         includeFromAddress = false
         _enteredValue.value = "0"
+        _sendZecDeepLinkData.value = null
     }
 }
