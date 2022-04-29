@@ -1,12 +1,14 @@
 package com.nighthawkapps.wallet.android.ui.history
 
 import android.text.format.DateUtils
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.ZcashSdk
+import cash.z.ecc.android.sdk.ext.isShielded
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
@@ -16,6 +18,7 @@ import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
+import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -33,6 +36,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
 
     val selectedTransaction = MutableStateFlow<ConfirmedTransaction?>(null)
     val uiModels = selectedTransaction.map { it.toUiModel() }
+    val transactionDetailsUIModel = selectedTransaction.map { it.toTransactionUIModel() }
 
     val transactions get() = synchronizer.clearedTransactions
     val balance get() = synchronizer.saplingBalances
@@ -143,6 +147,119 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                 }
             }
         }
+    }
+
+    data class TransactionDetailsUIModel(
+        var transactionAmount: String = "",
+        var convertedAmount: String = "",
+        var transactionStatus: String = "",
+        @DrawableRes var transactionStatusStartDrawableId: Int = R.drawable.ic_icon_finalizing,
+        var memo: String? = null,
+        var timestamp: String = "",
+        var network: String = "",
+        var blockId: String = "",
+        var confirmation: String = "0",
+        var transactionId: String? = null,
+        var recipientAddressType: String = "",
+        var toAddress: String = "",
+        var subTotal: String = "",
+        var networkFees: String? = null,
+        var totalAmount: String = "",
+        var isInbound: Boolean? = null,
+        var isMined: Boolean = false,
+        var iconRotation: Float = 0f
+    )
+
+    private suspend fun ConfirmedTransaction?.toTransactionUIModel(latestHeight: Int? = this@HistoryViewModel.latestHeight): TransactionDetailsUIModel = TransactionDetailsUIModel().apply {
+        this@toTransactionUIModel.let { tx ->
+            network = synchronizer.network.networkName
+            transactionId = toTxId(tx?.rawTransactionId)
+            isInbound = when {
+                !(tx?.toAddress.isNullOrEmpty()) -> false
+                tx != null && tx.toAddress.isNullOrEmpty() && tx.value > 0L && tx.minedHeight > 0 -> true
+                else -> null
+            }
+            isMined = tx?.minedHeight != null && tx.minedHeight > synchronizer.network.saplingActivationHeight
+            transactionAmount = WalletZecFormmatter.toZecStringFull(tx?.value)
+            convertedAmount = calculateZecConvertedAmount(tx?.value ?: 0L) ?: ""
+            blockId = String.format("%,d", tx?.minedHeight ?: 0)
+            val flags =
+                DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_ABBREV_MONTH
+            timestamp = if (tx == null || tx.blockTimeInSeconds <= 0) getString(R.string.transaction_timestamp_unavailable) else DateUtils.getRelativeDateTimeString(
+                NighthawkWalletApp.instance,
+                tx.blockTimeInSeconds * 1000,
+                DateUtils.SECOND_IN_MILLIS,
+                DateUtils.WEEK_IN_MILLIS,
+                flags
+            ).toString()
+
+            // memo logic
+            val txMemo = tx?.memo.toUtf8Memo()
+            if (txMemo.isNotEmpty()) {
+                memo = txMemo
+            }
+
+            // confirmation logic
+            tx?.let {
+                val isMined = it.blockTimeInSeconds != 0L
+                if (isMined) {
+                    val hasLatestHeight = latestHeight != null && latestHeight > synchronizer.network.saplingActivationHeight
+                    confirmation = if (it.minedHeight > 0 && hasLatestHeight) {
+                        val confirmations = latestHeight!! - it.minedHeight + 1
+                        transactionStatus = getString(R.string.ns_confirmed)
+                        transactionStatusStartDrawableId = R.drawable.ic_icon_confirmed
+                        "$confirmations"
+                    } else {
+                        if (!hasLatestHeight && isSufficientlyOld(tx)) {
+                            twig("Warning: could not load latestheight from server to determine confirmations but this transaction is mined and old enough to be considered confirmed")
+                            transactionStatusStartDrawableId = R.drawable.ic_icon_confirmed
+                            transactionStatus = getString(R.string.ns_confirmed)
+                            getString(R.string.transaction_status_confirmed)
+                        } else {
+                            twig("Warning: could not determine confirmation text value so it will be left null!")
+                            transactionStatusStartDrawableId = R.drawable.ic_done_24dp
+                            transactionStatus = getString(R.string.ns_sent)
+                            getString(R.string.transaction_confirmation_count_unavailable)
+                        }
+                    }
+                } else {
+                    transactionStatusStartDrawableId = R.drawable.ic_icon_preparing
+                    transactionStatus = getString(R.string.ns_processing)
+                    confirmation = getString(R.string.transaction_status_pending)
+                }
+            }
+
+            when (isInbound) {
+                true -> {
+                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.value)
+                    subTotal = totalAmount
+                    iconRotation = 0f
+                    toAddress = MemoUtil.findAddressInMemo(tx, (synchronizer as SdkSynchronizer)::isValidAddress) ?: getString(R.string.unknown)
+                    recipientAddressType = getString(if (toAddress.isShielded() || toAddress.equals(getString(R.string.unknown), true)) R.string.ns_shielded else R.string.ns_transparent)
+                }
+                false -> {
+                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.value?.plus(ZcashSdk.MINERS_FEE_ZATOSHI))
+                    subTotal = WalletZecFormmatter.toZecStringFull(tx?.value)
+                    iconRotation = 180f
+                    networkFees = "0.00001"
+                    toAddress = tx?.toAddress ?: ""
+                    recipientAddressType = getString(if (toAddress.isShielded() || toAddress.equals(getString(R.string.unknown), true)) R.string.ns_shielded else R.string.ns_transparent)
+                }
+                null -> {
+                    twig("Error: transaction appears to be invalid.")
+                }
+            }
+        }
+    }
+
+    private fun calculateZecConvertedAmount(zatoshi: Long): String? {
+        return getZecMarketPrice()?.let {
+            Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it)
+        }
+    }
+
+    private fun getZecMarketPrice(): String? {
+        return prefs[Const.AppConstants.KEY_ZEC_AMOUNT]
     }
 
     private fun getString(@StringRes id: Int) = id.toAppString()

@@ -55,7 +55,7 @@
     <string name="ns_auto_shielded_funds">Auto-shielded funds</string>
 
     <!-- Transaction Details Screen -->
-    <string name="ns_transaction_details">Transaction Details</string>
+    <string name="ns_transaction_details">Transaction details</string>
     <string name="ns_show_memo">Show memo</string>
     <string name="ns_received_from">Received from %s</string>
     <string name="ns_sent_from">Sent from %s</string>
@@ -64,8 +64,14 @@
 
     <string name="ns_pending">Pending</string>
     <string name="ns_pending_confirmations">Pending %s</string>
-    <string name="ns_confirmed">Confirmed!</string>
+    <string name="ns_confirmed">Confirmed</string>
     <string name="ns_view_block_explorer">View on Block explorer</string>
+    <string name="ns_view_on_explorer">View on explorer</string>
+    <string name="ns_time_utc">Time (UTC)</string>
+    <string name="ns_block_id">Block ID</string>
+    <string name="ns_confirmations">Confirmations</string>
+    <string name="ns_transaction_id">Transaction ID</string>
+    <string name="ns_processing">Processing</string>
 
     <!-- Transfer Screen -->
     <string name="ns_transfer">Transfer</string>

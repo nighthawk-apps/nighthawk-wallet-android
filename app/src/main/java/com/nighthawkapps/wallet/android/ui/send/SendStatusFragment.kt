@@ -20,5 +20,9 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
         super.onViewCreated(view, savedInstanceState)
         // TODO: We can start sending process from here
         binding.hitAreaExit.onClickNavBack()
+        // TODO: OnDone reset SendViewModel
+        binding.tvMoreDetails.setOnClickListener {
+            mainActivity?.safeNavigate(SendStatusFragmentDirections.actionNavSendStatusToNavTransactionDetails(true))
+        }
     }
 }

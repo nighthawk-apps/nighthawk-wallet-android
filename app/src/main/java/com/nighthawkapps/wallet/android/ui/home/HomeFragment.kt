@@ -135,7 +135,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onRecentItemClicked(confirmedTransaction: ConfirmedTransaction) {
         historyViewModel.selectedTransaction.value = confirmedTransaction
-        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_transaction)
+        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_transaction_detail)
     }
 
     private fun onSyncReady() {
