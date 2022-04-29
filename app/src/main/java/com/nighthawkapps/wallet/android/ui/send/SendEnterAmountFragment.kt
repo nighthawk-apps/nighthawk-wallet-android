@@ -105,6 +105,9 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             val newValue = sendViewModel.zatoshiAmount.convertZatoshiToZecString()
             binding.tvBalance.text = newValue
             onAmountValueUpdated(newValue)
+            if (sendViewModel.isAmountValid(sendViewModel.zatoshiAmount, maxZatoshi)) {
+                mainActivity?.safeNavigate(R.id.action_nav_send_enter_to_nav_send_review)
+            }
         }
     }
 

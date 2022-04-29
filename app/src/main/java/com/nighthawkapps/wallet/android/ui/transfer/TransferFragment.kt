@@ -47,8 +47,11 @@ class TransferFragment : BaseFragment<FragmentTransferBinding>() {
             val data = DeepLinkUtil.getSendDeepLinkData(uri = args.forBuyZecDeeplink.toUri())
             data?.let {
                 sendViewModel.reset()
+                sendViewModel.toAddress = data.address
+                sendViewModel.memo = data.memo ?: ""
+                sendViewModel.zatoshiAmount = data.amount
                 sendViewModel.setSendZecDeepLinkData(data)
-                mainActivity?.safeNavigate(R.id.action_nav_transfer_to_nav_send_enter_amount)
+                mainActivity?.safeNavigate(R.id.action_nav_transfer_to_nav_send_review)
             }
         }
     }
