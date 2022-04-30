@@ -130,12 +130,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             if (recentActivityUiModelList.size < 2) {
                 walletRecentActivityView.sentView.root.gone()
             }
+            updateRecentActivityAmountViews(isValidTabToShowBalance())
         }
     }
 
     private fun onRecentItemClicked(confirmedTransaction: ConfirmedTransaction) {
         historyViewModel.selectedTransaction.value = confirmedTransaction
         mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_transaction_detail)
+    }
+
+    private fun updateRecentActivityAmountViews(show: Boolean) {
+        binding.walletRecentActivityView.receivedView.groupAmount.isVisible = show
+        binding.walletRecentActivityView.sentView.groupAmount.isVisible = show
+        binding.walletRecentActivityView.receivedView.groupAmountPrivate.isVisible = show.not()
+        binding.walletRecentActivityView.sentView.groupAmountPrivate.isVisible = show.not()
+        if (show.not()) {
+            binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = "--- USD" // TODO: change after currency slection
+            binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = "--- USD"
+        }
     }
 
     private fun onSyncReady() {
@@ -171,6 +183,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 tab?.apply {
                     binding.tabLayout.visibility = if (position != BalanceFragment.Companion.SectionType.SWIPE_LEFT_DIRECTION.sectionNo) View.VISIBLE else View.GONE
                     binding.buttonShieldNow.visibility = if (position == BalanceFragment.Companion.SectionType.TRANSPARENT_BALANCE.sectionNo && isAutoShieldFundsAvailable()) View.VISIBLE else View.GONE
+                    updateRecentActivityAmountViews(isValidTabToShowBalance())
                 }
             }
 
@@ -180,6 +193,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+    }
+
+    private fun isValidTabToShowBalance(): Boolean {
+        binding.tabLayout.let {
+            if (it.selectedTabPosition <= BalanceFragment.Companion.SectionType.SWIPE_LEFT_DIRECTION.sectionNo) {
+                return false
+            }
+            return true
+        }
     }
 
     private fun updateProgressBar(status: Synchronizer.Status) {
@@ -280,6 +302,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onSyncing(uiModel: HomeViewModel.UiModel) {
+        mainActivity?.updateTransferTab(false)
         var iconResourceId = R.drawable.ic_icon_connecting
         var message = getString(R.string.ns_connecting)
         when (uiModel.status) {

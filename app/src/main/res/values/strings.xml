@@ -48,6 +48,7 @@
     <string name="ns_sapling_balance">Sapling balance</string>
     <string name="ns_transparent_balance">Transparent balance</string>
     <string name="ns_shield_now">Shield Now</string>
+    <string name="ns_zec_empty">--- ZEC</string>
 
     <string name="ns_recent_activity">Recent activity</string>
     <string name="ns_received">Received</string>
