@@ -127,6 +127,10 @@
     <string name="ns_about">About</string>
     <string name="ns_about_text">View licenses</string>
     <string name="ns_privacy_policy_link">https://nighthawkwallet.com/privacypolicy/</string>
+    <string name="ns_back_up_seed_dialog_title">View Seed Words?</string>
+    <string name="ns_back_up_seed_dialog_body">WARNING: Please make sure that you are the only one viewing your phone as your wallet seed key will be shown in the next screen.</string>
+    <string name="ns_back_up_seed_dialog_positive">View Seed</string>
+    <string name="ns_please_try_again">Please try again</string>
 
     <!-- Backup/Restore Screen-->
     <string name="ns_landing_backup_skipped_message_1">Are you sure? Without a backup, funds can be lost FOREVER!</string>

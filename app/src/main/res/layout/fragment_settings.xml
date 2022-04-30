@@ -1,165 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_main">
 
     <ImageView
-        android:id="@+id/icon_profile"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:elevation="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="H,1:1"
+        android:id="@+id/icon_app_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="47dp"
+        android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.912"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.064"
-        app:layout_constraintWidth_percent="0.08"
-        app:srcCompat="@drawable/ic_cancel" />
+        app:layout_constraintDimensionRatio="W,1:1"
+        app:srcCompat="@drawable/ic_nighthawk_logo" />
 
-    <View
-        android:id="@+id/hit_area_close"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
+    <TextView
+        android:id="@+id/tvMessage"
+        style="@style/Nighthawk.MaterialComponents.Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:elevation="6dp"
+        android:gravity="center"
+        android:text="@string/ns_nighthawk"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon_app_logo" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="92dp"
-        android:text="@string/change_lightwalletd_server"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/text_light"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/lightwalletd_server"
+        android:id="@+id/tvTitle"
+        style="@style/Nighthawk.MaterialComponents.Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="133dp">
+        android:layout_marginTop="44dp"
+        android:text="@string/ns_settings"
+        android:textColor="@color/ns_parmaviolet"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+        app:layout_constraintStart_toEndOf="@id/guideLineStart"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_text_lightwalletd_server"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/server_address" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/lightwalletd_port"
+    <include
+        android:id="@+id/viewSyncNotification"
+        layout="@layout/item_transfer_screen"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="24dp"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lightwalletd_server"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="133dp">
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+        app:layout_constraintStart_toEndOf="@id/guideLineStart"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_text_lightwalletd_port"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/server_port"
-            android:inputType="number"
-            android:maxLength="5" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_update"
-        style="@style/Nighthawk.Button"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/viewBackUpWallet"
+        layout="@layout/item_transfer_screen"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/update"
-        app:layout_constraintEnd_toStartOf="@+id/button_reset"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lightwalletd_port" />
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+        app:layout_constraintStart_toEndOf="@id/guideLineStart"
+        app:layout_constraintTop_toBottomOf="@id/viewSyncNotification" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_reset"
-        style="@style/Nighthawk.Button.OutlinedButton"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/viewFiatCurrency"
+        layout="@layout/item_transfer_screen"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/reset_to_default_host"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_update"
-        app:layout_constraintTop_toBottomOf="@+id/lightwalletd_port" />
-
-    <View
-        android:id="@+id/loading_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/zcashWhite_24"
-        android:clickable="true"
-        android:elevation="8dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
-
-    <ProgressBar
-        android:id="@+id/loading_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        app:layout_constraintBottom_toBottomOf="@id/button_reset"
-        app:layout_constraintEnd_toEndOf="@+id/loading_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/button_reset"
-        app:layout_constraintVertical_bias="0.45" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="loading_progress,loading_view" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_server_view_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="button_reset, button_update" />
-
-    <View
-        android:id="@+id/divider_server_part"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="16dp"
-        android:background="@color/zcashGray"
-        app:layout_constraintTop_toBottomOf="@id/barrier_server_view_bottom" />
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+        app:layout_constraintStart_toEndOf="@id/guideLineStart"
+        app:layout_constraintTop_toBottomOf="@id/viewBackUpWallet" />
 
     <TextView
-        android:id="@+id/text_set_change_pin_code"
+        android:id="@+id/textSetChangePinCode"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="24dp"
@@ -169,40 +99,24 @@
         android:paddingEnd="10dp"
         android:text="@string/set_change_pin_code"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/text_light"
+        android:textColor="@color/ns_white"
         app:drawableEndCompat="@drawable/ic_arrow_right"
-        app:layout_constraintTop_toBottomOf="@id/divider_server_part"
+        app:layout_constraintTop_toBottomOf="@id/viewFiatCurrency"
         tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch_enable_disable_biometric"
+        android:id="@+id/switchEnableDisableBiometric"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:text="@string/enable_face_id_touch_id"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/text_light"
+        android:textColor="@color/ns_white"
         app:layout_constraintHeight_min="40dp"
-        app:layout_constraintTop_toBottomOf="@id/text_set_change_pin_code"
+        app:layout_constraintTop_toBottomOf="@id/textSetChangePinCode"
         app:switchMinWidth="40dp"
         app:thumbTint="@color/switch_thumb_color"
         app:trackTint="@color/switch_tracker_color" />
-
-    <!--TODO: this is temporary just to launch Profile functionality -->
-    <TextView
-        android:id="@+id/tvProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:text="View Profile"
-        android:paddingEnd="4dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/text_light"
-        app:drawableEndCompat="@drawable/ic_arrow_right"
-        app:layout_constraintHeight_min="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/switch_enable_disable_biometric" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

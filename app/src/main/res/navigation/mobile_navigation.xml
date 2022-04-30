@@ -349,6 +349,9 @@
         <action
             android:id="@+id/action_nav_settings_to_nav_profile"
             app:destination="@id/nav_profile" />
+        <action
+            android:id="@+id/action_nav_settings_to_nav_backup"
+            app:destination="@id/nav_backup" />
     </fragment>
 
     <fragment
