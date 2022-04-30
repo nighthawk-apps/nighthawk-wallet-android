@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     app:cardBackgroundColor="@color/ns_navy"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="22dp">
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginVertical="24dp">
 
         <!-- QR code placeholder -->
         <ImageView
@@ -25,7 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.85"
+            android:layout_marginHorizontal="24dp"
             tools:background="@color/zcashWhite"
             tools:visibility="visible" />
 
