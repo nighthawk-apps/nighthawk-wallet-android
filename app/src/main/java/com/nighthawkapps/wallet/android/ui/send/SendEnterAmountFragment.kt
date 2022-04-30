@@ -89,7 +89,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
                 }
             }
             binding.btnTopUpWallet.setOnClickListener {
-                mainActivity?.safeNavigate(SendEnterAmountFragmentDirections.actionNavEnterAmountToTransferTopUp(forDirectTopUp = true))
+                mainActivity?.safeNavigate(R.id.action_nav_enter_amount_to_transfer_top_up)
             }
             binding.btnNotEnoughZCash.setOnClickListener {
                 mainActivity?.safeNavigate(R.id.action_nav_enter_amount_to_transfer)

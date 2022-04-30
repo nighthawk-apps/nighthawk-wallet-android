@@ -54,22 +54,37 @@
         android:name="com.nighthawkapps.wallet.android.ui.transfer.TransferFragment"
         tools:layout="@layout/fragment_transfer">
         <argument
-            android:name="forDirectTopUp"
-            app:argType="boolean"
-            android:defaultValue="false"/>
-        <argument
             android:name="forBuyZecDeeplink"
             app:argType="string"
             android:defaultValue=""/>
-        <action
-            android:id="@+id/action_nav_transfer_to_nav_receive"
-            app:destination="@id/nav_receive" />
         <action
             android:id="@+id/action_nav_transfer_to_nav_send_enter_amount"
             app:destination="@id/nav_send_enter_amount" />
         <action
             android:id="@+id/action_nav_transfer_to_nav_send_review"
             app:destination="@id/nav_send_review" />
+        <action
+            android:id="@+id/action_nav_transfer_to_nav_receive_transfer"
+            app:destination="@id/nav_receive_transfer" />
+        <action
+            android:id="@+id/action_nav_transfer_to_nav_topup"
+            app:destination="@id/nav_top_up" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_receive_transfer"
+        android:name="com.nighthawkapps.wallet.android.ui.receive.ReceiveFragment"
+        tools:layout="@layout/fragment_receive">
+        <action
+            android:id="@+id/action_nav_receive_transfer_to_nav_receive"
+            app:destination="@id/nav_receive" />
+        <action
+            android:id="@+id/action_nav_receive_to_nav_topup"
+            app:destination="@id/nav_top_up" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_top_up"
+        android:name="com.nighthawkapps.wallet.android.ui.topup.TopUpFragment"
+        tools:layout="@layout/fragment_topup">
     </fragment>
     <fragment
         android:id="@+id/nav_send_enter_amount"
@@ -85,7 +100,7 @@
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_nav_enter_amount_to_transfer_top_up"
-            app:destination="@id/nav_transfer"/>
+            app:destination="@id/nav_top_up"/>
         <action
             android:id="@+id/action_nav_send_enter_to_nav_send_review"
             app:destination="@id/nav_send_review"
