@@ -3,6 +3,7 @@ package com.nighthawkapps.wallet.android.ui.history
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,11 +17,15 @@ import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.home.HomeViewModel
 import com.nighthawkapps.wallet.android.ui.util.VerticalSpaceItemDecoration
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private val viewModel: HistoryViewModel by activityViewModel()
     private val homeViewModel: HomeViewModel by activityViewModel()
+    private var jobHistoryItems: Job? = null
 
     private lateinit var transactionAdapter: TransactionAdapter<ConfirmedTransaction>
 
@@ -58,7 +63,6 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         twig("HistoryFragment.onTransactionsUpdated")
         transactions.size.let { newCount ->
             twig("got a new paged list of transactions of length $newCount")
-            binding.groupEmptyViews.goneIf(newCount > 0)
             // tricky: we handle two types of lists, empty and PagedLists. It's not easy to construct an empty PagedList so the SDK currently returns an emptyList() but that will not cast to a PagedList
             if (newCount == 0) {
                 transactionAdapter.submitList(null)
@@ -66,6 +70,17 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
                 // tricky: for now, explicitly fail (cast exception) if the transactions are not in a PagedList. Otherwise, this would silently fail to show items and be hard to debug if we're ever passed a non-empty list that isn't an instance of PagedList. This awkwardness will go away when we switch to Paging3
                 transactionAdapter.submitList(transactions as PagedList<ConfirmedTransaction>)
             }
+            updateNoHistoryView(newCount)
+        }
+    }
+
+    private fun updateNoHistoryView(newCount: Int) {
+        if (jobHistoryItems?.isCancelled == false) {
+            jobHistoryItems?.cancel()
+        }
+        jobHistoryItems = viewLifecycleOwner.lifecycleScope.launch {
+            delay(timeMillis = 1000L)
+            binding.groupEmptyViews.goneIf(newCount > 0)
         }
     }
 
