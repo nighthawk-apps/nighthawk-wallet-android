@@ -8,6 +8,7 @@ import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,6 +66,35 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
             block()
             mainActivity?.safeNavigate(navResId)
         }
+    }
+
+    fun showMaterialDialog(
+        title: String,
+        message: String,
+        positiveBtnText: String?,
+        negativeButtonText: String?,
+        cancelable: Boolean = false,
+        onPositiveClick: () -> Unit = {},
+        onNegativeClick: () -> Unit = {}
+    ) {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setCancelable(cancelable)
+
+        positiveBtnText?.let {
+            builder.setPositiveButton(it) { dialog, _ ->
+                onPositiveClick.invoke()
+                dialog.dismiss()
+            }
+        }
+        negativeButtonText?.let {
+            builder.setNegativeButton(it) { dialog, _ ->
+                onNegativeClick.invoke()
+                dialog.dismiss()
+            }
+        }
+        builder.show()
     }
 
     /**

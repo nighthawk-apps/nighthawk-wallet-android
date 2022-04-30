@@ -31,6 +31,15 @@ fun CharSequence.toSplitColorSpan(@ColorRes startColorResId: Int, @ColorRes endC
     }
 }
 
+fun CharSequence.toSplitColorSpan(@ColorRes startColorResId: Int, @ColorRes endColorResId: Int, startColorLength: Int, endColorLength: Int): CharSequence {
+    return toSpannable().apply {
+        if (startColorLength < 0 || startColorLength > this@toSplitColorSpan.length) return@apply
+        setSpan(ForegroundColorSpan(startColorResId.toAppColor()), 0, startColorLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        if (endColorLength < 0 || endColorLength > this@toSplitColorSpan.length) return@apply
+        setSpan(ForegroundColorSpan(endColorResId.toAppColor()), this@toSplitColorSpan.length - endColorLength, this@toSplitColorSpan.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+}
+
 fun TextView.toClickableSpan(coloredPortion: String, onClick: (view: View) -> Unit = {}) {
     val clickableSpan = object : ClickableSpan() {
         override fun onClick(p0: View) {

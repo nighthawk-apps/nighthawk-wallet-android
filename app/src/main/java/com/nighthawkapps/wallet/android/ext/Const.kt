@@ -68,6 +68,7 @@ object Const {
         const val ZEC_MAX_AMOUNT = 21000000
         const val AMOUNT_QUERY = "amount"
         const val MEMO_QUERY = "memo"
+        const val KEY_ZEC_AMOUNT = "const.app_constants.key_zec_amount"
     }
 
     object Network {

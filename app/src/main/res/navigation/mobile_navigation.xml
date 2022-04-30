@@ -42,11 +42,103 @@
         <action
             android:id="@+id/action_nav_home_to_nav_transaction"
             app:destination="@id/nav_transaction" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_transaction_detail"
+            app:destination="@id/nav_transaction_details" />
+        <action
+            android:id="@+id/action_nav_home_to_transfer"
+            app:destination="@+id/nav_transfer"/>
     </fragment>
     <fragment
         android:id="@+id/nav_transfer"
         android:name="com.nighthawkapps.wallet.android.ui.transfer.TransferFragment"
-        tools:layout="@layout/fragment_transfer" />
+        tools:layout="@layout/fragment_transfer">
+        <argument
+            android:name="forBuyZecDeeplink"
+            app:argType="string"
+            android:defaultValue=""/>
+        <action
+            android:id="@+id/action_nav_transfer_to_nav_send_enter_amount"
+            app:destination="@id/nav_send_enter_amount" />
+        <action
+            android:id="@+id/action_nav_transfer_to_nav_send_review"
+            app:destination="@id/nav_send_review" />
+        <action
+            android:id="@+id/action_nav_transfer_to_nav_receive_transfer"
+            app:destination="@id/nav_receive_transfer" />
+        <action
+            android:id="@+id/action_nav_transfer_to_nav_topup"
+            app:destination="@id/nav_top_up" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_receive_transfer"
+        android:name="com.nighthawkapps.wallet.android.ui.receive.ReceiveFragment"
+        tools:layout="@layout/fragment_receive">
+        <action
+            android:id="@+id/action_nav_receive_transfer_to_nav_receive"
+            app:destination="@id/nav_receive" />
+        <action
+            android:id="@+id/action_nav_receive_to_nav_topup"
+            app:destination="@id/nav_top_up" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_top_up"
+        android:name="com.nighthawkapps.wallet.android.ui.topup.TopUpFragment"
+        tools:layout="@layout/fragment_topup">
+    </fragment>
+    <fragment
+        android:id="@+id/nav_send_enter_amount"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendEnterAmountFragment"
+        tools:layout="@layout/fragment_send_enter_amount">
+        <action
+            android:id="@+id/action_nav_enter_amount_to_enter_address"
+            app:destination="@id/nav_send_enter_address" />
+        <action
+            android:id="@+id/action_nav_enter_amount_to_transfer"
+            app:destination="@id/nav_transfer"
+            app:popUpTo="@id/nav_transfer"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_nav_enter_amount_to_transfer_top_up"
+            app:destination="@id/nav_top_up"/>
+        <action
+            android:id="@+id/action_nav_send_enter_to_nav_send_review"
+            app:destination="@id/nav_send_review"
+            app:popUpTo="@id/nav_send_enter_amount"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/nav_send_enter_address"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendEnterAddressFragment"
+        tools:layout="@layout/fragment_send_enter_address">
+        <action
+            android:id="@+id/action_nav_enter_address_to_enter_memo"
+            app:destination="@+id/nav_send_enter_memo" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_send_enter_memo"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendEnterMemoFragment"
+        tools:layout="@layout/fragment_send_enter_memo">
+        <action
+            android:id="@+id/action_nav_enter_memo_to_send_review"
+            app:destination="@+id/nav_send_review" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_send_review"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendReviewFragment"
+        tools:layout="@layout/fragment_send_review">
+        <action
+            android:id="@+id/action_nav_send_review_to_send_status"
+            app:destination="@id/nav_send_status" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_send_status"
+        android:name="com.nighthawkapps.wallet.android.ui.send.SendStatusFragment"
+        tools:layout="@layout/fragment_send_status">
+        <action
+            android:id="@+id/action_nav_send_status_to_nav_transaction_details"
+            app:destination="@id/nav_transaction_details" />
+    </fragment>
     <fragment
         android:id="@+id/nav_balance_detail"
         android:name="com.nighthawkapps.wallet.android.ui.home.BalanceDetailFragment"
@@ -54,6 +146,14 @@
         <action
             android:id="@+id/action_nav_balance_detail_to_shield_final"
             app:destination="@id/nav_shield_final" />
+    </fragment>
+    <fragment android:id="@+id/nav_transaction_details"
+        android:name="com.nighthawkapps.wallet.android.ui.send.FragmentTransactionDetails"
+        tools:layout="@layout/fragment_transaction_details">
+        <argument
+            android:name="isFromSendFlow"
+            android:defaultValue="false"
+            app:argType="boolean"/>
     </fragment>
     <fragment
         android:id="@+id/nav_receive"
@@ -90,6 +190,9 @@
         <action
             android:id="@+id/action_nav_history_to_nav_transaction"
             app:destination="@id/nav_transaction" />
+        <action
+            android:id="@+id/action_nav_history_to_nav_transaction_details"
+            app:destination="@id/nav_transaction_details" />
     </fragment>
     <fragment
         android:id="@+id/nav_transaction"

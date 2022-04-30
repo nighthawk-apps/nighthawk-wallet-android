@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_main">
+
+    <View
+        android:id="@+id/hit_area_exit"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:alpha="0.3"
+        android:background="@android:color/transparent"
+        android:elevation="6dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="22dp"
+        android:contentDescription="@string/content_description_settings_back"
+        android:elevation="6dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_icon_back" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintDimensionRatio="W,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivBack"
+        app:srcCompat="@drawable/ic_nighthawk_logo" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/Nighthawk.MaterialComponents.Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/ns_add_message"
+        android:textColor="@color/ns_parmaviolet"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+        app:layout_constraintStart_toEndOf="@id/guideLineStart"
+        app:layout_constraintTop_toBottomOf="@id/ivLogo" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etMemo"
+        style="@style/Nighthawk.MaterialComponents.Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_r4_empty_et"
+        android:ellipsize="end"
+        android:gravity="top"
+        android:hint="@string/ns_write_something"
+        android:imeActionLabel="@string/ns_done"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLength="512"
+        android:paddingVertical="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="48dp"
+        android:scrollbars="vertical"
+        android:textColorHint="@color/text_light_dimmed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideLineEnd"
+        app:layout_constraintHeight_min="107dp"
+        app:layout_constraintStart_toStartOf="@id/guideLineStart"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <CheckBox
+        android:id="@+id/checkIncludeAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:scaleX="0.84"
+        android:scaleY="0.84"
+        android:text="@string/ns_include_reply_to"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:textColor="@color/ns_white"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:translationY="-10dp"
+        android:buttonTint="@color/switch_tracker_color"
+        app:layout_constraintEnd_toEndOf="@id/etMemo"
+        app:layout_constraintTop_toBottomOf="@id/etMemo" />
+
+    <Button
+        android:id="@+id/btnContinue"
+        style="@style/Nighthawk.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ns_skip"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideLineEnd"
+        app:layout_constraintHeight_min="36dp"
+        app:layout_constraintStart_toStartOf="@id/guideLineStart"
+        app:layout_constraintTop_toTopOf="@id/etMemo"
+        app:layout_constraintVertical_bias="0.35"
+        app:layout_constraintWidth_min="110dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

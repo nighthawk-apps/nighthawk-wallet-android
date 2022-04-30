@@ -40,7 +40,11 @@ object Utils {
 
     fun getZecConvertedAmountText(toZecStringShort: String, coinMetricsMarketData: CoinMetricsMarketResponse.CoinMetricsMarketData?): String? {
         if (coinMetricsMarketData == null) return null
-        return DecimalFormat("#.###").format((toZecStringShort.toFloatOrNull() ?: 0F).times(coinMetricsMarketData.price.toFloatOrNull() ?: 0F)) + " ${getCurrencySymbol()}"
+        return getZecConvertedAmountText(toZecStringShort, coinMetricsMarketData.price)
+    }
+
+    fun getZecConvertedAmountText(toZecStringShort: String, price: String): String {
+        return DecimalFormat("#.##").format((toZecStringShort.toFloatOrNull() ?: 0F).times(price.toFloatOrNull() ?: 0F)) + " ${getCurrencySymbol()}"
     }
 
     /**

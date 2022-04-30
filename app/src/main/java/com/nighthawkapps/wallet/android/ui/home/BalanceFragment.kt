@@ -11,6 +11,7 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentBalanceBinding
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -34,19 +35,35 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
                     updateUI(balanceViewModel.getBalanceUIModel(sectionType, homeUiModel))
                 }
         }
+        binding.tvBalance.setOnClickListener { changeBalanceMode() }
     }
 
     private fun updateUI(balanceUIModel: BalanceViewModel.BalanceUIModel) {
         binding.icon.setImageDrawable(balanceUIModel.icon)
         binding.tvBalance.apply {
             visibility = if (balanceUIModel.balanceAmount.isEmpty().not()) View.VISIBLE else View.GONE
-            text = getString(R.string.ns_zec_amount, balanceUIModel.balanceAmount).toColoredSpan(R.color.ns_peach_100, "ZEC")
+            updateBalanceText()
         }
         binding.tvExpectingBalance.apply {
             visibility = if (balanceUIModel.expectingBalance.isEmpty().not()) View.VISIBLE else View.GONE
             text = balanceUIModel.expectingBalance
         }
         binding.tvMessage.text = balanceUIModel.messageText
+    }
+
+    private fun changeBalanceMode() {
+        balanceViewModel.isZecAmountState = !balanceViewModel.isZecAmountState
+        updateBalanceText()
+    }
+
+    private fun updateBalanceText() {
+        if (balanceViewModel.isZecAmountState) {
+            binding.tvBalance.text = getString(R.string.ns_zec_amount, balanceViewModel.balanceAmountZec).toColoredSpan(R.color.ns_peach_100, "ZEC")
+        } else {
+            val convertedAmount = Utils.getZecConvertedAmountText(balanceViewModel.balanceAmountZec, homeViewModel.coinMetricsMarketData.value)
+            // TODO: Change the currency
+            binding.tvBalance.text = convertedAmount?.toColoredSpan(R.color.ns_peach_100, "USD")
+        }
     }
 
     companion object {

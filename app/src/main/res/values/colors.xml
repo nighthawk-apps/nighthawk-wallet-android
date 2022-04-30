@@ -12,6 +12,7 @@
     <color name="ns_red">#CF5355</color>
     <color name="ns_navy">#2B2551</color>
     <color name="ns_dark_navy">#110E2B</color>
+    <color name="ns_status_bar_color">#CC1C1840</color>
     <color name="ns_purple">#9C5776</color>
     <color name="ns_maroon">#CF5355</color>
     <color name="ns_bright_blue">#7AA3F3</color>

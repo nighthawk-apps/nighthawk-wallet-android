@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
@@ -33,8 +32,6 @@ import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
-import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
-import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
@@ -50,9 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private lateinit var uiModel: HomeViewModel.UiModel
 
-    private val walletSetup: WalletSetupViewModel by activityViewModel(false)
     private val viewModel: HomeViewModel by viewModel()
-    private val passwordViewModel: PasswordViewModel by activityViewModel()
     private val mainViewModel: MainViewModel by activityViewModel()
     private val historyViewModel: HistoryViewModel by activityViewModel()
 
@@ -72,7 +67,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             onModelUpdated(null, uiModel)
         }
 
-        // TODO Need to use this for handling deepLink
         lifecycleScope.launchWhenResumed {
             mainViewModel.intentData.collect { uri ->
                 uri?.let {
@@ -81,8 +75,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         mainActivity?.showMessage("Error: No sufficient data to proceed this transaction")
                     } else {
                         mainViewModel.setSendZecDeepLinkData(data)
-                        mainActivity?.safeNavigate(R.id.action_nav_home_to_send)
-                        mainViewModel.setIntentData(null)
                     }
                 }
             }
@@ -138,12 +130,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             if (recentActivityUiModelList.size < 2) {
                 walletRecentActivityView.sentView.root.gone()
             }
+            updateRecentActivityAmountViews(isValidTabToShowBalance())
         }
     }
 
     private fun onRecentItemClicked(confirmedTransaction: ConfirmedTransaction) {
         historyViewModel.selectedTransaction.value = confirmedTransaction
-        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_transaction)
+        mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_transaction_detail)
+    }
+
+    private fun updateRecentActivityAmountViews(show: Boolean) {
+        binding.walletRecentActivityView.receivedView.groupAmount.isVisible = show
+        binding.walletRecentActivityView.sentView.groupAmount.isVisible = show
+        binding.walletRecentActivityView.receivedView.groupAmountPrivate.isVisible = show.not()
+        binding.walletRecentActivityView.sentView.groupAmountPrivate.isVisible = show.not()
+        if (show.not()) {
+            binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = "--- USD" // TODO: change after currency slection
+            binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = "--- USD"
+        }
     }
 
     private fun onSyncReady() {
@@ -179,6 +183,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 tab?.apply {
                     binding.tabLayout.visibility = if (position != BalanceFragment.Companion.SectionType.SWIPE_LEFT_DIRECTION.sectionNo) View.VISIBLE else View.GONE
                     binding.buttonShieldNow.visibility = if (position == BalanceFragment.Companion.SectionType.TRANSPARENT_BALANCE.sectionNo && isAutoShieldFundsAvailable()) View.VISIBLE else View.GONE
+                    updateRecentActivityAmountViews(isValidTabToShowBalance())
                 }
             }
 
@@ -188,6 +193,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+    }
+
+    private fun isValidTabToShowBalance(): Boolean {
+        binding.tabLayout.let {
+            if (it.selectedTabPosition <= BalanceFragment.Companion.SectionType.SWIPE_LEFT_DIRECTION.sectionNo) {
+                return false
+            }
+            return true
+        }
     }
 
     private fun updateProgressBar(status: Synchronizer.Status) {
@@ -224,27 +238,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             return uiModel.hasAutoshieldFunds
         }
         return false
-    }
-
-    private suspend fun TextView.calcBalUSD(availableBalance: Long): CharSequence? {
-        if (viewModel.priceModel != null) {
-            return try {
-                val usdPrice = viewModel.priceModel?.price!!.toFloat()
-                val zecBalance = roundFloat(
-                    availableBalance.convertZatoshiToZecString().toFloat()
-                )
-                val usdTotal = "%.2f".format(usdPrice * zecBalance)
-                visible()
-                "~$$usdTotal"
-            } catch (e: NumberFormatException) {
-                gone()
-                ""
-            }
-        } else {
-            gone()
-            viewModel.initPrice()
-            return ""
-        }
     }
 
     //
@@ -309,6 +302,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onSyncing(uiModel: HomeViewModel.UiModel) {
+        mainActivity?.updateTransferTab(false)
         var iconResourceId = R.drawable.ic_icon_connecting
         var message = getString(R.string.ns_connecting)
         when (uiModel.status) {
@@ -368,6 +362,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.viewInit.root.gone()
         binding.viewPager.visible()
         autoShield(uiModel)
+        checkForDeepLink()
     }
 
     private fun autoShield(uiModel: HomeViewModel.UiModel) {
@@ -415,6 +410,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             } else if (!canAutoshield) {
                 twig("Could not Autoshield probably because the last one occurred too recently")
             }
+        }
+    }
+
+    private fun checkForDeepLink() {
+        lifecycleScope.launchWhenResumed {
+            if (mainViewModel.intentData.value == null || mainViewModel.sendZecDeepLinkData.value == null) return@launchWhenResumed
+            mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToTransfer(forBuyZecDeeplink = mainViewModel.intentData.value?.toString() ?: ""))
+            mainViewModel.setIntentData(null)
         }
     }
 

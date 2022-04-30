@@ -25,6 +25,9 @@
     <string name="ns_continue">Continue</string>
     <string name="ns_receive">Receive</string>
     <string name="ns_transaction_history">Transactions History</string>
+    <string name="ns_copy">Copy</string>
+    <string name="ns_shielded_address">Shielded address</string>
+    <string name="ns_transparent_address">Transparent address</string>
 
     <!-- Wallet Screen -->
     <string name="ns_wallet">Wallet</string>
@@ -45,6 +48,7 @@
     <string name="ns_sapling_balance">Sapling balance</string>
     <string name="ns_transparent_balance">Transparent balance</string>
     <string name="ns_shield_now">Shield Now</string>
+    <string name="ns_zec_empty">--- ZEC</string>
 
     <string name="ns_recent_activity">Recent activity</string>
     <string name="ns_received">Received</string>
@@ -52,7 +56,7 @@
     <string name="ns_auto_shielded_funds">Auto-shielded funds</string>
 
     <!-- Transaction Details Screen -->
-    <string name="ns_transaction_details">Transaction Details</string>
+    <string name="ns_transaction_details">Transaction details</string>
     <string name="ns_show_memo">Show memo</string>
     <string name="ns_received_from">Received from %s</string>
     <string name="ns_sent_from">Sent from %s</string>
@@ -61,8 +65,14 @@
 
     <string name="ns_pending">Pending</string>
     <string name="ns_pending_confirmations">Pending %s</string>
-    <string name="ns_confirmed">Confirmed!</string>
-    <string name="ns_view_block_explorer">View on Blockexplorer</string>
+    <string name="ns_confirmed">Confirmed</string>
+    <string name="ns_view_block_explorer">View on Block explorer</string>
+    <string name="ns_view_on_explorer">View on explorer</string>
+    <string name="ns_time_utc">Time (UTC)</string>
+    <string name="ns_block_id">Block ID</string>
+    <string name="ns_confirmations">Confirmations</string>
+    <string name="ns_transaction_id">Transaction ID</string>
+    <string name="ns_processing">Processing</string>
 
     <!-- Transfer Screen -->
     <string name="ns_transfer">Transfer</string>
@@ -87,6 +97,8 @@
     <string name="ns_receive_money_publicly">Receive money publicly</string>
     <string name="ns_copy_public_address">Copy a non-private address</string>
     <string name="ns_receive_money_publicly_text">This will copy your t-address.</string>
+    <string name="ns_private_address">Private Address</string>
+    <string name="ns_non_private_address">Non-Private Address</string>
 
     <!-- Settings Screen -->
     <string name="ns_settings">Settings</string>
@@ -137,7 +149,7 @@
     <string name="ns_scan_payment_request_text">If you have a payment request, you can scan the QR code here to auto-fill all the details.</string>
     <string name="ns_choose_send">Choose how much to send</string>
     <string name="ns_scan_payment_code">Scan a payment code</string>
-    <string name="ns_top_up_wallet">Toop up wallet</string>
+    <string name="ns_top_up_wallet">Top up wallet</string>
     <string name="ns_not_enough_zcash">Not enough Zcash</string>
     <string name="ns_add_message">Add a message to your payment</string>
     <string name="ns_write_something">Write something…</string>
@@ -161,6 +173,19 @@
     <string name="ns_view_all_transactions">View transaction history</string>
     <string name="ns_downloading_block">Downloading\n\nBlock %1s of %2s</string>
     <string name="ns_syncing_block">Syncing\n\nBlock %1s of %2s</string>
+    <string name="ns_send_and_receive_zcash">Send and receive Zcash</string>
+    <string name="ns_add_address_hint">Add address here</string>
+    <string name="ns_paste_from_clip_board">Paste from clipboard</string>
+    <string name="ns_clipboard_wrong_text_paste_error">Seems last copied value is not a Zcash Address</string>
+    <string name="ns_memo">Memo</string>
+    <string name="ns_network">Network</string>
+    <string name="ns_recipient">Recipient</string>
+    <string name="ns_address">Address</string>
+    <string name="ns_subtotal">Subtotal</string>
+    <string name="ns_total_amount">Total amount</string>
+    <string name="ns_shielded">Shielded</string>
+    <string name="ns_transparent">Transparent</string>
+    <string name="ns_include_reply_to">include reply-to</string>
 
     <!-- 00000000 -->
 

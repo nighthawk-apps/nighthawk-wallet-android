@@ -7,7 +7,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -133,14 +132,8 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
             mainViewModel.isAppStarting.value
         }
 
-        window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = Color.TRANSPARENT
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
-        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, false)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.ns_status_bar_color)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.ns_status_bar_color)
 
         mainViewModel.setIntentData(intent?.data)
     }
@@ -404,15 +397,15 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
         }
     }
 
-    fun copyAddress(view: View? = null) {
+    fun copyAddress(view: View? = null, label: String = "Address") {
         lifecycleScope.launch {
-            copyText(synchronizerComponent.synchronizer().getAddress(), "Address")
+            copyText(synchronizerComponent.synchronizer().getAddress(), label)
         }
     }
 
-    fun copyTransparentAddress(view: View? = null) {
+    fun copyTransparentAddress(view: View? = null, label: String = "T-Address") {
         lifecycleScope.launch {
-            copyText(synchronizerComponent.synchronizer().getTransparentAddress(), "T-Address")
+            copyText(synchronizerComponent.synchronizer().getTransparentAddress(), label)
         }
     }
 
