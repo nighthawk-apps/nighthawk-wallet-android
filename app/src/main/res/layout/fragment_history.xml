@@ -40,10 +40,9 @@
         android:layout_marginStart="22dp"
         android:contentDescription="@string/content_description_settings_back"
         android:elevation="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06"
         app:srcCompat="@drawable/ic_icon_back" />
 
     <View
@@ -55,11 +54,9 @@
         android:alpha="0.3"
         android:background="@android:color/transparent"
         android:elevation="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTitle"
