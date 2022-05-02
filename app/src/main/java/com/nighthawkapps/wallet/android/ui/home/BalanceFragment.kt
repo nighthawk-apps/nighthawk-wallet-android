@@ -3,6 +3,7 @@ package com.nighthawkapps.wallet.android.ui.home
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -49,7 +50,10 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
             visibility = if (balanceUIModel.expectingBalance.isEmpty().not()) View.VISIBLE else View.GONE
             text = balanceUIModel.expectingBalance
         }
-        binding.tvMessage.text = balanceUIModel.messageText
+        binding.tvMessage.let {
+            it.text = balanceUIModel.messageText
+            it.isInvisible = balanceUIModel.expectingBalance.isBlank().not()
+        }
     }
 
     private fun changeBalanceMode() {
