@@ -4,6 +4,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
@@ -52,6 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val historyViewModel: HistoryViewModel by activityViewModel()
 
     lateinit var balanceViewPagerAdapter: BalanceViewPagerAdapter
+    private var cancelLogoRotation = false
 
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
         FragmentHomeBinding.inflate(inflater)
@@ -233,6 +237,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
+    private fun rotateLogo(startRotation: Boolean) {
+        if (startRotation) {
+            if (rotateAnimation.isInitialized.not() || rotateAnimation.hasEnded()) {
+                cancelLogoRotation = true
+                binding.iconAppLogo.startAnimation(rotateAnimation)
+            }
+        } else {
+            if (rotateAnimation.isInitialized && rotateAnimation.hasEnded().not()) {
+                cancelLogoRotation = true
+            }
+        }
+    }
+
     private fun isAutoShieldFundsAvailable(): Boolean {
         if (this@HomeFragment::uiModel.isInitialized) {
             return uiModel.hasAutoshieldFunds
@@ -303,6 +320,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSyncing(uiModel: HomeViewModel.UiModel) {
         mainActivity?.updateTransferTab(false)
+        rotateLogo(true)
         var iconResourceId = R.drawable.ic_icon_connecting
         var message = getString(R.string.ns_connecting)
         when (uiModel.status) {
@@ -357,6 +375,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         mainActivity?.updateTransferTab(enable = true)
+        rotateLogo(false)
         binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
         binding.iconScan.visibility = View.VISIBLE
         binding.viewInit.root.gone()
@@ -418,6 +437,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             if (mainViewModel.intentData.value == null || mainViewModel.sendZecDeepLinkData.value == null) return@launchWhenResumed
             mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToTransfer(forBuyZecDeeplink = mainViewModel.intentData.value?.toString() ?: ""))
             mainViewModel.setIntentData(null)
+        }
+    }
+
+    private val rotateAnimation by lazy {
+        RotateAnimation(
+            0f,
+            360f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        ).also {
+            it.repeatCount = Animation.INFINITE
+            it.duration = 5000L
+            it.interpolator = LinearInterpolator()
+            it.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(p0: Animation?) {
+                    twig("animation started")
+                }
+
+                override fun onAnimationEnd(p0: Animation?) {
+                    twig("animation end")
+                    binding.iconAppLogo.clearAnimation()
+                }
+
+                override fun onAnimationRepeat(p0: Animation?) {
+                    twig("animation repeat")
+                    if (cancelLogoRotation) {
+                        binding.iconAppLogo.clearAnimation()
+                    }
+                }
+            })
         }
     }
 
