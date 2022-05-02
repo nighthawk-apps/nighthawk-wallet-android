@@ -383,6 +383,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.viewPager.visible()
         autoShield(uiModel)
         checkForDeepLink()
+        checkForAnyExpectingAmount(uiModel)
     }
 
     private fun autoShield(uiModel: HomeViewModel.UiModel) {
@@ -438,6 +439,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             if (mainViewModel.intentData.value == null || mainViewModel.sendZecDeepLinkData.value == null) return@launchWhenResumed
             mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToTransfer(forBuyZecDeeplink = mainViewModel.intentData.value?.toString() ?: ""))
             mainViewModel.setIntentData(null)
+        }
+    }
+
+    private fun checkForAnyExpectingAmount(uiModel: HomeViewModel.UiModel) {
+        val availableBalance = uiModel.saplingBalance.availableZatoshi
+        val totalBalance = uiModel.saplingBalance.totalZatoshi
+        if (availableBalance != -1L && availableBalance < totalBalance) {
+            mainActivity?.updateTransferTab(false)
         }
     }
 
