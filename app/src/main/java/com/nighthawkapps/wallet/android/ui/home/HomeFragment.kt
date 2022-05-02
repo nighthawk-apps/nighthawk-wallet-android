@@ -84,7 +84,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         }
 
-        viewModel.getZecMarketPrice("bitfinex-zec-usd-spot")
+        viewModel.getZecMarketPrice(viewModel.getFiatCurrencyMarket())
     }
 
     override fun onResume() {
@@ -149,8 +149,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.walletRecentActivityView.receivedView.groupAmountPrivate.isVisible = show.not()
         binding.walletRecentActivityView.sentView.groupAmountPrivate.isVisible = show.not()
         if (show.not()) {
-            binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = "--- USD" // TODO: change after currency slection
-            binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = "--- USD"
+            val text = "--- ${viewModel.getSelectedCurrencyName()}"
+            binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = text
+            binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = text
         }
     }
 

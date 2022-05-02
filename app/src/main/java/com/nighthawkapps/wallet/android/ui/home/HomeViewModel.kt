@@ -22,6 +22,7 @@ import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
 import com.nighthawkapps.wallet.android.network.repository.CoinMetricsRepository
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import com.nighthawkapps.wallet.android.ui.util.Resource
 import com.nighthawkapps.wallet.android.ui.util.Utils
@@ -72,7 +73,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun getZecMarketPrice(market: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            if (coinMetricsMarketData.value != null) {
+            if (coinMetricsMarketData.value != null && market == coinMetricsMarketData.value?.market) {
                 twig("response: coin metric data already available $coinMetricsMarketData")
                 return@launch
             }
@@ -85,10 +86,20 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     val response = extractCoinMarketData(it)?.data
                     if (response?.isNotEmpty() == true) {
                         _coinMetricsMarketData.value = response[0]
-                        lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] = _coinMetricsMarketData.value?.price
+                    } else {
+                        _coinMetricsMarketData.value = null
                     }
+                    lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] = _coinMetricsMarketData.value?.price ?: "0"
                 }
         }
+    }
+
+    fun getSelectedCurrencyName(): String {
+        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
+    }
+
+    fun getFiatCurrencyMarket(): String {
+        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").serverUrl
     }
 
     private fun extractCoinMarketData(resource: Resource<CoinMetricsMarketResponse>): CoinMetricsMarketResponse? {

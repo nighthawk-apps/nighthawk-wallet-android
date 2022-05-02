@@ -5,10 +5,13 @@ import androidx.browser.customtabs.CustomTabsIntent
 import android.app.Activity
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabColorSchemeParams
+import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.toAppColor
+import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import java.text.DecimalFormat
 
 object Utils {
@@ -40,17 +43,18 @@ object Utils {
 
     fun getZecConvertedAmountText(toZecStringShort: String, coinMetricsMarketData: CoinMetricsMarketResponse.CoinMetricsMarketData?): String? {
         if (coinMetricsMarketData == null) return null
-        return getZecConvertedAmountText(toZecStringShort, coinMetricsMarketData.price)
+        return getZecConvertedAmountText(toZecStringShort, coinMetricsMarketData.price, marketName = coinMetricsMarketData.market)
     }
 
-    fun getZecConvertedAmountText(toZecStringShort: String, price: String): String {
-        return DecimalFormat("#.##").format((toZecStringShort.toFloatOrNull() ?: 0F).times(price.toFloatOrNull() ?: 0F)) + " ${getCurrencySymbol()}"
+    fun getZecConvertedAmountText(toZecStringShort: String, price: String, currencyName: String? = null, marketName: String? = null): String {
+        return DecimalFormat("#.##").format((toZecStringShort.toFloatOrNull() ?: 0F).times(price.toFloatOrNull() ?: 0F)) + " ${currencyName ?: getCurrencySymbol(marketName)}"
     }
 
     /**
-     * Get currency symbol as per market selected. // TODO: need to change in this after all markets implemented
+     * Get currency symbol as per market selected.
      */
-    private fun getCurrencySymbol(): String {
-        return "USD"
+    private fun getCurrencySymbol(marketName: String?): String {
+        return marketName?.let { FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByMarket(it).currencyName }
+        ?: FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(LockBox(NighthawkWalletApp.instance)[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
     }
 }

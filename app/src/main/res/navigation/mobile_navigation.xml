@@ -352,6 +352,22 @@
         <action
             android:id="@+id/action_nav_settings_to_nav_backup"
             app:destination="@id/nav_backup" />
+        <action
+            android:id="@+id/action_nav_settings_to_nav_sync"
+            app:destination="@id/nav_sync_notification"/>
+        <action
+            android:id="@+id/action_nav_settings_to_nav_fiat_currency"
+            app:destination="@id/nav_fiat_currency"/>
+    </fragment>
+    <fragment
+        android:id="@+id/nav_sync_notification"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.SyncNotificationFragment"
+        tools:layout="@layout/fragment_sync_notification">
+    </fragment>
+    <fragment
+        android:id="@+id/nav_fiat_currency"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyFragment"
+        tools:layout="@layout/fragment_fiat_currency">
     </fragment>
 
     <fragment

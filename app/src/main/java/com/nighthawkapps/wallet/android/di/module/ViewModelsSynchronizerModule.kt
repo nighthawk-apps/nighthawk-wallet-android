@@ -15,6 +15,7 @@ import com.nighthawkapps.wallet.android.ui.receive.ReceiveViewModel
 import com.nighthawkapps.wallet.android.ui.scan.ScanViewModel
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldViewModel
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.SettingsViewModel
 import dagger.Binds
@@ -93,6 +94,12 @@ abstract class ViewModelsSynchronizerModule {
     @IntoMap
     @ViewModelKey(PasswordViewModel::class)
     abstract fun bindPasswordViewModel(implementation: PasswordViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(FiatCurrencyViewModel::class)
+    abstract fun bindFiatCurrencyViewModel(implementation: FiatCurrencyViewModel): ViewModel
 
     /**
      * Factory for view models that are not created until the Synchronizer exists. Only VMs that

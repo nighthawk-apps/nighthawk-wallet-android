@@ -19,6 +19,7 @@ import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
 import com.nighthawkapps.wallet.android.ui.util.Utils
@@ -74,6 +75,10 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
     fun getZecMarketPrice(): String? {
         return lockBox[Const.AppConstants.KEY_ZEC_AMOUNT]
+    }
+
+    fun getSelectedFiatCurrency(): FiatCurrencyViewModel.FiatCurrency {
+        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "")
     }
 
     fun setSendZecDeepLinkData(data: DeepLinkUtil.SendDeepLinkData?) {
@@ -228,7 +233,8 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
     private fun calculateZecConvertedAmount(zatoshi: Long): String? {
         return getZecMarketPrice()?.let {
-            Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it)
+            val selectedFiatCurrencyName = FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
+            Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedFiatCurrencyName)
         }
     }
 

@@ -69,6 +69,7 @@ object Const {
         const val AMOUNT_QUERY = "amount"
         const val MEMO_QUERY = "memo"
         const val KEY_ZEC_AMOUNT = "const.app_constants.key_zec_amount"
+        const val KEY_LOCAL_CURRENCY = "const.app_constants.key_local_currency"
     }
 
     object Network {

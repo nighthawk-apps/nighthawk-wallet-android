@@ -44,6 +44,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 getString(R.string.ns_sync_notifications),
                 getString(R.string.ns_sync_notifications_text)
             ) {
+                mainActivity?.safeNavigate(R.id.action_nav_settings_to_nav_sync)
             }
 
             viewBackUpWallet.updateTransferItemsData(
@@ -59,6 +60,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 getString(R.string.ns_fiat_currency),
                 getString(R.string.ns_fiat_currency_text)
             ) {
+                mainActivity?.safeNavigate(R.id.action_nav_settings_to_nav_fiat_currency)
             }
         }
     }
