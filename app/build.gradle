@@ -142,6 +142,7 @@ dependencies {
     implementation Deps.AndroidX.CUSTOM_CHROME_TABS
     implementation Deps.AndroidX.SPLASH_SCREEN
     implementation Deps.AndroidX.OSS_LICENCE
+    implementation Deps.AndroidX.WORK_MANAGER_KTX
 
     // Google
     implementation Deps.Google.GUAVA

@@ -1,5 +1,6 @@
 package com.nighthawkapps.wallet.android.ui.home
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -58,6 +59,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
         FragmentHomeBinding.inflate(inflater)
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        viewModel.cancelSyncAppNotificationAndReRegister()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

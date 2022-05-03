@@ -23,10 +23,12 @@ import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.network.models.ZcashPriceApiResponse
 import com.nighthawkapps.wallet.android.network.repository.CoinMetricsRepository
 import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
+import com.nighthawkapps.wallet.android.ui.setup.SyncNotificationViewModel
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import com.nighthawkapps.wallet.android.ui.util.Resource
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
+import com.nighthawkapps.wallet.android.ui.util.WorkManagerUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -293,5 +295,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private fun getStartTimeForCoinMetricsApi(): String {
         return DateFormat.format("yyyy-MM-dd", Calendar.getInstance().timeInMillis).toString()
+    }
+
+    fun cancelSyncAppNotificationAndReRegister() {
+        val syncNotificationPref = SyncNotificationViewModel.NotificationSyncPref.getNotificationSyncPrefByText(lockBox[Const.AppConstants.KEY_SYNC_NOTIFICATION] ?: "")
+        WorkManagerUtils.cancelSyncAppNotificationAndReRegister(syncNotificationPref)
     }
 }

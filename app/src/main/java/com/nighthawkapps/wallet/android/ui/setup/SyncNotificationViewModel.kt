@@ -3,6 +3,7 @@ package com.nighthawkapps.wallet.android.ui.setup
 import androidx.lifecycle.ViewModel
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.lockbox.LockBox
+import com.nighthawkapps.wallet.android.ui.util.WorkManagerUtils
 import javax.inject.Inject
 
 class SyncNotificationViewModel @Inject constructor() : ViewModel() {
@@ -16,6 +17,7 @@ class SyncNotificationViewModel @Inject constructor() : ViewModel() {
 
     fun updateNotificationSyncPref(notificationSyncPref: NotificationSyncPref) {
         lockBox[Const.AppConstants.KEY_SYNC_NOTIFICATION] = notificationSyncPref.text
+        WorkManagerUtils.cancelSyncAppNotificationAndReRegister(notificationSyncPref)
     }
 
     enum class NotificationSyncPref(val text: String, val frequencyInDays: Int) {
