@@ -460,7 +460,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             0.5f
         ).also {
             it.repeatCount = Animation.INFINITE
-            it.duration = 5000L
+            it.duration = 1000L
             it.interpolator = LinearInterpolator()
             it.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(p0: Animation?) {
