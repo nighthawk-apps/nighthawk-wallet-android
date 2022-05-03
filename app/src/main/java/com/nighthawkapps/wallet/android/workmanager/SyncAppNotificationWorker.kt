@@ -6,9 +6,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.TaskStackBuilder
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.nighthawkapps.wallet.android.R
@@ -21,6 +21,7 @@ class SyncAppNotificationWorker(
 ) : CoroutineWorker(appContext, workerParameters) {
 
     override suspend fun doWork(): Result {
+        Log.d("NightHawk SyncAppNotificationWorker", "SyncAppNotification worker do work called")
         showNotification()
         return Result.success()
     }
@@ -30,12 +31,9 @@ class SyncAppNotificationWorker(
         val intent = Intent(appContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = TaskStackBuilder.create(appContext).run {
-            // Add the intent, which inflates the back stack
-            addNextIntentWithParentStack(intent)
-            // Get the PendingIntent containing the entire back stack
-            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-        }
+        val pendingIntent = PendingIntent.getActivity(
+            appContext, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         val notification = NotificationCompat.Builder(appContext, "syncNotificationWork").apply {
             setContentIntent(pendingIntent)
