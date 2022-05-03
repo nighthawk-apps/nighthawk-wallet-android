@@ -131,6 +131,8 @@
     <string name="ns_back_up_seed_dialog_body">WARNING: Please make sure that you are the only one viewing your phone as your wallet seed key will be shown in the next screen.</string>
     <string name="ns_back_up_seed_dialog_positive">View Seed</string>
     <string name="ns_please_try_again">Please try again</string>
+    <string name="ns_disable_pin">Disable Pin</string>
+    <string name="ns_disable_pin_message">Pin disabled</string>
 
     <!-- Backup/Restore Screen-->
     <string name="ns_landing_backup_skipped_message_1">Are you sure? Without a backup, funds can be lost FOREVER!</string>

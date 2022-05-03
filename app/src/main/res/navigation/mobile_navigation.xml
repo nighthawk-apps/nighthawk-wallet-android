@@ -344,9 +344,6 @@
         android:name="com.nighthawkapps.wallet.android.ui.setup.SettingsFragment"
         tools:layout="@layout/fragment_settings" >
         <action
-            android:id="@+id/action_nav_settings_to_enterPinFragment"
-            app:destination="@id/nav_enter_pin_fragment" />
-        <action
             android:id="@+id/action_nav_settings_to_nav_profile"
             app:destination="@id/nav_profile" />
         <action
@@ -361,6 +358,9 @@
         <action
             android:id="@+id/action_nav_settings_to_nav_update_server"
             app:destination="@id/nav_update_server"/>
+        <action
+            android:id="@+id/action_nav_settings_to_nav_security"
+            app:destination="@id/nav_security"/>
     </fragment>
     <fragment
         android:id="@+id/nav_sync_notification"
@@ -376,6 +376,14 @@
         android:id="@+id/nav_update_server"
         android:name="com.nighthawkapps.wallet.android.ui.setup.UpdateServerFragment"
         tools:layout="@layout/fragment_update_server">
+    </fragment>
+    <fragment
+        android:id="@+id/nav_security"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.SecurityFragment"
+        tools:layout="@layout/fragment_security">
+        <action
+            android:id="@+id/action_nav_security_to_enterPinFragment"
+            app:destination="@id/nav_enter_pin_fragment" />
     </fragment>
 
     <fragment
