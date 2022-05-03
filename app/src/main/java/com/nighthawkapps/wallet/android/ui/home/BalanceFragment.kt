@@ -65,9 +65,9 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
         if (balanceViewModel.isZecAmountState) {
             binding.tvBalance.text = getString(R.string.ns_zec_amount, balanceViewModel.balanceAmountZec).toColoredSpan(R.color.ns_peach_100, "ZEC")
         } else {
-            val convertedAmount = Utils.getZecConvertedAmountText(balanceViewModel.balanceAmountZec, homeViewModel.coinMetricsMarketData.value)
+            val convertedAmount = Utils.getZecConvertedAmountText(balanceViewModel.balanceAmountZec, homeViewModel.zcashPriceApiData.value)
             binding.tvBalance.text = convertedAmount?.toColoredSpan(R.color.ns_peach_100,
-                FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByMarket(homeViewModel.coinMetricsMarketData.value?.market ?: "").currencyName)
+                FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByMarket(homeViewModel.zcashPriceApiData.value?.data?.keys?.firstOrNull() ?: "").currencyName)
         }
     }
 

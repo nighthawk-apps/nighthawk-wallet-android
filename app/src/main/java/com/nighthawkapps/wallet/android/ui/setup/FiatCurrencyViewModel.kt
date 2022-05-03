@@ -20,14 +20,18 @@ class FiatCurrencyViewModel @Inject constructor() : ViewModel() {
     }
 
     enum class FiatCurrency(val currencyName: String, val currencyText: String, val serverUrl: String) {
-        USD("USD", "USD - United States Dollar", "bitfinex-zec-usd-spot"),
-        EUR("EUR", "EUR - Eur", "cex.io-zec-eur-spot"); // TODO change working server url
+        USD("USD", "USD - United States Dollar", "usd"),
+        EUR("EUR", "EUR - Eur", "eur"),
+        INDIAN_RUPEE("INR", "Indian Rupee", "inr"),
+        JAPANESE_YAN("JPY", "Japanese Yan", "jpy");
 
         companion object {
             fun getFiatCurrencyByName(currencyName: String): FiatCurrency {
                 return when (currencyName.lowercase()) {
                     USD.currencyName.lowercase() -> USD
                     EUR.currencyName.lowercase() -> EUR
+                    INDIAN_RUPEE.currencyName.lowercase() -> INDIAN_RUPEE
+                    JAPANESE_YAN.currencyName.lowercase() -> JAPANESE_YAN
                     else -> USD
                 }
             }
@@ -35,6 +39,8 @@ class FiatCurrencyViewModel @Inject constructor() : ViewModel() {
                 return when (marketName.lowercase()) {
                     USD.serverUrl.lowercase() -> USD
                     EUR.serverUrl.lowercase() -> EUR
+                    INDIAN_RUPEE.serverUrl.lowercase() -> INDIAN_RUPEE
+                    JAPANESE_YAN.serverUrl.lowercase() -> JAPANESE_YAN
                     else -> USD
                 }
             }

@@ -10,7 +10,7 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.lockbox.LockBox
-import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
+import com.nighthawkapps.wallet.android.network.models.ZcashPriceApiResponse
 import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import java.text.DecimalFormat
 
@@ -41,9 +41,9 @@ object Utils {
             }
         }
 
-    fun getZecConvertedAmountText(toZecStringShort: String, coinMetricsMarketData: CoinMetricsMarketResponse.CoinMetricsMarketData?): String? {
-        if (coinMetricsMarketData == null) return null
-        return getZecConvertedAmountText(toZecStringShort, coinMetricsMarketData.price, marketName = coinMetricsMarketData.market)
+    fun getZecConvertedAmountText(toZecStringShort: String, zcashPriceApiData: ZcashPriceApiResponse?): String? {
+        if (zcashPriceApiData == null || zcashPriceApiData.data.isEmpty()) return null
+        return getZecConvertedAmountText(toZecStringShort, zcashPriceApiData.data.values.firstOrNull().toString(), marketName = zcashPriceApiData.data.keys.firstOrNull())
     }
 
     fun getZecConvertedAmountText(toZecStringShort: String, price: String, currencyName: String? = null, marketName: String? = null): String {

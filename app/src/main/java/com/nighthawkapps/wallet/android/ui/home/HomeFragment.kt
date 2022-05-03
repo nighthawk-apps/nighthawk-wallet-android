@@ -55,7 +55,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val historyViewModel: HistoryViewModel by activityViewModel()
 
     lateinit var balanceViewPagerAdapter: BalanceViewPagerAdapter
-    private var cancelLogoRotation = false
 
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
         FragmentHomeBinding.inflate(inflater)
@@ -65,6 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         binding.walletRecentActivityView.tvViewAllTransactions.onClickNavTo(R.id.action_nav_home_to_nav_history)
         binding.buttonShieldNow.setOnClickListener { if (isAutoShieldFundsAvailable()) { autoShield(uiModel) } }
+        binding.iconAppLogo.setOnClickListener { rotateLogo() }
         initViewPager()
         if (::uiModel.isInitialized) {
             twig("uiModel exists!")
@@ -93,7 +93,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         // Once the synchronizer is created, monitor state changes, while this fragment is resumed
         launchWhenSyncReady {
             onSyncReady()
-            combine(viewModel.transactions, viewModel.coinMetricsMarketData) { it1, it2 ->
+            combine(viewModel.transactions, viewModel.zcashPriceApiData) { it1, it2 ->
                 twig("recentUI $it1 and $it2")
                 it1
             }.onEach { onTransactionsUpdated(it) }.launchIn(resumedScope)
@@ -238,16 +238,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun rotateLogo(startRotation: Boolean) {
-        if (startRotation) {
-            if (rotateAnimation.isInitialized.not() || rotateAnimation.hasEnded()) {
-                cancelLogoRotation = true
-                binding.iconAppLogo.startAnimation(rotateAnimation)
-            }
-        } else {
-            if (rotateAnimation.isInitialized && rotateAnimation.hasEnded().not()) {
-                cancelLogoRotation = true
-            }
+    private fun rotateLogo() {
+        binding.iconAppLogo.let {
+            it.clearAnimation()
+            it.startAnimation(rotateAnimation)
         }
     }
 
@@ -321,7 +315,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSyncing(uiModel: HomeViewModel.UiModel) {
         mainActivity?.updateTransferTab(false)
-        rotateLogo(true)
         var iconResourceId = R.drawable.ic_icon_connecting
         var message = getString(R.string.ns_connecting)
         when (uiModel.status) {
@@ -376,7 +369,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         mainActivity?.updateTransferTab(enable = true)
-        rotateLogo(false)
         binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
         binding.iconScan.visibility = View.VISIBLE
         binding.viewInit.root.gone()
@@ -459,26 +451,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             Animation.RELATIVE_TO_SELF,
             0.5f
         ).also {
-            it.repeatCount = Animation.INFINITE
+            it.repeatCount = 3
             it.duration = 1000L
             it.interpolator = LinearInterpolator()
-            it.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationStart(p0: Animation?) {
-                    twig("animation started")
-                }
-
-                override fun onAnimationEnd(p0: Animation?) {
-                    twig("animation end")
-                    binding.iconAppLogo.clearAnimation()
-                }
-
-                override fun onAnimationRepeat(p0: Animation?) {
-                    twig("animation repeat")
-                    if (cancelLogoRotation) {
-                        binding.iconAppLogo.clearAnimation()
-                    }
-                }
-            })
         }
     }
 
