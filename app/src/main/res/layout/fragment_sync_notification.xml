@@ -68,15 +68,13 @@
         app:layout_constraintStart_toEndOf="@id/guideLineStart"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switchSync"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="@id/guideLineStart"
-        app:layout_constraintTop_toBottomOf="@id/tvBody"
-        app:layout_constraintWidth_min="40dp"
-        app:thumbTint="@color/switch_thumb_color"
-        app:trackTint="@color/switch_tracker_color" />
+    <RadioGroup
+        android:id="@+id/radioGroupSyncFrequency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+        app:layout_constraintStart_toEndOf="@id/guideLineStart"
+        app:layout_constraintTop_toBottomOf="@id/tvBody" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
