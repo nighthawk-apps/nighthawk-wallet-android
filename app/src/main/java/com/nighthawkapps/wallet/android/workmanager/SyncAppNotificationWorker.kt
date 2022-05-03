@@ -43,6 +43,7 @@ class SyncAppNotificationWorker(
         notification.priority = NotificationCompat.PRIORITY_HIGH
         notification.setCategory(NotificationCompat.CATEGORY_ALARM)
         notification.setSmallIcon(R.drawable.ic_nighthawk_logo)
+        notification.setAutoCancel(true)
         val vibrate = longArrayOf(0, 100, 200, 300)
         notification.setVibrate(vibrate)
 
