@@ -1,122 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_main">
+    android:background="@drawable/background_main"
+    android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/icon_app_logo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="47dp"
-        android:contentDescription="@string/app_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintDimensionRatio="W,1:1"
-        app:srcCompat="@drawable/ic_nighthawk_logo" />
-
-    <TextView
-        android:id="@+id/tvMessage"
-        style="@style/Nighthawk.MaterialComponents.Headline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:text="@string/ns_nighthawk"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon_app_logo" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideLineStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideLineEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
-
-    <TextView
-        android:id="@+id/tvTitle"
-        style="@style/Nighthawk.MaterialComponents.Body"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="@string/ns_settings"
-        android:textColor="@color/ns_parmaviolet"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-        app:layout_constraintStart_toEndOf="@id/guideLineStart"
-        app:layout_constraintTop_toBottomOf="@id/tvMessage" />
-
-    <include
-        android:id="@+id/viewSyncNotification"
-        layout="@layout/item_transfer_screen"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-        app:layout_constraintStart_toEndOf="@id/guideLineStart"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-    <include
-        android:id="@+id/viewBackUpWallet"
-        layout="@layout/item_transfer_screen"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-        app:layout_constraintStart_toEndOf="@id/guideLineStart"
-        app:layout_constraintTop_toBottomOf="@id/viewSyncNotification" />
-
-    <include
-        android:id="@+id/viewFiatCurrency"
-        layout="@layout/item_transfer_screen"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-        app:layout_constraintStart_toEndOf="@id/guideLineStart"
-        app:layout_constraintTop_toBottomOf="@id/viewBackUpWallet" />
-
-    <TextView
-        android:id="@+id/textSetChangePinCode"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:gravity="center_vertical"
-        android:paddingEnd="10dp"
-        android:text="@string/set_change_pin_code"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/ns_white"
-        app:drawableEndCompat="@drawable/ic_arrow_right"
-        app:layout_constraintTop_toBottomOf="@id/viewFiatCurrency"
-        tools:ignore="RtlSymmetry" />
+        android:layout_height="match_parent"
+        android:background="@drawable/background_main">
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switchEnableDisableBiometric"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/enable_face_id_touch_id"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/ns_white"
-        app:layout_constraintHeight_min="40dp"
-        app:layout_constraintTop_toBottomOf="@id/textSetChangePinCode"
-        app:switchMinWidth="40dp"
-        app:thumbTint="@color/switch_thumb_color"
-        app:trackTint="@color/switch_tracker_color" />
+        <ImageView
+            android:id="@+id/icon_app_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="47dp"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintDimensionRatio="W,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_nighthawk_logo" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvMessage"
+            style="@style/Nighthawk.MaterialComponents.Headline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@string/ns_nighthawk"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/icon_app_logo" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLineEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/Nighthawk.MaterialComponents.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:text="@string/ns_settings"
+            android:textColor="@color/ns_parmaviolet"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/tvMessage" />
+
+        <include
+            android:id="@+id/viewSyncNotification"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <include
+            android:id="@+id/viewBackUpWallet"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewSyncNotification" />
+
+        <include
+            android:id="@+id/viewFiatCurrency"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewBackUpWallet" />
+
+        <include
+            android:id="@+id/viewSecurity"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewFiatCurrency" />
+
+        <include
+            android:id="@+id/viewRescan"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewSecurity" />
+
+        <include
+            android:id="@+id/viewUpdateServer"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewRescan" />
+
+        <include
+            android:id="@+id/viewAbout"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewUpdateServer" />
+
+        <TextView
+            android:id="@+id/textSetChangePinCode"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_vertical"
+            android:paddingEnd="10dp"
+            android:text="@string/set_change_pin_code"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/ns_white"
+            app:drawableEndCompat="@drawable/ic_arrow_right"
+            app:layout_constraintTop_toBottomOf="@id/viewAbout"
+            tools:ignore="RtlSymmetry" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchEnableDisableBiometric"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/enable_face_id_touch_id"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/ns_white"
+            app:layout_constraintHeight_min="40dp"
+            app:layout_constraintTop_toBottomOf="@id/textSetChangePinCode"
+            app:switchMinWidth="40dp"
+            app:thumbTint="@color/switch_thumb_color"
+            app:trackTint="@color/switch_tracker_color" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -451,7 +451,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             Animation.RELATIVE_TO_SELF,
             0.5f
         ).also {
-            it.repeatCount = 3
+            it.repeatCount = 1
             it.duration = 1000L
             it.interpolator = LinearInterpolator()
         }
