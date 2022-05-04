@@ -12,34 +12,40 @@ import kotlinx.coroutines.launch
 
 class ReceiveTabFragment : BaseFragment<FragmentTabReceiveShieldedBinding>() {
 
-        private val viewModel: ReceiveViewModel by viewModel()
+    private val viewModel: ReceiveViewModel by viewModel()
 
-        lateinit var qrecycler: QRecycler
+    lateinit var qrecycler: QRecycler
 
-        override fun inflate(inflater: LayoutInflater): FragmentTabReceiveShieldedBinding =
-            FragmentTabReceiveShieldedBinding.inflate(inflater)
+    override fun inflate(inflater: LayoutInflater): FragmentTabReceiveShieldedBinding =
+        FragmentTabReceiveShieldedBinding.inflate(inflater)
 
-        override fun onAttach(context: Context) {
-            qrecycler = QRecycler() // inject! :)
-            super.onAttach(context)
-        }
+    override fun onAttach(context: Context) {
+        qrecycler = QRecycler() // inject! :)
+        super.onAttach(context)
+    }
 
-        override fun onResume() {
-            super.onResume()
-            resumedScope.launch {
-                onAddressLoaded(viewModel.getAddress())
-            }
-        }
-
-        private fun onAddressLoaded(address: String) {
-            twig("address loaded:  $address length: ${address.length}")
-            qrecycler.load(address)
-                .withQuietZoneSize(3)
-                .withCorrectionLevel(QRecycler.CorrectionLevel.MEDIUM)
-                .into(binding.viewContent.receiveQrCode)
-
-            binding.viewContent.tvAddress.text = address
-            binding.viewContent.tvTitle.text = getString(R.string.ns_shielded_address)
-            binding.viewContent.btnCopy.setOnClickListener { mainActivity?.copyAddress(label = getString(R.string.ns_shielded_address)) }
+    override fun onResume() {
+        super.onResume()
+        resumedScope.launch {
+            onAddressLoaded(viewModel.getAddress())
         }
     }
+
+    private fun onAddressLoaded(address: String) {
+        twig("address loaded:  $address length: ${address.length}")
+        qrecycler.load(address)
+            .withQuietZoneSize(3)
+            .withCorrectionLevel(QRecycler.CorrectionLevel.MEDIUM)
+            .into(binding.viewContent.receiveQrCode)
+
+        binding.viewContent.tvAddress.text = address
+        binding.viewContent.tvTitle.text = getString(R.string.ns_shielded_address)
+        binding.viewContent.btnCopy.setOnClickListener {
+            mainActivity?.copyAddress(
+                label = getString(
+                    R.string.ns_shielded_address
+                )
+            )
+        }
+    }
+}

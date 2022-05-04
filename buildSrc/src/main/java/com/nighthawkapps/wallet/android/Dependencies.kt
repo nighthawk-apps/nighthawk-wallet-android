@@ -28,6 +28,8 @@ object Deps {
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
         const val SPLASH_SCREEN = "androidx.core:core-splashscreen:1.0.0-beta01"
+        const val OSS_LICENCE = "com.google.android.gms:play-services-oss-licenses:16.0.0"
+        const val WORK_MANAGER_KTX = "androidx.work:work-runtime-ktx:2.7.1"
 
         object CameraX : Version("1.1.0-beta03") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"

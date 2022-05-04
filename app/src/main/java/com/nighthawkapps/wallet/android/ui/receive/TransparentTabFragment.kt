@@ -48,6 +48,12 @@ class TransparentTabFragment : BaseFragment<FragmentTabReceiveTransparentBinding
             .into(binding.viewContent.receiveQrCode)
 
         binding.viewContent.tvAddress.text = address
-        binding.viewContent.btnCopy.setOnClickListener { mainActivity?.copyTransparentAddress(label = getString(R.string.ns_transparent_address)) }
+        binding.viewContent.btnCopy.setOnClickListener {
+            mainActivity?.copyTransparentAddress(
+                label = getString(
+                    R.string.ns_transparent_address
+                )
+            )
+        }
     }
 }

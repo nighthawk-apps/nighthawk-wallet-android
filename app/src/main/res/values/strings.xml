@@ -117,7 +117,7 @@
     <string name="ns_rescan_wallet_wipe">Wipe &amp; restart</string>
     <string name="ns_fiat_currency">Fiat Currency</string>
     <string name="ns_fiat_currency_text">Choose your local currency</string>
-    <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, we fetch the exchange rate and use that to calculate values. We never send any of your fund amounts to a server.</string>
+    <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, we fetch the exchange rate from CoinGecko API v3 and use that to calculate values. We never send any of your fund amounts to a server.</string>
     <string name="ns_change_server">Change server</string>
     <string name="ns_change_server_text">Change backend lightwalletd server.</string>
     <string name="ns_security">Security</string>
@@ -125,8 +125,18 @@
     <string name="ns_security_choose">Choose PIN code</string>
     <string name="ns_security_try_again">Please try again</string>
     <string name="ns_about">About</string>
-    <string name="ns_about_text">View licenses</string>
+    <string name="ns_about_message">Nighthawk is a Shielded Zcash light-wallet with support for Z-addresses, including sending &amp; receiving shielded transactions, memo support &amp; optional t-addresses support with Auto-Shielding technology.\n\nAs a non-custodial wallet for Zcash, you have sole responsibility over its funds. Please immediately and securely back up the seed words upon creating a wallet.\n\nZcash is a digital currency, or cryptocurrency, like Bitcoin. Zcash was built on the original Bitcoin code base. It was conceived by scientists at MIT, Johns Hopkins and other respected academic and scientific institutions.\n\nNighthawk Wallet requires trust in the default or custom lightwalletd server to display accurate transaction information and CoinGecko service for exchange rate feed. This software is provided "as is", without warranty of any kind, express or implied.</string>
+    <string name="ns_view_source">View Source</string>
+    <string name="ns_about_text">Nighthawk v%s &amp; Licenses</string>
+    <string name="ns_source_code_link">https://github.com/nighthawk-apps/nighthawk-wallet-android</string>
     <string name="ns_privacy_policy_link">https://nighthawkwallet.com/privacypolicy/</string>
+    <string name="ns_back_up_seed_dialog_title">View Seed Words?</string>
+    <string name="ns_back_up_seed_dialog_body">WARNING: Please make sure that you are the only one viewing your phone as your wallet seed key will be shown in the next screen.</string>
+    <string name="ns_back_up_seed_dialog_positive">View Seed</string>
+    <string name="ns_please_try_again">Please try again</string>
+    <string name="ns_disable_pin">Disable Pin</string>
+    <string name="ns_disable_pin_message">Pin disabled</string>
+    <string name="ns_view_licences">View Licences</string>
 
     <!-- Backup/Restore Screen-->
     <string name="ns_landing_backup_skipped_message_1">Are you sure? Without a backup, funds can be lost FOREVER!</string>

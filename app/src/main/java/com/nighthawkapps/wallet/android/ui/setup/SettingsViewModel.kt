@@ -1,8 +1,11 @@
 package com.nighthawkapps.wallet.android.ui.setup
 
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.Synchronizer
+import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
@@ -11,6 +14,8 @@ import javax.inject.Inject
 import javax.inject.Named
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class SettingsViewModel @Inject constructor() : ViewModel() {
 
@@ -27,6 +32,30 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
 
     var pendingHost by Delegates.observable("", ::onUpdateModel)
     var pendingPortText by Delegates.observable("", ::onUpdateModel)
+
+    fun scanDistance() =
+        (synchronizer.latestHeight - synchronizer.latestBirthdayHeight).coerceAtLeast(0)
+
+    fun blocksToMinutesString(blocks: Int): String {
+        val bps = 160
+        val duration = (blocks / bps.toDouble()).toDuration(DurationUnit.SECONDS)
+        return duration.toString(DurationUnit.MINUTES).replace("m", if (duration.inSeconds < 90) " minute" else " minutes")
+    }
+
+    fun wipe() {
+        synchronizer.stop()
+        Toast.makeText(NighthawkWalletApp.instance, "SUCCESS! Wallet data cleared. Please relaunch to rescan!", Toast.LENGTH_LONG).show()
+        Initializer.erase(NighthawkWalletApp.instance, NighthawkWalletApp.instance.defaultNetwork)
+    }
+
+    suspend fun fullRescan() {
+        rewindTo(synchronizer.latestBirthdayHeight)
+    }
+
+    private suspend fun rewindTo(targetHeight: Int) {
+        twig("TMP: rewinding to $targetHeight")
+        synchronizer.rewindToNearestHeight(targetHeight, true)
+    }
 
     private fun getHost(): String {
         return prefs[Const.HOST_SERVER] ?: Const.Default.Server.HOST

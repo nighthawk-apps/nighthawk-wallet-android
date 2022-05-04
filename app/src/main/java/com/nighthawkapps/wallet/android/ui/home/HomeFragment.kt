@@ -1,9 +1,13 @@
 package com.nighthawkapps.wallet.android.ui.home
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
@@ -56,11 +60,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
         FragmentHomeBinding.inflate(inflater)
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        viewModel.cancelSyncAppNotificationAndReRegister()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         binding.walletRecentActivityView.tvViewAllTransactions.onClickNavTo(R.id.action_nav_home_to_nav_history)
         binding.buttonShieldNow.setOnClickListener { if (isAutoShieldFundsAvailable()) { autoShield(uiModel) } }
+        binding.iconAppLogo.setOnClickListener { rotateLogo() }
         initViewPager()
         if (::uiModel.isInitialized) {
             twig("uiModel exists!")
@@ -80,7 +90,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         }
 
-        viewModel.getZecMarketPrice("bitfinex-zec-usd-spot")
+        viewModel.getZecMarketPrice(viewModel.getFiatCurrencyMarket())
     }
 
     override fun onResume() {
@@ -89,7 +99,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         // Once the synchronizer is created, monitor state changes, while this fragment is resumed
         launchWhenSyncReady {
             onSyncReady()
-            combine(viewModel.transactions, viewModel.coinMetricsMarketData) { it1, it2 ->
+            combine(viewModel.transactions, viewModel.zcashPriceApiData) { it1, it2 ->
                 twig("recentUI $it1 and $it2")
                 it1
             }.onEach { onTransactionsUpdated(it) }.launchIn(resumedScope)
@@ -145,8 +155,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.walletRecentActivityView.receivedView.groupAmountPrivate.isVisible = show.not()
         binding.walletRecentActivityView.sentView.groupAmountPrivate.isVisible = show.not()
         if (show.not()) {
-            binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = "--- USD" // TODO: change after currency slection
-            binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = "--- USD"
+            val text = "--- ${viewModel.getSelectedCurrencyName()}"
+            binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = text
+            binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = text
         }
     }
 
@@ -230,6 +241,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     visibility = View.GONE
                 }
             }
+        }
+    }
+
+    private fun rotateLogo() {
+        binding.iconAppLogo.let {
+            it.clearAnimation()
+            it.startAnimation(rotateAnimation)
         }
     }
 
@@ -363,6 +381,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.viewPager.visible()
         autoShield(uiModel)
         checkForDeepLink()
+        checkForAnyExpectingAmount(uiModel)
     }
 
     private fun autoShield(uiModel: HomeViewModel.UiModel) {
@@ -418,6 +437,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             if (mainViewModel.intentData.value == null || mainViewModel.sendZecDeepLinkData.value == null) return@launchWhenResumed
             mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToTransfer(forBuyZecDeeplink = mainViewModel.intentData.value?.toString() ?: ""))
             mainViewModel.setIntentData(null)
+        }
+    }
+
+    private fun checkForAnyExpectingAmount(uiModel: HomeViewModel.UiModel) {
+        val availableBalance = uiModel.saplingBalance.availableZatoshi
+        val totalBalance = uiModel.saplingBalance.totalZatoshi
+        if (availableBalance != -1L && availableBalance < totalBalance) {
+            mainActivity?.updateTransferTab(false)
+        }
+    }
+
+    private val rotateAnimation by lazy {
+        RotateAnimation(
+            0f,
+            360f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        ).also {
+            it.repeatCount = 1
+            it.duration = 1000L
+            it.interpolator = LinearInterpolator()
         }
     }
 

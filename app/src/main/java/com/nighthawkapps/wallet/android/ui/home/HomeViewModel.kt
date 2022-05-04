@@ -20,12 +20,15 @@ import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.lockbox.LockBox
-import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
+import com.nighthawkapps.wallet.android.network.models.ZcashPriceApiResponse
 import com.nighthawkapps.wallet.android.network.repository.CoinMetricsRepository
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
+import com.nighthawkapps.wallet.android.ui.setup.SyncNotificationViewModel
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import com.nighthawkapps.wallet.android.ui.util.Resource
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
+import com.nighthawkapps.wallet.android.ui.util.WorkManagerUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -63,8 +66,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     var initialized = false
 
     val balance get() = synchronizer.saplingBalances
-    private var _coinMetricsMarketData = MutableStateFlow<CoinMetricsMarketResponse.CoinMetricsMarketData?>(null)
-    val coinMetricsMarketData: StateFlow<CoinMetricsMarketResponse.CoinMetricsMarketData?> get() = _coinMetricsMarketData
+    private var _coinMetricsMarketData = MutableStateFlow<ZcashPriceApiResponse?>(null)
+    val zcashPriceApiData: StateFlow<ZcashPriceApiResponse?> get() = _coinMetricsMarketData
     val transactions get() = synchronizer.clearedTransactions
     private val formatter by lazy { SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), R.string.ns_format_date_time.toAppString()), Locale.getDefault()) }
 
@@ -72,26 +75,36 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun getZecMarketPrice(market: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            if (coinMetricsMarketData.value != null) {
-                twig("response: coin metric data already available $coinMetricsMarketData")
+            if (zcashPriceApiData.value != null && market == zcashPriceApiData.value?.data?.keys?.firstOrNull()) {
+                twig("response: coin metric data already available $zcashPriceApiData")
                 return@launch
             }
-            coinMetricsRepository.getZecMarketData(startTime = getStartTimeForCoinMetricsApi(), market = market)
+            coinMetricsRepository.getZecMarketData(currency = market)
                 .catch {
                     twig("error in getZecMarket data: $it")
                 }
                 .collect {
                     twig("response: $it")
-                    val response = extractCoinMarketData(it)?.data
-                    if (response?.isNotEmpty() == true) {
-                        _coinMetricsMarketData.value = response[0]
-                        lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] = _coinMetricsMarketData.value?.price
+                    val response = extractCoinMarketData(it)
+                    if (response != null && response.data.isNotEmpty()) {
+                        _coinMetricsMarketData.value = response
+                    } else {
+                        _coinMetricsMarketData.value = null
                     }
+                    lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] = _coinMetricsMarketData.value?.data?.values?.firstOrNull()?.toString() ?: "0"
                 }
         }
     }
 
-    private fun extractCoinMarketData(resource: Resource<CoinMetricsMarketResponse>): CoinMetricsMarketResponse? {
+    fun getSelectedCurrencyName(): String {
+        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
+    }
+
+    fun getFiatCurrencyMarket(): String {
+        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").serverUrl
+    }
+
+    private fun extractCoinMarketData(resource: Resource<ZcashPriceApiResponse>): ZcashPriceApiResponse? {
         return when (resource) {
             is Resource.Success -> resource.data
             else -> null
@@ -236,7 +249,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 isTransactionShielded = address?.equals(R.string.unknown.toAppString(), true) == true || address.isShielded(),
                 amount = toZecStringShort,
                 isMemoAvailable = confirmedTransaction.memo?.toUtf8Memo()?.isNotBlank() == true,
-                zecConvertedValueText = Utils.getZecConvertedAmountText(toZecStringShort, coinMetricsMarketData.value),
+                zecConvertedValueText = Utils.getZecConvertedAmountText(toZecStringShort, zcashPriceApiData.value),
                 confirmedTransaction = confirmedTransaction
             )
         }
@@ -282,5 +295,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private fun getStartTimeForCoinMetricsApi(): String {
         return DateFormat.format("yyyy-MM-dd", Calendar.getInstance().timeInMillis).toString()
+    }
+
+    fun cancelSyncAppNotificationAndReRegister() {
+        val syncNotificationPref = SyncNotificationViewModel.NotificationSyncPref.getNotificationSyncPrefByText(lockBox[Const.AppConstants.KEY_SYNC_NOTIFICATION] ?: "")
+        WorkManagerUtils.cancelSyncAppNotificationAndReRegister(syncNotificationPref)
     }
 }

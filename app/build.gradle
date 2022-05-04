@@ -4,6 +4,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 archivesBaseName = 'nighthawk-android-wallet'
 group = 'com.nighthawkapps.wallet.android'
@@ -140,6 +141,8 @@ dependencies {
     coreLibraryDesugaring Deps.AndroidX.DESUGAR_JDK
     implementation Deps.AndroidX.CUSTOM_CHROME_TABS
     implementation Deps.AndroidX.SPLASH_SCREEN
+    implementation Deps.AndroidX.OSS_LICENCE
+    implementation Deps.AndroidX.WORK_MANAGER_KTX
 
     // Google
     implementation Deps.Google.GUAVA

@@ -16,7 +16,7 @@ import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.toAppInt
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.twig
-import com.nighthawkapps.wallet.android.network.models.CoinMetricsMarketResponse
+import com.nighthawkapps.wallet.android.network.models.ZcashPriceApiResponse
 import com.nighthawkapps.wallet.android.ui.MainActivity
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
@@ -36,7 +36,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
 
     fun bindTo(
         transaction: T?,
-        coinMetricsMarketData: CoinMetricsMarketResponse.CoinMetricsMarketData?
+        zcashPriceApiData: ZcashPriceApiResponse?
     ) {
         val mainActivity = itemView.context as MainActivity
         mainActivity.lifecycleScope.launch {
@@ -101,7 +101,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                 bottomText.text = lineTwo
                 amountText.text = itemView.context.getString(R.string.ns_zec_amount, amountDisplay)
                 transactionArrow.rotation = arrowRotation.toAppInt().toFloat()
-                convertedValueTextView.text = Utils.getZecConvertedAmountText(amountZec, coinMetricsMarketData)
+                convertedValueTextView.text = Utils.getZecConvertedAmountText(amountZec, zcashPriceApiData)
                 iconTransactionDrawable?.let { iconTransactionType.setImageResource(it) }
             } catch (t: Throwable) {
                 twig("Failed to parse the transaction due to $t")

@@ -3,6 +3,7 @@ package com.nighthawkapps.wallet.android.ui.home
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -11,6 +12,7 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentBalanceBinding
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -48,7 +50,10 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
             visibility = if (balanceUIModel.expectingBalance.isEmpty().not()) View.VISIBLE else View.GONE
             text = balanceUIModel.expectingBalance
         }
-        binding.tvMessage.text = balanceUIModel.messageText
+        binding.tvMessage.let {
+            it.text = balanceUIModel.messageText
+            it.isInvisible = balanceUIModel.expectingBalance.isBlank().not()
+        }
     }
 
     private fun changeBalanceMode() {
@@ -60,9 +65,9 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
         if (balanceViewModel.isZecAmountState) {
             binding.tvBalance.text = getString(R.string.ns_zec_amount, balanceViewModel.balanceAmountZec).toColoredSpan(R.color.ns_peach_100, "ZEC")
         } else {
-            val convertedAmount = Utils.getZecConvertedAmountText(balanceViewModel.balanceAmountZec, homeViewModel.coinMetricsMarketData.value)
-            // TODO: Change the currency
-            binding.tvBalance.text = convertedAmount?.toColoredSpan(R.color.ns_peach_100, "USD")
+            val convertedAmount = Utils.getZecConvertedAmountText(balanceViewModel.balanceAmountZec, homeViewModel.zcashPriceApiData.value)
+            binding.tvBalance.text = convertedAmount?.toColoredSpan(R.color.ns_peach_100,
+                FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByMarket(homeViewModel.zcashPriceApiData.value?.data?.keys?.firstOrNull() ?: "").currencyName)
         }
     }
 

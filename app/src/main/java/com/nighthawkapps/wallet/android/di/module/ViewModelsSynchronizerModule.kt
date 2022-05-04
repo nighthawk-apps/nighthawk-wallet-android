@@ -15,8 +15,10 @@ import com.nighthawkapps.wallet.android.ui.receive.ReceiveViewModel
 import com.nighthawkapps.wallet.android.ui.scan.ScanViewModel
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldViewModel
 import com.nighthawkapps.wallet.android.ui.send.SendViewModel
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.SettingsViewModel
+import com.nighthawkapps.wallet.android.ui.setup.SyncNotificationViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -93,6 +95,18 @@ abstract class ViewModelsSynchronizerModule {
     @IntoMap
     @ViewModelKey(PasswordViewModel::class)
     abstract fun bindPasswordViewModel(implementation: PasswordViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(FiatCurrencyViewModel::class)
+    abstract fun bindFiatCurrencyViewModel(implementation: FiatCurrencyViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(SyncNotificationViewModel::class)
+    abstract fun bindSyncNotificationViewModel(implementation: SyncNotificationViewModel): ViewModel
 
     /**
      * Factory for view models that are not created until the Synchronizer exists. Only VMs that

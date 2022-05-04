@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.CustomSixDigitPasswordViewBinding
 import com.nighthawkapps.wallet.android.ext.viewBinding
+import kotlinx.coroutines.delay
 
 class SixDigitPasswordView(
     context: Context,
@@ -64,6 +65,16 @@ class SixDigitPasswordView(
 
     fun clear() {
         password.clear()
+        digitViewList.forEach { digitImageView ->
+            digitImageView.setImageResource(R.drawable.unfilled_password_digit)
+        }
+    }
+
+    suspend fun showWrongPasswordButtons(durationInMillis: Long) {
+        digitViewList.forEach { digitImageView ->
+            digitImageView.setImageResource(R.drawable.ic_icon_wrong_password)
+        }
+        delay(durationInMillis)
         digitViewList.forEach { digitImageView ->
             digitImageView.setImageResource(R.drawable.unfilled_password_digit)
         }

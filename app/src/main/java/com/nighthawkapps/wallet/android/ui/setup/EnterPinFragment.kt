@@ -11,12 +11,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentEnterPinBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
-import com.nighthawkapps.wallet.android.ext.gone
+import com.nighthawkapps.wallet.android.ext.invisible
 import com.nighthawkapps.wallet.android.ext.visible
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.util.SixDigitPasswordView
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -27,6 +29,7 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
     private var chosenPassword: String? = null
     private val args: EnterPinFragmentArgs by navArgs()
     private var dialog: Dialog? = null
+    private var cancelPasswordJob: Job? = null
 
     override fun inflate(inflater: LayoutInflater) = FragmentEnterPinBinding.inflate(inflater)
 
@@ -80,19 +83,18 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
         }
     }
 
-    private fun updateUI() {
+    private fun updateUI(wrongPasswordEntered: Boolean = false) {
         binding.viewPassword.clear()
         if (args.forNewPinSetup) {
             binding.titleGroup.visible()
             if (chosenPassword.isNullOrEmpty()) {
-                binding.textTitle.text = getString(R.string.choose_pin_code)
-                binding.textPinCodeMsg.text = getString(R.string.choose_six_digit_pin_code)
+                binding.textPinCodeMsg.text = getString(R.string.choose_pin_code)
             } else {
-                binding.textTitle.text = getString(R.string.verify_pin_code)
-                binding.textPinCodeMsg.text = getString(R.string.enter_the_same_six_digits)
+                binding.textPinCodeMsg.text = getString(if (wrongPasswordEntered) R.string.ns_please_try_again else R.string.verify_pin_code)
             }
         } else { // password already saved, user is trying to verify password to enter in the app
-            binding.titleGroup.gone()
+            binding.titleGroup.invisible()
+            binding.textPinCodeMsg.text = getString(if (wrongPasswordEntered) R.string.ns_please_try_again else R.string.enter_six_digit_pin_code)
             chosenPassword = viewModel.getPassword()
         }
     }
@@ -113,6 +115,10 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
         val c = text.toString().toInt()
         setOnClickListener {
             lifecycleScope.launch {
+                if (cancelPasswordJob?.isCompleted?.not() == true && cancelPasswordJob?.isActive == true) {
+                    cancelPasswordJob?.cancelAndJoin()
+                    binding.viewPassword.clear()
+                }
                 onInt(c)
             }
         }
@@ -128,10 +134,10 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
             val enteredPassword = binding.viewPassword.getPassword()
             if (chosenPassword.isNullOrEmpty()) {
                 chosenPassword = enteredPassword
+                updateUI()
             } else {
                 verifyPassword(enteredPassword)
             }
-            updateUI()
         }
     }
 
@@ -144,11 +150,10 @@ class EnterPinFragment : BaseFragment<FragmentEnterPinBinding>() {
             }
             handleNextNavigation()
         } else { // Wrong password entered.
-            if (args.forNewPinSetup) {
-                showPasswordDidNotMatchError()
-            } else {
-                updateUI()
+            cancelPasswordJob = viewLifecycleOwner.lifecycleScope.launch {
+                binding.viewPassword.showWrongPasswordButtons(1000)
             }
+            updateUI(true)
             mainActivity?.vibrate(0, 50, 100, 50, 100)
         }
     }

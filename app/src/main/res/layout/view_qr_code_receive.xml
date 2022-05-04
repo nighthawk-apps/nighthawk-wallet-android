@@ -18,13 +18,13 @@
             android:id="@+id/receive_qr_code"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginHorizontal="24dp"
             android:contentDescription="@string/content_description_receive_qr_code"
             android:scaleType="fitCenter"
             app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginHorizontal="24dp"
             tools:background="@color/zcashWhite"
             tools:visibility="visible" />
 

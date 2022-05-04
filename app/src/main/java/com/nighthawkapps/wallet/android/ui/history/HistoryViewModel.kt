@@ -17,6 +17,7 @@ import com.nighthawkapps.wallet.android.ext.toAppStringFormatted
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.lockbox.LockBox
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
@@ -254,7 +255,8 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
 
     private fun calculateZecConvertedAmount(zatoshi: Long): String? {
         return getZecMarketPrice()?.let {
-            Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it)
+            val selectedFiatCurrencyName = FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(prefs[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
+            Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, currencyName = selectedFiatCurrencyName)
         }
     }
 

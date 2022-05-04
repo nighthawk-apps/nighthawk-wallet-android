@@ -69,10 +69,14 @@ object Const {
         const val AMOUNT_QUERY = "amount"
         const val MEMO_QUERY = "memo"
         const val KEY_ZEC_AMOUNT = "const.app_constants.key_zec_amount"
+        const val KEY_LOCAL_CURRENCY = "const.app_constants.key_local_currency"
+        const val KEY_SYNC_NOTIFICATION = "const.app_constants.key_sync_notification"
+        const val WORKER_TAG_SYNC_NOTIFICATION = "const.app_constants.tag_sync_notification"
     }
 
     object Network {
-        const val COIN_METRICS_BASE_URL = "https://community-api.coinmetrics.io/v4/"
-        const val URL_GET_COIN_METRICS_MARKET_TRADE = "timeseries/market-trades"
+        const val COIN_METRICS_BASE_URL = "https://api.coingecko.com/api/v3/"
+        const val URL_GET_PRICE = "simple/price"
+        const val ZCASH_ID = "zcash"
     }
 }
