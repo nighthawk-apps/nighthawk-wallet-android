@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_main"
     android:fillViewport="true">
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,12 +28,12 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginStart="22dp"
+            android:layout_marginTop="25dp"
             android:contentDescription="@string/content_description_settings_back"
             android:elevation="6dp"
-            android:layout_marginTop="25dp"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:visibility="invisible"
             app:srcCompat="@drawable/ic_icon_back" />
 
         <ImageView
@@ -64,28 +63,28 @@
             android:id="@+id/guideLineStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_begin="16dp"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLineEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_end="16dp"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
 
         <TextView
             android:id="@+id/tvTitle"
             style="@style/Nighthawk.MaterialComponents.Body"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
             android:text="@string/ns_send_and_receive_zcash"
-            app:layout_constraintTop_toBottomOf="@id/tvMessage"
             android:textColor="@color/ns_parmaviolet"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
             app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            android:layout_marginTop="40dp"/>
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/tvMessage" />
 
         <!--Landing View(Show option of Send, Receive and TopUp)-->
         <include
@@ -94,9 +93,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
             app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"/>
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <include
             android:id="@+id/viewReceiveMoney"
@@ -104,9 +103,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
             app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintTop_toBottomOf="@id/viewSendMoney"/>
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewSendMoney" />
 
         <include
             android:id="@+id/viewTopUpWallet"
@@ -114,16 +113,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
             app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintTop_toBottomOf="@id/viewReceiveMoney"/>
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewReceiveMoney" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/groupLanding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            app:constraint_referenced_ids="viewSendMoney, viewReceiveMoney, viewTopUpWallet"/>
+            app:constraint_referenced_ids="viewSendMoney, viewReceiveMoney, viewTopUpWallet" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
