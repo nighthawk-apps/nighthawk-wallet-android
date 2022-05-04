@@ -43,6 +43,9 @@ class TabLayoutFragment : BaseFragment<FragmentTabLayoutBinding>(), FragmentCrea
         }
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ ->
         }.attach()
+        binding.viewPager.post {
+            binding.viewPager.setCurrentItem(1, true)
+        }
     }
 
     //
@@ -51,8 +54,8 @@ class TabLayoutFragment : BaseFragment<FragmentTabLayoutBinding>(), FragmentCrea
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> ReceiveTabFragment()
-            1 -> TransparentTabFragment()
+            0 -> TransparentTabFragment()
+            1 -> ReceiveTabFragment()
             else -> throw IndexOutOfBoundsException("Cannot create a fragment for index $position")
         }
     }

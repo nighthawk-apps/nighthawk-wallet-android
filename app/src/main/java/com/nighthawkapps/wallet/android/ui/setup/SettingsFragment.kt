@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.nighthawkapps.wallet.android.BuildConfig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSettingsBinding
@@ -84,7 +85,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             viewAbout.updateTransferItemsData(
                 R.drawable.ic_icon_fiat_currency,
                 getString(R.string.ns_about),
-                getString(R.string.ns_about_text)
+                getString(R.string.ns_about_text, BuildConfig.VERSION_NAME)
             ) {
                 mainActivity?.safeNavigate(R.id.action_nav_settings_to_nav_about)
             }

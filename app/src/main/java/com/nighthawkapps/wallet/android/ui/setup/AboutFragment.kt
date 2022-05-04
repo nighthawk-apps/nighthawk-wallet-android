@@ -20,6 +20,9 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.hitAreaClose.onClickNavBack()
+        binding.tvSource.toClickableSpan(getString(R.string.ns_view_source)) {
+            mainActivity?.onLaunchUrl(getString(R.string.ns_source_code_link))
+        }
         binding.tvTerms.toClickableSpan(getString(R.string.ns_terms_conditions)) {
             mainActivity?.onLaunchUrl(getString(R.string.ns_privacy_policy_link))
         }
