@@ -20,18 +20,32 @@ class FiatCurrencyViewModel @Inject constructor() : ViewModel() {
     }
 
     enum class FiatCurrency(val currencyName: String, val currencyText: String, val serverUrl: String) {
-        USD("USD", "USD - United States Dollar", "usd"),
-        EUR("EUR", "EUR - Eur", "eur"),
-        INDIAN_RUPEE("INR", "Indian Rupee", "inr"),
-        JAPANESE_YAN("JPY", "Japanese Yan", "jpy");
+        USD("USD", "United States Dollar", "usd"),
+        EUR("EUR", "Euro", "eur"),
+        INR("INR", "Indian Rupee", "inr"),
+        JPY("JPY", "Japanese Yen", "jpy"),
+        GBP("GBP", "British Pound", "gbp"),
+        CAD("CAD", "Canadian Dollar", "cad"),
+        AUD("AUD", "Australian Dollar", "aud"),
+        HKD("HKD", "Hong Kong Dollar", "hkd"),
+        SGD("SGD", "Singapore Dollar", "sgd"),
+        CHF("CHF", "Swiss Franc", "chf"),
+        CNY("CNY", "Chinese Yuan", "cny");
 
         companion object {
             fun getFiatCurrencyByName(currencyName: String): FiatCurrency {
                 return when (currencyName.lowercase()) {
                     USD.currencyName.lowercase() -> USD
                     EUR.currencyName.lowercase() -> EUR
-                    INDIAN_RUPEE.currencyName.lowercase() -> INDIAN_RUPEE
-                    JAPANESE_YAN.currencyName.lowercase() -> JAPANESE_YAN
+                    INR.currencyName.lowercase() -> INR
+                    JPY.currencyName.lowercase() -> JPY
+                    GBP.currencyName.lowercase() -> GBP
+                    CAD.currencyName.lowercase() -> CAD
+                    AUD.currencyName.lowercase() -> AUD
+                    HKD.currencyName.lowercase() -> HKD
+                    SGD.currencyName.lowercase() -> SGD
+                    CHF.currencyName.lowercase() -> CHF
+                    CNY.currencyName.lowercase() -> CNY
                     else -> USD
                 }
             }
@@ -39,8 +53,15 @@ class FiatCurrencyViewModel @Inject constructor() : ViewModel() {
                 return when (marketName.lowercase()) {
                     USD.serverUrl.lowercase() -> USD
                     EUR.serverUrl.lowercase() -> EUR
-                    INDIAN_RUPEE.serverUrl.lowercase() -> INDIAN_RUPEE
-                    JAPANESE_YAN.serverUrl.lowercase() -> JAPANESE_YAN
+                    INR.serverUrl.lowercase() -> INR
+                    JPY.serverUrl.lowercase() -> JPY
+                    GBP.serverUrl.lowercase() -> GBP
+                    CAD.serverUrl.lowercase() -> CAD
+                    AUD.serverUrl.lowercase() -> AUD
+                    HKD.serverUrl.lowercase() -> HKD
+                    SGD.serverUrl.lowercase() -> SGD
+                    CHF.serverUrl.lowercase() -> CHF
+                    CNY.serverUrl.lowercase() -> CNY
                     else -> USD
                 }
             }

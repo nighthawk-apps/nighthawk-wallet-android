@@ -117,7 +117,7 @@
     <string name="ns_rescan_wallet_wipe">Wipe &amp; restart</string>
     <string name="ns_fiat_currency">Fiat Currency</string>
     <string name="ns_fiat_currency_text">Choose your local currency</string>
-    <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, we fetch the exchange rate and use that to calculate values. We never send any of your fund amounts to a server.</string>
+    <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, we fetch the exchange rate from CoinGecko API v3 and use that to calculate values. We never send any of your fund amounts to a server.</string>
     <string name="ns_change_server">Change server</string>
     <string name="ns_change_server_text">Change backend lightwalletd server.</string>
     <string name="ns_security">Security</string>
