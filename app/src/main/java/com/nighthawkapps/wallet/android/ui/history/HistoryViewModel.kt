@@ -256,7 +256,8 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
     private fun calculateZecConvertedAmount(zatoshi: Long): String? {
         return getZecMarketPrice()?.let {
             val selectedFiatCurrencyName = FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(prefs[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
-            Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, currencyName = selectedFiatCurrencyName)
+            if (selectedFiatCurrencyName.isBlank()) null
+            else Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, currencyName = selectedFiatCurrencyName)
         }
     }
 

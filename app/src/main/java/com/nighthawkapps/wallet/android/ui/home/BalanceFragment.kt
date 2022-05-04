@@ -1,8 +1,10 @@
 package com.nighthawkapps.wallet.android.ui.home
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -37,7 +39,7 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
                     updateUI(balanceViewModel.getBalanceUIModel(sectionType, homeUiModel))
                 }
         }
-        binding.tvBalance.setOnClickListener { changeBalanceMode() }
+        binding.tvBalance.setOnClickListener { if (homeViewModel.getSelectedCurrencyName().isNotBlank()) changeBalanceMode() }
     }
 
     private fun updateUI(balanceUIModel: BalanceViewModel.BalanceUIModel) {
@@ -62,6 +64,12 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
     }
 
     private fun updateBalanceText() {
+        var drawableEnd: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_icon_up_down)
+        if (homeViewModel.getSelectedCurrencyName().isBlank()) {
+            drawableEnd = null
+            balanceViewModel.isZecAmountState = true
+        }
+        binding.tvBalance.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawableEnd, null)
         if (balanceViewModel.isZecAmountState) {
             binding.tvBalance.text = getString(R.string.ns_zec_amount, balanceViewModel.balanceAmountZec).toColoredSpan(R.color.ns_peach_100, "ZEC")
         } else {

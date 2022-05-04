@@ -11,12 +11,21 @@ class FiatCurrencyViewModel @Inject constructor() : ViewModel() {
     lateinit var lockBox: LockBox
 
     fun updateLocalCurrency(fiatCurrency: FiatCurrency) {
-        lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] = fiatCurrency.currencyName
+        if (fiatCurrency == FiatCurrency.OFF) {
+            resetSavedCurrencyData()
+        } else {
+            lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] = fiatCurrency.currencyName
+        }
     }
 
     fun localCurrencySelected(): FiatCurrency {
         val currencyName: String? = lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY]
         return FiatCurrency.getFiatCurrencyByName(currencyName ?: "")
+    }
+
+    private fun resetSavedCurrencyData() {
+        lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] = "0"
+        lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] = ""
     }
 
     enum class FiatCurrency(val currencyName: String, val currencyText: String, val serverUrl: String) {
@@ -30,7 +39,8 @@ class FiatCurrencyViewModel @Inject constructor() : ViewModel() {
         HKD("HKD", "Hong Kong Dollar", "hkd"),
         SGD("SGD", "Singapore Dollar", "sgd"),
         CHF("CHF", "Swiss Franc", "chf"),
-        CNY("CNY", "Chinese Yuan", "cny");
+        CNY("CNY", "Chinese Yuan", "cny"),
+        OFF("", "OFF", "");
 
         companion object {
             fun getFiatCurrencyByName(currencyName: String): FiatCurrency {
@@ -46,7 +56,7 @@ class FiatCurrencyViewModel @Inject constructor() : ViewModel() {
                     SGD.currencyName.lowercase() -> SGD
                     CHF.currencyName.lowercase() -> CHF
                     CNY.currencyName.lowercase() -> CNY
-                    else -> USD
+                    else -> OFF
                 }
             }
             fun getFiatCurrencyByMarket(marketName: String): FiatCurrency {
@@ -62,7 +72,7 @@ class FiatCurrencyViewModel @Inject constructor() : ViewModel() {
                     SGD.serverUrl.lowercase() -> SGD
                     CHF.serverUrl.lowercase() -> CHF
                     CNY.serverUrl.lowercase() -> CNY
-                    else -> USD
+                    else -> OFF
                 }
             }
         }

@@ -125,7 +125,10 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
     private fun calculateZecConvertedAmount(zatoshi: Long) {
         sendViewModel.getZecMarketPrice()?.let {
             val selectedCurrencyName = sendViewModel.getSelectedFiatCurrency().currencyName
-            binding.tvConvertedAmount.text = getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedCurrencyName))
+            if (selectedCurrencyName.isNotBlank()) {
+                binding.tvConvertedAmount.text = getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedCurrencyName))
+            }
+            binding.tvConvertedAmount.isVisible = selectedCurrencyName.isNotBlank()
         }
     }
 

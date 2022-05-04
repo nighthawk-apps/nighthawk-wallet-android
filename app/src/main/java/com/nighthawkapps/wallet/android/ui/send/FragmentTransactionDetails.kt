@@ -53,7 +53,10 @@ class FragmentTransactionDetails : BaseFragment<FragmentTransactionDetailsBindin
             with(binding) {
                 ivTransactionStatusIcon.rotation = it.iconRotation
                 tvBalance.text = it.transactionAmount
-                tvConvertedAmount.text = getString(R.string.ns_around, it.convertedAmount)
+                tvConvertedAmount.apply {
+                    text = getString(R.string.ns_around, it.convertedAmount)
+                    isVisible = it.convertedAmount.isNotBlank()
+                }
                 tvTransactionStatus.apply {
                     text = it.transactionStatus
                     setCompoundDrawablesRelativeWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(), it.transactionStatusStartDrawableId), null, null, null)

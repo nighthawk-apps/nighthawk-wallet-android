@@ -154,7 +154,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.walletRecentActivityView.sentView.groupAmount.isVisible = show
         binding.walletRecentActivityView.receivedView.groupAmountPrivate.isVisible = show.not()
         binding.walletRecentActivityView.sentView.groupAmountPrivate.isVisible = show.not()
-        if (show.not()) {
+        if (show.not() && viewModel.getSelectedCurrencyName().isNotBlank()) {
             val text = "--- ${viewModel.getSelectedCurrencyName()}"
             binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = text
             binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = text

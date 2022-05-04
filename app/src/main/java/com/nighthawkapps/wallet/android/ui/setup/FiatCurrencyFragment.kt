@@ -8,14 +8,17 @@ import android.widget.RadioButton
 import androidx.core.content.ContextCompat
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentFiatCurrencyBinding
+import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.home.HomeViewModel
 
 class FiatCurrencyFragment : BaseFragment<FragmentFiatCurrencyBinding>() {
 
     private val fiatCurrencyViewModel: FiatCurrencyViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by activityViewModel()
 
     override fun inflate(inflater: LayoutInflater): FragmentFiatCurrencyBinding {
         return FragmentFiatCurrencyBinding.inflate(inflater)
@@ -46,6 +49,7 @@ class FiatCurrencyFragment : BaseFragment<FragmentFiatCurrencyBinding>() {
                     if (checked) {
                         twig("Selected local currency is $fiatCurrencies")
                         fiatCurrencyViewModel.updateLocalCurrency(fiatCurrencies)
+                        homeViewModel.getZecMarketPrice(fiatCurrencies.serverUrl)
                     }
                 }
             }
