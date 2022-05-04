@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.ui.setup
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
@@ -88,8 +86,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 getString(R.string.ns_about),
                 getString(R.string.ns_about_text)
             ) {
-                OssLicensesMenuActivity.setActivityTitle("Open source licences")
-                startActivity(Intent(requireContext(), OssLicensesMenuActivity::class.java))
+                mainActivity?.safeNavigate(R.id.action_nav_settings_to_nav_about)
             }
         }
     }

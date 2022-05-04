@@ -43,7 +43,7 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding>() {
         mainActivity?.showMessage(getString(R.string.ns_disable_pin_message))
         passwordViewModel.savePassword("")
         if (binding.switchEnableDisableBiometric.isChecked) {
-            onBioMetricSwitchedChanged(false)
+            binding.switchEnableDisableBiometric.isChecked = false
         }
         binding.btnDisablePin.isVisible = false
     }
