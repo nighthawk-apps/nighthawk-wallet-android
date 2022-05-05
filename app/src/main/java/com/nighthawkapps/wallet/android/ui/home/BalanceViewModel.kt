@@ -60,7 +60,7 @@ class BalanceViewModel : ViewModel() {
     }
 
     private fun getExpectingBalance(total: Long, available: Long): String {
-        if (available != -1L && available < total) {
+        if (available != -1L && available < total && (total - available > 0)) {
             val change = WalletZecFormmatter.toZecStringFull(total - available)
             return "${R.string.home_banner_expecting.toAppString()} $change ZEC"
         }

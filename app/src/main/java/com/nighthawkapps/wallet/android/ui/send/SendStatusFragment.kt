@@ -71,6 +71,7 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
     private fun updateUi(model: UiModel) {
         binding.apply {
             ivBack.isInvisible = !model.showCloseIcon
+            binding.tvTitle.text = model.title
             lottieSending.goneIf(!model.showProgress)
             lottieSending.setAnimation(model.animationRes)
             if (!model.showProgress) lottieSending.pauseAnimation() else lottieSending.playAnimation()
@@ -81,7 +82,7 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
             tvMoreDetails.apply {
                 goneIf(!model.showSecondaryButton)
                 text = model.secondaryButtonText
-                setOnClickListener { model.secondaryAction }
+                setOnClickListener { model.secondaryAction() }
             }
         }
     }

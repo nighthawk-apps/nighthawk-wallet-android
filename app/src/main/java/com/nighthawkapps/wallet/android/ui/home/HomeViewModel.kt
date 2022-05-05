@@ -64,6 +64,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     lateinit var _typedChars: ConflatedBroadcastChannel<Char>
 
     var initialized = false
+    var expectingAmount = 0L
 
     val balance get() = synchronizer.saplingBalances
     private var _coinMetricsMarketData = MutableStateFlow<ZcashPriceApiResponse?>(null)
