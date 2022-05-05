@@ -181,6 +181,9 @@
             app:exitAnim="@anim/anim_fade_out_address"
             app:popUpTo="@id/nav_receive"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_nav_buy_sell_to_nav_top_up"
+            app:destination="@id/nav_top_up" />
     </fragment>
     <fragment
         android:id="@+id/nav_scan"

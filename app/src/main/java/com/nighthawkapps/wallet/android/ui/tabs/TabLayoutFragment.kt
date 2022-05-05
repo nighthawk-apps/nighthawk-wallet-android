@@ -16,6 +16,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentTabLayoutBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import com.nighthawkapps.wallet.android.ui.receive.BuySellTabFragment
 import com.nighthawkapps.wallet.android.ui.receive.ReceiveTabFragment
 import com.nighthawkapps.wallet.android.ui.receive.ReceiveViewModel
 import com.nighthawkapps.wallet.android.ui.receive.TransparentTabFragment
@@ -56,11 +57,12 @@ class TabLayoutFragment : BaseFragment<FragmentTabLayoutBinding>(), FragmentCrea
         return when (position) {
             0 -> TransparentTabFragment()
             1 -> ReceiveTabFragment()
+            2 -> BuySellTabFragment()
             else -> throw IndexOutOfBoundsException("Cannot create a fragment for index $position")
         }
     }
 
-    override fun getItemCount() = 2
+    override fun getItemCount() = 3
 }
 
 private const val MIN_SCALE = 0.8f
