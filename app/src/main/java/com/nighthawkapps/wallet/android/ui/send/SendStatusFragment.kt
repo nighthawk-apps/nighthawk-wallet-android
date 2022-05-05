@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.RawRes
 import androidx.core.view.isInvisible
-import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isCancelled
