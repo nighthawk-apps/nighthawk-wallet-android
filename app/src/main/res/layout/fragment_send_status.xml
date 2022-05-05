@@ -73,7 +73,7 @@
         android:id="@+id/lottieSending"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/btnDone"
+        app:layout_constraintBottom_toTopOf="@id/btnPrimary"
         app:layout_constraintEnd_toEndOf="@id/guideLineEnd"
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toStartOf="@id/guideLineStart"
@@ -84,11 +84,11 @@
         app:lottie_rawRes="@raw/lottie_sending" />
 
     <Button
-        android:id="@+id/btnDone"
+        android:id="@+id/btnPrimary"
         style="@style/Nighthawk.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ns_skip"
+        android:text="@string/ns_cancel"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/tvMoreDetails"
         app:layout_constraintStart_toStartOf="@id/guideLineStart"
