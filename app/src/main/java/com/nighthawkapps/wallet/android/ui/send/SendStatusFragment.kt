@@ -20,10 +20,8 @@ import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
 
@@ -51,14 +49,6 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
             onReturnToSendReview()
         }
         mainActivity?.preventBackPress(this)
-        lifecycleScope.launch {
-            delay(2000L)
-            binding.lottieSending.setAnimation(R.raw.lottie_success)
-            delay(2000)
-            binding.lottieSending.setAnimation(R.raw.lottie_failed)
-            delay(2000)
-            binding.lottieSending.setAnimation(R.raw.lottie_sending)
-        }
     }
 
     private fun onPendingTxUpdated(tx: PendingTransaction?) {
