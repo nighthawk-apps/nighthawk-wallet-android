@@ -50,6 +50,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
     private var lastSendTransaction: Flow<PendingTransaction>? = null
     val transactionDetailsUIModel = lastSendTransaction?.map { it.toTransactionUIModel() }
     private val latestHeight get() = synchronizer.latestHeight
+    var isZecAmountState = true // To track user selected the zec balance mode or converted balance mode
 
     var fromAddress: String = ""
     var toAddress: String = ""

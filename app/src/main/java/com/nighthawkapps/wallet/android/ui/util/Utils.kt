@@ -5,9 +5,11 @@ import androidx.browser.customtabs.CustomTabsIntent
 import android.app.Activity
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabColorSchemeParams
+import cash.z.ecc.android.sdk.ext.toZecString
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
+import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.toAppColor
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.network.models.ZcashPriceApiResponse
@@ -48,6 +50,18 @@ object Utils {
 
     fun getZecConvertedAmountText(toZecStringShort: String, price: String, currencyName: String? = null, marketName: String? = null): String {
         return DecimalFormat("#.##").format((toZecStringShort.toFloatOrNull() ?: 0F).times(price.toFloatOrNull() ?: 0F)) + " ${currencyName ?: getCurrencySymbol(marketName)}"
+    }
+
+    fun calculateZecToOtherCurrencyValue(zec: String, currencyValue: String): String {
+        return DecimalFormat("#.##").format((zec.toFloatOrNull() ?: 0F).times(currencyValue.toFloatOrNull() ?: 0F))
+    }
+
+    fun calculateOtherCurrencyToZec(totalAmountInLocalCurrency: String, currencyValue: String): String {
+        return ((totalAmountInLocalCurrency.toFloatOrNull() ?: 0F).div(currencyValue.toFloatOrNull() ?: 0F)).toDouble().toZecString()
+    }
+
+    fun calculateLocalCurrencyToZatoshi(currencyRate: String, totalLocalAmount: String): Long? {
+        return WalletZecFormmatter.toZatoshi(((totalLocalAmount.toFloatOrNull() ?: 0F).div(currencyRate.toFloatOrNull() ?: 0F)).toDouble().toZecString())
     }
 
     /**
