@@ -14,6 +14,7 @@ import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.Synchronizer.Status.DOWNLOADING
 import cash.z.ecc.android.sdk.Synchronizer.Status.SCANNING
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZec
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
@@ -24,6 +25,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.gone
+import com.nighthawkapps.wallet.android.ext.pending
 import com.nighthawkapps.wallet.android.ext.invisible
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
@@ -154,7 +156,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.walletRecentActivityView.sentView.groupAmount.isVisible = show
         binding.walletRecentActivityView.receivedView.groupAmountPrivate.isVisible = show.not()
         binding.walletRecentActivityView.sentView.groupAmountPrivate.isVisible = show.not()
-        if (show.not()) {
+        if (show.not() && viewModel.getSelectedCurrencyName().isNotBlank()) {
             val text = "--- ${viewModel.getSelectedCurrencyName()}"
             binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = text
             binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = text
@@ -443,8 +445,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun checkForAnyExpectingAmount(uiModel: HomeViewModel.UiModel) {
         val availableBalance = uiModel.saplingBalance.availableZatoshi
         val totalBalance = uiModel.saplingBalance.totalZatoshi
-        if (availableBalance != -1L && availableBalance < totalBalance) {
+        val expectingAmount = uiModel.saplingBalance.pending
+        if (availableBalance != -1L && availableBalance < totalBalance && expectingAmount > 0L) {
             mainActivity?.updateTransferTab(false)
+            if (expectingAmount != viewModel.expectingAmount) { // This will stop to show snack bar again and again for same transaction
+                mainActivity?.showSnackbar(getString(R.string.ns_expecting_balance_snack_bar_msg, expectingAmount.convertZatoshiToZec()))
+                viewModel.expectingAmount = expectingAmount
+            }
         }
     }
 

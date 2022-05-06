@@ -64,6 +64,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     lateinit var _typedChars: ConflatedBroadcastChannel<Char>
 
     var initialized = false
+    var expectingAmount = 0L
 
     val balance get() = synchronizer.saplingBalances
     private var _coinMetricsMarketData = MutableStateFlow<ZcashPriceApiResponse?>(null)
@@ -75,6 +76,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun getZecMarketPrice(market: String) {
         CoroutineScope(Dispatchers.IO).launch {
+            if (market.isBlank()) {
+                _coinMetricsMarketData.value = null
+                twig("response: no option selected for fiat ${zcashPriceApiData.value}")
+                resetSavedCurrencyData()
+                return@launch
+            }
             if (zcashPriceApiData.value != null && market == zcashPriceApiData.value?.data?.keys?.firstOrNull()) {
                 twig("response: coin metric data already available $zcashPriceApiData")
                 return@launch
@@ -102,6 +109,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun getFiatCurrencyMarket(): String {
         return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").serverUrl
+    }
+
+    private fun resetSavedCurrencyData() {
+        lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] = "0"
+        lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] = ""
     }
 
     private fun extractCoinMarketData(resource: Resource<ZcashPriceApiResponse>): ZcashPriceApiResponse? {

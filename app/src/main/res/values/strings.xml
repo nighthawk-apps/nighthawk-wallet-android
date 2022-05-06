@@ -49,6 +49,7 @@
     <string name="ns_transparent_balance">Transparent balance</string>
     <string name="ns_shield_now">Shield Now</string>
     <string name="ns_zec_empty">--- ZEC</string>
+    <string name="ns_expecting_balance_snack_bar_msg">Expecting %s ZEC</string>
 
     <string name="ns_recent_activity">Recent activity</string>
     <string name="ns_received">Received</string>
@@ -99,6 +100,9 @@
     <string name="ns_receive_money_publicly_text">This will copy your t-address.</string>
     <string name="ns_private_address">Private Address</string>
     <string name="ns_non_private_address">Non-Private Address</string>
+    <string name="ns_top_up_your_wallet">Top up your wallet</string>
+    <string name="ns_top_up_your_wallet_msg">Buy or trade ZCash through our specially selected partners.</string>
+    <string name="ns_see_more">See More</string>
 
     <!-- Settings Screen -->
     <string name="ns_settings">Settings</string>

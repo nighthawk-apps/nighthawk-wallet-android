@@ -42,14 +42,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 mainActivity?.safeNavigate(R.id.action_nav_settings_to_nav_sync)
             }
 
-            viewBackUpWallet.updateTransferItemsData(
-                R.drawable.ic_icon_backup,
-                getString(R.string.ns_backup_wallet),
-                getString(R.string.ns_backup_wallet_text)
-            ) {
-                onBackUpSeedClicked()
-            }
-
             viewFiatCurrency.updateTransferItemsData(
                 R.drawable.ic_icon_fiat_currency,
                 getString(R.string.ns_fiat_currency),
@@ -59,15 +51,23 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             }
 
             viewSecurity.updateTransferItemsData(
-                R.drawable.ic_icon_fiat_currency,
+                R.drawable.ic_icon_security,
                 getString(R.string.ns_security),
                 getString(R.string.ns_security_text)
             ) {
                 mainActivity?.safeNavigate(R.id.action_nav_settings_to_nav_security)
             }
 
+            viewBackUpWallet.updateTransferItemsData(
+                R.drawable.ic_icon_backup,
+                getString(R.string.ns_backup_wallet),
+                getString(R.string.ns_backup_wallet_text)
+            ) {
+                onBackUpSeedClicked()
+            }
+
             viewRescan.updateTransferItemsData(
-                R.drawable.ic_icon_fiat_currency,
+                R.drawable.ic_icon_rescan_wallet,
                 getString(R.string.ns_rescan_wallet),
                 getString(R.string.ns_rescan_wallet_text)
             ) {
@@ -75,7 +75,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             }
 
             viewUpdateServer.updateTransferItemsData(
-                R.drawable.ic_icon_fiat_currency,
+                R.drawable.ic_icon_change_server,
                 getString(R.string.ns_change_server),
                 getString(R.string.ns_change_server_text)
             ) {
@@ -83,7 +83,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             }
 
             viewAbout.updateTransferItemsData(
-                R.drawable.ic_icon_fiat_currency,
+                R.drawable.ic_icon_about,
                 getString(R.string.ns_about),
                 getString(R.string.ns_about_text, BuildConfig.VERSION_NAME)
             ) {

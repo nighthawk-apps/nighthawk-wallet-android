@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_main"
@@ -35,7 +34,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/icon_app_logo" />
-
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLineStart"
@@ -75,16 +73,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <include
-            android:id="@+id/viewBackUpWallet"
-            layout="@layout/item_transfer_screen"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
-            app:layout_constraintTop_toBottomOf="@id/viewSyncNotification" />
-
-        <include
             android:id="@+id/viewFiatCurrency"
             layout="@layout/item_transfer_screen"
             android:layout_width="0dp"
@@ -92,7 +80,7 @@
             android:layout_marginTop="15dp"
             app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
             app:layout_constraintStart_toEndOf="@id/guideLineStart"
-            app:layout_constraintTop_toBottomOf="@id/viewBackUpWallet" />
+            app:layout_constraintTop_toBottomOf="@id/viewSyncNotification" />
 
         <include
             android:id="@+id/viewSecurity"
@@ -105,7 +93,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewFiatCurrency" />
 
         <include
-            android:id="@+id/viewRescan"
+            android:id="@+id/viewBackUpWallet"
             layout="@layout/item_transfer_screen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -113,6 +101,16 @@
             app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
             app:layout_constraintStart_toEndOf="@id/guideLineStart"
             app:layout_constraintTop_toBottomOf="@id/viewSecurity" />
+
+        <include
+            android:id="@+id/viewRescan"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewBackUpWallet" />
 
         <include
             android:id="@+id/viewUpdateServer"
@@ -135,4 +133,5 @@
             app:layout_constraintTop_toBottomOf="@id/viewUpdateServer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.core.widget.NestedScrollView>

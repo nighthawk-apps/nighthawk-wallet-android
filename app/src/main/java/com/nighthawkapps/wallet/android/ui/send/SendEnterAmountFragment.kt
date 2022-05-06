@@ -1,9 +1,11 @@
 package com.nighthawkapps.wallet.android.ui.send
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -94,6 +96,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             binding.btnNotEnoughZCash.setOnClickListener {
                 mainActivity?.safeNavigate(R.id.action_nav_enter_amount_to_transfer)
             }
+            binding.tvZec.setOnClickListener { onFlipCurrencyClicked() }
         }
     }
 
@@ -102,7 +105,11 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             sendViewModel.toAddress = data.address
             sendViewModel.memo = data.memo ?: ""
             sendViewModel.zatoshiAmount = data.amount
-            val newValue = sendViewModel.zatoshiAmount.convertZatoshiToZecString()
+            val newValue = if (sendViewModel.isZecAmountState) {
+                sendViewModel.zatoshiAmount.convertZatoshiToZecString()
+            } else {
+                Utils.calculateZecToOtherCurrencyValue(sendViewModel.zatoshiAmount.convertZatoshiToZecString(), sendViewModel.getZecMarketPrice() ?: "0")
+            }
             binding.tvBalance.text = newValue
             onAmountValueUpdated(newValue)
             if (sendViewModel.isAmountValid(sendViewModel.zatoshiAmount, maxZatoshi)) {
@@ -114,10 +121,16 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
     private fun onAmountValueUpdated(newValue: String) {
         binding.tvBalance.let {
             it.text = newValue
-            it.convertZecToZatoshi()?.let { zatoshi ->
-                sendViewModel.zatoshiAmount = zatoshi
-                calculateZecConvertedAmount(zatoshi)
+            if (sendViewModel.isZecAmountState) {
+                it.convertZecToZatoshi()?.let { zatoshi ->
+                    sendViewModel.zatoshiAmount = zatoshi
+                }
+            } else {
+                sendViewModel.getZecMarketPrice()?.let { marketPrice ->
+                    sendViewModel.zatoshiAmount = Utils.calculateLocalCurrencyToZatoshi(marketPrice, newValue) ?: -1
+                }
             }
+            calculateZecConvertedAmount(sendViewModel.zatoshiAmount)
         }
         updateButtonsUI(newValue)
     }
@@ -125,7 +138,49 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
     private fun calculateZecConvertedAmount(zatoshi: Long) {
         sendViewModel.getZecMarketPrice()?.let {
             val selectedCurrencyName = sendViewModel.getSelectedFiatCurrency().currencyName
-            binding.tvConvertedAmount.text = getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedCurrencyName))
+            var drawableEnd: Drawable? = null
+            if (selectedCurrencyName.isNotBlank()) {
+                drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.ic_icon_up_down)
+                if (sendViewModel.isZecAmountState) {
+                    binding.tvConvertedAmount.text = getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedCurrencyName))
+                    binding.tvZec.text = getString(R.string.ns_zec)
+                } else {
+                    binding.tvConvertedAmount.text = getString(R.string.ns_around, "${Utils.calculateOtherCurrencyToZec(binding.tvBalance.text.toString(), it)} ZEC")
+                    binding.tvZec.text = selectedCurrencyName
+                }
+            } else {
+                binding.tvZec.text = getString(R.string.ns_zec)
+            }
+            binding.tvZec.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawableEnd, null)
+            binding.tvConvertedAmount.isVisible = selectedCurrencyName.isNotBlank()
+        }
+    }
+
+    private fun onFlipCurrencyClicked() {
+        sendViewModel.getZecMarketPrice()?.let {
+            val enteredZec = WalletZecFormmatter.toZecStringShort(sendViewModel.zatoshiAmount)
+            val convertedValue = if (sendViewModel.isZecAmountState) {
+                Utils.calculateZecToOtherCurrencyValue(enteredZec, it)
+            } else {
+                Utils.calculateOtherCurrencyToZec(binding.tvBalance.text.toString(), it)
+            }
+            sendViewModel.isZecAmountState = sendViewModel.isZecAmountState.not()
+            if (convertedValue == "0" && binding.tvBalance.text == "0.") { // This handle a corner case. If user type 0.[dot] and then try to switch the currency and add again .[dot]
+                onNewValueEntered("0") // change the pre-entered value of viewModel.enteredValue from 0.[dot] to 0
+            } else {
+                onAmountValueUpdated(convertedValue)
+            }
+        }
+    }
+
+    private fun getEnteredAmountInZatoshi(): Long {
+        val enteredAmount = binding.tvBalance
+        return if (sendViewModel.isZecAmountState) {
+            enteredAmount.convertZecToZatoshi() ?: -1
+        } else {
+            sendViewModel.getZecMarketPrice()?.let {
+                Utils.calculateLocalCurrencyToZatoshi(it, enteredAmount.text.toString())
+            } ?: -1
         }
     }
 
@@ -133,7 +188,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
         val amountString = value.toFloatOrNull()?.toString() ?: PREFILLED_VALUE
         if (amountString == PREFILLED_VALUE || value.toFloatOrNull() ?: -1f == 0f) {
             updateVisibilityOfButtons(scanPaymentCode = true, continueButton = false, topUpWallet = false, notEnoughZcash = false)
-        } else if (binding.tvBalance.convertZecToZatoshi() ?: -1 > maxZatoshi) {
+        } else if (getEnteredAmountInZatoshi() > maxZatoshi) {
             updateVisibilityOfButtons(scanPaymentCode = false, continueButton = false, topUpWallet = true, notEnoughZcash = true)
         } else {
             updateVisibilityOfButtons(scanPaymentCode = false, continueButton = true, topUpWallet = false, notEnoughZcash = false)

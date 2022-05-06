@@ -86,7 +86,9 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
     private fun calculateZecConvertedAmount(zatoshi: Long): String? {
         return sendViewModel.getZecMarketPrice()?.let {
             val selectedCurrencyName = sendViewModel.getSelectedFiatCurrency().currencyName
-            getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedCurrencyName))
+            if (selectedCurrencyName.isNotBlank()) {
+                getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedCurrencyName))
+            } else ""
         }
     }
 
