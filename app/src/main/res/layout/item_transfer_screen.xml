@@ -9,7 +9,7 @@
         android:id="@+id/ivLeftIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/ns_white" />
