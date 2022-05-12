@@ -46,6 +46,7 @@ object WorkManagerUtils {
         dueDate.set(Calendar.HOUR_OF_DAY, 7)
         dueDate.set(Calendar.MINUTE, 0)
         dueDate.set(Calendar.SECOND, 0)
+        dueDate.add(Calendar.DAY_OF_YEAR, frequencyInDays.toInt())
         if (dueDate.before(currentDate)) {
             dueDate.add(Calendar.HOUR_OF_DAY, 24)
         }

@@ -143,12 +143,12 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun onMissingBirthday(network: ZcashNetwork): Int = failWith(InitializerException.MissingBirthdayException) {
+    private suspend fun onMissingBirthday(network: ZcashNetwork): Int = failWith(InitializerException.MissingBirthdayException) {
         twig("Warning: Birthday was missing. We will fall back to sapling activation. This may be worth messaging to the user.")
         loadNearestBirthday(network, network.saplingActivationHeight).height
     }
 
-    private fun loadNearestBirthday(network: ZcashNetwork, birthdayHeight: Int? = null) =
+    private suspend fun loadNearestBirthday(network: ZcashNetwork, birthdayHeight: Int? = null) =
         WalletBirthdayTool.loadNearest(NighthawkWalletApp.instance, network, birthdayHeight)
 
     private suspend fun onMissingViewingKey(network: ZcashNetwork): UnifiedViewingKey {
