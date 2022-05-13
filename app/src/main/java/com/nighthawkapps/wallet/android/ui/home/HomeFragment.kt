@@ -12,7 +12,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
-import cash.z.ecc.android.sdk.ext.convertZatoshiToZec
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
@@ -319,7 +318,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onSyncing(uiModel: HomeViewModel.UiModel) {
-        mainActivity?.updateTransferTab(false)
         var iconResourceId = R.drawable.ic_icon_connecting
         var message = getString(R.string.ns_connecting)
         when (uiModel.status) {
@@ -440,13 +438,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun checkForAnyExpectingAmount(uiModel: HomeViewModel.UiModel) {
+        if (uiModel.unminedCount > 0) {
+            twig("${uiModel.unminedCount} unconfirmed ${if (uiModel.unminedCount > 1) "transactions" else "transaction"}")
+            return
+        }
         val availableBalance = uiModel.saplingBalance.availableZatoshi
         val totalBalance = uiModel.saplingBalance.totalZatoshi
         val expectingAmount = uiModel.saplingBalance.pending
         if (availableBalance != -1L && availableBalance < totalBalance && expectingAmount > 0L) {
             mainActivity?.updateTransferTab(false)
             if (expectingAmount != viewModel.expectingAmount) { // This will stop to show snack bar again and again for same transaction
-                mainActivity?.showSnackbar(getString(R.string.ns_expecting_balance_snack_bar_msg, expectingAmount.convertZatoshiToZec()))
+                mainActivity?.showSnackbar(getString(R.string.ns_expecting_balance_snack_bar_msg, expectingAmount.convertZatoshiToZecString()))
                 viewModel.expectingAmount = expectingAmount
             }
         }

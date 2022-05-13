@@ -75,7 +75,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
     }
 
     fun isAmountValid(enteredZatoshi: Long, maxAvailableZatoshi: Long): Boolean {
-        return enteredZatoshi in 0..maxAvailableZatoshi
+        return enteredZatoshi in 1..maxAvailableZatoshi
     }
 
     fun getZecMarketPrice(): String? {
