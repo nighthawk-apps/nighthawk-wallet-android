@@ -23,7 +23,6 @@ import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
@@ -142,16 +141,36 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             if (selectedCurrencyName.isNotBlank()) {
                 drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.ic_icon_up_down)
                 if (sendViewModel.isZecAmountState) {
-                    binding.tvConvertedAmount.text = getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedCurrencyName))
+                    binding.tvConvertedAmount.text = getString(
+                        R.string.ns_around,
+                        Utils.getZecConvertedAmountText(
+                            WalletZecFormmatter.toZecStringShort(zatoshi),
+                            it,
+                            selectedCurrencyName
+                        )
+                    )
                     binding.tvZec.text = getString(R.string.ns_zec)
                 } else {
-                    binding.tvConvertedAmount.text = getString(R.string.ns_around, "${Utils.calculateOtherCurrencyToZec(binding.tvBalance.text.toString(), it)} ZEC")
+                    binding.tvConvertedAmount.text = getString(
+                        R.string.ns_around,
+                        "${
+                            Utils.calculateOtherCurrencyToZec(
+                                binding.tvBalance.text.toString(),
+                                it
+                            )
+                        } ZEC"
+                    )
                     binding.tvZec.text = selectedCurrencyName
                 }
             } else {
                 binding.tvZec.text = getString(R.string.ns_zec)
             }
-            binding.tvZec.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawableEnd, null)
+            binding.tvZec.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                null,
+                null,
+                drawableEnd,
+                null
+            )
             binding.tvConvertedAmount.isVisible = selectedCurrencyName.isNotBlank()
         }
     }
@@ -186,16 +205,36 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
 
     private fun updateButtonsUI(value: String) {
         val amountString = value.toFloatOrNull()?.toString() ?: PREFILLED_VALUE
-        if (amountString == PREFILLED_VALUE || value.toFloatOrNull() ?: -1f == 0f) {
-            updateVisibilityOfButtons(scanPaymentCode = true, continueButton = false, topUpWallet = false, notEnoughZcash = false)
+        if (amountString == PREFILLED_VALUE || (value.toFloatOrNull() ?: -1f) == 0f) {
+            updateVisibilityOfButtons(
+                scanPaymentCode = true,
+                continueButton = false,
+                topUpWallet = false,
+                notEnoughZcash = false
+            )
         } else if (getEnteredAmountInZatoshi() > maxZatoshi) {
-            updateVisibilityOfButtons(scanPaymentCode = false, continueButton = false, topUpWallet = true, notEnoughZcash = true)
+            updateVisibilityOfButtons(
+                scanPaymentCode = false,
+                continueButton = false,
+                topUpWallet = true,
+                notEnoughZcash = true
+            )
         } else {
-            updateVisibilityOfButtons(scanPaymentCode = false, continueButton = true, topUpWallet = false, notEnoughZcash = false)
+            updateVisibilityOfButtons(
+                scanPaymentCode = false,
+                continueButton = true,
+                topUpWallet = false,
+                notEnoughZcash = false
+            )
         }
     }
 
-    private fun updateVisibilityOfButtons(scanPaymentCode: Boolean, continueButton: Boolean, topUpWallet: Boolean, notEnoughZcash: Boolean) {
+    private fun updateVisibilityOfButtons(
+        scanPaymentCode: Boolean,
+        continueButton: Boolean,
+        topUpWallet: Boolean,
+        notEnoughZcash: Boolean
+    ) {
         with(binding) {
             tvScanPaymentCode.isVisible = scanPaymentCode
             btnContinue.isVisible = continueButton
@@ -207,6 +246,14 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
     private fun onBalanceUpdated(balance: WalletBalance) {
         maxZatoshi = (balance.availableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI).coerceAtLeast(0L)
         availableZatoshi = balance.availableZatoshi
+        val spendableBalance = WalletZecFormmatter.toZecStringFull(maxZatoshi)
+        binding.tvSpendableBalance.text = getString(
+            R.string.ns_spendable_balance,
+            spendableBalance)
+        binding.tvSpendableBalance.setOnClickListener {
+            binding.tvBalance.text = spendableBalance
+            onAmountValueUpdated(spendableBalance)
+        }
     }
 
     private fun TextView.asKey(): TextView {

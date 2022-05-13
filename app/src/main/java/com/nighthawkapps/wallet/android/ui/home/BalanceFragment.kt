@@ -16,7 +16,6 @@ import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.Utils
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
