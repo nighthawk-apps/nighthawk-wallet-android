@@ -270,8 +270,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onModelUpdated(old: HomeViewModel.UiModel?, new: HomeViewModel.UiModel) {
         logUpdate(old, new)
-        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
-        binding.iconScan.visibility = View.VISIBLE
         uiModel = new
         setProgress(uiModel)
         if (new.status == Synchronizer.Status.SYNCED) onSynced(new) else onSyncing(new)
@@ -376,6 +374,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         mainActivity?.updateTransferTab(enable = true)
+        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
+        binding.iconScan.visibility = View.VISIBLE
         binding.viewInit.root.gone()
         binding.viewPager.visible()
         autoShield(uiModel)
