@@ -6,6 +6,7 @@ import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.Synchronizer
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -35,7 +36,7 @@ class ProfileViewModel @Inject constructor() : ViewModel() {
     fun wipe() {
         synchronizer.stop()
         Toast.makeText(NighthawkWalletApp.instance, "SUCCESS! Wallet data cleared. Please relaunch to rescan!", Toast.LENGTH_LONG).show()
-        Initializer.erase(NighthawkWalletApp.instance, NighthawkWalletApp.instance.defaultNetwork)
+        runBlocking { Initializer.erase(NighthawkWalletApp.instance, NighthawkWalletApp.instance.defaultNetwork) }
     }
 
     suspend fun fullRescan() {

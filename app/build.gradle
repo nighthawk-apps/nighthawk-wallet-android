@@ -10,7 +10,7 @@ group = 'com.nighthawkapps.wallet.android'
 version = Deps.versionName
 android {
     compileSdkVersion Deps.compileSdkVersion
-    buildToolsVersion Deps.buildToolsVersion
+
     defaultConfig {
         applicationId Deps.packageName
         minSdkVersion Deps.minSdkVersion
@@ -160,6 +160,7 @@ dependencies {
     // Misc.
     implementation Deps.Misc.PDF_BOX
     implementation Deps.Misc.LOTTIE
+    implementation Deps.Misc.OKHTTP
     implementation Deps.Misc.Plugins.QR_SCANNER
 
     // Tests

@@ -14,10 +14,6 @@ import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.util.price.PriceModel
-import com.squareup.okhttp.HttpUrl
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
-import com.squareup.okhttp.ResponseBody
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -30,6 +26,10 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.ResponseBody
 import java.io.IOException
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -55,14 +55,14 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             supervisorScope {
                 if (priceModel == null) {
                     val client = OkHttpClient()
-                    val urlBuilder = HttpUrl.parse("https://api.lightwalletd.com/price.json").newBuilder()
-                    val url = urlBuilder.build().toString()
+                    val urlBuilder = "https://api.lightwalletd.com/price.json".toHttpUrlOrNull()?.newBuilder()
+                    val url = urlBuilder?.build().toString()
                     val request: Request = Request.Builder().url(url).build()
                     val gson = Gson()
                     var responseBody: ResponseBody? = null
 
                     try {
-                        responseBody = client.newCall(request).execute().body()
+                        responseBody = client.newCall(request).execute().body
                     } catch (e: IOException) {
                         twig("initPrice + ${e.message}" + "$responseBody")
                     } catch (e: IllegalStateException) {

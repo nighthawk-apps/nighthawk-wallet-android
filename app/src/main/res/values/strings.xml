@@ -367,7 +367,7 @@
     <string name="your_transparent_address">Your Transparent Address</string>
     <string name="transaction_history_format_date_time_brief" tools:ignore="MissingTranslation">MM/dd/yy h:mma</string>
     <string name="got_it">Got it</string>
-    <string name="auto_shielding_message">You\'ve received more than\n1 ZEC in transparent funds.\n\nInitiating Auto-Shield!</string>
+    <string name="auto_shielding_message">You\'ve received more than\n0.01 ZEC in transparent funds.\n\nInitiating Auto-Shield!</string>
     <string name="shielding">Shielding!</string>
     <string name="exclamation">!</string>
     <string name="share_address">Share Address</string>

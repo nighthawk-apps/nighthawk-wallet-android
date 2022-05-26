@@ -71,7 +71,7 @@ fun Context.showScanFailure(error: Throwable?, onRetry: () -> Unit = {}, onDismi
         .setCancelable(true)
         .setPositiveButton(R.string.dialog_error_scan_failure_button_positive) { d, _ ->
             d.dismiss()
-            onRetry()
+            onDismiss()
         }
         .setNegativeButton(R.string.dialog_error_scan_failure_button_negative) { d, _ ->
             d.dismiss()

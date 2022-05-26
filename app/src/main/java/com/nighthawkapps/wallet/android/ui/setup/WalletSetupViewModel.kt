@@ -21,6 +21,7 @@ import com.nighthawkapps.wallet.kotlin.mnemonic.Mnemonics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
@@ -156,7 +157,7 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun loadNearestBirthday(network: ZcashNetwork, birthdayHeight: Int? = null) =
-        WalletBirthdayTool.loadNearest(NighthawkWalletApp.instance, network, birthdayHeight)
+        runBlocking { WalletBirthdayTool.loadNearest(NighthawkWalletApp.instance, network, birthdayHeight) }
 
     private suspend fun onMissingViewingKey(network: ZcashNetwork): UnifiedViewingKey {
         twig("Viewing key was missing attempting migration")

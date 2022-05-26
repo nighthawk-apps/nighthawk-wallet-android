@@ -73,7 +73,7 @@ fun View.onClickNavBack(block: (() -> Any) = {}) {
 
 fun View.clicks() = channelFlow<View> {
     setOnClickListener {
-        offer(this@clicks)
+        trySend(this@clicks)
     }
     awaitClose {
         setOnClickListener(null)

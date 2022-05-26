@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SendViewModel @Inject constructor() : ViewModel() {
@@ -45,10 +46,10 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
     fun send(): Flow<PendingTransaction> {
         val memoToSend = createMemoToSend()
-        val keys = DerivationTool.deriveSpendingKeys(
+        val keys = runBlocking { DerivationTool.deriveSpendingKeys(
             lockBox.getBytes(Const.Backup.SEED)!!,
             synchronizer.network
-        )
+        ) }
         return synchronizer.sendToAddress(
             keys[0],
             zatoshiAmount,
