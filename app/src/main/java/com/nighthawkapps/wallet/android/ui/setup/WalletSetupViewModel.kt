@@ -151,7 +151,7 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun onMissingBirthday(network: ZcashNetwork): Int = failWith(InitializerException.MissingBirthdayException) {
+    private suspend fun onMissingBirthday(network: ZcashNetwork): Int = failWith(InitializerException.MissingBirthdayException) {
         twig("Warning: Birthday was missing. We will fall back to sapling activation. This may be worth messaging to the user.")
         loadNearestBirthday(network, network.saplingActivationHeight).height
     }

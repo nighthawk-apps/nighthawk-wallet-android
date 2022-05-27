@@ -13,10 +13,10 @@ object Deps {
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
-        const val ANNOTATION = "androidx.annotation:annotation:1.4.0-beta01"
+        const val ANNOTATION = "androidx.annotation:annotation:1.3.0"
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.1"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha04"
-        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
+        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.3"
         const val CORE_KTX = "androidx.core:core-ktx:1.9.0-alpha02"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.4.1"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
@@ -53,7 +53,7 @@ object Deps {
         }
     }
 
-    object Dagger : Version("2.42") {
+    object Dagger : Version("2.41") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -98,7 +98,7 @@ object Deps {
 
     object Misc {
         const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.21.0"
-        const val LOTTIE = "com.airbnb.android:lottie:5.1.1"
+        const val LOTTIE = "com.airbnb.android:lottie:5.0.3"
         const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
         const val OKHTTP = "com.squareup.okhttp3:okhttp:4.9.3"
 
