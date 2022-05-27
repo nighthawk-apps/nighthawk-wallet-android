@@ -11,5 +11,4 @@ class InitializerModule {
 
     @Provides
     @Reusable
-    fun provideInitializer(appContext: Context, config: Initializer.Config) = Initializer(appContext, config)
-}
+    fun provideInitializer(appContext: Context, config: Initializer.Config) = Initializer.newBlocking(appContext, config) }

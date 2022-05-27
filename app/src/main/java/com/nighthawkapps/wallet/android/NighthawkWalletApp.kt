@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
 import com.nighthawkapps.wallet.android.ext.Twig
-import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.type.ZcashNetwork
 import com.nighthawkapps.wallet.android.di.component.AppComponent
 import com.nighthawkapps.wallet.android.di.component.DaggerAppComponent
@@ -19,7 +18,7 @@ class NighthawkWalletApp : Application(), CameraXConfig.Provider {
     lateinit var defaultNetwork: ZcashNetwork
 
     /** The amount of transparent funds that need to accumulate before autoshielding is triggered */
-    val autoshieldThreshold: Long = ZcashSdk.ZATOSHI_PER_ZEC // 1 ZEC
+    val autoshieldThreshold: Long = 1_000_000L // 0.01 ZEC
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)

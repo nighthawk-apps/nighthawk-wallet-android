@@ -18,6 +18,6 @@ class SynchronizerModule {
     @Provides
     @SynchronizerScope
     fun provideSynchronizer(initializer: Initializer): Synchronizer {
-        return synchronizer ?: Synchronizer(initializer).also { synchronizer = it }
+        return synchronizer ?: Synchronizer.newBlocking(initializer).also { synchronizer = it }
     }
 }

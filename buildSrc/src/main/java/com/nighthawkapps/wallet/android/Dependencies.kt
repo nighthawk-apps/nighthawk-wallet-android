@@ -6,11 +6,10 @@ object Deps {
     const val kotlinVersion = "1.6.21"
     const val navigationVersion = "2.4.2"
     const val compileSdkVersion = 32
-    const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
     const val targetSdkVersion = 32
-    const val versionName = "1.0.36"
-    const val versionCode = 1_00_36_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "1.0.37"
+    const val versionCode = 1_00_37_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -28,12 +27,12 @@ object Deps {
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
 
-        object CameraX : Version("1.1.0-beta03") {
+        object CameraX : Version("1.2.0-alpha01") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
             val CORE = "androidx.camera:camera-core:$version"
             val LIFECYCLE = "androidx.camera:camera-lifecycle:$version"
 
-            object View : Version("1.1.0-beta03") {
+            object View : Version("1.2.0-alpha01") {
                 val EXT = "androidx.camera:camera-extensions:$version"
                 val VIEW = "androidx.camera:camera-view:$version"
             }
@@ -94,17 +93,18 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.1"
-        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.3.0-beta20"
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.5.0-beta01"
     }
 
     object Misc {
-        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.19.0"
+        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.21.0"
         const val LOTTIE = "com.airbnb.android:lottie:5.0.3"
         const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
+        const val OKHTTP = "com.squareup.okhttp3:okhttp:4.9.3"
 
         object Plugins {
             const val SECURE_STORAGE = "com.github.gmale:secure-storage-android:0.0.3"
-            const val QR_SCANNER = "com.google.zxing:core:3.4.1"
+            const val QR_SCANNER = "com.google.zxing:core:3.5.0"
         }
     }
 

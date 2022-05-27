@@ -1,0 +1,3 @@
+- Add NU5 support!
+- Update checkpoints & dependencies.
+- Reduce Auto-shielding trigger from 1 ZEC to 0.01 ZEC
