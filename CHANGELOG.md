@@ -1,8 +1,9 @@
 Change Log
 ==========
 
-Version 1.0.37 *(2022-05-26)*
+Version 1.0.37 *(2022-05-27)*
 ------------------------------------
+- NU5 support!
 - Update checkpoints & dependencies.
 - Reduce Auto-shielding trigger to 0.01 ZEC
 
