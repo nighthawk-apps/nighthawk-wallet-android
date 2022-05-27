@@ -32,7 +32,6 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
     private val viewModel: ScanViewModel by viewModel()
 
     private val sendViewModel: SendViewModel by activityViewModel()
-    private val mainViewModel: MainViewModel by activityViewModel()
 
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
 
