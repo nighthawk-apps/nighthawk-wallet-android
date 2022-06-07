@@ -14,9 +14,13 @@ import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.pending
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +33,8 @@ class AutoShieldViewModel @Inject constructor() : ViewModel() {
     lateinit var lockBox: LockBox
 
     var latestBalance: BalanceModel? = null
+    private val _pendingTransaction = MutableStateFlow<PendingTransaction?>(null)
+    val pendingTransaction: Flow<PendingTransaction?> = _pendingTransaction
 
     val balances get() = combineTransform(
         synchronizer.orchardBalances,
@@ -71,15 +77,23 @@ class AutoShieldViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun shieldFunds(): Flow<PendingTransaction> {
-        return lockBox.getBytes(Const.Backup.SEED)?.let {
-            val sk = DerivationTool.deriveSpendingKeys(it, synchronizer.network)[0]
-            val tsk = DerivationTool.deriveTransparentSecretKey(it, synchronizer.network)
-            val addr = DerivationTool.deriveTransparentAddressFromPrivateKey(tsk, synchronizer.network)
-            synchronizer.shieldFunds(sk, tsk, "${ZcashSdk.DEFAULT_SHIELD_FUNDS_MEMO_PREFIX}\nAll UTXOs from $addr").onEach { tx ->
-                twig("Received shielding txUpdate: ${tx?.toString()}")
-            }
-        } ?: throw IllegalStateException("Seed was expected but it was not found!")
+    fun shieldFunds() {
+        viewModelScope.launch(Dispatchers.IO) {
+            lockBox.getBytes(Const.Backup.SEED)?.let {
+                val sk = DerivationTool.deriveSpendingKeys(it, synchronizer.network)[0]
+                val tsk = DerivationTool.deriveTransparentSecretKey(it, synchronizer.network)
+                val addr = DerivationTool.deriveTransparentAddressFromPrivateKey(tsk, synchronizer.network)
+                synchronizer.shieldFunds(sk, tsk, "${ZcashSdk.DEFAULT_SHIELD_FUNDS_MEMO_PREFIX}\nAll UTXOs from $addr")
+                    .onEach { tx ->
+                        _pendingTransaction.value = tx
+                        twig("Received shielding txUpdate: $tx")
+                    }
+                    .catch { throwable ->
+                        twig("Error in shielding $throwable")
+                    }
+                    .collect()
+            } ?: throw IllegalStateException("Seed was expected but it was not found!")
+        }
     }
 
     data class BalanceModel(

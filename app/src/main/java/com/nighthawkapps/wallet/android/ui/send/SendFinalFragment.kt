@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isCreating
 import cash.z.ecc.android.sdk.db.entity.isFailedEncoding
@@ -20,8 +19,6 @@ import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
 
@@ -47,9 +44,10 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity?.apply {
-            sendViewModel.send().onEach {
+            // TODO: this fragment is going to be delete while clearing redundant classes, so not making any change here
+            /*sendViewModel.send().onEach {
                 onPendingTxUpdated(it)
-            }.launchIn((sendViewModel.synchronizer as SdkSynchronizer).coroutineScope)
+            }.launchIn((sendViewModel.synchronizer as SdkSynchronizer).coroutineScope)*/
         }
     }
 

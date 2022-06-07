@@ -10,7 +10,7 @@
         android:id="@+id/card_background"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:cardBackgroundColor="#292929"
+        app:cardBackgroundColor="@color/ns_navy"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
         app:layout_constraintHeight_percent="0.15625"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/card_background"
-        app:tint="#F5BA41" />
+        app:tint="@color/ns_peach_80" />
 
     <TextView
         android:id="@+id/text_exclamation"
@@ -56,6 +56,7 @@
         android:elevation="8dp"
         android:text="@string/shielding"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/ns_white"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="@id/card_background"
         app:layout_constraintEnd_toEndOf="@id/card_background"
@@ -70,6 +71,7 @@
         android:elevation="8dp"
         android:gravity="center"
         android:text="@string/auto_shielding_message"
+        android:textColor="@color/ns_white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@id/card_background"
         app:layout_constraintEnd_toEndOf="@id/card_background"
@@ -85,13 +87,13 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/zcashWhite"
+        android:backgroundTint="@color/ns_white"
         android:elevation="8dp"
         android:gravity="center"
         android:padding="16dp"
         android:text="@string/got_it"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="#000000"
+        android:textColor="@color/ns_dark_navy"
         app:layout_constraintBottom_toBottomOf="@id/card_background"
         app:layout_constraintEnd_toEndOf="@id/card_background"
         app:layout_constraintStart_toStartOf="@id/card_background" />

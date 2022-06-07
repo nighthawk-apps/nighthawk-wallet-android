@@ -14,7 +14,6 @@ import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -33,7 +32,7 @@ class FragmentTransactionDetails : BaseFragment<FragmentTransactionDetailsBindin
         viewLifecycleOwner.lifecycleScope.launch {
             if (navArgs.isFromSendFlow) {
                 launch {
-                    sendViewModel.transactionDetailsUIModel?.collect {
+                    sendViewModel.transactionDetailsUIModel.collect {
                         onUIModelUpdated(it)
                     }
                 }

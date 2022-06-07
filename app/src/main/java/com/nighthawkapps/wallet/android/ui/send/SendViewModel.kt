@@ -24,6 +24,9 @@ import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -47,8 +50,9 @@ class SendViewModel @Inject constructor() : ViewModel() {
     val enteredValue: StateFlow<String> get() = _enteredValue
     private val _sendZecDeepLinkData = MutableStateFlow<DeepLinkUtil.SendDeepLinkData?>(null)
     val sendZecDeepLinkData: StateFlow<DeepLinkUtil.SendDeepLinkData?> get() = _sendZecDeepLinkData
-    private var lastSendTransaction: Flow<PendingTransaction>? = null
-    val transactionDetailsUIModel = lastSendTransaction?.map { it.toTransactionUIModel() }
+    private val _pendingTransaction = MutableStateFlow<PendingTransaction?>(null)
+    val pendingTransaction: Flow<PendingTransaction?> = _pendingTransaction
+    val transactionDetailsUIModel = pendingTransaction.map { it.toTransactionUIModel() }
     private val latestHeight get() = synchronizer.latestHeight
     var isZecAmountState = true // To track user selected the zec balance mode or converted balance mode
 
@@ -71,7 +75,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
     }
 
     fun isAmountValid(enteredZatoshi: Long, maxAvailableZatoshi: Long): Boolean {
-        return maxAvailableZatoshi > ZcashSdk.MINERS_FEE_ZATOSHI && enteredZatoshi > 0 && enteredZatoshi < maxAvailableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI
+        return enteredZatoshi in 1..maxAvailableZatoshi
     }
 
     fun getZecMarketPrice(): String? {
@@ -86,22 +90,23 @@ class SendViewModel @Inject constructor() : ViewModel() {
         _sendZecDeepLinkData.value = data
     }
 
-    fun send(): Flow<PendingTransaction> {
-        val memoToSend = createMemoToSend()
-        val keys = DerivationTool.deriveSpendingKeys(
-            lockBox.getBytes(Const.Backup.SEED)!!,
-            synchronizer.network
-        )
-        lastSendTransaction =
-            synchronizer.sendToAddress(
-            keys[0],
-            zatoshiAmount,
-            toAddress,
-            memoToSend.chunked(ZcashSdk.MAX_MEMO_SIZE).firstOrNull() ?: ""
-        ).onEach {
-            twig("Received pending txUpdate: $it")
+    fun send() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val memoToSend = createMemoToSend()
+            val keys = DerivationTool.deriveSpendingKeys(
+                lockBox.getBytes(Const.Backup.SEED)!!,
+                synchronizer.network
+            )
+            synchronizer.sendToAddress(keys[0], zatoshiAmount, toAddress, memoToSend.chunked(ZcashSdk.MAX_MEMO_SIZE).firstOrNull() ?: "")
+                    .onEach { tx ->
+                        _pendingTransaction.value = tx
+                        twig("Received pending txUpdate: $tx")
+                    }
+                    .catch { throwable ->
+                        twig("Error in shielding $throwable")
+                    }
+                    .collect()
         }
-        return lastSendTransaction!!
     }
 
     fun cancel(pendingId: Long) {

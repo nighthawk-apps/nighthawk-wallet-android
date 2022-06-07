@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.RawRes
 import androidx.core.view.isInvisible
-import cash.z.ecc.android.sdk.SdkSynchronizer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isCancelled
 import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
@@ -19,8 +21,8 @@ import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
 
@@ -32,11 +34,7 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mainActivity?.apply {
-            sendViewModel.send().onEach {
-                onPendingTxUpdated(it)
-            }.launchIn((sendViewModel.synchronizer as SdkSynchronizer).coroutineScope)
-        }
+        sendViewModel.send()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,6 +46,13 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
             onReturnToSendReview()
         }
         mainActivity?.preventBackPress(this)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                sendViewModel.pendingTransaction.collectLatest {
+                    onPendingTxUpdated(it)
+                }
+            }
+        }
     }
 
     private fun onPendingTxUpdated(tx: PendingTransaction?) {

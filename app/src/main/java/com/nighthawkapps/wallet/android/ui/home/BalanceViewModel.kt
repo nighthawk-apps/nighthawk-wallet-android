@@ -29,17 +29,17 @@ class BalanceViewModel : ViewModel() {
                 )
             }
             BalanceFragment.Companion.SectionType.TOTAL_BALANCE -> {
-                balanceAmountZec = (homeUiModel.saplingBalance.availableZatoshi + homeUiModel.transparentBalance.availableZatoshi).convertZatoshiToZecString()
+                balanceAmountZec = (homeUiModel.saplingBalance.totalZatoshi + homeUiModel.transparentBalance.totalZatoshi).convertZatoshiToZecString()
                 BalanceUIModel(
                     icon = ContextCompat.getDrawable(NighthawkWalletApp.instance.applicationContext, R.drawable.ic_icon_total),
                     balanceAmount = balanceAmountZec,
-                    expectingBalance = getExpectingBalance(homeUiModel.saplingBalance.totalZatoshi, homeUiModel.saplingBalance.availableZatoshi),
+                    expectingBalance = getExpectingBalance(homeUiModel.saplingBalance.totalZatoshi, homeUiModel.saplingBalance.availableZatoshi, homeUiModel.unminedCount),
                     messageText = R.string.ns_total_balance.toAppString(),
                     showIndicator = true
                 )
             }
             BalanceFragment.Companion.SectionType.SHIELDED_BALANCE -> {
-                balanceAmountZec = homeUiModel.saplingBalance.availableZatoshi.convertZatoshiToZecString()
+                balanceAmountZec = homeUiModel.saplingBalance.totalZatoshi.convertZatoshiToZecString()
                 BalanceUIModel(
                     icon = ContextCompat.getDrawable(NighthawkWalletApp.instance.applicationContext, R.drawable.ic_icon_shielded),
                     balanceAmount = balanceAmountZec,
@@ -48,7 +48,7 @@ class BalanceViewModel : ViewModel() {
                 )
             }
             BalanceFragment.Companion.SectionType.TRANSPARENT_BALANCE -> {
-                balanceAmountZec = homeUiModel.transparentBalance.availableZatoshi.convertZatoshiToZecString()
+                balanceAmountZec = homeUiModel.transparentBalance.totalZatoshi.convertZatoshiToZecString()
                 BalanceUIModel(
                     icon = ContextCompat.getDrawable(NighthawkWalletApp.instance.applicationContext, R.drawable.ic_icon_transparent),
                     balanceAmount = balanceAmountZec,
@@ -59,8 +59,8 @@ class BalanceViewModel : ViewModel() {
         }
     }
 
-    private fun getExpectingBalance(total: Long, available: Long): String {
-        if (available != -1L && available < total && (total - available > 0)) {
+    private fun getExpectingBalance(total: Long, available: Long, unMinedCount: Int): String {
+        if (available != -1L && available < total && (total - available > 0) && unMinedCount < 1) {
             val change = WalletZecFormmatter.toZecStringFull(total - available)
             return "${R.string.home_banner_expecting.toAppString()} $change ZEC"
         }

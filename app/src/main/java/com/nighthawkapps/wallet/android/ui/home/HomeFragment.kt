@@ -11,10 +11,7 @@ import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
-import cash.z.ecc.android.sdk.Synchronizer.Status.DOWNLOADING
-import cash.z.ecc.android.sdk.Synchronizer.Status.SCANNING
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
-import cash.z.ecc.android.sdk.ext.convertZatoshiToZec
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
@@ -41,7 +38,6 @@ import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -322,11 +318,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun onSyncing(uiModel: HomeViewModel.UiModel) {
-        mainActivity?.updateTransferTab(false)
         var iconResourceId = R.drawable.ic_icon_connecting
         var message = getString(R.string.ns_connecting)
         when (uiModel.status) {
-            DOWNLOADING -> {
+            Synchronizer.Status.DOWNLOADING -> {
                 if (!viewModel.isValidBlock(uiModel.processorInfo.lastDownloadedHeight, uiModel.processorInfo.lastDownloadRange.last)) return
                 iconResourceId = R.drawable.ic_icon_downloading
                 message = if (uiModel.downloadProgress == 0) {
@@ -335,7 +330,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     getString(R.string.home_button_send_downloading, uiModel.downloadProgress)
                 }
             }
-            SCANNING -> {
+            Synchronizer.Status.SCANNING -> {
                 if (!viewModel.isValidBlock(uiModel.processorInfo.lastScannedHeight, uiModel.processorInfo.lastScanRange.last)) return
                 message = when (uiModel.scanProgress) {
                     0 -> {
@@ -443,13 +438,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun checkForAnyExpectingAmount(uiModel: HomeViewModel.UiModel) {
+        if (uiModel.unminedCount > 0) {
+            twig("${uiModel.unminedCount} unconfirmed ${if (uiModel.unminedCount > 1) "transactions" else "transaction"}")
+            return
+        }
         val availableBalance = uiModel.saplingBalance.availableZatoshi
         val totalBalance = uiModel.saplingBalance.totalZatoshi
         val expectingAmount = uiModel.saplingBalance.pending
         if (availableBalance != -1L && availableBalance < totalBalance && expectingAmount > 0L) {
             mainActivity?.updateTransferTab(false)
             if (expectingAmount != viewModel.expectingAmount) { // This will stop to show snack bar again and again for same transaction
-                mainActivity?.showSnackbar(getString(R.string.ns_expecting_balance_snack_bar_msg, expectingAmount.convertZatoshiToZec()))
+                mainActivity?.showSnackbar(getString(R.string.ns_expecting_balance_snack_bar_msg, expectingAmount.convertZatoshiToZecString()))
                 viewModel.expectingAmount = expectingAmount
             }
         }

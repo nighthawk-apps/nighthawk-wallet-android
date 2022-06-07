@@ -2,10 +2,12 @@ package com.nighthawkapps.wallet.android.ui.profile
 
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.Synchronizer
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -33,9 +35,11 @@ class ProfileViewModel @Inject constructor() : ViewModel() {
     }
 
     fun wipe() {
-        synchronizer.stop()
-        Toast.makeText(NighthawkWalletApp.instance, "SUCCESS! Wallet data cleared. Please relaunch to rescan!", Toast.LENGTH_LONG).show()
-        Initializer.erase(NighthawkWalletApp.instance, NighthawkWalletApp.instance.defaultNetwork)
+        viewModelScope.launch {
+            synchronizer.stop()
+            Toast.makeText(NighthawkWalletApp.instance, "SUCCESS! Wallet data cleared. Please relaunch to rescan!", Toast.LENGTH_LONG).show()
+            Initializer.erase(NighthawkWalletApp.instance, NighthawkWalletApp.instance.defaultNetwork)
+        }
     }
 
     suspend fun fullRescan() {
