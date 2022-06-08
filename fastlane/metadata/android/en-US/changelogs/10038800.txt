@@ -1,0 +1,1 @@
+- Fix checkpoint format and resolve new wallet syncing issues.

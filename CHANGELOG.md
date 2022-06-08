@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.38 *(2022-06-08)*
+------------------------------------
+- Fix checkpoint format and resolve new wallet syncing issues.
+
 Version 1.0.37 *(2022-05-27)*
 ------------------------------------
 - NU5 support!
