@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class AutoShieldViewModel @Inject constructor() : ViewModel() {
@@ -80,9 +81,9 @@ class AutoShieldViewModel @Inject constructor() : ViewModel() {
     fun shieldFunds() {
         viewModelScope.launch(Dispatchers.IO) {
             lockBox.getBytes(Const.Backup.SEED)?.let {
-                val sk = DerivationTool.deriveSpendingKeys(it, synchronizer.network)[0]
-                val tsk = DerivationTool.deriveTransparentSecretKey(it, synchronizer.network)
-                val addr = DerivationTool.deriveTransparentAddressFromPrivateKey(tsk, synchronizer.network)
+                val sk = runBlocking { DerivationTool.deriveSpendingKeys(it, synchronizer.network)[0] }
+                val tsk = runBlocking { DerivationTool.deriveTransparentSecretKey(it, synchronizer.network) }
+                val addr = runBlocking { DerivationTool.deriveTransparentAddressFromPrivateKey(tsk, synchronizer.network) }
                 synchronizer.shieldFunds(sk, tsk, "${ZcashSdk.DEFAULT_SHIELD_FUNDS_MEMO_PREFIX}\nAll UTXOs from $addr")
                     .onEach { tx ->
                         _pendingTransaction.value = tx

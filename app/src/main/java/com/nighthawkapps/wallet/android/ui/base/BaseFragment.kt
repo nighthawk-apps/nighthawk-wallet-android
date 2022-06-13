@@ -108,11 +108,9 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
      */
     fun launchWhenSyncReady(block: () -> Unit) {
         resumedScope.launch {
-            mainActivity?.let {
-                it.mainViewModel.syncReady.filter { isReady -> isReady }.onEach {
-                    block()
-                }.first()
-            }
+            mainActivity?.mainViewModel?.syncReady?.filter { isReady -> isReady }?.onEach {
+                block()
+            }?.first()
         }
     }
 }
