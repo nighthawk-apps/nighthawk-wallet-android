@@ -10,7 +10,7 @@ object Deps {
     const val minSdkVersion = 23
     const val targetSdkVersion = 32
     const val versionName = "2.0.0"
-    const val versionCode = 2_00_00_800 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionCode = 2_00_00_200 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
@@ -31,12 +31,12 @@ object Deps {
         const val OSS_LICENCE = "com.google.android.gms:play-services-oss-licenses:16.0.0"
         const val WORK_MANAGER_KTX = "androidx.work:work-runtime-ktx:2.7.1"
 
-        object CameraX : Version("1.1.0-beta03") {
+        object CameraX : Version("1.2.0-alpha01") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
             val CORE = "androidx.camera:camera-core:$version"
             val LIFECYCLE = "androidx.camera:camera-lifecycle:$version"
 
-            object View : Version("1.1.0-beta03") {
+            object View : Version("1.2.0-alpha01") {
                 val EXT = "androidx.camera:camera-extensions:$version"
                 val VIEW = "androidx.camera:camera-view:$version"
             }
@@ -107,13 +107,13 @@ object Deps {
     }
 
     object Misc {
-        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.19.0"
+        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.21.0"
         const val LOTTIE = "com.airbnb.android:lottie:5.0.3"
         const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
 
         object Plugins {
             const val SECURE_STORAGE = "com.github.gmale:secure-storage-android:0.0.3"
-            const val QR_SCANNER = "com.google.zxing:core:3.4.1"
+            const val QR_SCANNER = "com.google.zxing:core:3.5.0"
         }
     }
 

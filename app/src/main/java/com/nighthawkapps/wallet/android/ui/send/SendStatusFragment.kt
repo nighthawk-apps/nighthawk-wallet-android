@@ -106,7 +106,7 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
                 model.showSecondaryButton = true
                 model.secondaryButtonText = getString(R.string.ns_more_details)
                 model.secondaryAction = { onSeeDetails() }
-                model.animationRes = R.raw.lottie_success
+                model.animationRes = R.raw.lottie_send_success
             }
             isFailure() -> {
                 model.title = getString(R.string.ns_failed)
@@ -119,7 +119,7 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
                 model.showSecondaryButton = true
                 model.secondaryButtonText = getString(R.string.ns_cancel)
                 model.secondaryAction = { onExit() }
-                model.animationRes = R.raw.lottie_failed
+                model.animationRes = R.raw.lottie_send_failure
             }
             else -> {
                 model.title = getString(R.string.send_final_sending)

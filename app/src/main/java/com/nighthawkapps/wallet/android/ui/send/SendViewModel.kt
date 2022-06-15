@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SendViewModel @Inject constructor() : ViewModel() {
@@ -93,10 +94,12 @@ class SendViewModel @Inject constructor() : ViewModel() {
     fun send() {
         viewModelScope.launch(Dispatchers.IO) {
             val memoToSend = createMemoToSend()
-            val keys = DerivationTool.deriveSpendingKeys(
-                lockBox.getBytes(Const.Backup.SEED)!!,
-                synchronizer.network
-            )
+            val keys = runBlocking {
+                DerivationTool.deriveSpendingKeys(
+                    lockBox.getBytes(Const.Backup.SEED)!!,
+                    synchronizer.network
+                )
+            }
             synchronizer.sendToAddress(keys[0], zatoshiAmount, toAddress, memoToSend.chunked(ZcashSdk.MAX_MEMO_SIZE).firstOrNull() ?: "")
                     .onEach { tx ->
                         _pendingTransaction.value = tx
