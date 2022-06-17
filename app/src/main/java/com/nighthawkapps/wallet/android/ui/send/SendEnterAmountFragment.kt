@@ -95,7 +95,11 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             binding.btnNotEnoughZCash.setOnClickListener {
                 mainActivity?.safeNavigate(R.id.action_nav_enter_amount_to_transfer)
             }
-            binding.tvZec.setOnClickListener { onFlipCurrencyClicked() }
+            binding.tvZec.setOnClickListener {
+                if (sendViewModel.getSelectedFiatCurrency().currencyName.isNotBlank()) {
+                    onFlipCurrencyClicked()
+                }
+            }
         }
     }
 
