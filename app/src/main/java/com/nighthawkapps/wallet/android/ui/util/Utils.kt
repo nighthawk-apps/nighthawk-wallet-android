@@ -57,10 +57,14 @@ object Utils {
     }
 
     fun calculateOtherCurrencyToZec(totalAmountInLocalCurrency: String, currencyValue: String): String {
+        if (isValidDivisor(currencyValue.toFloatOrNull() ?: 0F).not())
+            return "0"
         return ((totalAmountInLocalCurrency.toFloatOrNull() ?: 0F).div(currencyValue.toFloatOrNull() ?: 0F)).toDouble().toZecString()
     }
 
     fun calculateLocalCurrencyToZatoshi(currencyRate: String, totalLocalAmount: String): Long? {
+        if (isValidDivisor(currencyRate.toFloatOrNull() ?: 0F).not())
+            return null
         return WalletZecFormmatter.toZatoshi(((totalLocalAmount.toFloatOrNull() ?: 0F).div(currencyRate.toFloatOrNull() ?: 0F)).toDouble().toZecString())
     }
 
@@ -70,5 +74,9 @@ object Utils {
     private fun getCurrencySymbol(marketName: String?): String {
         return marketName?.let { FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByMarket(it).currencyName }
         ?: FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(LockBox(NighthawkWalletApp.instance)[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
+    }
+
+    private fun isValidDivisor(divisor: Float): Boolean {
+        return divisor != 0f
     }
 }

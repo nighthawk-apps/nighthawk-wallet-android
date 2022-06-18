@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 2.0.01 BETA *(2022-06-17)*
+------------------------------------
+- Bugfixes.
+
 Version 2.0.0 BETA *(2022-06-12)*
 ------------------------------------
 - We've updated the Nighthawk Wallet Design!
