@@ -313,4 +313,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         val syncNotificationPref = SyncNotificationViewModel.NotificationSyncPref.getNotificationSyncPrefByText(lockBox[Const.AppConstants.KEY_SYNC_NOTIFICATION] ?: "")
         WorkManagerUtils.cancelSyncAppNotificationAndReRegister(syncNotificationPref)
     }
+
+    fun getSelectedFiatUnit(): FiatCurrencyViewModel.FiatUnit {
+        return FiatCurrencyViewModel.FiatUnit.getFiatUnit(lockBox[Const.AppConstants.KEY_LOCAL_UNIT] ?: "")
+    }
 }
