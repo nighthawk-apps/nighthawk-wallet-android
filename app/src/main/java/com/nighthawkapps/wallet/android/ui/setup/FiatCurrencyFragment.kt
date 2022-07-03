@@ -86,6 +86,8 @@ class FiatCurrencyFragment : BaseFragment<FragmentFiatCurrencyBinding>() {
                     if (checked) {
                         twig("Selected local unit is $fiatUnit")
                         fiatCurrencyViewModel.updateLocalUnit(fiatUnit)
+                        // invalidate the views again. Radio button only one selected behaviour work better if Radio buttons are direct child of Radio Group
+                        invalidateAndAgainUnitView()
                     }
                 }
                 it.layoutParams = LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.WRAP_CONTENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 0.35F)
@@ -105,5 +107,10 @@ class FiatCurrencyFragment : BaseFragment<FragmentFiatCurrencyBinding>() {
 
             binding.radioGroupUnitTypes.addView(linearLayout)
         }
+    }
+
+    private fun invalidateAndAgainUnitView() {
+        binding.radioGroupUnitTypes.removeAllViews()
+        addUnitOptions()
     }
 }

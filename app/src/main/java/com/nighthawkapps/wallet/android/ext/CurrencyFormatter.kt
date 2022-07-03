@@ -190,10 +190,11 @@ object UnitConversion {
 }
 
 inline fun Long?.convertZatoshiToSelectedUnit(fiatUnit: FiatCurrencyViewModel.FiatUnit): String {
-    return BigDecimal(this ?: 0L, MathContext.DECIMAL128).divide(
+    val bigDecimal = BigDecimal(this ?: 0L, MathContext.DECIMAL128).divide(
         BigDecimal(fiatUnit.zatoshiPerUnit, MathContext.DECIMAL128),
         MathContext.DECIMAL128
-    ).setScale(Conversions.ZEC_FORMATTER.maximumFractionDigits, Conversions.ZEC_FORMATTER.roundingMode).toFloat().toString()
+    ).setScale(Conversions.ZEC_FORMATTER.maximumFractionDigits, Conversions.ZEC_FORMATTER.roundingMode)
+    return WalletZecFormmatter.formatFull(bigDecimal)
 }
 
 inline fun Long?.convertedUnitToZatoshi(fiatUnit: FiatCurrencyViewModel.FiatUnit): Long {

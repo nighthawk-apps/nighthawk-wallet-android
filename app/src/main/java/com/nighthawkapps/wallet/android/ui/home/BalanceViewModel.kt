@@ -54,7 +54,7 @@ class BalanceViewModel @Inject constructor() : ViewModel() {
                 )
             }
             BalanceFragment.Companion.SectionType.SHIELDED_BALANCE -> {
-                balanceAmountZatoshi = (homeUiModel.saplingBalance.totalZatoshi + homeUiModel.transparentBalance.totalZatoshi)
+                balanceAmountZatoshi = homeUiModel.saplingBalance.totalZatoshi
                 val balanceAmount = balanceAmountZatoshi.convertZatoshiToSelectedUnit(getSelectedFiatUnit())
                 BalanceUIModel(
                     icon = ContextCompat.getDrawable(NighthawkWalletApp.instance.applicationContext, R.drawable.ic_icon_shielded),
@@ -64,7 +64,7 @@ class BalanceViewModel @Inject constructor() : ViewModel() {
                 )
             }
             BalanceFragment.Companion.SectionType.TRANSPARENT_BALANCE -> {
-                balanceAmountZatoshi = (homeUiModel.saplingBalance.totalZatoshi + homeUiModel.transparentBalance.totalZatoshi)
+                balanceAmountZatoshi = homeUiModel.transparentBalance.totalZatoshi
                 val balanceAmount = balanceAmountZatoshi.convertZatoshiToSelectedUnit(getSelectedFiatUnit())
                 BalanceUIModel(
                     icon = ContextCompat.getDrawable(NighthawkWalletApp.instance.applicationContext, R.drawable.ic_icon_transparent),
