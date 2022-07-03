@@ -101,7 +101,7 @@
     <string name="ns_private_address">Private Address</string>
     <string name="ns_non_private_address">Non-Private Address</string>
     <string name="ns_top_up_your_wallet">Top up your wallet</string>
-    <string name="ns_top_up_your_wallet_msg">Buy or trade ZCash through our specially selected partners.</string>
+    <string name="ns_top_up_your_wallet_msg">Buy or trade Zcash through our specially selected partners.</string>
     <string name="ns_see_more">See More</string>
 
     <!-- Settings Screen -->
@@ -121,7 +121,7 @@
     <string name="ns_rescan_wallet_wipe">Wipe &amp; restart</string>
     <string name="ns_fiat_currency">Fiat Currency</string>
     <string name="ns_fiat_currency_text">Choose your local currency</string>
-    <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, we fetch the exchange rate from CoinGecko API v3 and use that to calculate values. We never send any of your fund amounts to a server.</string>
+    <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, the exchange rate is fetched from CoinGecko API v3 and used to calculate values. Your fund amounts are never revealed to any server.</string>
     <string name="ns_change_server">Change server</string>
     <string name="ns_change_server_text">Change backend lightwalletd server.</string>
     <string name="ns_security">Security</string>

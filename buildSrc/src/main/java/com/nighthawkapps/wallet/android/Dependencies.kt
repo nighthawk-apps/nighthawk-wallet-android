@@ -5,19 +5,19 @@ object Deps {
     // `Deps.Kotlin.version` directly
     const val kotlinVersion = "1.6.21"
     const val navigationVersion = "2.4.2"
-    const val compileSdkVersion = 32
+    const val compileSdkVersion = 33
     const val buildToolsVersion = "31.0.0"
     const val minSdkVersion = 23
-    const val targetSdkVersion = 32
-    const val versionName = "2.0.0"
-    const val versionCode = 2_00_00_200 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val targetSdkVersion = 33
+    const val versionName = "2.0.02"
+    const val versionCode = 2_00_02_200 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.3.0"
         const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.1"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha04"
-        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.3"
+        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
         const val CORE_KTX = "androidx.core:core-ktx:1.9.0-alpha02"
         const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.4.1"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
@@ -57,7 +57,7 @@ object Deps {
         }
     }
 
-    object Dagger : Version("2.41") {
+    object Dagger : Version("2.42") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -71,7 +71,7 @@ object Deps {
         const val GSON = "com.google.code.gson:gson:2.9.0"
     }
 
-    object Grpc : Version("1.45.1") {
+    object Grpc : Version("1.47.0") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
@@ -103,7 +103,7 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.1"
-        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.5.0-beta01"
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.6.0-beta01"
     }
 
     object Misc {

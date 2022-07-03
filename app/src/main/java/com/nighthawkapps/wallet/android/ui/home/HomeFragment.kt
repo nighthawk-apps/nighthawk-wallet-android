@@ -68,6 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         binding.walletRecentActivityView.tvViewAllTransactions.onClickNavTo(R.id.action_nav_home_to_nav_history)
         binding.buttonShieldNow.setOnClickListener { if (isAutoShieldFundsAvailable()) { autoShield(uiModel) } }
+        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
         binding.iconAppLogo.setOnClickListener { rotateLogo() }
         initViewPager()
         if (::uiModel.isInitialized) {
@@ -372,8 +373,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun onSynced(uiModel: HomeViewModel.UiModel) {
         mainActivity?.updateTransferTab(enable = true)
-        binding.hitAreaScan.onClickNavTo(R.id.action_nav_home_to_nav_receive)
-        binding.iconScan.visibility = View.VISIBLE
         binding.viewInit.root.gone()
         binding.viewPager.visible()
         autoShield(uiModel)
