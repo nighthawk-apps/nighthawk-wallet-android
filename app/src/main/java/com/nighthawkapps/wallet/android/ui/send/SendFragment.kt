@@ -53,7 +53,6 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     private val sendViewModel: SendViewModel by activityViewModel()
     private val mainViewModel: MainViewModel by activityViewModel()
     lateinit var addressJob: Job
-
     override fun inflate(inflater: LayoutInflater): FragmentSendBinding =
         FragmentSendBinding.inflate(inflater)
 
@@ -209,14 +208,16 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             addressJob.cancel()
         }
         addressJob = resumedScope.launch {
-            val validation = sendViewModel.validateAddress(address)
+            var convertedAddress = address
+
+            val validation = sendViewModel.validateAddress(convertedAddress)
             binding.buttonSend.isActivated = !validation.isNotValid
             var type = when (validation) {
                 is AddressType.Transparent -> "This is a valid transparent address" to R.color.zcashGreen
                 is AddressType.Shielded -> "This is a valid shielded address" to R.color.zcashGreen
                 else -> "This address appears to be invalid" to R.color.zcashRed
             }
-            if (address == sendViewModel.synchronizer.getAddress()) type =
+            if (convertedAddress == sendViewModel.synchronizer.getAddress()) type =
                 "Warning, this appears to be your address!" to R.color.zcashRed
             binding.textLayoutAddress.helperText = type.first
             binding.textLayoutAddress.setHelperTextColor(ColorStateList.valueOf(type.second.toAppColor()))
@@ -224,7 +225,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             // if we have the clipboard address but we're changing it, then clear the selection
             if (binding.imageClipboardAddressSelected.isVisible) {
                 loadAddressFromClipboard().let { clipboardAddress ->
-                    if (address != clipboardAddress) {
+                    if (convertedAddress != clipboardAddress) {
                         updateClipboardBanner(false, clipboardAddress)
                     }
                 }
@@ -232,7 +233,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
             // if we have the last used address but we're changing it, then clear the selection
             if (binding.imageLastUsedAddressSelected.isVisible) {
                 loadLastUsedAddress().let { lastAddress ->
-                    if (address != lastAddress) {
+                    if (convertedAddress != lastAddress) {
                         updateLastUsedBanner(false, lastAddress)
                     }
                 }
@@ -241,7 +242,11 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     }
 
     private fun onSubmit(unused: EditText? = null) {
-        sendViewModel.toAddress = binding.inputZcashAddress.text.toString()
+        var address = binding.inputZcashAddress.text.toString()
+        if (!sendViewModel.unsDomains[address].isNullOrEmpty()) {
+            address = sendViewModel.unsDomains[address]!!
+        }
+        sendViewModel.toAddress = address
         sendViewModel.memo = binding.inputZcashMemo.text?.toString() ?: ""
         sendViewModel.zatoshiAmount = binding.inputZcashAmount.text.toString().safelyConvertToBigDecimal().convertZecToZatoshi()
         binding.inputZcashAmount.convertZecToZatoshi()?.let { sendViewModel.zatoshiAmount = it }

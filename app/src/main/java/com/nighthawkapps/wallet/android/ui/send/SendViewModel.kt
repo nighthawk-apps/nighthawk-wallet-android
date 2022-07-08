@@ -15,6 +15,7 @@ import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
+import com.nighthawkapps.wallet.android.ui.util.UNS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
@@ -43,7 +44,9 @@ class SendViewModel @Inject constructor() : ViewModel() {
             field = value
         }
     val isShielded get() = toAddress.startsWith("z")
+    var unsDomains = mutableMapOf<String, String>()
 
+    private val uns = UNS()
     fun send(): Flow<PendingTransaction> {
         val memoToSend = createMemoToSend()
         val keys = runBlocking { DerivationTool.deriveSpendingKeys(
@@ -68,8 +71,17 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
     fun createMemoToSend() = if (includeFromAddress) "$memo\n$INCLUDE_MEMO_PREFIX_STANDARD\n$fromAddress" else memo
 
-    suspend fun validateAddress(address: String): AddressType =
-        synchronizer.validateAddress(address)
+    suspend fun validateAddress(address: String): AddressType {
+        var addressType = synchronizer.validateAddress(address)
+        if (addressType.isNotValid) {
+            val unsAddress = uns.isValidUNSAddress(address)
+            if (unsAddress != null) {
+                unsDomains[address] = unsAddress
+                addressType = synchronizer.validateAddress(unsAddress)
+            }
+        }
+        return addressType
+    }
 
     fun validate(context: Context, availableZatoshi: Long?, maxZatoshi: Long?) = flow<String?> {
         when {
