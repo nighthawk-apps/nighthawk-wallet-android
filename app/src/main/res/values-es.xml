@@ -43,47 +43,47 @@
     <string name="ns_around">Cerca de %s</string>
     <string name="ns_total_balance">Balance total</string>
     <string name="ns_shielded_balance">Balance blindado</string>
-    <string name="ns_sapling_balance">Sapling balance</string>
-    <string name="ns_transparent_balance">Transparent balance</string>
-    <string name="ns_shield_now">Shield Now</string>
+    <string name="ns_sapling_balance">Balance blindado</string>
+    <string name="ns_transparent_balance">Balance transparente</string>
+    <string name="ns_shield_now">Blindar ahora</string>
     <string name="ns_zec_empty">--- ZEC</string>
-    <string name="ns_expecting_balance_snack_bar_msg">Expecting %s ZEC</string>
-    <string name="ns_recent_activity">Recent activity</string>
-    <string name="ns_received">Received</string>
-    <string name="ns_sent">Sent</string>
-    <string name="ns_auto_shielded_funds">Auto-shielded funds</string>
+    <string name="ns_expecting_balance_snack_bar_msg">Esperando %s ZEC</string>
+    <string name="ns_recent_activity">Actividad reciente</string>
+    <string name="ns_received">Recibido</string>
+    <string name="ns_sent">Enviado</string>
+    <string name="ns_auto_shielded_funds">Fondos autoblindados</string>
     <!-- Transaction Details Screen -->
-    <string name="ns_transaction_details">Transaction details</string>
+    <string name="ns_transaction_details">Detalles de la transacción</string>
     <string name="ns_show_memo">Mostrar memo</string>
-    <string name="ns_received_from">Received from %s</string>
-    <string name="ns_sent_from">Sent from %s</string>
-    <string name="ns_transparent_wallet">transparent wallet</string>
-    <string name="ns_shielded_wallet">shielded wallet</string>
-    <string name="ns_pending">Pending</string>
-    <string name="ns_pending_confirmations">Pending %s</string>
-    <string name="ns_confirmed">Confirmed</string>
-    <string name="ns_view_block_explorer">View on Block explorer</string>
-    <string name="ns_view_on_explorer">View on explorer</string>
-    <string name="ns_time_utc">Time (UTC)</string>
-    <string name="ns_block_id">Block ID</string>
-    <string name="ns_confirmations">Confirmations</string>
-    <string name="ns_transaction_id">Transaction ID</string>
-    <string name="ns_processing">Processing</string>
+    <string name="ns_received_from">Recibido de %s</string>
+    <string name="ns_sent_from">Enviado desde %s</string>
+    <string name="ns_transparent_wallet">billetera transparente</string>
+    <string name="ns_shielded_wallet">billetera blindada</string>
+    <string name="ns_pending">Pendiente</string>
+    <string name="ns_pending_confirmations">Pendiente %s</string>
+    <string name="ns_confirmed">Confirmado</string>
+    <string name="ns_view_block_explorer">Ver en el Explorador de Bloques</string>
+    <string name="ns_view_on_explorer">Ver en el explorador</string>
+    <string name="ns_time_utc">Tiempo (UTC)</string>
+    <string name="ns_block_id">Bloque ID</string>
+    <string name="ns_confirmations">Confirmaciones</string>
+    <string name="ns_transaction_id">ID de la Transacción</string>
+    <string name="ns_processing">Procesando</string>
     <!-- Transfer Screen -->
-    <string name="ns_transfer">Transfer</string>
-    <string name="ns_transfer_title">Send and receive Zcash</string>
-    <string name="ns_send_money">Send money</string>
-    <string name="ns_send_money_text">Allow someone to scan the code to send money</string>
-    <string name="ns_receive_money">Receive money</string>
-    <string name="ns_receive_money_text">Your wallet address will be copied to the clipboard</string>
-    <string name="ns_top_up">Top up your wallet</string>
-    <string name="ns_top_up_text">Securely buy Zcash through our partners.</string>
-    <string name="ns_buy_moonpay">Buy from MoonPay</string>
-    <string name="ns_buy_moonpay_text">Buy ZEC with a credit card.</string>
-    <string name="ns_swap_sideshift">Swap with SideShift.ai</string>
-    <string name="ns_swap_sideshift_text">Swap between 30+ coins. No sign-up required.</string>
-    <string name="ns_swap_stealthex">Swap with StealthEx.io</string>
-    <string name="ns_swap_stealthex_text">Swap transparent coins without limits.</string>
+    <string name="ns_transfer">Transferir</string>
+    <string name="ns_transfer_title">Enviar y recibir Zcash</string>
+    <string name="ns_send_money">Enviar dinero</string>
+    <string name="ns_send_money_text">Permitir que alguien escanee el código para enviar dinero</string>
+    <string name="ns_receive_money">Recibir dinero</string>
+    <string name="ns_receive_money_text">La dirección de su billetera se copiará al portapapeles</string>
+    <string name="ns_top_up">Recarga tu billetera</string>
+    <string name="ns_top_up_text">Comprar Zcash de forma segura a través de nuestros socios.</string>
+    <string name="ns_buy_moonpay">Comprar en MoonPay</string>
+    <string name="ns_buy_moonpay_text">Compre ZEC con una tarjeta de crédito.</string>
+    <string name="ns_swap_sideshift">Intercambiar con SideShift.ai</string>
+    <string name="ns_swap_sideshift_text">Intercambiar entre más de 30 monedas. No es necesario registrarse.</string>
+    <string name="ns_swap_stealthex">Intercambiar con StealthEx.io</string>
+    <string name="ns_swap_stealthex_text">Intercambiar monedas transparentes sin límites.</string>
     <string name="ns_receive_money_securely">Recibir dinero de forma segura</string>
     <string name="ns_show_qr_code">Mostrar código QR</string>
     <string name="ns_show_qr_code_text">Permitir que alguien escanee el código para enviar dinero</string>
@@ -136,71 +136,71 @@
     <string name="ns_view_licences">Ver licencias</string>
     <!-- Backup/Restore Screen-->
     <string name="ns_landing_backup_skipped_message_1">¿Está seguro? Sin una copia de seguridad, los fondos pueden perderse ¡PARA SIEMPRE!</string>
-    <string name="ns_landing_backup_skipped_message_2">You can\'t backup later. You\'re probably going to lose your funds!</string>
-    <string name="ns_landing_button_backup_skipped_1">Later</string>
-    <string name="ns_landing_button_backup_skipped_2">I\'ve been warned</string>
-    <string name="ns_landing_button_progress_create">Creating</string>
-    <string name="ns_button_skip">Skip for now</string>
-    <string name="ns_backup_done">Done</string>
-    <string name="ns_view_wallet">View Wallet</string>
-    <string name="ns_exit_restore_flow_text">Are you sure? For security, the words that you have entered will be cleared!</string>
-    <string name="ns_exit_restore_flow_title">Abort Restore?</string>
-    <string name="ns_stay">Stay</string>
-    <string name="ns_exit">Exit</string>
-    <string name="ns_landing_create_success_message">Wallet created! Congratulations!</string>
-    <string name="ns_landing_import_success_message">Wallet imported! Congratulations!</string>
+    <string name="ns_landing_backup_skipped_message_2">No puedes hacer una copia de seguridad más tarde. ¡Probablemente perderás tus fondos!</string>
+    <string name="ns_landing_button_backup_skipped_1">Después</string>
+    <string name="ns_landing_button_backup_skipped_2">He sido advertido</string>
+    <string name="ns_landing_button_progress_create">Creando</string>
+    <string name="ns_button_skip">Omitir por ahora</string>
+    <string name="ns_backup_done">Hecho</string>
+    <string name="ns_view_wallet">Ver billetera</string>
+    <string name="ns_exit_restore_flow_text">¿Estás seguro? ¡Por seguridad, las palabras que has introducido serán borradas!</string>
+    <string name="ns_exit_restore_flow_title">¿Cancelar restauración?</string>
+    <string name="ns_stay">Permanecer</string>
+    <string name="ns_exit">Salir</string>
+    <string name="ns_landing_create_success_message">¡Billetera creada! ¡Felicidades!</string>
+    <string name="ns_landing_import_success_message">¡Billetera importada! ¡Felicidades!</string>
     <!-- Send Flow -->
-    <string name="ns_scan_payment_request">Scan a Payment Request</string>
-    <string name="ns_scan_payment_request_text">If you have a payment request, you can scan the QR code here to auto-fill all the details.</string>
-    <string name="ns_choose_send">Choose how much to send</string>
-    <string name="ns_spendable_balance">Spendable balance (incl. tx fee) is %1s ZEC</string>
-    <string name="ns_scan_payment_code">Scan a payment code</string>
-    <string name="ns_top_up_wallet">Top up wallet</string>
-    <string name="ns_not_enough_zcash">Not enough Zcash</string>
-    <string name="ns_add_message">Add a message to your payment</string>
-    <string name="ns_write_something">Write something…</string>
-    <string name="ns_skip">Skip</string>
-    <string name="ns_choose_who">Choose who to send it to</string>
-    <string name="ns_review_and_send">Review and send</string>
-    <string name="ns_network_fee">Network Fee</string>
-    <string name="ns_send_zcash">Send Zcash</string>
-    <string name="ns_sending">Sending</string>
-    <string name="ns_pending_confirmation">Pending confirmation</string>
-    <string name="ns_expired">Expired</string>
-    <string name="ns_unknown">Unknown</string>
-    <string name="ns_cancel">Cancel</string>
-    <string name="ns_success">Success</string>
-    <string name="ns_done">Done</string>
-    <string name="ns_more_details">More Details</string>
-    <string name="ns_failed">Failed</string>
-    <string name="ns_try_again">Try Again</string>
+    <string name="ns_scan_payment_request">Escanear una solicitud de pago</string>
+    <string name="ns_scan_payment_request_text">Si tiene una solicitud de pago, puede escanear el código QR aquí para completar automáticamente todos los detalles.</string>
+    <string name="ns_choose_send">Elige cuánto enviar</string>
+    <string name="ns_spendable_balance">El saldo disponible (incluyendo tx fee) es %1s ZEC</string>
+    <string name="ns_scan_payment_code">Escanear un código de pago</string>
+    <string name="ns_top_up_wallet">Recarga tu billetera</string>
+    <string name="ns_not_enough_zcash">No hay Zcash suficiente</string>
+    <string name="ns_add_message">Añade un mensaje a tu pago</string>
+    <string name="ns_write_something">Escribe algo…</string>
+    <string name="ns_skip">Saltar</string>
+    <string name="ns_choose_who">Elige a quién enviarlo</string>
+    <string name="ns_review_and_send">Revisar y enviar</string>
+    <string name="ns_network_fee">Comisión de la Red</string>
+    <string name="ns_send_zcash">Enviar Zcash</string>
+    <string name="ns_sending">Enviando</string>
+    <string name="ns_pending_confirmation">Confirmación pendiente</string>
+    <string name="ns_expired">Expirado</string>
+    <string name="ns_unknown">Desconocido</string>
+    <string name="ns_cancel">Cancelar</string>
+    <string name="ns_success">Completado</string>
+    <string name="ns_done">Hecho</string>
+    <string name="ns_more_details">Más detalles</string>
+    <string name="ns_failed">Fallido</string>
+    <string name="ns_try_again">Intentar de nuevo</string>
     <string name="ns_zec_amount">%1s ZEC</string>
     <string name="ns_format_date_time">dd/MM/yyyy</string>
-    <string name="ns_view_all_transactions">View transaction history</string>
-    <string name="ns_downloading_block">Downloading\n\nBlock %1s of %2s</string>
-    <string name="ns_syncing_block">Syncing\n\nBlock %1s of %2s</string>
-    <string name="ns_send_and_receive_zcash">Send and receive Zcash</string>
-    <string name="ns_add_address_hint">Add address here</string>
-    <string name="ns_paste_from_clip_board">Paste from clipboard</string>
-    <string name="ns_clipboard_wrong_text_paste_error">Seems last copied value is not a Zcash Address</string>
+    <string name="ns_view_all_transactions">Ver historial de transacciones</string>
+    <string name="ns_downloading_block">Descargando\n\nBloque %1s de %2s</string>
+    <string name="ns_syncing_block">Sincronizando\n\nBloque %1s de %2s</string>
+    <string name="ns_send_and_receive_zcash">Enviar y recibir Zcash</string>
+    <string name="ns_add_address_hint">Añadir la dirección aquí</string>
+    <string name="ns_paste_from_clip_board">Pegar desde el portapapeles</string>
+    <string name="ns_clipboard_wrong_text_paste_error">Parece que el último valor copiado no es una dirección Zcash</string>
     <string name="ns_memo">Memo</string>
-    <string name="ns_network">Network</string>
-    <string name="ns_recipient">Recipient</string>
-    <string name="ns_address">Address</string>
+    <string name="ns_network">Conexión</string>
+    <string name="ns_recipient">Destinatario</string>
+    <string name="ns_address">Dirección</string>
     <string name="ns_subtotal">Subtotal</string>
-    <string name="ns_total_amount">Total amount</string>
-    <string name="ns_shielded">Shielded</string>
-    <string name="ns_transparent">Transparent</string>
-    <string name="ns_include_reply_to">include reply-to</string>
+    <string name="ns_total_amount">Monto total</string>
+    <string name="ns_shielded">Blindado</string>
+    <string name="ns_transparent">Transparente</string>
+    <string name="ns_include_reply_to">incluir respuesta a</string>
     <!-- 00000000 -->
     <!-- Send Flow -->
-    <string name="no_balance">No Balance</string>
-    <string name="fund_now">Fund Now</string>
-    <string name="receive_zcash">Receive Zcash</string>
-    <string name="moon_pay">Buy ZEC with MoonPay</string>
-    <string name="side_shift">Swap coins via SideShift.ai</string>
-    <string name="stealth_ex">Swap coins via StealthEx.io</string>
-    <string name="backup_wallet">Backup Wallet</string>
+    <string name="no_balance">Sin saldo</string>
+    <string name="fund_now">Financiar ahora</string>
+    <string name="receive_zcash">Recibir Zcash</string>
+    <string name="moon_pay">Comprar ZEC con MoonPay</string>
+    <string name="side_shift">Intercambiar con SideShift.ai</string>
+    <string name="stealth_ex">Intercambiar con StealthEx.io</string>
+    <string name="backup_wallet">Respaldar billetera</string>
     <string name="my_zcash_address">Mi dirección Zcash</string>
     <string name="scan_recipient_address">Escanear la dirección del receptor</string>
     <string name="send_address">enviar dirección</string>
@@ -251,60 +251,60 @@
     <string name="fund_wallet_sideshift_title">¿Financiar billetera con SideShift.ai?</string>
     <string name="fund_wallet_sideshift_description">Su dirección Z ha sido copiada al portapapeles.\n\nSeleccione \"Abrir navegador\" abajo, seleccione \"Zcash (Blindado)\" como la moneda receptora en el sitio SideShift, y luego pegue su dirección Z.</string>
     <string name="fund_wallet_stealthex_title">¿Financiar billetera con StealthEx.io?</string>
-    <string name="fund_wallet_stealthex_description">Your T-Address has been copied to the clipboard.\n\nChoose \"Open Browser\" below, select \'Zcash\' as the receiving coin on the StealthEx site, and then paste your T-address.</string>
-    <string name="link_to_ecc_title">Redirecting to ElectricCoin.co</string>
-    <string name="link_to_ecc_description">Please confirm opening your device browser to learn more about Unified Addresses.</string>
-    <string name="open_browser">Open Browser</string>
-    <string name="cancel">Cancel</string>
+    <string name="fund_wallet_stealthex_description">Su dirección T ha sido copiada al portapapeles.\n\nSeleccione \"Abrir navegador\" abajo, seleccione \"Zcash\" como la moneda receptora en el sitio StealthEx y, a continuación, pegue su dirección T.</string>
+    <string name="link_to_ecc_title">Redirigiendo a ElectricCoin.co</string>
+    <string name="link_to_ecc_description">Por favor, confirme la apertura del navegador de su dispositivo para obtener más información sobre direcciones unificadas.</string>
+    <string name="open_browser">Abrir navegador</string>
+    <string name="cancel">Cancelar</string>
     <string name="sideshift_affiliate_link">https://sideshift.ai/</string>
     <string name="stealthex_affiliate_link">https://stealthex.io/</string>
     <string name="zcash_learn_more_link">https://z.cash/the-basics/</string>
-    <string name="visit_zcash_link_description">Visit Z.cash website to learn more!</string>
-    <string name="visit_zcash_link_title">Zcash is digital money.</string>
-    <string name="last_used">Last Used</string>
-    <string name="on_clipboard">On clipboard</string>
-    <string name="include_reply_to">Include Reply-to</string>
-    <string name="send">Send</string>
-    <string name="failed_to_send_due_to_insufficient_funds">Oops! Failed to send due to insufficient funds!</string>
+    <string name="visit_zcash_link_description">¡Visita el sitio web de Z.cash para aprender más!</string>
+    <string name="visit_zcash_link_title">Zcash es dinero digital.</string>
+    <string name="last_used">Último usado</string>
+    <string name="on_clipboard">En el portapapeles</string>
+    <string name="include_reply_to">Incluir respuesta a</string>
+    <string name="send">Enviar</string>
+    <string name="failed_to_send_due_to_insufficient_funds">¡Ups! ¡Error al enviar debido a fondos insuficientes!</string>
     <!-- Screen: Autoshielding prompt -->
     <string name="autoshielding_title_text">@string/missing_autoshielding_title_text</string>
     <string name="autoshielding_body_text">@string/missing_autoshielding_body_text</string>
     <string name="autoshielding_button_positive">@string/missing_autoshielding_button_positive</string>
     <string name="autoshielding_button_neutral">@string/missing_autoshielding_button_neutral</string>
     <!-- Address -->
-    <string name="address_label_shielded">Your Shielded Address</string>
+    <string name="address_label_shielded">Tu dirección protegida</string>
     <!-- Screen: Backup -->
     <string name="backup_button_done" tools:ignore="MissingTranslation">@string/translated_button_done</string>
     <string name="backup_button_primary">@string/custom_translation_verify</string>
     <string name="backup_format_birthday_height">@string/custom_translation_birthday</string>
-    <string name="backup_instruction_store_words">Store these backup words securely.</string>
+    <string name="backup_instruction_store_words">Guardar esta frase de copia de seguridad de forma segura.</string>
     <string name="backup_slogan">empowering\neveryone\nwith\neconomic\nfreedom</string>
-    <string name="backup_verification_not_implemented">Backup verification coming soon!</string>
+    <string name="backup_verification_not_implemented">¡Verificación de respaldo próximamente!</string>
     <!-- Screen: History -->
-    <string name="history_address_label">Shielded address:</string>
+    <string name="history_address_label">Dirección blindada:</string>
     <string name="history_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_spendable</string>
-    <string name="history_balance_updating">Updating</string>
-    <string name="history_empty_text">No history yet.</string>
+    <string name="history_balance_updating">Actualizando</string>
+    <string name="history_empty_text">Aún no hay historial.</string>
     <string name="history_header_transactions" tools:ignore="MissingTranslation">@string/translated_screen_wallethistory</string>
     <string name="history_instruction_enter_amount" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
     <!-- Screen: Home -->
     <string name="home_balance_available" tools:ignore="MissingTranslation">@string/translated_balance_spendable</string>
-    <string name="home_balance_updating">Updating</string>
+    <string name="home_balance_updating">Actualizando</string>
     <string name="home_banner_expecting">@string/custom_translation_expecting</string>
-    <string name="home_button_send_disconnected">Connecting . . .</string>
+    <string name="home_button_send_disconnected">Conectando . . .</string>
     <string name="home_button_send_downloading">@string/custom_translation_syncing</string>
     <string name="home_button_send_has_funds" tools:ignore="MissingTranslation">@string/translated_button_sendamount</string>
     <string name="home_button_send_idle">IDLE</string>
     <string name="home_button_send_no_funds" tools:ignore="MissingTranslation">@string/translated_balance_nofunds</string>
     <string name="home_button_send_scanning">@string/custom_translation_scanning</string>
-    <string name="home_button_send_updating">Updating</string>
-    <string name="home_button_send_validating">Validating . . .</string>
-    <string name="home_dialog_no_balance_button_positive">View Address</string>
-    <string name="home_dialog_no_balance_message">To make full use of this wallet, deposit funds to your address.</string>
+    <string name="home_button_send_updating">Actualizando</string>
+    <string name="home_button_send_validating">Validando . . .</string>
+    <string name="home_dialog_no_balance_button_positive">Ver direcciones</string>
+    <string name="home_dialog_no_balance_message">Para hacer uso completo de esta billetera, deposite fondos a su dirección.</string>
     <string name="home_dialog_no_balance_title" tools:ignore="MissingTranslation">@string/translated_balance_nofunds</string>
     <string name="home_history_button_text" tools:ignore="MissingTranslation">@string/translated_button_wallethistory</string>
     <string name="home_instruction_enter_amount" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
-    <string name="home_instruction_fund_now">Fund Now</string>
+    <string name="home_instruction_fund_now">Financiar ahora</string>
     <string name="home_no_balance">@string/translated_balance_nofunds</string>
     <string name="home_title" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
     <!-- Screen: Landing -->
@@ -318,10 +318,10 @@
     <string name="landing_button_secondary">Restaurar</string>
     <string name="landing_button_secondary_create_success" tools:ignore="MissingTranslation">@string/translated_button_skip</string>
     <string name="landing_button_secondary_import_success" tools:ignore="MissingTranslation">@string/translated_button_skip</string>
-    <string name="landing_create_success_message">Wallet created! Congratulations!</string>
-    <string name="landing_import_success_message">Wallet imported! Congratulations!</string>
+    <string name="landing_create_success_message">¡Billetera creada! ¡Felicidades!</string>
+    <string name="landing_import_success_message">¡Billetera importada! ¡Felicidades!</string>
     <string name="landing_import_success_primary_button" tools:ignore="MissingTranslation">@string/translated_button_backup</string>
-    <string name="landing_title">Welcome to the Nighthawk Wallet!</string>
+    <string name="landing_title">¡Bienvenido a Nighthawk Wallet!</string>
     <!-- Screen: Profile -->
     <string name="profile_rescan_wallet">Reescanear billetera</string>
     <string name="profile_viewing_key">Mostrar clave de visualización</string>
@@ -337,7 +337,7 @@
     <string name="receive_address_title">Fondos recibidos</string>
     <string name="scan_address_title" tools:ignore="MissingTranslation">@string/translated_send_scanqr</string>
     <!-- Screen: Scan -->
-    <string name="scan_invalid_address">"Invalid Zcash %1$s address:\n%2$s"</string>
+    <string name="scan_invalid_address">"Dirección Zcash %1$s no válida:\n%2$s"</string>
     <!-- Screen: Send Flow -->
     <string name="send_address_hint" tools:ignore="MissingTranslation">@string/translated_label_to</string>
     <string name="send_banner_address_unknown" tools:ignore="MissingTranslation">@string/translated_send_unknown</string>
@@ -361,24 +361,24 @@
     <string name="send_fund_source_highlight">blindado</string>
     <string name="send_fund_source_prefix">@string/custom_translation_from_your</string>
     <string name="send_fund_source_suffix">@string/custom_translation_wallet</string>
-    <string name="send_hint_input_zcash_address">Enter a shielded Zcash address</string>
+    <string name="send_hint_input_zcash_address">Introduzca una dirección Zcash blindada</string>
     <string name="send_hint_input_zcash_amount" tools:ignore="MissingTranslation">@string/translated_balance_amounttosend</string>
     <string name="send_history_clipboard" tools:ignore="MissingTranslation">@string/translated_send_onclipboard</string>
     <string name="send_history_last" tools:ignore="MissingTranslation">@string/translated_send_lastused</string>
-    <string name="send_history_last_and_clipboard">"Last Used and On Clipboard"</string>
+    <string name="send_history_last_and_clipboard">"Último usado y en el portapapeles"</string>
     <string name="send_memo_chars_abbreviation">@string/custom_translation_chars</string>
-    <string name="send_memo_excluded_message">Your transaction is shielded and your address is not available to the recipient</string>
+    <string name="send_memo_excluded_message">Su transacción está protegida y su dirección no está disponible para el destinatario</string>
     <string name="send_memo_hint">Memo</string>
-    <string name="send_memo_included_message">Your transaction is shielded but your address will be sent to the recipient via the memo</string>
-    <string name="send_pending_button_text">Cancel</string>
-    <string name="send_validation_address_invalid">This address appears to be invalid</string>
+    <string name="send_memo_included_message">Tu transacción está protegida pero tu dirección será enviada al destinatario a través del memo</string>
+    <string name="send_pending_button_text">Cancelar</string>
+    <string name="send_validation_address_invalid">La dirección parece ser inválida</string>
     <string name="send_validation_address_self" tools:ignore="MissingTranslation">@string/translated_feedback_sameaddress</string>
     <string name="send_validation_address_valid_taddr" tools:ignore="MissingTranslation">@string/translated_feedback_transparentaddress</string>
     <string name="send_validation_address_valid_zaddr" tools:ignore="MissingTranslation">@string/translated_feedback_shieldedaddress</string>
     <string name="send_validation_error_address_invalid" tools:ignore="MissingTranslation">@string/translated_feedback_default</string>
-    <string name="send_validation_error_amount_minimum">Please go back and enter at least 1 Zatoshi.</string>
-    <string name="send_validation_error_dust">Insufficient funds to cover miner\'s fee.</string>
-    <string name="send_validation_error_memo_length">Memo must be less than %1$d in length.</string>
+    <string name="send_validation_error_amount_minimum">Por favor regresa e introduce al menos 1 Zatoshi.</string>
+    <string name="send_validation_error_dust">Fondos insuficientes para el pago de la comisión.</string>
+    <string name="send_validation_error_memo_length">La nota debe tener menos de %1$d de longitud.</string>
     <string name="send_validation_error_no_available_funds" tools:ignore="MissingTranslation">@string/translated_balance_nofunds</string>
     <string name="send_validation_error_too_much">@string/missing_send_validation_error_too_much</string>
     <string name="send_validation_error_unknown_funds">Fondos disponibles no encontrados. Por favor, inténtalo de nuevo en un momento.</string>
@@ -432,7 +432,7 @@
     <string name="transaction_story_from_shielded">@string/translated_send_fromshielded</string>
     <string name="transaction_story_inbound">@string/missing_transaction_story_inbound</string>
     <string name="transaction_story_inbound_total">@string/missing_transaction_story_inbound_total</string>
-    <string name="transaction_story_network_fee">%1$s network fee</string>
+    <string name="transaction_story_network_fee">%1$s comisión de red</string>
     <string name="transaction_story_outbound">@string/missing_transaction_story_outbound</string>
     <string name="transaction_story_outbound_total">@string/missing_transaction_story_outbound_total</string>
     <string name="transaction_story_to_shielded">@string/missing_transaction_story_to_shielded</string>
@@ -442,27 +442,27 @@
     <!--                      -->
     <!-- Content Descriptions -->
     <!--                      -->
-    <string name="content_description_backup_zcash_logo">Zcash Logo</string>
-    <string name="content_description_history_back">back</string>
-    <string name="content_description_history_copy">copy</string>
-    <string name="content_description_home_icon_profile">Profile</string>
-    <string name="content_description_home_icon_scan">Scan</string>
-    <string name="content_description_profile_back">back</string>
-    <string name="content_description_profile_copy">copy</string>
-    <string name="content_description_profile_settings">settings</string>
+    <string name="content_description_backup_zcash_logo">Logo Zcash</string>
+    <string name="content_description_history_back">atrás</string>
+    <string name="content_description_history_copy">copiar</string>
+    <string name="content_description_home_icon_profile">Perfil</string>
+    <string name="content_description_home_icon_scan">Escanear</string>
+    <string name="content_description_profile_back">atrás</string>
+    <string name="content_description_profile_copy">copiar</string>
+    <string name="content_description_profile_settings">ajustes</string>
     <string name="content_description_profile_zebra">zebra</string>
     <string name="content_description_receive_back" tools:ignore="MissingTranslation">@string/translated_button_back</string>
-    <string name="content_description_receive_qr_background">QR background</string>
-    <string name="content_description_receive_qr_code">QR code</string>
-    <string name="content_description_receive_qr_logo">QR logo</string>
-    <string name="content_description_scan_back">back</string>
-    <string name="content_description_scan_frame">scan frame</string>
-    <string name="content_description_send_arrow">down arrow</string>
-    <string name="content_description_send_back">back</string>
-    <string name="content_description_send_scan_qr">scan QR code</string>
-    <string name="content_description_send_selected">selected</string>
-    <string name="content_description_send_shield">shield</string>
-    <string name="content_description_send_final_back">back</string>
+    <string name="content_description_receive_qr_background">Fondo QR</string>
+    <string name="content_description_receive_qr_code">Código QR</string>
+    <string name="content_description_receive_qr_logo">Logo QR</string>
+    <string name="content_description_scan_back">atrás</string>
+    <string name="content_description_scan_frame">escanear fotograma</string>
+    <string name="content_description_send_arrow">flecha abajo</string>
+    <string name="content_description_send_back">atrás</string>
+    <string name="content_description_send_scan_qr">escanear código QR</string>
+    <string name="content_description_send_selected">seleccionado</string>
+    <string name="content_description_send_shield">blindado</string>
+    <string name="content_description_send_final_back">atrás</string>
     <string name="content_description_settings_back">atrás</string>
     <string name="content_description_transaction_shield">Escudo</string>
     <string name="content_description_transaction_details_back">atrás</string>
@@ -499,62 +499,62 @@
     <string name="dialog_error_uninitialized_button_positive">Salir</string>
     <string name="dialog_error_uninitialized_message">¡Esta billetera no ha sido inicializada correctamente! Tal vez haya ocurrido un error durante la instalación.\n\nEsto se puede arreglar con un reinicio. Primero, localice su frasesemilla de copia de seguridad, luego CLEAR DATA y vuelva a importarla.</string>
     <string name="dialog_error_uninitialized_title">Billetera inicializada incorrectamente</string>
-    <string name="dialog_first_use_view_tx_message">Are you sure you\'d like to leave the app? This could reduce privacy, if you do not trust the destination.</string>
-    <string name="dialog_first_use_view_tx_negative">Cancel</string>
-    <string name="dialog_first_use_view_tx_positive">View Tx</string>
-    <string name="dialog_first_use_view_tx_title">Potential Privacy Risk</string>
-    <string name="dialog_modify_server_button_negative">Cancel</string>
-    <string name="dialog_modify_server_button_positive">Update</string>
-    <string name="dialog_modify_server_message">WARNING: Entering an invalid or untrusted server might result in misconfiguration or loss of funds!</string>
-    <string name="dialog_modify_server_title">Modify Lightwalletd Server?</string>
-    <string name="dialog_not_again">Don\'t show me again</string>
-    <string name="dialog_delete_wallet_button_negative">Erase Wallet</string>
-    <string name="dialog_delete_wallet_button_positive">Cancel</string>
-    <string name="dialog_delete_wallet_message">WARNING: Potential Loss of Funds\n\nClearing all wallet data and can result in a loss of funds, if you cannot locate your correct seed phrase.\n\nPlease confirm that you have your 24-word seed phrase available before proceeding.</string>
-    <string name="dialog_delete_wallet_title">Delete Wallet?</string>
-    <string name="dialog_rescan_wallet_title">Rescan This Wallet?</string>
-    <string name="dialog_rescan_wallet_message"><![CDATA[This fix may take a while!<br/><br/>A <b>FULL</b> scan will rewind %1$s blocks to this wallet\'s birthday and take around %2$s.<br/><br/>A <b>WIPE</b> is like a full scan but it first deletes all data then restores it from your backup seed words.]]></string>
-    <string name="dialog_rescan_wallet_button_positive">Quick</string>
-    <string name="dialog_rescan_wallet_button_negative">Full</string>
-    <string name="dialog_rescan_wallet_button_neutral">Wipe</string>
-    <string name="dialog_rescan_failed_title">Full Rescan Failed</string>
+    <string name="dialog_first_use_view_tx_message">¿Estás seguro de que quieres abandonar la aplicación? Esto podría reducir la privacidad, si no confías en el destino.</string>
+    <string name="dialog_first_use_view_tx_negative">Cancelar</string>
+    <string name="dialog_first_use_view_tx_positive">Ver Tx</string>
+    <string name="dialog_first_use_view_tx_title">Riesgo potencial de privacidad</string>
+    <string name="dialog_modify_server_button_negative">Cancelar</string>
+    <string name="dialog_modify_server_button_positive">Actualizar</string>
+    <string name="dialog_modify_server_message">ADVERTENCIA: ¡Introducir un servidor no válido o no confiable podría resultar en una mala configuración o pérdida de fondos!</string>
+    <string name="dialog_modify_server_title">¿Modificar servidor de Lightwalletd?</string>
+    <string name="dialog_not_again">No volver a mostrar</string>
+    <string name="dialog_delete_wallet_button_negative">Borrar billetera</string>
+    <string name="dialog_delete_wallet_button_positive">Cancelar</string>
+    <string name="dialog_delete_wallet_message">ADVERTENCIA: Pérdida Potential de Fondos\n\nLimpiando todos los datos de la billetera y puede resultar en una pérdida de fondos, si no puede localizar su frase semilla correcta.\n\nPor favor, confirme que tiene disponible su frase semilla de 24 palabras antes de proceder.</string>
+    <string name="dialog_delete_wallet_title">¿Borrar billetera?</string>
+    <string name="dialog_rescan_wallet_title">¿Reescanear esta billetera?</string>
+    <string name="dialog_rescan_wallet_message"><![CDATA[CDATA[¡Esta solución puede tardar un rato!<br/><br/>A <b>FULL</b> escaneará %1$s bloques al cumpleaños de esta billetera y tomará alrededor de %2$s.<br/><br/>A <b>WIPE</b> es como un escaneo completo pero primero elimina todos los datos y luego los restaura de las palabras de su copia de seguridad.]]></string>
+    <string name="dialog_rescan_wallet_button_positive">Rápido</string>
+    <string name="dialog_rescan_wallet_button_negative">Completo</string>
+    <string name="dialog_rescan_wallet_button_neutral">Limpiar</string>
+    <string name="dialog_rescan_failed_title">Falló el reescaneo completo</string>
     <!-- Screen: Balance Detail -->
-    <string name="balance_detail_button_send_transparent_funds" tools:ignore="MissingTranslation">Shield Transparent Funds</string>
+    <string name="balance_detail_button_send_transparent_funds" tools:ignore="MissingTranslation">Fondos transparentes blindados</string>
     <string name="balance_detail_text_total_title" tools:ignore="MissingTranslation">= TOTAL</string>
     <!--      -->
     <!-- Misc -->
     <!--      -->
     <string name="biometric_prompt_title" tools:ignore="MissingTranslation">@string/translated_send_securityauth</string>
-    <string name="camera_permission_denied">Well, this is awkward. You denied permission for the camera.</string>
-    <string name="error_launch_url">Failed to open browser.</string>
+    <string name="camera_permission_denied">Bueno, esto es incómodo. Has denegado el permiso para la cámara.</string>
+    <string name="error_launch_url">Error al abrir el navegador.</string>
     <string name="key_backspace"><![CDATA[<]]></string>
     <string name="key_decimal">.</string>
     <string name="mixpanel_project">a178e1ef062133fc121079cb12fa43c7</string>
     <string name="format_date_time">@string/custom_translation_format_date_time_brief</string>
     <string name="format_transaction_history_date_time">@string/transaction_history_format_date_time_brief</string>
-    <string name="loading">⏳ Loading…</string>
-    <string name="your_shielded_address">Your Shielded Address</string>
-    <string name="your_transparent_address">Your Transparent Address</string>
+    <string name="loading">⏳ Cargando…</string>
+    <string name="your_shielded_address">Dirección blindada</string>
+    <string name="your_transparent_address">Dirección transparente</string>
     <string name="transaction_history_format_date_time_brief" tools:ignore="MissingTranslation">MM/dd/yy h:mma</string>
-    <string name="got_it">Got it</string>
-    <string name="auto_shielding_message">You\'ve received more than\n0.01 ZEC in transparent funds.\n\nInitiating Auto-Shield!</string>
-    <string name="shielding">Shielding!</string>
+    <string name="got_it">Entendido</string>
+    <string name="auto_shielding_message">Has recibido más de\n0.01 ZEC en fondos transparentes.\n\n¡Iniciando Auto-Shield!</string>
+    <string name="shielding">¡Blindado!</string>
     <string name="exclamation">!</string>
-    <string name="share_address">Share Address</string>
-    <string name="receive_zec">Receive ZEC</string>
-    <string name="plus_transparent">+ transparent</string>
-    <string name="total_balance">Total Balance</string>
-    <string name="as_of_block">as of block</string>
-    <string name="auto_shield_complete">Auto-Shielding completed successfully!</string>
-    <string name="export_pdf">Export PDF</string>
-    <string name="pdf_dialog_sub_heading">Export the seed words to a password protected PDF which can be backed up to user secured portable storage devices.</string>
-    <string name="pdf_password_hint">Please Enter Password</string>
-    <string name="wallet_birthday_helper_text">e.g. 1600000. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while.</string>
-    <string name="profile_wipe_wallet_title">Are you sure?</string>
-    <string name="profile_wipe_wallet_text">Wiping your data will close the app. Since your seed is preserved, this operation is probably safe but please backup your seed anyway. \n\nContinue?</string>
-    <string name="profile_wipe_wallet_wipe">Wipe</string>
-    <string name="buy_zec">Buy Zcash</string>
-    <string name="buy_zec_dialog_title">Buy ZEC from MoonPay</string>
-    <string name="buy_zec_dialog_msg">Customers that are not US residents can purchase Zcash (ZEC) by registering with MoonPay.\n\nYour Zcash T-Address has been copied to the clipboard.\nChoose \"Open Browser\" below, Select \'Zcash (ZEC)\' as the receiving coin once MoonPay loads, and then paste your T-address.</string>
-    <string name="birthday_height_backup">Birthday Height:</string>
+    <string name="share_address">Compartir dirección</string>
+    <string name="receive_zec">Recibir ZEC</string>
+    <string name="plus_transparent">+ transparente</string>
+    <string name="total_balance">Balance total</string>
+    <string name="as_of_block">desde el bloque</string>
+    <string name="auto_shield_complete">¡Acción completada con éxito!</string>
+    <string name="export_pdf">Exportar PDF</string>
+    <string name="pdf_dialog_sub_heading">Exportar las palabras de semilla a un PDF protegido por contraseña que puede ser respaldado a dispositivos de almacenamiento portátiles asegurados por el usuario.</string>
+    <string name="pdf_password_hint">Introduce la contraseña</string>
+    <string name="wallet_birthday_helper_text">por ejemplo, 1600000. Esto determina dónde empezar a escanear para las transacciones. Deje en blanco para escanear desde el principio, lo que lleva un tiempo.</string>
+    <string name="profile_wipe_wallet_title">¿Estás seguro?</string>
+    <string name="profile_wipe_wallet_text">Limpiar tus datos cerrará la aplicación. Puesto que tu semilla es conservada, esta operación es probablemente segura, pero por favor haz una copia de seguridad de tu semilla de todos modos. \n\n¿Continuar?</string>
+    <string name="profile_wipe_wallet_wipe">Limpiar</string>
+    <string name="buy_zec">Comprar Zcash</string>
+    <string name="buy_zec_dialog_title">Comprar ZEC en MoonPay</string>
+    <string name="buy_zec_dialog_msg">Los clientes que no son residentes en los Estados Unidos pueden comprar Zcash (ZEC) registrándose en MoonPay.\n\nTu dirección de T-Zcash ha sido copiada al portapapeles.\nElija \"Abrir navegador\" a continuación, seleccione \'Zcash (ZEC)\' como la moneda que recibe una vez que carga MoonPay, y luego pegue su dirección T-address.</string>
+    <string name="birthday_height_backup">Cumpleaños:</string>
 </resources>
