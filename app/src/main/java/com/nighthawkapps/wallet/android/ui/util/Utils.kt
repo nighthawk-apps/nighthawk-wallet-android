@@ -48,6 +48,30 @@ object Utils {
         return getZecConvertedAmountText(toZecStringShort, zcashPriceApiData.data.values.firstOrNull().toString(), marketName = zcashPriceApiData.data.keys.firstOrNull())
     }
 
+    /**
+     * First param of Pair will be Amount as per Local Fiat Currency Selection and Second Param will be the Unit of Fiat Currency
+     */
+    fun getZecAmountAndFiatCurrency(zec: String, zcashPriceApiData: ZcashPriceApiResponse?): Pair<String?, String?>? {
+        if (zcashPriceApiData == null || zcashPriceApiData.data.isEmpty()) return null
+        return getZecAmountAndFiatCurrency(zec, zcashPriceApiData.data.values.firstOrNull().toString(), marketName = zcashPriceApiData.data.keys.firstOrNull())
+    }
+
+    fun getConvertedZecInAmount(zecString: String, zcashPriceApiData: ZcashPriceApiResponse?): String? {
+        if (zcashPriceApiData == null || zcashPriceApiData.data.isEmpty()) return null
+        return DecimalFormat("#.##").format((zecString.toFloatOrNull() ?: 0F).times(zcashPriceApiData.data.values.firstOrNull().toString().toFloatOrNull() ?: 0F))
+    }
+
+    fun getConvertedZecInAmount(zecString: String, price: String): String {
+        return DecimalFormat("#.##").format((zecString.toFloatOrNull() ?: 0F).times(price.toFloatOrNull() ?: 0F))
+    }
+
+    /**
+     * First param of Pair will be Amount as per Local Fiat Currency Selection and Second Param will be the Unit of Fiat Currency
+     */
+    private fun getZecAmountAndFiatCurrency(zec: String, price: String, currencyName: String? = null, marketName: String? = null): Pair<String, String> {
+        return Pair(getConvertedZecInAmount(zec, price), currencyName ?: getCurrencySymbol(marketName))
+    }
+
     fun getZecConvertedAmountText(toZecStringShort: String, price: String, currencyName: String? = null, marketName: String? = null): String {
         return DecimalFormat("#.##").format((toZecStringShort.toFloatOrNull() ?: 0F).times(price.toFloatOrNull() ?: 0F)) + " ${currencyName ?: getCurrencySymbol(marketName)}"
     }

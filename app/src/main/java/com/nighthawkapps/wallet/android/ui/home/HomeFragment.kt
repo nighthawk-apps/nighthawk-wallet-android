@@ -128,7 +128,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     }
                 }
                 binding.tvTransactionDate.text = recentUiModel.transactionTime
-                binding.tvTransactionAmount.text = getString(R.string.ns_zec_amount, recentUiModel.amount)
+                binding.tvTransactionAmount.text = recentUiModel.amountText
                 recentUiModel.zecConvertedValueText?.let {
                     binding.tvTransactionConversionPrice.text = it
                     binding.tvTransactionConversionPrice.isVisible = true
@@ -153,10 +153,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.walletRecentActivityView.sentView.groupAmount.isVisible = show
         binding.walletRecentActivityView.receivedView.groupAmountPrivate.isVisible = show.not()
         binding.walletRecentActivityView.sentView.groupAmountPrivate.isVisible = show.not()
-        if (show.not() && viewModel.getSelectedCurrencyName().isNotBlank()) {
-            val text = "--- ${viewModel.getSelectedCurrencyName()}"
-            binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = text
-            binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = text
+        if (show.not()) {
+            val selectedCurrencyName = viewModel.getSelectedCurrencyName()
+            if (selectedCurrencyName.isNotBlank()) {
+                val text = "--- $selectedCurrencyName"
+                binding.walletRecentActivityView.receivedView.tvTransactionConversionPricePrivate.text = text
+                binding.walletRecentActivityView.sentView.tvTransactionConversionPricePrivate.text = text
+            }
+            val unitText = "--- ${viewModel.getSelectedFiatUnit().unit}"
+            binding.walletRecentActivityView.receivedView.tvTransactionAmountPrivate.text = unitText
+            binding.walletRecentActivityView.sentView.tvTransactionAmountPrivate.text = unitText
         }
     }
 

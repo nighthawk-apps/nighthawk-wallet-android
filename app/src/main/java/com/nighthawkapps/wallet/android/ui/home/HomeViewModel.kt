@@ -17,6 +17,7 @@ import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.Const
+import com.nighthawkapps.wallet.android.ext.convertZatoshiToSelectedUnit
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.lockbox.LockBox
@@ -37,7 +38,6 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -255,11 +255,13 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             val transactionType = if (confirmedTransaction.toAddress.isNullOrEmpty()) RecentActivityUiModel.TransactionType.RECEIVED else RecentActivityUiModel.TransactionType.SENT
             val address = if (transactionType == RecentActivityUiModel.TransactionType.RECEIVED) getSender(confirmedTransaction) else confirmedTransaction.toAddress
             val toZecStringShort = WalletZecFormmatter.toZecStringShort(confirmedTransaction.value)
+            val selectedUnit = getSelectedFiatUnit()
+            val amount = confirmedTransaction.value.convertZatoshiToSelectedUnit(selectedUnit)
             RecentActivityUiModel(
                 transactionType = transactionType,
                 transactionTime = formatter.format(confirmedTransaction.blockTimeInSeconds * 1000L),
                 isTransactionShielded = address?.equals(R.string.unknown.toAppString(), true) == true || address.isShielded(),
-                amount = toZecStringShort,
+                amountText = "$amount ${selectedUnit.unit}",
                 isMemoAvailable = confirmedTransaction.memo?.toUtf8Memo()?.isNotBlank() == true,
                 zecConvertedValueText = Utils.getZecConvertedAmountText(toZecStringShort, zcashPriceApiData.value),
                 confirmedTransaction = confirmedTransaction
@@ -271,7 +273,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         var transactionType: TransactionType? = null,
         var transactionTime: String? = null,
         var isTransactionShielded: Boolean = false,
-        var amount: String = "---",
+        var amountText: String = "--- ZEC",
         var isMemoAvailable: Boolean = false,
         var zecConvertedValueText: String? = null,
         val confirmedTransaction: ConfirmedTransaction
