@@ -519,25 +519,25 @@
     <string name="dialog_rescan_wallet_button_neutral">Wipe</string>
     <string name="dialog_rescan_failed_title">Full Rescan Failed</string>
     <!-- Screen: Balance Detail -->
-    <string name="balance_detail_button_send_transparent_funds" tools:ignore="MissingTranslation">Shield Transparent Funds</string>
-    <string name="balance_detail_text_total_title" tools:ignore="MissingTranslation">= TOTAL</string>
+    <string name="balance_detail_button_send_transparent_funds" tools:ignore="MissingTranslation">Экранировать все активы</string>
+    <string name="balance_detail_text_total_title" tools:ignore="MissingTranslation">= ВСЕГО</string>
     <!--      -->
     <!-- Misc -->
     <!--      -->
     <string name="biometric_prompt_title" tools:ignore="MissingTranslation">@string/translated_send_securityauth</string>
-    <string name="camera_permission_denied">Well, this is awkward. You denied permission for the camera.</string>
-    <string name="error_launch_url">Failed to open browser.</string>
+    <string name="camera_permission_denied">Вы отказали в разрешении на камеру. Ок, но это неудобно.</string>
+    <string name="error_launch_url">Не удалось открыть браузер.</string>
     <string name="key_backspace"><![CDATA[<]]></string>
     <string name="key_decimal">.</string>
     <string name="mixpanel_project">a178e1ef062133fc121079cb12fa43c7</string>
     <string name="format_date_time">@string/custom_translation_format_date_time_brief</string>
     <string name="format_transaction_history_date_time">@string/transaction_history_format_date_time_brief</string>
-    <string name="loading">⏳ Loading…</string>
-    <string name="your_shielded_address">Your Shielded Address</string>
-    <string name="your_transparent_address">Your Transparent Address</string>
+    <string name="loading">⏳ Загрузка…</string>
+    <string name="your_shielded_address">Ваш защищённый адрес</string>
+    <string name="your_transparent_address">Ваш прозрачный адрес</string>
     <string name="transaction_history_format_date_time_brief" tools:ignore="MissingTranslation">MM/dd/yy h:mma</string>
-    <string name="got_it">Got it</string>
-    <string name="auto_shielding_message">You\'ve received more than\n0.01 ZEC in transparent funds.\n\nInitiating Auto-Shield!</string>
+    <string name="got_it">Хорошо</string>
+    <string name="auto_shielding_message">Вы получили более\n0.01 ZEC на прозрачный адрес.\n\nАктивы автоматически экранированы!</string>
     <string name="shielding">Shielding!</string>
     <string name="exclamation">!</string>
     <string name="share_address">Share Address</string>
