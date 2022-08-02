@@ -124,6 +124,9 @@
     <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, the exchange rate is fetched from CoinGecko API v3 and used to calculate values. Your fund amounts are never revealed to any server.</string>
     <string name="ns_change_server">Change server</string>
     <string name="ns_change_server_text">Change backend lightwalletd server.</string>
+    <string name="ns_external_services">External services</string>
+    <string name="ns_external_services_text">Opt-in to our partner services.</string>
+    <string name="ns_external_services_uns">Enable Unstoppable Domain Service</string>
     <string name="ns_security">Security</string>
     <string name="ns_security_text">Set/Change Pin Code &amp; Biometric</string>
     <string name="ns_security_choose">Choose PIN code</string>
@@ -435,6 +438,8 @@
     <string name="pin_code_setup_done">Pin code set up successfully!</string>
     <string name="settings_toast_face_touch_id_enabled">Face/Touch ID enabled.</string>
     <string name="settings_toast_face_touch_id_disabled">Face/Touch ID disabled.</string>
+    <string name="settings_toast_face_uns_enabled">Unstoppable Domain Service resolution enabled.</string>
+    <string name="settings_toast_face_uns_disabled">Unstoppable Domain Service resolution disabled.</string>
 
     <!-- Screen: Transaction details -->
     <string name="transaction_address_paid_you">@string/missing_transaction_address_paid_you</string>
@@ -546,6 +551,7 @@
     <string name="dialog_rescan_wallet_button_positive">Quick</string>
     <string name="dialog_rescan_wallet_button_negative">Full</string>
     <string name="dialog_rescan_wallet_button_neutral">Wipe</string>
+    <string name="dialog_rescan_initiated_title">Performing Full Rescan!</string>
     <string name="dialog_rescan_failed_title">Full Rescan Failed</string>
 
     <!-- Screen: Balance Detail -->
@@ -589,5 +595,6 @@
     <string name="buy_zec_dialog_title">Buy ZEC from MoonPay</string>
     <string name="buy_zec_dialog_msg">Customers that are not US residents can purchase Zcash (ZEC) by registering with MoonPay.\n\nYour Zcash T-Address has been copied to the clipboard.\nChoose \"Open Browser\" below, Select \'Zcash (ZEC)\' as the receiving coin once MoonPay loads, and then paste your T-address.</string>
     <string name="birthday_height_backup">Birthday Height:</string>
+    <string name="rescan_wallet_wipe_success">Wiped block data successfully! Wallet data cleared. Please relaunch the app!</string>
 
 </resources>

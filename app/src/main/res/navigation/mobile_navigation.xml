@@ -377,6 +377,9 @@
             android:id="@+id/action_nav_settings_to_nav_update_server"
             app:destination="@id/nav_update_server"/>
         <action
+            android:id="@+id/action_nav_settings_to_nav_external_services"
+            app:destination="@id/nav_external_services"/>
+        <action
             android:id="@+id/action_nav_settings_to_nav_security"
             app:destination="@id/nav_security"/>
         <action
@@ -397,6 +400,11 @@
         android:id="@+id/nav_update_server"
         android:name="com.nighthawkapps.wallet.android.ui.setup.UpdateServerFragment"
         tools:layout="@layout/fragment_update_server">
+    </fragment>
+    <fragment
+        android:id="@+id/nav_external_services"
+        android:name="com.nighthawkapps.wallet.android.ui.setup.ExternalServicesFragment"
+        tools:layout="@layout/fragment_external_services">
     </fragment>
     <fragment
         android:id="@+id/nav_security"

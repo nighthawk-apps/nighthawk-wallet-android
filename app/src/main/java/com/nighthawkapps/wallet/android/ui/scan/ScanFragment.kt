@@ -13,6 +13,7 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.google.common.util.concurrent.ListenableFuture
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentScanBinding
@@ -128,7 +129,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                 binding.textScanError.text = ""
                 sendViewModel.toAddress = parsed.address
                 sendViewModel.memo = parsed.memo ?: ""
-                sendViewModel.zatoshiAmount = parsed.amount
+                sendViewModel.zatoshiAmount = Zatoshi(parsed.amount)
                 sendViewModel.setSendZecDeepLinkData(parsed)
                 mainActivity?.navController?.popBackStack()
             }

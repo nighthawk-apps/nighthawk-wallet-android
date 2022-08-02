@@ -12,7 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
-import cash.z.ecc.android.sdk.type.WalletBalance
+import cash.z.ecc.android.sdk.model.WalletBalance
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendEnterAmountBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -29,8 +30,8 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
 
     private val sendViewModel: SendViewModel by activityViewModel()
     private lateinit var numberPad: List<TextView>
-    private var maxZatoshi: Long = 0L
-    private var availableZatoshi: Long = 0L
+    private var maxZatoshi: Zatoshi = Zatoshi(0)
+    private var availableZatoshi: Zatoshi = Zatoshi(0)
 
     override fun inflate(inflater: LayoutInflater): FragmentSendEnterAmountBinding {
         return FragmentSendEnterAmountBinding.inflate(inflater)
@@ -84,7 +85,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
                 mainActivity?.maybeOpenScan()
             }
             btnContinue.setOnClickListener {
-                if (sendViewModel.isAmountValid(sendViewModel.zatoshiAmount, maxZatoshi)) {
+                if (sendViewModel.isAmountValid(sendViewModel.zatoshiAmount?.value!!, maxZatoshi.value)) {
                     twig("Amount entered to send ${sendViewModel.zatoshiAmount}")
                     mainActivity?.safeNavigate(R.id.action_nav_enter_amount_to_enter_address)
                 }
@@ -107,7 +108,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
         data?.let {
             sendViewModel.toAddress = data.address
             sendViewModel.memo = data.memo ?: ""
-            sendViewModel.zatoshiAmount = data.amount
+            sendViewModel.zatoshiAmount = Zatoshi(data.amount)
             val newValue = if (sendViewModel.isZecAmountState) {
                 sendViewModel.zatoshiAmount.convertZatoshiToZecString()
             } else {
@@ -115,7 +116,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             }
             binding.tvBalance.text = newValue
             onAmountValueUpdated(newValue)
-            if (sendViewModel.isAmountValid(sendViewModel.zatoshiAmount, maxZatoshi)) {
+            if (sendViewModel.zatoshiAmount != null && sendViewModel.isAmountValid(sendViewModel.zatoshiAmount!!.value, maxZatoshi.value)) {
                 mainActivity?.safeNavigate(R.id.action_nav_send_enter_to_nav_send_review)
             }
         }
@@ -130,7 +131,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
                 }
             } else {
                 sendViewModel.getZecMarketPrice()?.let { marketPrice ->
-                    sendViewModel.zatoshiAmount = Utils.calculateLocalCurrencyToZatoshi(marketPrice, newValue) ?: -1
+                    sendViewModel.zatoshiAmount = Zatoshi(Utils.calculateLocalCurrencyToZatoshi(marketPrice, newValue) ?: -1)
                 }
             }
             calculateZecConvertedAmount(sendViewModel.zatoshiAmount)
@@ -138,7 +139,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
         updateButtonsUI(newValue)
     }
 
-    private fun calculateZecConvertedAmount(zatoshi: Long) {
+    private fun calculateZecConvertedAmount(zatoshi: Zatoshi?) {
         sendViewModel.getZecMarketPrice()?.let {
             val selectedCurrencyName = sendViewModel.getSelectedFiatCurrency().currencyName
             var drawableEnd: Drawable? = null
@@ -199,7 +200,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
     private fun getEnteredAmountInZatoshi(): Long {
         val enteredAmount = binding.tvBalance
         return if (sendViewModel.isZecAmountState) {
-            enteredAmount.convertZecToZatoshi() ?: -1
+            enteredAmount.convertZecToZatoshi()?.value!!
         } else {
             sendViewModel.getZecMarketPrice()?.let {
                 Utils.calculateLocalCurrencyToZatoshi(it, enteredAmount.text.toString())
@@ -216,7 +217,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
                 topUpWallet = false,
                 notEnoughZcash = false
             )
-        } else if (getEnteredAmountInZatoshi() > maxZatoshi) {
+        } else if (Zatoshi(getEnteredAmountInZatoshi()) > maxZatoshi) {
             updateVisibilityOfButtons(
                 scanPaymentCode = false,
                 continueButton = false,
@@ -247,9 +248,9 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
         }
     }
 
-    private fun onBalanceUpdated(balance: WalletBalance) {
-        maxZatoshi = (balance.availableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI).coerceAtLeast(0L)
-        availableZatoshi = balance.availableZatoshi
+    private fun onBalanceUpdated(balance: WalletBalance?) {
+        maxZatoshi = (balance?.available!! - ZcashSdk.MINERS_FEE).coerceAtLeast(Zatoshi(0))
+        availableZatoshi = balance?.available!!
         val spendableBalance = WalletZecFormmatter.toZecStringFull(maxZatoshi)
         binding.tvSpendableBalance.text = getString(
             R.string.ns_spendable_balance,

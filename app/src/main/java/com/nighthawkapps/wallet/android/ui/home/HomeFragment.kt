@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.ui.home
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,7 +22,6 @@ import com.nighthawkapps.wallet.android.databinding.FragmentHomeBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.gone
-import com.nighthawkapps.wallet.android.ext.pending
 import com.nighthawkapps.wallet.android.ext.invisible
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.onClickNavTo
@@ -58,13 +57,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun inflate(inflater: LayoutInflater): FragmentHomeBinding =
         FragmentHomeBinding.inflate(inflater)
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        viewModel.cancelSyncAppNotificationAndReRegister()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.cancelSyncAppNotificationAndReRegister()
         twig("HomeFragment.onViewCreated  uiModel: ${::uiModel.isInitialized}  saved: ${savedInstanceState != null}")
         binding.walletRecentActivityView.tvViewAllTransactions.onClickNavTo(R.id.action_nav_home_to_nav_history)
         binding.buttonShieldNow.setOnClickListener { if (isAutoShieldFundsAvailable()) { autoShield(uiModel) } }
@@ -306,10 +301,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         )
                         append(")")
                     }
-                    if (old.saplingBalance.availableZatoshi != new.saplingBalance.availableZatoshi) append(
-                        "${maybeComma()}availableBalance=${new.saplingBalance.availableZatoshi}"
+                    if (old.saplingBalance?.available != new.saplingBalance?.available) append(
+                        "${maybeComma()}availableBalance=${new.saplingBalance?.available}"
                     )
-                    if (old.saplingBalance.totalZatoshi != new.saplingBalance.totalZatoshi) append("${maybeComma()}totalBalance=${new.saplingBalance.totalZatoshi}")
+                    if (old.saplingBalance?.total != new.saplingBalance?.total) append("${maybeComma()}totalBalance=${new.saplingBalance?.total}")
                     if (old.pendingSend != new.pendingSend) append("${maybeComma()}pendingSend=${new.pendingSend}")
                     append(")")
                 }
@@ -323,7 +318,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         var message = getString(R.string.ns_connecting)
         when (uiModel.status) {
             Synchronizer.Status.DOWNLOADING -> {
-                if (!viewModel.isValidBlock(uiModel.processorInfo.lastDownloadedHeight, uiModel.processorInfo.lastDownloadRange.last)) return
                 iconResourceId = R.drawable.ic_icon_downloading
                 message = if (uiModel.downloadProgress == 0) {
                     getString(R.string.ns_preparing_download)
@@ -332,7 +326,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
             Synchronizer.Status.SCANNING -> {
-                if (!viewModel.isValidBlock(uiModel.processorInfo.lastScannedHeight, uiModel.processorInfo.lastScanRange.last)) return
                 message = when (uiModel.scanProgress) {
                     0 -> {
                         iconResourceId = R.drawable.ic_icon_preparing
@@ -408,19 +401,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
 
             // troubleshooting logs
-            if (uiModel.transparentBalance.availableZatoshi > 0) {
+            if ((uiModel.transparentBalance?.available?.value ?: 0) > 0) {
                 twig(
                     "Transparent funds are available but not enough to autoshield. Available: ${
-                        uiModel.transparentBalance.availableZatoshi.convertZatoshiToZecString(
-                            10
-                        )
+                        uiModel.transparentBalance?.available.convertZatoshiToZecString(10)
                     }  Required: ${
-                        NighthawkWalletApp.instance.autoshieldThreshold.convertZatoshiToZecString(
-                            8
-                        )
+                        Zatoshi(NighthawkWalletApp.instance.autoshieldThreshold).convertZatoshiToZecString(8)
                     }"
                 )
-            } else if (uiModel.transparentBalance.totalZatoshi > 0) {
+            } else if ((uiModel.transparentBalance?.total?.value ?: 0) > 0) {
                 twig("Transparent funds have been received but they require 10 confirmations for autoshielding.")
             } else if (!canAutoshield) {
                 twig("Could not Autoshield probably because the last one occurred too recently")
@@ -441,14 +430,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             twig("${uiModel.unminedCount} unconfirmed ${if (uiModel.unminedCount > 1) "transactions" else "transaction"}")
             return
         }
-        val availableBalance = uiModel.saplingBalance.availableZatoshi
-        val totalBalance = uiModel.saplingBalance.totalZatoshi
-        val expectingAmount = uiModel.saplingBalance.pending
-        if (availableBalance != -1L && availableBalance < totalBalance && expectingAmount > 0L) {
+        val availableBalance = uiModel.saplingBalance?.available
+        val totalBalance = uiModel.saplingBalance?.total
+        val expectingAmount = uiModel.saplingBalance?.pending
+        if (availableBalance?.value!! < totalBalance?.value!! && (expectingAmount?.value ?: 0) > 0L) {
             mainActivity?.updateTransferTab(false)
-            if (expectingAmount != viewModel.expectingAmount) { // This will stop to show snack bar again and again for same transaction
+            if (expectingAmount?.value != viewModel.expectingAmount) { // This will stop to show snack bar again and again for same transaction
                 mainActivity?.showSnackbar(getString(R.string.ns_expecting_balance_snack_bar_msg, expectingAmount.convertZatoshiToZecString()))
-                viewModel.expectingAmount = expectingAmount
+                viewModel.expectingAmount = expectingAmount?.value ?: 0
             }
         }
     }

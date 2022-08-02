@@ -9,6 +9,8 @@ import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.isShielded
+import cash.z.ecc.android.sdk.model.BlockHeight
+import cash.z.ecc.android.sdk.model.Zatoshi
 import cash.z.ecc.android.sdk.tool.DerivationTool
 import cash.z.ecc.android.sdk.type.AddressType
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
@@ -22,6 +24,7 @@ import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.INCLUDE_MEMO_PREFIX_STANDARD
+import com.nighthawkapps.wallet.android.ui.util.UnsUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +63,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
     var fromAddress: String = ""
     var toAddress: String = ""
     var memo: String = ""
-    var zatoshiAmount: Long = -1L
+    var zatoshiAmount: Zatoshi? = null
     var includeFromAddress: Boolean = false
         set(value) {
             require(!value || (value && fromAddress.isNotBlank())) {
@@ -70,6 +73,9 @@ class SendViewModel @Inject constructor() : ViewModel() {
             field = value
         }
     val isShielded get() = toAddress.startsWith("z")
+    var unsDomains = mutableMapOf<String, String>()
+
+    private val uns = UnsUtil()
 
     fun onNewValueEntered(newValue: String) {
         _enteredValue.value = newValue
@@ -100,7 +106,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
                     synchronizer.network
                 )
             }
-            synchronizer.sendToAddress(keys[0], zatoshiAmount, toAddress, memoToSend.chunked(ZcashSdk.MAX_MEMO_SIZE).firstOrNull() ?: "")
+            synchronizer.sendToAddress(keys[0], zatoshiAmount!!, toAddress, memoToSend.chunked(ZcashSdk.MAX_MEMO_SIZE).firstOrNull() ?: "")
                     .onEach { tx ->
                         _pendingTransaction.value = tx
                         twig("Received pending txUpdate: $tx")
@@ -120,27 +126,36 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
     fun createMemoToSend() = if (includeFromAddress) "$memo\n$INCLUDE_MEMO_PREFIX_STANDARD\n$fromAddress" else memo
 
-    suspend fun validateAddress(address: String): AddressType =
-        synchronizer.validateAddress(address)
+    suspend fun validateAddress(address: String): AddressType {
+        var addressType = synchronizer.validateAddress(address)
+        if (addressType.isNotValid && lockBox.getBoolean(Const.AppConstants.USE_UNSTOPPABLE_NAME_SERVICE)) {
+            val unsAddress = uns.isValidUNSAddress(address)
+            if (unsAddress != null) {
+                unsDomains[address] = unsAddress
+                addressType = synchronizer.validateAddress(unsAddress)
+            }
+        }
+        return addressType
+    }
 
-    fun validate(context: Context, availableZatoshi: Long?, maxZatoshi: Long?) = flow {
+    fun validate(context: Context, availableZatoshi: Zatoshi?, maxZatoshi: Zatoshi?) = flow {
         when {
             synchronizer.validateAddress(toAddress).isNotValid -> {
                 emit(context.getString(R.string.send_validation_error_address_invalid))
             }
-            zatoshiAmount < 1 -> {
+            zatoshiAmount?.let { it.value < 1L } ?: false -> {
                 emit(context.getString(R.string.send_validation_error_amount_minimum))
             }
             availableZatoshi == null -> {
                 emit(context.getString(R.string.send_validation_error_unknown_funds))
             }
-            availableZatoshi == 0L -> {
+            availableZatoshi == Zatoshi(0) -> {
                 emit(context.getString(R.string.send_validation_error_no_available_funds))
             }
-            availableZatoshi > 0 && availableZatoshi < ZcashSdk.MINERS_FEE_ZATOSHI -> {
+            availableZatoshi > Zatoshi(0) && availableZatoshi < ZcashSdk.MINERS_FEE -> {
                 emit(context.getString(R.string.send_validation_error_dust))
             }
-            maxZatoshi != null && zatoshiAmount > maxZatoshi -> {
+            maxZatoshi != null && zatoshiAmount!! > maxZatoshi -> {
                 emit(context.getString(R.string.send_validation_error_too_much, WalletZecFormmatter.toZecStringFull(maxZatoshi), NighthawkWalletApp.instance.getString(R.string.symbol)))
             }
             createMemoToSend().length > ZcashSdk.MAX_MEMO_SIZE -> {
@@ -157,7 +172,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun PendingTransaction?.toTransactionUIModel(latestHeight: Int? = this@SendViewModel.latestHeight): HistoryViewModel.TransactionDetailsUIModel = HistoryViewModel.TransactionDetailsUIModel()
+    private fun PendingTransaction?.toTransactionUIModel(latestHeight: BlockHeight? = this@SendViewModel.latestHeight): HistoryViewModel.TransactionDetailsUIModel = HistoryViewModel.TransactionDetailsUIModel()
         .apply {
         this@toTransactionUIModel.let { tx ->
             network = synchronizer.network.networkName
@@ -167,10 +182,10 @@ class SendViewModel @Inject constructor() : ViewModel() {
                 tx != null && tx.toAddress.isEmpty() && tx.value > 0L && tx.minedHeight > 0 -> true
                 else -> null
             }
-            isMined = tx?.minedHeight != null && tx.minedHeight > synchronizer.network.saplingActivationHeight
-            transactionAmount = WalletZecFormmatter.toZecStringFull(tx?.value)
-            convertedAmount = calculateZecConvertedAmount(tx?.value ?: 0L) ?: ""
-            blockId = String.format("%,d", tx?.minedHeight ?: 0)
+            isMined = tx?.minedHeight != null && tx.minedHeight > synchronizer.network.saplingActivationHeight.value
+            transactionAmount = WalletZecFormmatter.toZecStringFull(Zatoshi(tx?.value!!))
+            convertedAmount = calculateZecConvertedAmount(Zatoshi(tx.value) ?: Zatoshi(0L)) ?: ""
+            blockId = String.format("%,d", tx.minedHeight ?: 0)
             val flags =
                 DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_ABBREV_MONTH
             timestamp = if (tx == null || tx.createTime <= 0) getString(R.string.transaction_timestamp_unavailable) else DateUtils.getRelativeDateTimeString(
@@ -193,7 +208,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
                 if (isMined) {
                     val hasLatestHeight = latestHeight != null && latestHeight > synchronizer.network.saplingActivationHeight
                     confirmation = if (it.minedHeight > 0 && hasLatestHeight) {
-                        val confirmations = latestHeight!! - it.minedHeight + 1
+                        val confirmations = latestHeight!!.value - it.minedHeight + 1
                         transactionStatus = getString(R.string.ns_confirmed)
                         transactionStatusStartDrawableId = R.drawable.ic_icon_confirmed
                         "$confirmations"
@@ -219,15 +234,15 @@ class SendViewModel @Inject constructor() : ViewModel() {
 
             when (isInbound) {
                 true -> {
-                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.value)
+                    totalAmount = WalletZecFormmatter.toZecStringFull(Zatoshi(tx.value))
                     subTotal = totalAmount
                     iconRotation = 0f
                     toAddress = getString(R.string.unknown)
                     recipientAddressType = getString(if (toAddress.isShielded() || toAddress.equals(getString(R.string.unknown), true)) R.string.ns_shielded else R.string.ns_transparent)
                 }
                 false -> {
-                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.value?.plus(ZcashSdk.MINERS_FEE_ZATOSHI))
-                    subTotal = WalletZecFormmatter.toZecStringFull(tx?.value)
+                    totalAmount = WalletZecFormmatter.toZecStringFull(Zatoshi(tx.value).plus(ZcashSdk.MINERS_FEE))
+                    subTotal = WalletZecFormmatter.toZecStringFull(Zatoshi(tx.value))
                     iconRotation = 180f
                     networkFees = "0.00001"
                     toAddress = tx?.toAddress ?: ""
@@ -240,7 +255,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun calculateZecConvertedAmount(zatoshi: Long): String? {
+    private fun calculateZecConvertedAmount(zatoshi: Zatoshi): String? {
         return getZecMarketPrice()?.let {
             val selectedFiatCurrencyName = FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
             if (selectedFiatCurrencyName.isBlank()) null
@@ -262,7 +277,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
     private fun isSufficientlyOld(tx: PendingTransaction): Boolean {
         val threshold = 75 * 1000 * 25 // approx 25 blocks
         val delta = System.currentTimeMillis() / 1000L - tx.createTime
-        return tx.minedHeight > synchronizer.network.saplingActivationHeight &&
+        return tx.minedHeight > synchronizer.network.saplingActivationHeight.value &&
                 delta < threshold
     }
 
@@ -270,7 +285,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
         fromAddress = ""
         toAddress = ""
         memo = ""
-        zatoshiAmount = -1L
+        zatoshiAmount = null
         includeFromAddress = false
         _enteredValue.value = "0"
         _sendZecDeepLinkData.value = null

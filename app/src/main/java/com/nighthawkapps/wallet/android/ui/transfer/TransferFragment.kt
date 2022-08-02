@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.net.toUri
 import androidx.navigation.fragment.navArgs
 import androidx.viewbinding.ViewBinding
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentTransferBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -33,7 +34,7 @@ class TransferFragment : BaseFragment<FragmentTransferBinding>() {
                 sendViewModel.reset()
                 sendViewModel.toAddress = data.address
                 sendViewModel.memo = data.memo ?: ""
-                sendViewModel.zatoshiAmount = data.amount
+                sendViewModel.zatoshiAmount = Zatoshi(data.amount)
                 sendViewModel.setSendZecDeepLinkData(data)
                 mainActivity?.safeNavigate(R.id.action_nav_transfer_to_nav_send_review)
             }

@@ -104,7 +104,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun onRescanWallet() {
-        val distance = viewModel.scanDistance()
+        val distance = viewModel.fullScanDistance()
         mainActivity?.showRescanWalletDialog(
             String.format("%,d", distance),
             viewModel.blocksToMinutesString(distance),

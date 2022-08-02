@@ -24,7 +24,8 @@ import cash.z.ecc.android.sdk.ext.onFirstWith
 import cash.z.ecc.android.sdk.ext.safelyConvertToBigDecimal
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
 import cash.z.ecc.android.sdk.type.AddressType
-import cash.z.ecc.android.sdk.type.WalletBalance
+import cash.z.ecc.android.sdk.model.WalletBalance
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -135,7 +136,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     private fun onMax() {
         if (maxZatoshi != null) {
             binding.inputZcashAmount.apply {
-                setText(maxZatoshi.convertZatoshiToZecString(8))
+                setText(Zatoshi(maxZatoshi!!).convertZatoshiToZecString(8))
                 postDelayed({
                     requestFocus()
                     setSelection(text?.length ?: 0)
@@ -147,7 +148,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     private fun onMemo() {
         if (maxZatoshi != null) {
             binding.inputZcashAmount.apply {
-                setText(minZatoshi.convertZatoshiToZecString(8))
+                setText(Zatoshi(minZatoshi).convertZatoshiToZecString(8))
                 postDelayed({
                     requestFocus()
                     setSelection(text?.length ?: 0)
@@ -160,7 +161,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         data?.let {
             sendViewModel.toAddress = data.address
             sendViewModel.memo = data.memo ?: ""
-            sendViewModel.zatoshiAmount = data.amount
+            sendViewModel.zatoshiAmount = Zatoshi(data.amount)
             applyViewModel(sendViewModel)
         }
     }
@@ -172,7 +173,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
 
     private fun applyViewModel(model: SendViewModel) {
         // Apply View Model
-        if (sendViewModel.zatoshiAmount > 0L) {
+        if ((sendViewModel.zatoshiAmount?.value ?: 0) > 0L) {
             sendViewModel.zatoshiAmount.convertZatoshiToZecString(8).let { amount ->
                 binding.inputZcashAmount.setText(amount)
             }
@@ -241,12 +242,16 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     }
 
     private fun onSubmit(unused: EditText? = null) {
-        sendViewModel.toAddress = binding.inputZcashAddress.text.toString()
+        var address = binding.inputZcashAddress.text.toString()
+        if (!sendViewModel.unsDomains[address].isNullOrEmpty()) {
+            address = sendViewModel.unsDomains[address]!!
+        }
+        sendViewModel.toAddress = address
         sendViewModel.memo = binding.inputZcashMemo.text?.toString() ?: ""
         sendViewModel.zatoshiAmount = binding.inputZcashAmount.text.toString().safelyConvertToBigDecimal().convertZecToZatoshi()
         binding.inputZcashAmount.convertZecToZatoshi()?.let { sendViewModel.zatoshiAmount = it }
         applyViewModel(sendViewModel)
-        sendViewModel.validate(requireContext(), availableZatoshi, maxZatoshi).onFirstWith(resumedScope) { errorMessage ->
+        sendViewModel.validate(requireContext(), Zatoshi(availableZatoshi!!), Zatoshi(maxZatoshi!!)).onFirstWith(resumedScope) { errorMessage ->
             if (errorMessage == null) {
                 mainActivity?.authenticate("Please confirm that you want to send ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC") {
                     mainActivity?.safeNavigate(R.id.action_nav_send_to_nav_send_final)
@@ -279,7 +284,9 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         updateClipboardBanner()
         updateLastUsedBanner()
         sendViewModel.synchronizer.saplingBalances.collectWith(resumedScope) {
-            onBalanceUpdated(it)
+            if (it != null) {
+                onBalanceUpdated(it)
+            }
         }
         binding.inputZcashAddress.text.toString().let {
             if (!it.isNullOrEmpty()) onAddressChanged(it)
@@ -287,8 +294,9 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
     }
 
     private fun onBalanceUpdated(balance: WalletBalance) {
-        maxZatoshi = (balance.availableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI).coerceAtLeast(0L)
-        availableZatoshi = balance.availableZatoshi
+//        maxZatoshi = (balance.available.value - ZcashSdk.MINERS_FEE.value).coerceAtLeast(0L)
+        maxZatoshi = (balance.available - ZcashSdk.MINERS_FEE).value
+        availableZatoshi = balance.available.value
     }
 
     override fun onPrimaryClipChanged() {

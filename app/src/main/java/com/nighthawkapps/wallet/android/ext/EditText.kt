@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.TextView
 import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
 import cash.z.ecc.android.sdk.ext.safelyConvertToBigDecimal
+import cash.z.ecc.android.sdk.model.Zatoshi
 
 fun EditText.onEditorActionDone(block: (EditText) -> Unit) {
     this.setOnEditorActionListener { _, actionId, _ ->
@@ -71,9 +72,9 @@ inline fun EditText.limitDecimalPlaces(max: Int) {
     })
 }
 
-fun TextView.convertZecToZatoshi(): Long? {
+fun TextView.convertZecToZatoshi(): Zatoshi? {
     return try {
-        text.toString().replace(',', '.').safelyConvertToBigDecimal()?.convertZecToZatoshi() ?: null
+        text.toString().replace(',', '.').safelyConvertToBigDecimal()?.convertZecToZatoshi()
     } catch (t: Throwable) {
         null
     }

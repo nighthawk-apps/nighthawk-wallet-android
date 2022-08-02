@@ -4,6 +4,7 @@ import android.net.Uri
 import android.text.TextUtils
 import android.util.Base64
 import cash.z.ecc.android.sdk.ext.convertZecToZatoshi
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.twig
 
@@ -19,7 +20,7 @@ object DeepLinkUtil {
             if (queryData.isNullOrEmpty()) return null
             val amountString = queryData[0].replace("${Const.AppConstants.AMOUNT_QUERY}=", "") // amount=0.001 -> 0.001
             val amount = amountString.toBigDecimal().convertZecToZatoshi()
-            if (amount > Const.AppConstants.ZEC_MAX_AMOUNT || amount < 0) return null
+            if (amount > Zatoshi(Const.AppConstants.ZEC_MAX_AMOUNT.toLong()) || amount < Zatoshi(0)) return null
             var memo: String? = null
             if (queryData.size > 1) { // memo is also available -> memo=c2RrZmp3cw
                 memo = queryData[1].replace("${Const.AppConstants.MEMO_QUERY}=", "")
@@ -32,7 +33,7 @@ object DeepLinkUtil {
 
             twig("DeepLinkUtil: uri is: $uri address is $uriString amount is $amount memo is $memo")
 
-            return SendDeepLinkData(address = uriString, amount = amount, memo = memo)
+            return SendDeepLinkData(address = uriString, amount = amount.value, memo = memo)
         } catch (e: Exception) {
             twig("Error in parsing deep link $uri and error is $e")
             return null

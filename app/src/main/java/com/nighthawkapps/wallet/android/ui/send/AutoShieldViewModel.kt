@@ -9,17 +9,14 @@ import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.tool.DerivationTool
-import cash.z.ecc.android.sdk.type.WalletBalance
+import cash.z.ecc.android.sdk.model.BlockHeight
+import cash.z.ecc.android.sdk.model.WalletBalance
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.ext.Const
-import com.nighthawkapps.wallet.android.ext.pending
-import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -51,12 +48,14 @@ class AutoShieldViewModel @Inject constructor() : ViewModel() {
     val statuses get() = combineTransform(synchronizer.saplingBalances, synchronizer.pendingTransactions, synchronizer.processorInfo) { balance, pending, info ->
         val unconfirmed = pending.filter { !it.isConfirmed(info.networkBlockHeight) }
         val unmined = pending.filter { it.isSubmitSuccess() && !it.isMined() }
-        val pending = balance.pending
-        emit(StatusModel(unmined, unconfirmed, pending, info.networkBlockHeight))
+        val pending = balance?.pending
+        emit(StatusModel(unmined, unconfirmed, pending!!.value, info.networkBlockHeight))
     }
 
-    private fun PendingTransaction.isConfirmed(networkBlockHeight: Int): Boolean {
-        return isMined() && (networkBlockHeight - minedHeight + 1) > 10
+    private fun PendingTransaction.isConfirmed(networkBlockHeight: BlockHeight?): Boolean {
+        return networkBlockHeight?.let { height ->
+            isMined() && (height.value - minedHeight + 1) > 10
+        } ?: false
     }
 
     fun cancel(id: Long) {
@@ -82,37 +81,39 @@ class AutoShieldViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             lockBox.getBytes(Const.Backup.SEED)?.let {
                 val sk = runBlocking { DerivationTool.deriveSpendingKeys(it, synchronizer.network)[0] }
-                val tsk = runBlocking { DerivationTool.deriveTransparentSecretKey(it, synchronizer.network) }
-                val addr = runBlocking { DerivationTool.deriveTransparentAddressFromPrivateKey(tsk, synchronizer.network) }
-                synchronizer.shieldFunds(sk, tsk, "${ZcashSdk.DEFAULT_SHIELD_FUNDS_MEMO_PREFIX}\nAll UTXOs from $addr")
-                    .onEach { tx ->
-                        _pendingTransaction.value = tx
-                        twig("Received shielding txUpdate: $tx")
-                    }
-                    .catch { throwable ->
-                        twig("Error in shielding $throwable")
-                    }
-                    .collect()
+                val tsk =
+                    runBlocking { DerivationTool.deriveTransparentSecretKey(it, synchronizer.network) }
+                val addr = runBlocking {
+                    DerivationTool.deriveTransparentAddressFromPrivateKey(
+                        tsk,
+                        synchronizer.network
+                    )
+                }
+                synchronizer.shieldFunds(
+                    sk,
+                    tsk,
+                    "${ZcashSdk.DEFAULT_SHIELD_FUNDS_MEMO_PREFIX}\nAll UTXOs from $addr"
+                )
             } ?: throw IllegalStateException("Seed was expected but it was not found!")
         }
     }
 
     data class BalanceModel(
-        val orchardBalance: WalletBalance = WalletBalance(),
-        val saplingBalance: WalletBalance = WalletBalance(),
-        val transparentBalance: WalletBalance = WalletBalance()
+        val orchardBalance: WalletBalance?,
+        val saplingBalance: WalletBalance?,
+        val transparentBalance: WalletBalance?
     ) {
-        val balanceShielded: String = saplingBalance.availableZatoshi.toDisplay()
-        val balanceTransparent: String = transparentBalance.availableZatoshi.toDisplay()
-        val balanceTotal: String = (saplingBalance.availableZatoshi + transparentBalance.availableZatoshi).toDisplay()
-        val canAutoShield: Boolean = transparentBalance.availableZatoshi > 0L
+        val balanceShielded: String = saplingBalance!!.available.toDisplay()
+        val balanceTransparent: String = transparentBalance!!.available.toDisplay()
+        val balanceTotal: String = ((saplingBalance?.available ?: Zatoshi(0)) + (transparentBalance?.available ?: Zatoshi(0))).toDisplay()
+        val canAutoShield: Boolean = (transparentBalance?.available?.value ?: 0) > 0L
 
         val maxLength = maxOf(balanceShielded.length, balanceTransparent.length, balanceTotal.length)
         val paddedShielded = pad(balanceShielded)
         val paddedTransparent = pad(balanceTransparent)
         val paddedTotal = pad(balanceTotal)
 
-        private fun Long.toDisplay(): String {
+        private fun Zatoshi.toDisplay(): String {
             return convertZatoshiToZecString(8, 8)
         }
 
@@ -131,7 +132,7 @@ class AutoShieldViewModel @Inject constructor() : ViewModel() {
         val pendingUnconfirmed: List<PendingTransaction> = listOf(),
         val pendingUnmined: List<PendingTransaction> = listOf(),
         val pendingBalance: Long = 0L,
-        val latestHeight: Int = 0
+        val latestHeight: BlockHeight? = null
     ) {
         val hasUnconfirmed = pendingUnconfirmed.isNotEmpty()
         val hasUnmined = pendingUnmined.isNotEmpty()

@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.model.BlockHeight
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.R
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 class BalanceDetailFragment : BaseFragment<FragmentBalanceDetailBinding>() {
 
     private val viewModel: BalanceDetailViewModel by viewModel()
-    private var lastSignal = -1
+    private var lastSignal: BlockHeight? = null
 
     override fun inflate(inflater: LayoutInflater): FragmentBalanceDetailBinding =
         FragmentBalanceDetailBinding.inflate(inflater)
@@ -85,7 +86,7 @@ class BalanceDetailFragment : BaseFragment<FragmentBalanceDetailBinding>() {
         } else {
             val toast = when {
                 // if funds exist but they're all unconfirmed
-                (viewModel.latestBalance?.transparentBalance?.totalZatoshi ?: 0) > 0 -> {
+                (viewModel.latestBalance?.transparentBalance?.total?.value ?: 0) > 0 -> {
                     "Please wait for more confirmations"
                 }
                 viewModel.latestBalance?.hasData() == true -> {
@@ -122,15 +123,15 @@ class BalanceDetailFragment : BaseFragment<FragmentBalanceDetailBinding>() {
         binding.textStatus.text = status.toStatus()
         if (status.missingBlocks > 100) {
             binding.textBlockHeightPrefix.text = "Processing "
-            binding.textBlockHeight.text = String.format("%,d", status.info.lastScannedHeight) + " of " + String.format("%,d", status.info.networkBlockHeight)
+            binding.textBlockHeight.text = String.format("%,d", status.info.lastScannedHeight?.value ?: 0) + " of " + String.format("%,d", status.info.networkBlockHeight?.value ?: 0)
         } else {
             status.info.lastScannedHeight.let { height ->
-                if (height < 1) {
+                if (height!!.value < 1) {
                     binding.textBlockHeightPrefix.text = "Processing..."
                     binding.textBlockHeight.text = ""
                 } else {
                     binding.textBlockHeightPrefix.text = "Balances as of block "
-                    binding.textBlockHeight.text = String.format("%,d", status.info.lastScannedHeight)
+                    binding.textBlockHeight.text = String.format("%,d", status.info.lastScannedHeight?.value ?: 0)
                     sendNewBlockSignal(status.info.lastScannedHeight)
                 }
             }
@@ -143,9 +144,9 @@ class BalanceDetailFragment : BaseFragment<FragmentBalanceDetailBinding>() {
         }
     }
 
-    private fun sendNewBlockSignal(currentHeight: Int) {
+    private fun sendNewBlockSignal(currentHeight: BlockHeight?) {
         // prevent a flood of signals while scanning blocks
-        if (lastSignal != -1 && currentHeight > lastSignal) {
+        if (lastSignal != null && (currentHeight?.value ?: 0) > lastSignal!!.value) {
             mainActivity?.vibrate(0, 100, 100, 300)
             Toast.makeText(mainActivity, "New block!", Toast.LENGTH_SHORT).show()
         }
@@ -197,7 +198,7 @@ class BalanceDetailFragment : BaseFragment<FragmentBalanceDetailBinding>() {
             if (status.contains("Awaiting")) status += " and "
             status += "$count outbound ${"transaction".plural(count)}"
             remainingConfirmations().firstOrNull()?.let { remaining ->
-                status += " with $remaining ${"confirmation".plural(remaining)} remaining"
+                status += " with $remaining ${"confirmation".plural(remaining.toInt())} remaining"
             }
         }
 
