@@ -56,7 +56,7 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
     }
 
     private fun onSendClicked() {
-        sendViewModel.validate(requireContext(), Zatoshi(availableZatoshi), Zatoshi(maxZatoshi)).onFirstWith(resumedScope) { errorMessage ->
+        sendViewModel.validate(requireContext(), availableZatoshi, maxZatoshi).onFirstWith(resumedScope) { errorMessage ->
             if (errorMessage == null) {
                 mainActivity?.authenticate("Please confirm that you want to send ${sendViewModel.zatoshiAmount.convertZatoshiToZecString(8)} ZEC") {
                     mainActivity?.safeNavigate(R.id.action_nav_send_review_to_send_status)

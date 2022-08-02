@@ -235,13 +235,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         val unminedCount: Int = 0
     ) {
         // Note: the wallet is effectively empty if it cannot cover the miner's fee
-        val autoShieldingThreshold = 1_000_000L // 0.01 ZEC
         val hasFunds: Boolean
             get() = (saplingBalance?.available?.value
-                ?: 0) > (MINERS_FEE.value.toDouble() / Zatoshi.ZATOSHI_PER_ZEC) // 0.00001
+                ?: 0) > (MINERS_FEE.value.toDouble() / Zatoshi.ZATOSHI_PER_ZEC) // 0.00001 ZEC
         val hasSaplingBalance: Boolean get() = (saplingBalance?.total?.value ?: 0) > 0L
         val hasAutoshieldFunds: Boolean
-            get() = (transparentBalance?.available?.value ?: 0) >= autoShieldingThreshold
+            get() = (transparentBalance?.available?.value ?: 0) >= 1000000L // 0.01 ZEC
         val isSynced: Boolean get() = status == Synchronizer.Status.SYNCED
         val isSendEnabled: Boolean get() = isSynced && hasFunds
 

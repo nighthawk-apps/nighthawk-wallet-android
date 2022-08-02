@@ -1,6 +1,5 @@
 package com.nighthawkapps.wallet.android.ui.home
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.model.Zatoshi
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
@@ -35,7 +33,6 @@ import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.send.AutoShieldFragment
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
-import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.combine
@@ -376,7 +373,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun autoShield(uiModel: HomeViewModel.UiModel) {
         // TODO: Move the preference read to a suspending function
         // First time SharedPreferences are hit, it'll perform disk IO
-        val isAutoshieldingAcknowledged = Preferences.isAcknowledgedAutoshieldingInformationPrompt.get(requireContext().applicationContext)
+        val isAutoshieldingAcknowledged = Preferences.isAcknowledgedAutoshieldingInformationPrompt.get(requireApplicationContext())
         val canAutoshield = AutoShieldFragment.canAutoshield(requireApplicationContext())
 
         if (uiModel.hasAutoshieldFunds && canAutoshield) {
@@ -455,37 +452,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             it.duration = 1000L
             it.interpolator = LinearInterpolator()
         }
-    }
-
-    private fun showBuyZecAlertDialog() {
-        mainActivity?.copyTransparentAddress()
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.buy_zec_dialog_title))
-            .setMessage(getString(R.string.buy_zec_dialog_msg))
-            .setCancelable(false)
-            .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
-                Utils.openCustomTab(requireActivity(), Utils.createCustomTabIntent(), Uri.parse(viewModel.getMoonPayUrl()))
-                dialog.dismiss()
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    private fun showOpenZcashSiteDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.visit_zcash_link_title))
-            .setMessage(getString(R.string.visit_zcash_link_description))
-            .setCancelable(false)
-            .setPositiveButton(getString(R.string.open_browser)) { dialog, _ ->
-                mainActivity?.onLaunchUrl(getString(R.string.zcash_learn_more_link))
-                dialog.dismiss()
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
     }
 
     enum class BannerAction(val action: String) {

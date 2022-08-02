@@ -138,7 +138,7 @@ class SendViewModel @Inject constructor() : ViewModel() {
         return addressType
     }
 
-    fun validate(context: Context, availableZatoshi: Zatoshi?, maxZatoshi: Zatoshi?) = flow {
+    fun validate(context: Context, availableZatoshi: Long?, maxZatoshi: Long?) = flow {
         when {
             synchronizer.validateAddress(toAddress).isNotValid -> {
                 emit(context.getString(R.string.send_validation_error_address_invalid))
@@ -149,14 +149,14 @@ class SendViewModel @Inject constructor() : ViewModel() {
             availableZatoshi == null -> {
                 emit(context.getString(R.string.send_validation_error_unknown_funds))
             }
-            availableZatoshi == Zatoshi(0) -> {
+            availableZatoshi == 0L -> {
                 emit(context.getString(R.string.send_validation_error_no_available_funds))
             }
-            availableZatoshi > Zatoshi(0) && availableZatoshi < ZcashSdk.MINERS_FEE -> {
+            availableZatoshi > 0 && availableZatoshi.let { it < ZcashSdk.MINERS_FEE.value } -> {
                 emit(context.getString(R.string.send_validation_error_dust))
             }
-            maxZatoshi != null && zatoshiAmount!! > maxZatoshi -> {
-                emit(context.getString(R.string.send_validation_error_too_much, WalletZecFormmatter.toZecStringFull(maxZatoshi), NighthawkWalletApp.instance.getString(R.string.symbol)))
+            maxZatoshi != null && zatoshiAmount?.let { it.value > maxZatoshi } ?: false -> {
+                emit(context.getString(R.string.send_validation_error_too_much, WalletZecFormmatter.toZecStringFull(Zatoshi(maxZatoshi)), NighthawkWalletApp.instance.getString(R.string.symbol)))
             }
             createMemoToSend().length > ZcashSdk.MAX_MEMO_SIZE -> {
                 emit(context.getString(R.string.send_validation_error_memo_length, ZcashSdk.MAX_MEMO_SIZE))

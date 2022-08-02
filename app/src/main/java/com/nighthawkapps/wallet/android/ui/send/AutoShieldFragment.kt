@@ -6,9 +6,7 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isCancelled
 import cash.z.ecc.android.sdk.db.entity.isCreated
@@ -29,8 +27,8 @@ import com.nighthawkapps.wallet.android.preference.model.get
 import com.nighthawkapps.wallet.android.preference.model.put
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.time.Clock
 
 class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
@@ -56,28 +54,20 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
             onExit()
         }
         mainActivity?.preventBackPress(this)
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.pendingTransaction.collectLatest { p: PendingTransaction? ->
-                    try {
-                        p?.let {
-                            uiModels.value = it.toUiModel()
-                        }
-                    } catch (t: Throwable) {
-                        val message =
-                            "ERROR: error while handling pending transaction update! $t"
-                        twig(message)
-                    }
-                }
-            }
-        }
         uiModels.collectWith(lifecycleScope, ::updateUi)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity?.apply {
-            viewModel.shieldFunds()
+            viewModel.shieldFunds().onEach { p: PendingTransaction ->
+                try {
+                    uiModels.value = p.toUiModel()
+                } catch (t: Throwable) {
+                    val message = "ERROR: error while handling pending transaction update! $t"
+                    twig(message)
+                }
+            }.launchIn(lifecycleScope)
         }
     }
 
@@ -227,8 +217,7 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
             val currentEpochMillis = clock.millis()
             val lastAutoshieldEpochMillis = Preferences.lastAutoshieldingEpochMillis.get(context)
 
-            val isLastAutoshieldOld =
-                (currentEpochMillis - lastAutoshieldEpochMillis) > maxAutoshieldFrequency
+            val isLastAutoshieldOld = (currentEpochMillis - lastAutoshieldEpochMillis) > maxAutoshieldFrequency
             // Prevent a corner case where a user with a clock in the future during one autoshielding prompt
             // could prevent all subsequent autoshielding prompts.
             val isTimeTraveling = lastAutoshieldEpochMillis > currentEpochMillis
