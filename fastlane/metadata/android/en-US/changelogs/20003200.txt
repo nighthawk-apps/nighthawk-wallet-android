@@ -1,0 +1,4 @@
+- Integrate Unstoppable Domain Service.
+- Add language translations for Arabic, Spanish, Russian & Ukrainian!
+- Switch to type-safe models Zatoshi & WalletBalance.
+- Upgrade SDK & dependencies.
