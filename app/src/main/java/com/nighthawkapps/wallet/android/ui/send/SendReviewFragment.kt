@@ -72,7 +72,7 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
     private fun fillUI() {
         binding.tvBalance.text = sendViewModel.zatoshiAmount.convertZatoshiToZecString()
         binding.tvNetwork.text = sendViewModel.networkName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-        binding.tvConvertedAmount.text = calculateZecConvertedAmount(sendViewModel.zatoshiAmount?.value!!)
+        binding.tvConvertedAmount.text = calculateZecConvertedAmount(sendViewModel.zatoshiAmount)
         binding.groupMemo.isVisible = sendViewModel.createMemoToSend().isNotBlank()
         binding.tvMemo.text = sendViewModel.createMemoToSend()
         binding.tvRecipient.text = if (sendViewModel.isShielded) getString(R.string.ns_shielded) else getString(R.string.ns_transparent)
@@ -83,11 +83,11 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
         binding.tvTotalAmount.text = total
     }
 
-    private fun calculateZecConvertedAmount(zatoshi: Long): String? {
+    private fun calculateZecConvertedAmount(zatoshi: Zatoshi?): String? {
         return sendViewModel.getZecMarketPrice()?.let {
             val selectedCurrencyName = sendViewModel.getSelectedFiatCurrency().currencyName
             if (selectedCurrencyName.isNotBlank()) {
-                getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(Zatoshi(zatoshi)), it, selectedCurrencyName))
+                getString(R.string.ns_around, Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, selectedCurrencyName))
             } else ""
         }
     }

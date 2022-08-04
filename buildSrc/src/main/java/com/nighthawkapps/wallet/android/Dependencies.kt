@@ -4,7 +4,7 @@ object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
     const val kotlinVersion = "1.7.10"
-    const val navigationVersion = "2.4.2"
+    const val navigationVersion = "2.5.1"
     const val compileSdkVersion = 33
     const val minSdkVersion = 23
     const val targetSdkVersion = 33
@@ -13,12 +13,12 @@ object Deps {
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
-        const val ANNOTATION = "androidx.annotation:annotation:1.3.0"
-        const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.1"
+        const val ANNOTATION = "androidx.annotation:annotation:1.4.0"
+        const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.2"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha04"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
-        const val CORE_KTX = "androidx.core:core-ktx:1.9.0-alpha02"
-        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.4.1"
+        const val CORE_KTX = "androidx.core:core-ktx:1.9.0-alpha05"
+        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.5.1"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
         const val PAGING = "androidx.paging:paging-runtime-ktx:3.1.1"
@@ -26,22 +26,22 @@ object Deps {
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
-        const val SPLASH_SCREEN = "androidx.core:core-splashscreen:1.0.0-beta01"
+        const val SPLASH_SCREEN = "androidx.core:core-splashscreen:1.0.0"
         const val OSS_LICENCE = "com.google.android.gms:play-services-oss-licenses:16.0.0"
         const val WORK_MANAGER_KTX = "androidx.work:work-runtime-ktx:2.7.1"
 
-        object CameraX : Version("1.2.0-alpha01") {
+        object CameraX : Version("1.2.0-alpha04") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
             val CORE = "androidx.camera:camera-core:$version"
             val LIFECYCLE = "androidx.camera:camera-lifecycle:$version"
 
-            object View : Version("1.2.0-alpha01") {
+            object View : Version("1.2.0-alpha04") {
                 val EXT = "androidx.camera:camera-extensions:$version"
                 val VIEW = "androidx.camera:camera-view:$version"
             }
         }
 
-        object Lifecycle : Version("2.4.1") {
+        object Lifecycle : Version("2.5.1") {
             val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         }
 
@@ -50,13 +50,13 @@ object Deps {
             val UI_KTX = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
-        object Room : Version("2.4.2") {
+        object Room : Version("2.4.3") {
             val ROOM_COMPILER = "androidx.room:room-compiler:$version"
             val ROOM_KTX = "androidx.room:room-ktx:$version"
         }
     }
 
-    object Dagger : Version("2.42") {
+    object Dagger : Version("2.43.1") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -66,11 +66,11 @@ object Deps {
         // solves error: Duplicate class com.google.common.util.concurrent.ListenableFuture found in modules jetified-guava-26.0-android.jar (com.google.guava:guava:26.0-android) and listenablefuture-1.0.jar (com.google.guava:listenablefuture:1.0)
         // per this recommendation from Chris Povirk, given guava's decision to split ListenableFuture away from Guava: https://groups.google.com/d/msg/guava-discuss/GghaKwusjcY/bCIAKfzOEwAJ
         const val GUAVA = "com.google.guava:guava:31.1-android"
-        const val MATERIAL = "com.google.android.material:material:1.5.0"
-        const val GSON = "com.google.code.gson:gson:2.9.0"
+        const val MATERIAL = "com.google.android.material:material:1.6.1"
+        const val GSON = "com.google.code.gson:gson:2.9.1"
     }
 
-    object Grpc : Version("1.48.0") {
+    object Grpc : Version("1.48.1") {
         val ANDROID = "io.grpc:grpc-android:$version"
         val OKHTTP = "io.grpc:grpc-okhttp:$version"
         val PROTOBUG = "io.grpc:grpc-protobuf-lite:$version"
@@ -101,13 +101,13 @@ object Deps {
 
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
-        const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.1"
+        const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.4"
         const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.8.0-beta01"
     }
 
     object Misc {
-        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.21.0"
-        const val LOTTIE = "com.airbnb.android:lottie:5.0.3"
+        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.25.0"
+        const val LOTTIE = "com.airbnb.android:lottie:5.2.0"
         const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
 
         object Plugins {
@@ -126,10 +126,10 @@ object Deps {
             const val CORE = "androidx.test:core:1.4.0"
             const val RULES = "androidx.test:rules:1.4.0"
             const val JUNIT = "androidx.test.ext:junit:1.1.3"
-            const val FRAGMENT = "androidx.fragment:fragment-testing:1.4.0-alpha08"
+            const val FRAGMENT = "androidx.fragment:fragment-testing:1.5.1"
             const val ESPRESSO = "androidx.test.espresso:espresso-core:3.4.0"
             const val ESPRESSO_INTENTS = "androidx.test.espresso:espresso-intents:3.4.0"
-            const val NAVIGATION = "androidx.navigation:navigation-testing:2.4.2"
+            const val NAVIGATION = "androidx.navigation:navigation-testing:2.5.1"
         }
     }
 }
