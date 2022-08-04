@@ -83,20 +83,21 @@ class AutoShieldViewModel @Inject constructor() : ViewModel() {
 
     fun shieldFunds(): Flow<PendingTransaction> {
         return lockBox.getBytes(Const.Backup.SEED)?.let {
-            val sk = runBlocking { DerivationTool.deriveSpendingKeys(it, synchronizer.network)[0] }
-            val tsk =
-                runBlocking { DerivationTool.deriveTransparentSecretKey(it, synchronizer.network) }
+            val sk =
+                runBlocking { DerivationTool.deriveSpendingKeys(it, synchronizer.network)[0] }
+            val tsk = runBlocking {
+                DerivationTool.deriveTransparentSecretKey(
+                    it,
+                    synchronizer.network
+                )
+            }
             val addr = runBlocking {
                 DerivationTool.deriveTransparentAddressFromPrivateKey(
                     tsk,
                     synchronizer.network
                 )
             }
-            synchronizer.shieldFunds(
-                sk,
-                tsk,
-                "Shielding all UTXOs from $addr"
-            )
+            synchronizer.shieldFunds(sk, tsk, "Shielding all UTXOs from $addr")
         } ?: throw IllegalStateException("Seed was expected but it was not found!")
     }
 
