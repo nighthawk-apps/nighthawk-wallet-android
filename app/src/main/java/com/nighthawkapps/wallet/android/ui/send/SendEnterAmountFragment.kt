@@ -202,7 +202,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
     private fun getEnteredAmountInZatoshi(): Long {
         val enteredAmount = binding.tvBalance
         return if (sendViewModel.isZecAmountState) {
-            enteredAmount.convertZecToZatoshi()?.value ?: 0
+            enteredAmount.convertZecToZatoshi()?.value ?: -1
         } else {
             sendViewModel.getZecMarketPrice()?.let {
                 Utils.calculateLocalCurrencyToZatoshi(it, enteredAmount.text.toString())
