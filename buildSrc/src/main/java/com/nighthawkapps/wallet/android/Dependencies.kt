@@ -5,6 +5,7 @@ object Deps {
     // `Deps.Kotlin.version` directly
     const val kotlinVersion = "1.7.10"
     const val navigationVersion = "2.5.1"
+    const val aboutLibrariesVersion = "10.4.0-b02"
     const val compileSdkVersion = 33
     const val minSdkVersion = 23
     const val targetSdkVersion = 33
@@ -27,7 +28,7 @@ object Deps {
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
         const val SPLASH_SCREEN = "androidx.core:core-splashscreen:1.0.0"
-        const val OSS_LICENCE = "com.google.android.gms:play-services-oss-licenses:16.0.0"
+        const val OSS_LICENCE = "com.mikepenz:aboutlibraries:10.4.0-b02"
         const val WORK_MANAGER_KTX = "androidx.work:work-runtime-ktx:2.7.1"
 
         object CameraX : Version("1.2.0-alpha04") {
