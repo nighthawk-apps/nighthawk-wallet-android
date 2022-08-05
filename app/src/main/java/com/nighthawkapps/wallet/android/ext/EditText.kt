@@ -76,6 +76,7 @@ fun TextView.convertZecToZatoshi(): Zatoshi? {
     return try {
         text.toString().replace(',', '.').safelyConvertToBigDecimal()?.convertZecToZatoshi()
     } catch (t: Throwable) {
+        twig("Failed to convert text to Zatoshi: $text")
         null
     }
 }

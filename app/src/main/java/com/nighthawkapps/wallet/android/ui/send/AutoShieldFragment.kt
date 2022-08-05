@@ -64,7 +64,7 @@ class AutoShieldFragment : BaseFragment<FragmentAutoShieldBinding>() {
                 try {
                     uiModels.value = p.toUiModel()
                 } catch (t: Throwable) {
-                    val message = "ERROR: error while handling pending transaction update! $t"
+                    val message = "ERROR: error while handling pending auto shielding transaction update! $t"
                     twig(message)
                 }
             }.launchIn(lifecycleScope)

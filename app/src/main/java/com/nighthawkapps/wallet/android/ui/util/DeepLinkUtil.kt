@@ -40,5 +40,5 @@ object DeepLinkUtil {
         }
     }
 
-    data class SendDeepLinkData(val address: String, val amount: Long, val memo: String?)
+    data class SendDeepLinkData(val address: String, val amount: Long?, val memo: String?)
 }

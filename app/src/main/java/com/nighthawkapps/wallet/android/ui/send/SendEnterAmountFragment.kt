@@ -108,7 +108,9 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
         data?.let {
             sendViewModel.toAddress = data.address
             sendViewModel.memo = data.memo ?: ""
-            sendViewModel.zatoshiAmount = Zatoshi(data.amount)
+            data.amount?.let {
+                sendViewModel.zatoshiAmount = Zatoshi(it)
+            }
             val newValue = if (sendViewModel.isZecAmountState) {
                 sendViewModel.zatoshiAmount.convertZatoshiToZecString()
             } else {
@@ -131,8 +133,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
                 }
             } else {
                 sendViewModel.getZecMarketPrice()?.let { marketPrice ->
-                    sendViewModel.zatoshiAmount =
-                        Zatoshi(Utils.calculateLocalCurrencyToZatoshi(marketPrice, newValue) ?: -1)
+                    sendViewModel.zatoshiAmount = Zatoshi(Utils.calculateLocalCurrencyToZatoshi(marketPrice, newValue) ?: 0)
                 }
             }
             calculateZecConvertedAmount(sendViewModel.zatoshiAmount)
@@ -201,7 +202,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
     private fun getEnteredAmountInZatoshi(): Long {
         val enteredAmount = binding.tvBalance
         return if (sendViewModel.isZecAmountState) {
-            enteredAmount.convertZecToZatoshi()?.value!!
+            enteredAmount.convertZecToZatoshi()?.value ?: 0
         } else {
             sendViewModel.getZecMarketPrice()?.let {
                 Utils.calculateLocalCurrencyToZatoshi(it, enteredAmount.text.toString())

@@ -6,7 +6,6 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
@@ -161,7 +160,9 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         data?.let {
             sendViewModel.toAddress = data.address
             sendViewModel.memo = data.memo ?: ""
-            sendViewModel.zatoshiAmount = Zatoshi(data.amount)
+            data.amount?.let {
+                sendViewModel.zatoshiAmount = Zatoshi(it)
+            }
             applyViewModel(sendViewModel)
         }
     }
@@ -241,7 +242,7 @@ class SendFragment : BaseFragment<FragmentSendBinding>(),
         }
     }
 
-    private fun onSubmit(unused: EditText? = null) {
+    private fun onSubmit() {
         var address = binding.inputZcashAddress.text.toString()
         if (!sendViewModel.unsDomains[address].isNullOrEmpty()) {
             address = sendViewModel.unsDomains[address]!!

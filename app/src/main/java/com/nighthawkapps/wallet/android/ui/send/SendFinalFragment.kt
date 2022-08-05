@@ -98,6 +98,7 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
             textConfirmation.text = model.title
             lottieSending.goneIf(!model.showProgress)
             if (!model.showProgress) lottieSending.pauseAnimation() else lottieSending.playAnimation()
+            lottieSending.enableMergePathsForKitKatAndAbove(true)
             errorMessage.text = model.errorMessage
             buttonPrimary.apply {
                 text = model.primaryButtonText

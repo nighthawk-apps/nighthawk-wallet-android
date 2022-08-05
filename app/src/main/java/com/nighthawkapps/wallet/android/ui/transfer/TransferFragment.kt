@@ -34,7 +34,9 @@ class TransferFragment : BaseFragment<FragmentTransferBinding>() {
                 sendViewModel.reset()
                 sendViewModel.toAddress = data.address
                 sendViewModel.memo = data.memo ?: ""
-                sendViewModel.zatoshiAmount = Zatoshi(data.amount)
+                data.amount?.let {
+                    sendViewModel.zatoshiAmount = Zatoshi(it)
+                }
                 sendViewModel.setSendZecDeepLinkData(data)
                 mainActivity?.safeNavigate(R.id.action_nav_transfer_to_nav_send_review)
             }
