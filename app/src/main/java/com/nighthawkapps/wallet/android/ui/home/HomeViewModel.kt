@@ -8,12 +8,11 @@ import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isMined
 import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
-import cash.z.ecc.android.sdk.ext.ZcashSdk.MINERS_FEE_ZATOSHI
-import cash.z.ecc.android.sdk.ext.ZcashSdk.ZATOSHI_PER_ZEC
+import cash.z.ecc.android.sdk.ext.ZcashSdk.MINERS_FEE
 import cash.z.ecc.android.sdk.ext.isShielded
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
-import cash.z.ecc.android.sdk.type.WalletBalance
-import com.nighthawkapps.wallet.android.NighthawkWalletApp
+import cash.z.ecc.android.sdk.model.WalletBalance
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.Const
@@ -37,7 +36,6 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -54,8 +52,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     @Inject
     lateinit var synchronizer: Synchronizer
+
     @Inject
     lateinit var coinMetricsRepository: CoinMetricsRepository
+
     @Inject
     lateinit var lockBox: LockBox
 
@@ -70,7 +70,14 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     private var _coinMetricsMarketData = MutableStateFlow<ZcashPriceApiResponse?>(null)
     val zcashPriceApiData: StateFlow<ZcashPriceApiResponse?> get() = _coinMetricsMarketData
     val transactions get() = synchronizer.clearedTransactions
-    private val formatter by lazy { SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), R.string.ns_format_date_time.toAppString()), Locale.getDefault()) }
+    private val formatter by lazy {
+        SimpleDateFormat(
+            DateFormat.getBestDateTimePattern(
+                Locale.getDefault(),
+                R.string.ns_format_date_time.toAppString()
+            ), Locale.getDefault()
+        )
+    }
 
     private val fetchPriceScope = CoroutineScope(Dispatchers.IO)
 
@@ -98,17 +105,22 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     } else {
                         _coinMetricsMarketData.value = null
                     }
-                    lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] = _coinMetricsMarketData.value?.data?.values?.firstOrNull()?.toString() ?: "0"
+                    lockBox[Const.AppConstants.KEY_ZEC_AMOUNT] =
+                        _coinMetricsMarketData.value?.data?.values?.firstOrNull()?.toString() ?: "0"
                 }
         }
     }
 
     fun getSelectedCurrencyName(): String {
-        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
+        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(
+            lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: ""
+        ).currencyName
     }
 
     fun getFiatCurrencyMarket(): String {
-        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").serverUrl
+        return FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(
+            lockBox[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: ""
+        ).serverUrl
     }
 
     private fun resetSavedCurrencyData() {
@@ -123,7 +135,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun initializeMaybe() {
+    fun initializeMaybe(preTypedChars: String = "0") {
         twig("init called")
         if (initialized) {
             twig("Warning already initialized HomeViewModel. Ignoring call to initialize.")
@@ -135,28 +147,29 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
         _typedChars = ConflatedBroadcastChannel()
         val typedChars = _typedChars.asFlow()
-
-        val zec = typedChars.scan("0") { acc, c ->
+        val decimal = '.' // R.string.key_decimal.toAppString()[0]
+        val backspace = R.string.key_backspace.toAppString()[0]
+        val zec = typedChars.scan(preTypedChars) { acc, c ->
             when {
                 // no-op cases
-                acc == "0" && c == '0' || (c == '<' && acc == "0") || (c == '.' && acc.contains('.')) -> {
-                    twig("triggered: 1  acc: $acc  c: $c")
+                acc == "0" && c == '0' ||
+                        (c == backspace && acc == "0")
+                        || (c == decimal && acc.contains(decimal)) -> {
                     acc
                 }
-                c == '<' && acc.length <= 1 -> {
-                    twig("triggered: 2 $typedChars")
+                c == backspace && acc.length <= 1 -> {
                     "0"
                 }
-                c == '<' -> {
-                    twig("triggered: 3")
+                c == backspace -> {
                     acc.substring(0, acc.length - 1)
                 }
-                acc == "0" && c != '.' -> {
-                    twig("triggered: 4 $typedChars")
+                acc == "0" && c != decimal -> {
                     c.toString()
                 }
+                acc.contains(decimal) && acc.length - acc.indexOf(decimal) > 8 -> {
+                    acc
+                }
                 else -> {
-                    twig("triggered: 5  $typedChars")
                     "$acc$c"
                 }
             }
@@ -179,13 +192,21 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 UiModel(
                     status = flows[0] as Synchronizer.Status,
                     processorInfo = flows[1] as CompactBlockProcessor.ProcessorInfo,
-                    orchardBalance = flows[2] as WalletBalance,
-                    saplingBalance = flows[3] as WalletBalance,
-                    transparentBalance = flows[4] as WalletBalance,
+                    orchardBalance = flows[2] as WalletBalance?,
+                    saplingBalance = flows[3] as WalletBalance?,
+                    transparentBalance = flows[4] as WalletBalance?,
                     pendingSend = flows[5] as String,
                     unminedCount = unminedCount
                 )
-            }.onStart { emit(UiModel()) }
+            }.onStart {
+                emit(
+                    UiModel(
+                        orchardBalance = null,
+                        saplingBalance = null,
+                        transparentBalance = null
+                    )
+                )
+            }
         }.conflate()
     }
 
@@ -200,17 +221,26 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     data class UiModel(
         val status: Synchronizer.Status = Synchronizer.Status.DISCONNECTED,
-        val processorInfo: CompactBlockProcessor.ProcessorInfo = CompactBlockProcessor.ProcessorInfo(),
-        val orchardBalance: WalletBalance = WalletBalance(),
-        val saplingBalance: WalletBalance = WalletBalance(),
-        val transparentBalance: WalletBalance = WalletBalance(),
+        val processorInfo: CompactBlockProcessor.ProcessorInfo = CompactBlockProcessor.ProcessorInfo(
+            null,
+            null,
+            null,
+            null,
+            null
+        ),
+        val orchardBalance: WalletBalance?,
+        val saplingBalance: WalletBalance?,
+        val transparentBalance: WalletBalance?,
         val pendingSend: String = "0",
         val unminedCount: Int = 0
     ) {
         // Note: the wallet is effectively empty if it cannot cover the miner's fee
-        val hasFunds: Boolean get() = saplingBalance.availableZatoshi > (MINERS_FEE_ZATOSHI.toDouble() / ZATOSHI_PER_ZEC) // 0.00001
-        val hasSaplingBalance: Boolean get() = saplingBalance.totalZatoshi > 0
-        val hasAutoshieldFunds: Boolean get() = transparentBalance.availableZatoshi >= NighthawkWalletApp.instance.autoshieldThreshold
+        val hasFunds: Boolean
+            get() = (saplingBalance?.available?.value
+                ?: 0) > (MINERS_FEE.value.toDouble() / Zatoshi.ZATOSHI_PER_ZEC) // 0.00001 ZEC
+        val hasSaplingBalance: Boolean get() = (saplingBalance?.total?.value ?: 0) > 0L
+        val hasAutoshieldFunds: Boolean
+            get() = (transparentBalance?.available?.value ?: 0) >= 1000000L // 0.01 ZEC
         val isSynced: Boolean get() = status == Synchronizer.Status.SYNCED
         val isSendEnabled: Boolean get() = isSynced && hasFunds
 
@@ -221,11 +251,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         val isDisconnected = status == Synchronizer.Status.DISCONNECTED
         val downloadProgress: Int get() {
             return processorInfo.run {
-                if (lastDownloadRange.isEmpty()) {
+                if (lastDownloadRange?.isEmpty() == true) {
                     100
                 } else {
                     val progress =
-                        (((lastDownloadedHeight - lastDownloadRange.first + 1).coerceAtLeast(0).toFloat() / (lastDownloadRange.last - lastDownloadRange.first + 1)) * 100.0f).coerceAtMost(
+                        ((((lastDownloadedHeight?.value ?: 0) - (lastDownloadRange?.start?.value ?: 0) + 1).coerceAtLeast(0).toFloat() / ((lastDownloadRange?.endInclusive?.value ?: 0) - (lastDownloadRange?.start?.value ?: 0) + 1)) * 100.0f).coerceAtMost(
                             100.0f
                         ).roundToInt()
                     progress
@@ -234,10 +264,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
         val scanProgress: Int get() {
             return processorInfo.run {
-                if (lastScanRange.isEmpty()) {
+                if (lastScanRange?.isEmpty() == true) {
                     100
                 } else {
-                    val progress = (((lastScannedHeight - lastScanRange.first + 1).coerceAtLeast(0).toFloat() / (lastScanRange.last - lastScanRange.first + 1)) * 100.0f).coerceAtMost(100.0f).roundToInt()
+                    val progress = ((((lastScannedHeight?.value ?: 0) - (lastScanRange?.start?.value ?: 0) + 1).coerceAtLeast(0).toFloat() / ((lastScanRange?.endInclusive?.value ?: 0) - (lastScanRange?.start?.value ?: 0) + 1)) * 100.0f).coerceAtMost(100.0f).roundToInt()
                     progress
                 }
             }
@@ -250,18 +280,30 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
     suspend fun getRecentUIModel(transactionList: List<ConfirmedTransaction>): List<RecentActivityUiModel> {
-        val transactions = if (transactionList.size > 2) transactionList.subList(0, 2) else transactionList
+        val transactions =
+            if (transactionList.size > 2) transactionList.subList(0, 2) else transactionList
         return transactions.map { confirmedTransaction ->
-            val transactionType = if (confirmedTransaction.toAddress.isNullOrEmpty()) RecentActivityUiModel.TransactionType.RECEIVED else RecentActivityUiModel.TransactionType.SENT
-            val address = if (transactionType == RecentActivityUiModel.TransactionType.RECEIVED) getSender(confirmedTransaction) else confirmedTransaction.toAddress
-            val toZecStringShort = WalletZecFormmatter.toZecStringShort(confirmedTransaction.value)
+            val transactionType =
+                if (confirmedTransaction.toAddress.isNullOrEmpty()) RecentActivityUiModel.TransactionType.RECEIVED else RecentActivityUiModel.TransactionType.SENT
+            val address =
+                if (transactionType == RecentActivityUiModel.TransactionType.RECEIVED) getSender(
+                    confirmedTransaction
+                ) else confirmedTransaction.toAddress
+            val toZecStringShort =
+                WalletZecFormmatter.toZecStringShort(Zatoshi(confirmedTransaction.value))
             RecentActivityUiModel(
                 transactionType = transactionType,
                 transactionTime = formatter.format(confirmedTransaction.blockTimeInSeconds * 1000L),
-                isTransactionShielded = address?.equals(R.string.unknown.toAppString(), true) == true || address.isShielded(),
+                isTransactionShielded = address?.equals(
+                    R.string.unknown.toAppString(),
+                    true
+                ) == true || address.isShielded(),
                 amount = toZecStringShort,
                 isMemoAvailable = confirmedTransaction.memo?.toUtf8Memo()?.isNotBlank() == true,
-                zecConvertedValueText = Utils.getZecConvertedAmountText(toZecStringShort, zcashPriceApiData.value),
+                zecConvertedValueText = Utils.getZecConvertedAmountText(
+                    toZecStringShort,
+                    zcashPriceApiData.value
+                ),
                 confirmedTransaction = confirmedTransaction
             )
         }
@@ -284,18 +326,16 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private suspend fun getSender(transaction: ConfirmedTransaction?): String {
         if (transaction == null) return R.string.unknown.toAppString()
-        return MemoUtil.findAddressInMemo(transaction, ::isValidAddress)?.toAbbreviatedAddress() ?: R.string.unknown.toAppString()
+        return MemoUtil.findAddressInMemo(transaction, ::isValidAddress)?.toAbbreviatedAddress()
+            ?: R.string.unknown.toAppString()
     }
 
     private suspend fun isValidAddress(address: String): Boolean {
         try {
             return !synchronizer.validateAddress(address).isNotValid
-        } catch (t: Throwable) { }
+        } catch (t: Throwable) {
+        }
         return false
-    }
-
-    fun isValidBlock(lastDownloadedHeight: Int, lastAvailableHeight: Int): Boolean {
-        return lastDownloadedHeight != -1 || lastAvailableHeight != -1
     }
 
     /**
@@ -310,7 +350,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
     fun cancelSyncAppNotificationAndReRegister() {
-        val syncNotificationPref = SyncNotificationViewModel.NotificationSyncPref.getNotificationSyncPrefByText(lockBox[Const.AppConstants.KEY_SYNC_NOTIFICATION] ?: "")
+        val syncNotificationPref =
+            SyncNotificationViewModel.NotificationSyncPref.getNotificationSyncPrefByText(
+                lockBox[Const.AppConstants.KEY_SYNC_NOTIFICATION] ?: ""
+            )
         WorkManagerUtils.cancelSyncAppNotificationAndReRegister(syncNotificationPref)
     }
 }

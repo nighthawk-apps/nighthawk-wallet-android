@@ -27,8 +27,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@string/content_description_send_final_back"
-        android:visibility="gone"
         android:elevation="6dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.052"
@@ -74,15 +74,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="6dp"
+        android:src="@drawable/ic_sadzebra"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.212"
-        app:layout_constraintWidth_percent="0.46"
-        android:visibility="invisible"
-        android:src="@drawable/ic_sadzebra"/>
+        app:layout_constraintWidth_percent="0.46" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_success"

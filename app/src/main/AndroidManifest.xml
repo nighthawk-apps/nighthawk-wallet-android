@@ -33,12 +33,8 @@
 
         </activity>
 
-        <!--OSS Activities-->
         <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:name="com.nighthawkapps.wallet.android.ui.setup.LicenseActivity"
             android:theme="@style/NighthawkTheme" />
 
         <provider

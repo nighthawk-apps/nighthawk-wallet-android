@@ -1,0 +1,5 @@
+- Integrate Unstoppable Domain Service.
+- Add language translations for Arabic, Spanish, Russian & Ukrainian!
+- Switch to using AboutLibraries for OSS License list.
+- Adopt type-safe models Zatoshi & WalletBalance.
+- Upgrade SDK & dependencies.

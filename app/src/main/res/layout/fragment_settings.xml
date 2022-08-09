@@ -123,7 +123,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewRescan" />
 
         <include
-            android:id="@+id/viewAbout"
+            android:id="@+id/viewExternalServices"
             layout="@layout/item_transfer_screen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -131,6 +131,16 @@
             app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
             app:layout_constraintStart_toEndOf="@id/guideLineStart"
             app:layout_constraintTop_toBottomOf="@id/viewUpdateServer" />
+
+        <include
+            android:id="@+id/viewAbout"
+            layout="@layout/item_transfer_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+            app:layout_constraintTop_toBottomOf="@id/viewExternalServices" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

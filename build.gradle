@@ -4,13 +4,14 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.3'
+        classpath 'com.android.tools.build:gradle:7.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Deps.kotlinVersion}"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${Deps.navigationVersion}"
-        classpath "com.google.android.gms:oss-licenses-plugin:0.10.5"
+        classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:${Deps.aboutLibrariesVersion}"
     }
 }
 

@@ -26,7 +26,7 @@ inline fun <reified VM : ViewModel> BaseFragment<*>.activityViewModel(isSynchron
     override val value: VM
         get() {
             return cached
-                ?: scopedFactory<VM>(isSynchronizerScope)?.let { factory ->
+                ?: scopedFactory<VM>(isSynchronizerScope).let { factory ->
                     ViewModelProvider(this@activityViewModel.mainActivity!!, factory)[VM::class.java]
                 }
         }

@@ -7,8 +7,11 @@ import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.Synchronizer
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
+import cash.z.ecc.android.sdk.db.entity.valueInZatoshi
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.isShielded
+import cash.z.ecc.android.sdk.model.BlockHeight
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
@@ -73,7 +76,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
         var txId: String? = null
     )
 
-    private suspend fun ConfirmedTransaction?.toUiModel(latestHeight: Int? = this@HistoryViewModel.latestHeight): UiModel = UiModel().apply {
+    private suspend fun ConfirmedTransaction?.toUiModel(latestHeight: BlockHeight? = this@HistoryViewModel.latestHeight): UiModel = UiModel().apply {
         this@toUiModel.let { tx ->
             txId = toTxId(tx?.rawTransactionId)
             isInbound = when {
@@ -81,8 +84,8 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                 tx != null && tx.toAddress.isNullOrEmpty() && tx.value > 0L && tx.minedHeight > 0 -> true
                 else -> null
             }
-            isMined = tx?.minedHeight != null && tx.minedHeight > synchronizer.network.saplingActivationHeight
-            topValue = if (tx == null) "" else "\$${WalletZecFormmatter.toZecStringFull(tx.value)}"
+            isMined = tx?.minedHeight != null && tx.minedHeight > synchronizer.network.saplingActivationHeight.value
+            topValue = if (tx == null) "" else "\$${WalletZecFormmatter.toZecStringFull(tx.valueInZatoshi)}"
             minedHeight = String.format("%,d", tx?.minedHeight ?: 0)
             val flags =
                 DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_ABBREV_MONTH
@@ -107,7 +110,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                 if (isMined) {
                     val hasLatestHeight = latestHeight != null && latestHeight > synchronizer.network.saplingActivationHeight
                     if (it.minedHeight > 0 && hasLatestHeight) {
-                        val confirmations = latestHeight!! - it.minedHeight + 1
+                        val confirmations = latestHeight?.value!! - it.minedHeight + 1
                         confirmation = if (confirmations >= 10) getString(R.string.transaction_status_confirmed) else "$confirmations ${getString(
                             R.string.transaction_status_confirming
                         )}"
@@ -129,7 +132,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                 true -> {
                     topLabel = getString(R.string.transaction_story_inbound)
                     bottomLabel = getString(R.string.transaction_story_inbound_total)
-                    bottomValue = "\$${WalletZecFormmatter.toZecStringFull(tx?.value)}"
+                    bottomValue = "\$${WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi)}"
                     iconRotation = 315f
                     source = getString(R.string.transaction_story_to_shielded)
                     address = MemoUtil.findAddressInMemo(tx, (synchronizer as SdkSynchronizer)::isValidAddress)
@@ -137,7 +140,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                 false -> {
                     topLabel = getString(R.string.transaction_story_outbound)
                     bottomLabel = getString(R.string.transaction_story_outbound_total)
-                    bottomValue = "\$${WalletZecFormmatter.toZecStringFull(tx?.value?.plus(ZcashSdk.MINERS_FEE_ZATOSHI))}"
+                    bottomValue = "\$${WalletZecFormmatter.toZecStringFull(Zatoshi((tx?.valueInZatoshi?.value ?: 0) + ZcashSdk.MINERS_FEE.value))}"
                     iconRotation = 135f
                     fee = "+ 0.00001 network fee"
                     source = getString(R.string.transaction_story_from_shielded)
@@ -171,7 +174,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
         var iconRotation: Float = 0f
     )
 
-    private suspend fun ConfirmedTransaction?.toTransactionUIModel(latestHeight: Int? = this@HistoryViewModel.latestHeight): TransactionDetailsUIModel = TransactionDetailsUIModel().apply {
+    private suspend fun ConfirmedTransaction?.toTransactionUIModel(latestHeight: BlockHeight? = this@HistoryViewModel.latestHeight): TransactionDetailsUIModel = TransactionDetailsUIModel().apply {
         this@toTransactionUIModel.let { tx ->
             network = synchronizer.network.networkName
             transactionId = toTxId(tx?.rawTransactionId)
@@ -180,8 +183,8 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                 tx != null && tx.toAddress.isNullOrEmpty() && tx.value > 0L && tx.minedHeight > 0 -> true
                 else -> null
             }
-            isMined = tx?.minedHeight != null && tx.minedHeight > synchronizer.network.saplingActivationHeight
-            transactionAmount = WalletZecFormmatter.toZecStringFull(tx?.value)
+            isMined = tx?.minedHeight != null && tx.minedHeight > synchronizer.network.saplingActivationHeight.value
+            transactionAmount = WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi)
             convertedAmount = calculateZecConvertedAmount(tx?.value ?: 0L) ?: ""
             blockId = String.format("%,d", tx?.minedHeight ?: 0)
             val flags =
@@ -206,7 +209,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                 if (isMined) {
                     val hasLatestHeight = latestHeight != null && latestHeight > synchronizer.network.saplingActivationHeight
                     confirmation = if (it.minedHeight > 0 && hasLatestHeight) {
-                        val confirmations = latestHeight!! - it.minedHeight + 1
+                        val confirmations = latestHeight?.value!! - it.minedHeight + 1
                         transactionStatus = getString(R.string.ns_confirmed)
                         transactionStatusStartDrawableId = R.drawable.ic_icon_confirmed
                         "$confirmations"
@@ -232,15 +235,15 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
 
             when (isInbound) {
                 true -> {
-                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.value)
+                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi)
                     subTotal = totalAmount
                     iconRotation = 0f
                     toAddress = MemoUtil.findAddressInMemo(tx, (synchronizer as SdkSynchronizer)::isValidAddress) ?: getString(R.string.unknown)
                     recipientAddressType = getString(if (toAddress.isShielded() || toAddress.equals(getString(R.string.unknown), true)) R.string.ns_shielded else R.string.ns_transparent)
                 }
                 false -> {
-                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.value?.plus(ZcashSdk.MINERS_FEE_ZATOSHI))
-                    subTotal = WalletZecFormmatter.toZecStringFull(tx?.value)
+                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi?.plus(ZcashSdk.MINERS_FEE))
+                    subTotal = WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi)
                     iconRotation = 180f
                     networkFees = "0.00001"
                     toAddress = tx?.toAddress ?: ""
@@ -257,7 +260,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
         return getZecMarketPrice()?.let {
             val selectedFiatCurrencyName = FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByName(prefs[Const.AppConstants.KEY_LOCAL_CURRENCY] ?: "").currencyName
             if (selectedFiatCurrencyName.isBlank()) null
-            else Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(zatoshi), it, currencyName = selectedFiatCurrencyName)
+            else Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(Zatoshi(zatoshi)), it, currencyName = selectedFiatCurrencyName)
         }
     }
 
@@ -266,6 +269,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun getString(@StringRes id: Int) = id.toAppString()
+
     private fun getString(@StringRes id: Int, vararg args: Any) = id.toAppStringFormatted(args)
 
     private fun toTxId(tx: ByteArray?): String? {
@@ -283,16 +287,26 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
     private fun isSufficientlyOld(tx: ConfirmedTransaction): Boolean {
         val threshold = 75 * 1000 * 25 // approx 25 blocks
         val delta = System.currentTimeMillis() / 1000L - tx.blockTimeInSeconds
-        return tx.minedHeight > synchronizer.network.saplingActivationHeight &&
+        return tx.minedHeight > synchronizer.network.saplingActivationHeight.value &&
                 delta < threshold
     }
 
     suspend fun fullRescan() {
-        rewindTo(synchronizer.latestBirthdayHeight)
+        synchronizer.latestBirthdayHeight?.let {
+            rewindTo(it)
+        }
     }
 
-    private suspend fun rewindTo(targetHeight: Int) {
-        twig("TMP: rewinding to $targetHeight")
+    suspend fun quickRescan() {
+        synchronizer.latestHeight?.let {
+            val newHeightValue =
+                (it.value - 8064L).coerceAtLeast(synchronizer.network.saplingActivationHeight.value)
+            rewindTo(BlockHeight.new(synchronizer.network, newHeightValue))
+        }
+    }
+
+    private suspend fun rewindTo(targetHeight: BlockHeight) {
+        twig("TMP: rewinding to targetHeight $targetHeight")
         synchronizer.rewindToNearestHeight(targetHeight, true)
     }
 }

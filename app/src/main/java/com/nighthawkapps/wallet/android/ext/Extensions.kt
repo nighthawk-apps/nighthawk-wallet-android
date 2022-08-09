@@ -3,7 +3,8 @@ package com.nighthawkapps.wallet.android.ext
 import android.content.Context
 import android.os.Build
 import androidx.fragment.app.Fragment
-import cash.z.ecc.android.sdk.type.WalletBalance
+import cash.z.ecc.android.sdk.model.WalletBalance
+import cash.z.ecc.android.sdk.model.Zatoshi
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -29,8 +30,8 @@ fun <T> String.distribute(chunks: Int, block: (Int, String) -> T) {
 
 fun Boolean.asString(ifTrue: String = "", ifFalse: String = "") = if (this) ifTrue else ifFalse
 
-inline val WalletBalance.pending: Long
-    get() = (this.totalZatoshi - this.availableZatoshi).coerceAtLeast(0)
+inline val WalletBalance.pending: Zatoshi
+    get() = (this.total - this.available).coerceAtLeast(Zatoshi(0))
 
 inline fun <R> tryWithWarning(message: String = "", block: () -> R): R? {
     return try {

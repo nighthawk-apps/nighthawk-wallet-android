@@ -11,7 +11,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
 import cash.z.ecc.android.sdk.ext.onFirstWith
-import cash.z.ecc.android.sdk.type.WalletBalance
+import cash.z.ecc.android.sdk.model.WalletBalance
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendReviewBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -20,7 +21,6 @@ import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.toSplitColorSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.util.Utils
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -40,7 +40,7 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 sendViewModel.synchronizer.saplingBalances.collect {
-                    onBalanceUpdated(it)
+                    onBalanceUpdated(it!!)
                 }
             }
         }
@@ -51,8 +51,8 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
     }
 
     private fun onBalanceUpdated(balance: WalletBalance) {
-        maxZatoshi = (balance.availableZatoshi - ZcashSdk.MINERS_FEE_ZATOSHI).coerceAtLeast(0L)
-        availableZatoshi = balance.availableZatoshi
+        maxZatoshi = (balance.available - ZcashSdk.MINERS_FEE).value.coerceAtLeast(0L)
+        availableZatoshi = balance.available.value
     }
 
     private fun onSendClicked() {
@@ -78,12 +78,12 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
         binding.tvRecipient.text = if (sendViewModel.isShielded) getString(R.string.ns_shielded) else getString(R.string.ns_transparent)
         binding.tvAddress.text = getSpannedAddress()
         binding.tvSubTotal.text = getString(R.string.ns_zec_amount, sendViewModel.zatoshiAmount.convertZatoshiToZecString())
-        binding.tvFee.text = getString(R.string.ns_zec_amount, ZcashSdk.MINERS_FEE_ZATOSHI.convertZatoshiToZecString())
-        val total = (sendViewModel.zatoshiAmount + ZcashSdk.MINERS_FEE_ZATOSHI).convertZatoshiToZecString()
+        binding.tvFee.text = getString(R.string.ns_zec_amount, ZcashSdk.MINERS_FEE.convertZatoshiToZecString())
+        val total = (sendViewModel.zatoshiAmount!! + ZcashSdk.MINERS_FEE).convertZatoshiToZecString()
         binding.tvTotalAmount.text = total
     }
 
-    private fun calculateZecConvertedAmount(zatoshi: Long): String? {
+    private fun calculateZecConvertedAmount(zatoshi: Zatoshi?): String? {
         return sendViewModel.getZecMarketPrice()?.let {
             val selectedCurrencyName = sendViewModel.getSelectedFiatCurrency().currencyName
             if (selectedCurrencyName.isNotBlank()) {

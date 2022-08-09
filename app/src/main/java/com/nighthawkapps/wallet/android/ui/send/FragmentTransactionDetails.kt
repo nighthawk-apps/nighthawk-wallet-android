@@ -45,6 +45,12 @@ class FragmentTransactionDetails : BaseFragment<FragmentTransactionDetailsBindin
             }
         }
         binding.hitAreaExit.onClickNavBack()
+        binding.tvAddress.apply {
+            setOnClickListener { text?.let { copyText(it.toString(), "Address") } }
+        }
+        binding.tvMemo.apply {
+            setOnClickListener { text?.let { copyText(it.toString(), "Memo") } }
+        }
     }
 
     private fun onUIModelUpdated(uiModel: HistoryViewModel.TransactionDetailsUIModel) {
@@ -94,5 +100,10 @@ class FragmentTransactionDetails : BaseFragment<FragmentTransactionDetailsBindin
 
     private fun String.toTransactionUrl(): String {
         return getString(R.string.api_block_explorer, this)
+    }
+
+    private fun copyText(text: String, label: String) {
+        if (text.isBlank()) return
+        mainActivity?.copyText(textToCopy = text, label)
     }
 }
