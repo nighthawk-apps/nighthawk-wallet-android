@@ -117,6 +117,9 @@
     <string name="ns_fiat_currency_body">Choose your local currency so that we can show you an close estimate of how much your ZEC is worth.\n\nWhen you first open the app, the exchange rate is fetched from CoinGecko API v3 and used to calculate values. Your fund amounts are never revealed to any server.</string>
     <string name="ns_change_server">Change server</string>
     <string name="ns_change_server_text">Change backend lightwalletd server.</string>
+    <string name="ns_external_services">External services</string>
+    <string name="ns_external_services_text">Opt-in to our partner services.</string>
+    <string name="ns_external_services_uns">Enable Unstoppable Domain Service</string>
     <string name="ns_security">Security</string>
     <string name="ns_security_text">Set/Change Pin Code &amp; Biometric</string>
     <string name="ns_security_choose">Choose PIN code</string>
@@ -125,6 +128,7 @@
     <string name="ns_about_message">Nighthawk is a Shielded Zcash light-wallet with support for Z-addresses, including sending &amp; receiving shielded transactions, memo support &amp; optional t-addresses support with Auto-Shielding technology.\n\nAs a non-custodial wallet for Zcash, you have sole responsibility over its funds. Please immediately and securely back up the seed words upon creating a wallet.\n\nZcash is a digital currency, or cryptocurrency, like Bitcoin. Zcash was built on the original Bitcoin code base. It was conceived by scientists at MIT, Johns Hopkins and other respected academic and scientific institutions.\n\nNighthawk Wallet requires trust in the default or custom lightwalletd server to display accurate transaction information and CoinGecko service for exchange rate feed. This software is provided \"as is\", without warranty of any kind, express or implied.</string>
     <string name="ns_view_source">View Source</string>
     <string name="ns_about_text">Nighthawk v%s &amp; Licenses</string>
+    <string name="ns_view_license">OSS Licenses</string>
     <string name="ns_source_code_link">https://github.com/nighthawk-apps/nighthawk-wallet-android</string>
     <string name="ns_privacy_policy_link">https://nighthawkwallet.com/privacypolicy/</string>
     <string name="ns_back_up_seed_dialog_title">View Seed Words?</string>
@@ -411,6 +415,8 @@
     <string name="pin_code_setup_done">Pin code set up successfully!</string>
     <string name="settings_toast_face_touch_id_enabled">Face/Touch ID enabled.</string>
     <string name="settings_toast_face_touch_id_disabled">Face/Touch ID disabled.</string>
+    <string name="settings_toast_face_uns_enabled">Unstoppable Domain Service resolution enabled.</string>
+    <string name="settings_toast_face_uns_disabled">Unstoppable Domain Service resolution disabled.</string>
     <!-- Screen: Transaction details -->
     <string name="transaction_address_paid_you">@string/missing_transaction_address_paid_you</string>
     <string name="transaction_address_you_paid">@string/missing_transaction_address_you_paid</string>
@@ -517,6 +523,7 @@
     <string name="dialog_rescan_wallet_button_positive">Quick</string>
     <string name="dialog_rescan_wallet_button_negative">Full</string>
     <string name="dialog_rescan_wallet_button_neutral">Wipe</string>
+    <string name="dialog_rescan_initiated_title">Performing Full Rescan!</string>
     <string name="dialog_rescan_failed_title">Full Rescan Failed</string>
     <!-- Screen: Balance Detail -->
     <string name="balance_detail_button_send_transparent_funds" tools:ignore="MissingTranslation">Экранировать все активы</string>
@@ -557,4 +564,5 @@
     <string name="buy_zec_dialog_title">Купить ZEC на MoonPay</string>
     <string name="buy_zec_dialog_msg">Клиенты, не являющиеся резидентами США, могут приобрести Zcash (ZEC), зарегистрировавшись в MoonPay.\n\nВаш Zcash T-адрес скопирован в буфер обмена.\nВыберите «Открыть браузер» ниже, а после загрузки MoonPay выберите «Zcash (ZEC)», а затем вставьте свой T-адрес в поле \"адрес\".</string>
     <string name="birthday_height_backup">Высота блока создания адреса:</string>
+    <string name="rescan_wallet_wipe_success">Wiped block data successfully! Wallet data cleared. Please relaunch the app!</string>
 </resources>
