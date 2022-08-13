@@ -523,7 +523,7 @@
     <string name="dialog_rescan_wallet_button_positive">Rápido</string>
     <string name="dialog_rescan_wallet_button_negative">Completo</string>
     <string name="dialog_rescan_wallet_button_neutral">Limpiar</string>
-    <string name="dialog_rescan_initiated_title">Performing Full Rescan!</string>
+    <string name="dialog_rescan_initiated_title">¡Realizando el reescaneo total!</string>
     <string name="dialog_rescan_failed_title">Falló el reescaneo completo</string>
     <!-- Screen: Balance Detail -->
     <string name="balance_detail_button_send_transparent_funds" tools:ignore="MissingTranslation">Fondos transparentes blindados</string>
@@ -564,5 +564,5 @@
     <string name="buy_zec_dialog_title">Comprar ZEC en MoonPay</string>
     <string name="buy_zec_dialog_msg">Los clientes que no son residentes en los Estados Unidos pueden comprar Zcash (ZEC) registrándose en MoonPay.\n\nTu dirección de T-Zcash ha sido copiada al portapapeles.\nElija \"Abrir navegador\" a continuación, seleccione \'Zcash (ZEC)\' como la moneda que recibe una vez que carga MoonPay, y luego pegue su dirección T-address.</string>
     <string name="birthday_height_backup">Cumpleaños:</string>
-    <string name="rescan_wallet_wipe_success">Wiped block data successfully! Wallet data cleared. Please relaunch the app!</string>
+    <string name="rescan_wallet_wipe_success">¡Datos de bloque borrados con éxito! Los datos de la billetera se han borrado. ¡Por favor, vuelva a abrir la aplicación!</string>
 </resources>
