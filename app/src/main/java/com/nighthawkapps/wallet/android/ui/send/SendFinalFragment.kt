@@ -12,6 +12,7 @@ import cash.z.ecc.android.sdk.db.entity.isCancelled
 import cash.z.ecc.android.sdk.db.entity.isFailure
 import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendFinalBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
@@ -97,6 +98,7 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
             textConfirmation.text = model.title
             lottieSending.goneIf(!model.showProgress)
             if (!model.showProgress) lottieSending.pauseAnimation() else lottieSending.playAnimation()
+            lottieSending.enableMergePathsForKitKatAndAbove(true)
             errorMessage.text = model.errorMessage
             buttonPrimary.apply {
                 text = model.primaryButtonText
@@ -137,7 +139,7 @@ class SendFinalFragment : BaseFragment<FragmentSendFinalBinding>() {
                 model.showSecondaryButton = true
             }
             else -> {
-                model.title = "${getString(R.string.send_final_sending)} ${WalletZecFormmatter.toZecStringFull(value)} ${getString(R.string.symbol)} ${getString(R.string.send_final_to)}\n${toAddress.toAbbreviatedAddress()}"
+                model.title = "${getString(R.string.send_final_sending)} ${WalletZecFormmatter.toZecStringFull(Zatoshi(value))} ${getString(R.string.symbol)} ${getString(R.string.send_final_to)}\n${toAddress.toAbbreviatedAddress()}"
                 model.showProgress = true
                 if (isCreating()) {
                     model.showCloseIcon = false

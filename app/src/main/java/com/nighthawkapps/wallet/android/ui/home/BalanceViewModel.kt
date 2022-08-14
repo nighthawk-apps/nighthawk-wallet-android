@@ -3,6 +3,8 @@ package com.nighthawkapps.wallet.android.ui.home
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.Const
@@ -78,7 +80,7 @@ class BalanceViewModel @Inject constructor() : ViewModel() {
 
     private fun getExpectingBalance(total: Long, available: Long, unMinedCount: Int): String {
         if (available != -1L && available < total && (total - available > 0) && unMinedCount < 1) {
-            val change = WalletZecFormmatter.toZecStringFull(total - available)
+            val change = WalletZecFormmatter.toZecStringFull(Zatoshi(total - available))
             return "${R.string.home_banner_expecting.toAppString()} $change ZEC"
         }
         return ""

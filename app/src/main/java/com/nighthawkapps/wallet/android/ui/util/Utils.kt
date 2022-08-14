@@ -89,7 +89,7 @@ object Utils {
     fun calculateLocalCurrencyToZatoshi(currencyRate: String, totalLocalAmount: String): Long? {
         if (isValidDivisor(currencyRate.toFloatOrNull() ?: 0F).not())
             return null
-        return WalletZecFormmatter.toZatoshi(((totalLocalAmount.toFloatOrNull() ?: 0F).div(currencyRate.toFloatOrNull() ?: 0F)).toDouble().toZecString())
+        return WalletZecFormmatter.toZatoshi(((totalLocalAmount.toFloatOrNull() ?: 0F).div(currencyRate.toFloatOrNull() ?: 0F)).toDouble().toZecString()).value
     }
 
     /**

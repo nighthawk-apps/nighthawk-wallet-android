@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
+import cash.z.ecc.android.sdk.model.BlockHeight
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
@@ -114,18 +115,18 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         val activation = NighthawkWalletApp.instance.defaultNetwork.saplingActivationHeight
         val birthday = binding.inputBirthdate.text.toString()
             .let { birthdateString ->
-                if (birthdateString.isEmpty()) activation else birthdateString.toInt()
-            }.coerceAtLeast(activation)
+                if (birthdateString.isNullOrEmpty()) activation.value else birthdateString.toLong()
+            }.coerceAtLeast(activation.value)
 
         try {
             walletSetup.validatePhrase(seedPhrase)
-            importWallet(seedPhrase, birthday)
+            importWallet(seedPhrase, BlockHeight.new(NighthawkWalletApp.instance.defaultNetwork, birthday))
         } catch (t: Throwable) {
             mainActivity?.showInvalidSeedPhraseError(t)
         }
     }
 
-    private fun importWallet(seedPhrase: String, birthday: Int) {
+    private fun importWallet(seedPhrase: String, birthday: BlockHeight?) {
         mainActivity?.hideKeyboard()
         mainActivity?.apply {
             lifecycleScope.launch {

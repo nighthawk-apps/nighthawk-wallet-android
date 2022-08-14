@@ -57,6 +57,7 @@ import cash.z.ecc.android.sdk.exception.CompactBlockProcessorException
 import cash.z.ecc.android.sdk.ext.BatchMetrics
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.toAbbreviatedAddress
+import cash.z.ecc.android.sdk.model.BlockHeight
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -78,7 +79,6 @@ import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.WalletSetupViewModel
 import com.nighthawkapps.wallet.android.ui.util.MemoUtil
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
 
-    val latestHeight: Int? get() = if (isInitialized) {
+    val latestHeight: BlockHeight? get() = if (isInitialized) {
         synchronizerComponent.synchronizer().latestHeight
     } else {
         null

@@ -82,6 +82,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 mainActivity?.safeNavigate(R.id.action_nav_settings_to_nav_update_server)
             }
 
+            viewExternalServices.updateTransferItemsData(
+                R.drawable.ic_icon_external_services,
+                getString(R.string.ns_external_services),
+                getString(R.string.ns_external_services_text)
+            ) {
+                mainActivity?.safeNavigate(R.id.action_nav_settings_to_nav_external_services)
+            }
+
             viewAbout.updateTransferItemsData(
                 R.drawable.ic_icon_about,
                 getString(R.string.ns_about),
@@ -128,7 +136,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 viewModel.fullRescan()
                 Toast.makeText(
                     NighthawkWalletApp.instance,
-                    "Performing full rescan!",
+                    getString(R.string.dialog_rescan_initiated_title),
                     Toast.LENGTH_LONG
                 ).show()
                 mainActivity?.navController?.popBackStack()
@@ -151,7 +159,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             getString(R.string.profile_wipe_wallet_text),
             getString(R.string.profile_wipe_wallet_wipe)
         ) {
-            viewModel.wipe()
+            viewModel.wipe(context)
             mainActivity?.finish()
         }
     }

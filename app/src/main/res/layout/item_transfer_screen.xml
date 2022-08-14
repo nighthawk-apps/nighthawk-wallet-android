@@ -39,7 +39,6 @@
         app:layout_constrainedWidth="true"
         tools:text="Allow someone to scan code and send money" />
 
-
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

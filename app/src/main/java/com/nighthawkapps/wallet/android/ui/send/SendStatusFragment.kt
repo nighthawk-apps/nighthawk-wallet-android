@@ -9,6 +9,7 @@ import androidx.core.view.isInvisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import cash.z.ecc.android.sdk.SdkSynchronizer
 import cash.z.ecc.android.sdk.db.entity.PendingTransaction
 import cash.z.ecc.android.sdk.db.entity.isCancelled
 import cash.z.ecc.android.sdk.db.entity.isSubmitSuccess
@@ -21,7 +22,10 @@ import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.goneIf
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
@@ -32,9 +36,10 @@ class SendStatusFragment : BaseFragment<FragmentSendStatusBinding>() {
         return FragmentSendStatusBinding.inflate(layoutInflater)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        sendViewModel.send()
+        sendViewModel.send().launchIn((sendViewModel.synchronizer as SdkSynchronizer).coroutineScope)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

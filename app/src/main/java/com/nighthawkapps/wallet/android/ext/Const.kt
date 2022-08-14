@@ -73,6 +73,7 @@ object Const {
         const val KEY_LOCAL_UNIT = "const.app_constants.key_local_unit"
         const val KEY_SYNC_NOTIFICATION = "const.app_constants.key_sync_notification"
         const val WORKER_TAG_SYNC_NOTIFICATION = "const.app_constants.tag_sync_notification"
+        const val USE_UNSTOPPABLE_NAME_SERVICE = "const.app_constants.uns"
     }
 
     object Network {

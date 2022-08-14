@@ -20,6 +20,7 @@ import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.setup.PasswordViewModel
 import com.nighthawkapps.wallet.android.ui.setup.SettingsViewModel
 import com.nighthawkapps.wallet.android.ui.setup.SyncNotificationViewModel
+import com.nighthawkapps.wallet.android.ui.setup.ExternalServicesViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -114,6 +115,12 @@ abstract class ViewModelsSynchronizerModule {
     @IntoMap
     @ViewModelKey(BalanceViewModel::class)
     abstract fun bindBalanceViewModel(implementation: BalanceViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExternalServicesViewModel::class)
+    abstract fun bindExternalServicesViewModel(implementation: ExternalServicesViewModel): ViewModel
 
     /**
      * Factory for view models that are not created until the Synchronizer exists. Only VMs that

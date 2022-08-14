@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 2.0.03 BETA *(2022-08-01)*
+------------------------------------
+- Integrate Unstoppable Domain Service.
+- Add language translations for Arabic, Spanish, Russian & Ukrainian!
+- Switch to using AboutLibraries for OSS License list.
+- Adopt type-safe models Zatoshi & WalletBalance.
+- Upgrade SDK & dependencies.
+
 Version 2.0.02 BETA *(2022-06-29)*
 ------------------------------------
 - Bugfixes.
