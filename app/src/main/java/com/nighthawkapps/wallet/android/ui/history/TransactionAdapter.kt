@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import cash.z.ecc.android.sdk.db.entity.ConfirmedTransaction
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.network.models.ZcashPriceApiResponse
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 
 class TransactionAdapter<T : ConfirmedTransaction> :
     ListAdapter<T, TransactionViewHolder<T>>(
@@ -28,6 +29,7 @@ class TransactionAdapter<T : ConfirmedTransaction> :
     ) {
 
     private var zcashPriceApiData: ZcashPriceApiResponse? = null
+    private var selectedUnit: FiatCurrencyViewModel.FiatUnit = FiatCurrencyViewModel.FiatUnit.ZEC
     init {
         setHasStableIds(true)
     }
@@ -42,7 +44,7 @@ class TransactionAdapter<T : ConfirmedTransaction> :
     override fun onBindViewHolder(
         holder: TransactionViewHolder<T>,
         position: Int
-    ) = holder.bindTo(getItem(position), zcashPriceApiData)
+    ) = holder.bindTo(getItem(position), zcashPriceApiData, selectedUnit)
 
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id ?: -1
@@ -50,5 +52,9 @@ class TransactionAdapter<T : ConfirmedTransaction> :
 
     fun setZecConversionValueText(zcashPriceApiData: ZcashPriceApiResponse?) {
         this.zcashPriceApiData = zcashPriceApiData
+    }
+
+    fun setSelectedUnit(selectedUnit: FiatCurrencyViewModel.FiatUnit) {
+        this.selectedUnit = selectedUnit
     }
 }

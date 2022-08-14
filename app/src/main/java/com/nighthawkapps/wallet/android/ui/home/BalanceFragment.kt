@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentBalanceBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
@@ -75,7 +76,7 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
             val fiatUnit = balanceViewModel.getSelectedFiatUnit()
             binding.tvBalance.text = getString(R.string.ns_amount_with_unit, balanceViewModel.getConvertedBalanceAmount(), fiatUnit.unit).toColoredSpan(R.color.ns_peach_100, fiatUnit.unit)
         } else {
-            val convertedAmount = Utils.getZecConvertedAmountText(balanceViewModel.balanceAmountZatoshi.convertZatoshiToZecString(), homeViewModel.zcashPriceApiData.value)
+            val convertedAmount = Utils.getZecConvertedAmountText(Zatoshi(balanceViewModel.balanceAmountZatoshi).convertZatoshiToZecString(), homeViewModel.zcashPriceApiData.value)
             binding.tvBalance.text = convertedAmount?.toColoredSpan(R.color.ns_peach_100,
                 FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByMarket(homeViewModel.zcashPriceApiData.value?.data?.keys?.firstOrNull() ?: "").currencyName)
         }

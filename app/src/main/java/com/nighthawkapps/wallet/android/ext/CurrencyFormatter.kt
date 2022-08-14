@@ -162,7 +162,7 @@ inline fun String.endsWithDecimalSeparator(): Boolean {
 }
 
 object UnitConversion {
-    val ZATOSHI_PER_ZEC = ZcashSdk.ZATOSHI_PER_ZEC
+    val ZATOSHI_PER_ZEC = Zatoshi.ZATOSHI_PER_ZEC
     val ZATOSHI_PER_DECIZ = ZATOSHI_PER_ZEC / 10
     val ZATOSHI_PER_CENTZ = ZATOSHI_PER_ZEC / 100
     val ZATOSHI_PER_MILLIZ = ZATOSHI_PER_ZEC / 1000

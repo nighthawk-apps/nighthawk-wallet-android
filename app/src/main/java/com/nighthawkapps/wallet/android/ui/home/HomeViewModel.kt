@@ -285,7 +285,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         return transactions.map { confirmedTransaction ->
             val transactionType = if (confirmedTransaction.toAddress.isNullOrEmpty()) RecentActivityUiModel.TransactionType.RECEIVED else RecentActivityUiModel.TransactionType.SENT
             val address = if (transactionType == RecentActivityUiModel.TransactionType.RECEIVED) getSender(confirmedTransaction) else confirmedTransaction.toAddress
-            val toZecStringShort = WalletZecFormmatter.toZecStringShort(confirmedTransaction.value)
+            val toZecStringShort = WalletZecFormmatter.toZecStringShort(Zatoshi(confirmedTransaction.value))
             val selectedUnit = getSelectedFiatUnit()
             val amount = confirmedTransaction.value.convertZatoshiToSelectedUnit(selectedUnit)
             RecentActivityUiModel(

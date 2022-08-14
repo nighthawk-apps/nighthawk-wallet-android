@@ -13,12 +13,14 @@ import cash.z.ecc.android.sdk.db.entity.valueInZatoshi
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.isShielded
 import com.nighthawkapps.wallet.android.R
+import com.nighthawkapps.wallet.android.ext.convertZatoshiToSelectedUnit
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.toAppInt
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.network.models.ZcashPriceApiResponse
 import com.nighthawkapps.wallet.android.ui.MainActivity
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import com.nighthawkapps.wallet.android.ui.util.toUtf8Memo
 import kotlinx.coroutines.launch
@@ -37,7 +39,8 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
 
     fun bindTo(
         transaction: T?,
-        zcashPriceApiData: ZcashPriceApiResponse?
+        zcashPriceApiData: ZcashPriceApiResponse?,
+        selectedFiatUnit: FiatCurrencyViewModel.FiatUnit
     ) {
         val mainActivity = itemView.context as MainActivity
         mainActivity.lifecycleScope.launch {
@@ -47,6 +50,7 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
             var amountZec = ""
             var amountDisplay = ""
             var arrowRotation: Int = R.integer.transaction_arrow_rotation_send
+            var convertedValue = ""
             @DrawableRes var iconTransactionDrawable: Int? = null
 
             try {
@@ -58,7 +62,8 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                         onTransactionLongPressed(this)
                         true
                     }
-                    amountZec = WalletZecFormmatter.toZecStringShort(valueInZatoshi)
+                    convertedValue = Utils.getZecConvertedAmountText(WalletZecFormmatter.toZecStringShort(valueInZatoshi), zcashPriceApiData) ?: ""
+                    amountZec = valueInZatoshi.value.convertZatoshiToSelectedUnit(selectedFiatUnit)
                     // TODO: these might be good extension functions
                     val timestamp = formatter.format(blockTimeInSeconds * 1000L)
                     val isMined = blockTimeInSeconds != 0L
@@ -95,14 +100,16 @@ class TransactionViewHolder<T : ConfirmedTransaction>(itemView: View) : Recycler
                         }
                     }
                     // sanitize amount
-                    if (value < ZcashSdk.MINERS_FEE.value * 10) amountDisplay = "< 0.0001"
+                    val minValue = ZcashSdk.MINERS_FEE.value * 10
+                    if (value < minValue) amountDisplay = "< ${minValue.convertZatoshiToSelectedUnit(selectedFiatUnit)}"
                 }
 
                 topText.text = lineOne
                 bottomText.text = lineTwo
                 amountText.text = itemView.context.getString(R.string.ns_zec_amount, amountDisplay)
+                amountText.text = "$amountDisplay ${selectedFiatUnit.unit}"
                 transactionArrow.rotation = arrowRotation.toAppInt().toFloat()
-                convertedValueTextView.text = Utils.getZecConvertedAmountText(amountZec, zcashPriceApiData)
+                convertedValueTextView.text = convertedValue
                 iconTransactionDrawable?.let { iconTransactionType.setImageResource(it) }
             } catch (t: Throwable) {
                 twig("Failed to parse the transaction due to $t")

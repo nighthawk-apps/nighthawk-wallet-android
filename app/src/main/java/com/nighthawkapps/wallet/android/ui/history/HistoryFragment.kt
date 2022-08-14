@@ -49,6 +49,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         twig("HistoryFragment.initTransactionUI")
         transactionAdapter = TransactionAdapter()
         transactionAdapter.setZecConversionValueText(homeViewModel.zcashPriceApiData.value)
+        transactionAdapter.setSelectedUnit(homeViewModel.getSelectedFiatUnit())
         transactionAdapter.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
