@@ -1,0 +1,2 @@
+- Upgrade SDK & dependencies.
+- Fix bug when changing server.

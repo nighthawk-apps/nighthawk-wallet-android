@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import cash.z.ecc.android.sdk.Initializer
 import cash.z.ecc.android.sdk.exception.InitializerException
 import cash.z.ecc.android.sdk.model.BlockHeight
+import cash.z.ecc.android.sdk.model.LightWalletEndpoint
 import cash.z.ecc.android.sdk.tool.DerivationTool
 import cash.z.ecc.android.sdk.type.UnifiedViewingKey
-import cash.z.ecc.android.sdk.type.ZcashNetwork
+import cash.z.ecc.android.sdk.model.ZcashNetwork
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.Const.HOST_PORT
@@ -97,7 +98,7 @@ class WalletSetupViewModel @Inject constructor() : ViewModel() {
 
         twig("Done loading config variables")
         return Initializer.Config {
-            it.importWallet(vk, birthdayHeight, network, host, port)
+            it.importWallet(vk, birthdayHeight, network, LightWalletEndpoint(host, port, true))
             it.setOverwriteKeys(overwriteVks)
         }
     }

@@ -5,30 +5,30 @@ object Deps {
     // `Deps.Kotlin.version` directly
     const val kotlinVersion = "1.7.10"
     const val navigationVersion = "2.5.1"
-    const val aboutLibrariesVersion = "10.4.0-b02"
+    const val aboutLibrariesVersion = "10.4.0"
     const val compileSdkVersion = 33
     const val minSdkVersion = 23
     const val targetSdkVersion = 33
-    const val versionName = "2.0.03"
-    const val versionCode = 2_00_03_200 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "2.0.04"
+    const val versionCode = 2_00_04_200 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.4.0"
-        const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.2"
+        const val APPCOMPAT = "androidx.appcompat:appcompat:1.5.0"
         const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha04"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
-        const val CORE_KTX = "androidx.core:core-ktx:1.9.0-alpha05"
-        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.5.1"
+        const val CORE_KTX = "androidx.core:core-ktx:1.9.0-beta01"
+        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.5.2"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
         const val PAGING = "androidx.paging:paging-runtime-ktx:3.1.1"
-        const val RECYCLER = "androidx.recyclerview:recyclerview:1.2.0"
+        const val RECYCLER = "androidx.recyclerview:recyclerview:1.2.1"
         const val SECURITY = "androidx.security:security-crypto:1.1.0-alpha03"
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
         const val SPLASH_SCREEN = "androidx.core:core-splashscreen:1.0.0"
-        const val OSS_LICENCE = "com.mikepenz:aboutlibraries:10.4.0-b02"
+        const val OSS_LICENCE = "com.mikepenz:aboutlibraries:10.4.0"
         const val WORK_MANAGER_KTX = "androidx.work:work-runtime-ktx:2.7.1"
 
         object CameraX : Version("1.2.0-alpha04") {
@@ -57,7 +57,7 @@ object Deps {
         }
     }
 
-    object Dagger : Version("2.43.1") {
+    object Dagger : Version("2.43.2") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -103,12 +103,13 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.4"
-        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.8.0-beta01"
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.9.0-beta03"
     }
 
     object Misc {
-        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.25.0"
         const val LOTTIE = "com.airbnb.android:lottie:5.2.0"
+        const val PDF_BOX = "com.tom-roush:pdfbox-android:2.0.25.0"
+        const val PROCESS_PHOENIX = "com.jakewharton:process-phoenix:2.1.2"
         const val TIMBER = "com.jakewharton.timber:timber::5.0.1"
 
         object Plugins {

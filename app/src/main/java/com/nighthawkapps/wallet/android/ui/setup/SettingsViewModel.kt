@@ -139,27 +139,14 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     }
 
     suspend fun submit() {
-        var error: Throwable? = null
+        val error: Throwable? = null
         val host = uiModels.value.host
         val port = uiModels.value.portInt
-        synchronizer.changeServer(uiModels.value.host, uiModels.value.portInt) {
-            error = it
-        }
         if (error == null) {
             prefs[Const.HOST_SERVER] = host
             prefs[Const.HOST_PORT] = port
         }
         uiModels.value = uiModels.value.copy(changeError = error, complete = true)
-    }
-
-    suspend fun updateServer(context: Context, host: String, port: Int) {
-        UiModel(
-            host,
-            port.toString()
-        ).let { default ->
-            uiModels.value = default
-            submit()
-        }
     }
 
     private fun onUpdateModel(kProperty: KProperty<*>, old: String, new: String) {

@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 2.0.04 BETA *(2022-08-26)*
+------------------------------------
+- Upgrade SDK & dependencies.
+- Fix bug when changing server.
+
 Version 2.0.03 BETA *(2022-08-01)*
 ------------------------------------
 - Integrate Unstoppable Domain Service.

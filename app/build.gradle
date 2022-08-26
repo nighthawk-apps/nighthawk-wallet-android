@@ -167,8 +167,9 @@ dependencies {
     implementation Deps.Network.OKHTTP_LOGGING
 
     // Misc.
-    implementation Deps.Misc.PDF_BOX
     implementation Deps.Misc.LOTTIE
+    implementation Deps.Misc.PDF_BOX
+    implementation Deps.Misc.PROCESS_PHOENIX
     implementation Deps.Misc.Plugins.QR_SCANNER
 
     // Tests
