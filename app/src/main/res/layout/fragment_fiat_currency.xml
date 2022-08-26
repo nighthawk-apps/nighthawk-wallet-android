@@ -30,52 +30,66 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_icon_back" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLineStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="24dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLineEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="24dp" />
-
-        <TextView
-            android:id="@+id/tvTitle"
-            style="@style/Nighthawk.MaterialComponents.Body"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="@string/ns_fiat_currency"
-            android:textColor="@color/ns_parmaviolet"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
-            app:layout_constraintTop_toBottomOf="@id/ivBack" />
-
-        <TextView
-            android:id="@+id/tvBody"
-            style="@style/Nighthawk.MaterialComponents.SubText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/ns_fiat_currency_body"
-            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-        <RadioGroup
-            android:id="@+id/radioGroupCurrencyTypes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
-            app:layout_constraintTop_toBottomOf="@id/tvBody" />
+            app:layout_constraintTop_toBottomOf="@id/ivBack">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideLineStart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_begin="24dp" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideLineEnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_end="24dp" />
+
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            style="@style/Nighthawk.MaterialComponents.Body"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            android:text="@string/ns_fiat_currency"
+                            android:textColor="@color/ns_parmaviolet"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+                            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvBody"
+                            style="@style/Nighthawk.MaterialComponents.SubText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/ns_fiat_currency_body"
+                            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+                            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+                            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+                        <RadioGroup
+                            android:id="@+id/radioGroupCurrencyTypes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+                            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+                            app:layout_constraintTop_toBottomOf="@id/tvBody" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
