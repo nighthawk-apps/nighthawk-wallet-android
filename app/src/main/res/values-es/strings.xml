@@ -157,7 +157,7 @@
     <string name="ns_scan_payment_request">Escanear una solicitud de pago</string>
     <string name="ns_scan_payment_request_text">Si tiene una solicitud de pago, puede escanear el código QR aquí para completar automáticamente todos los detalles.</string>
     <string name="ns_choose_send">Elige cuánto enviar</string>
-    <string name="ns_spendable_balance">El saldo disponible (incluyendo tx fee) es %1s ZEC</string>
+    <string name="ns_spendable_balance">El saldo disponible (incluyendo tx fee) es %1s %2s</string>
     <string name="ns_scan_payment_code">Escanear un código de pago</string>
     <string name="ns_top_up_wallet">Recarga tu billetera</string>
     <string name="ns_not_enough_zcash">No hay Zcash suficiente</string>

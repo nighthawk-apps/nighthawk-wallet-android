@@ -178,14 +178,15 @@ inline fun Long?.convertZatoshiToSelectedUnit(fiatUnit: FiatCurrencyViewModel.Fi
     return WalletZecFormmatter.formatFull(bigDecimal)
 }
 
-inline fun Long?.convertedUnitToZatoshi(fiatUnit: FiatCurrencyViewModel.FiatUnit): Long {
-    if (this == null) return 0L
-    val bigDecimal = BigDecimal(this, MathContext.DECIMAL128)
+inline fun BigDecimal?.convertedUnitToZatoshi(fiatUnit: FiatCurrencyViewModel.FiatUnit): Zatoshi {
+    if (this == null) return Zatoshi(0)
+    val bigDecimal = this
     if (bigDecimal < BigDecimal.ZERO) {
         throw IllegalArgumentException(
             "Invalid ZEC value: $this. ZEC is represented by notes and" +
                     " cannot be negative"
         )
     }
-    return bigDecimal.multiply(BigDecimal(fiatUnit.zatoshiPerUnit, MathContext.DECIMAL128), MathContext.DECIMAL128).toLong()
+    val a = bigDecimal.multiply(BigDecimal(fiatUnit.zatoshiPerUnit, MathContext.DECIMAL128), MathContext.DECIMAL128)
+    return Zatoshi(a.toLong())
 }

@@ -17,6 +17,7 @@ import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentSendReviewBinding
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
+import com.nighthawkapps.wallet.android.ext.convertZatoshiToSelectedUnit
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.toSplitColorSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
@@ -70,16 +71,18 @@ class SendReviewFragment : BaseFragment<FragmentSendReviewBinding>() {
     }
 
     private fun fillUI() {
-        binding.tvBalance.text = sendViewModel.zatoshiAmount.convertZatoshiToZecString()
+        val selectedFiatUnit = sendViewModel.getSelectedFiatUnit()
+        binding.tvBalance.text = sendViewModel.zatoshiAmount?.value.convertZatoshiToSelectedUnit(selectedFiatUnit)
+        binding.tvZec.text = selectedFiatUnit.unit
         binding.tvNetwork.text = sendViewModel.networkName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         binding.tvConvertedAmount.text = calculateZecConvertedAmount(sendViewModel.zatoshiAmount)
         binding.groupMemo.isVisible = sendViewModel.createMemoToSend().isNotBlank()
         binding.tvMemo.text = sendViewModel.createMemoToSend()
         binding.tvRecipient.text = if (sendViewModel.isShielded) getString(R.string.ns_shielded) else getString(R.string.ns_transparent)
         binding.tvAddress.text = getSpannedAddress()
-        binding.tvSubTotal.text = getString(R.string.ns_zec_amount, sendViewModel.zatoshiAmount.convertZatoshiToZecString())
-        binding.tvFee.text = getString(R.string.ns_zec_amount, ZcashSdk.MINERS_FEE.convertZatoshiToZecString())
-        val total = (sendViewModel.zatoshiAmount!! + ZcashSdk.MINERS_FEE).convertZatoshiToZecString()
+        binding.tvSubTotal.text = getString(R.string.ns_amount_with_unit, sendViewModel.zatoshiAmount?.value.convertZatoshiToSelectedUnit(selectedFiatUnit), selectedFiatUnit.unit)
+        binding.tvFee.text = getString(R.string.ns_amount_with_unit, ZcashSdk.MINERS_FEE.value.convertZatoshiToSelectedUnit(selectedFiatUnit), selectedFiatUnit.unit)
+        val total = (sendViewModel.zatoshiAmount!! + ZcashSdk.MINERS_FEE).value.convertZatoshiToSelectedUnit(selectedFiatUnit)
         binding.tvTotalAmount.text = total
     }
 

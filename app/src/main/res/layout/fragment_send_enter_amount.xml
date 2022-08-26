@@ -109,7 +109,6 @@
         android:drawablePadding="8dp"
         android:gravity="center"
         android:text="@string/ns_zec"
-        android:textAllCaps="true"
         android:textColor="@color/ns_peach_100"
         app:drawableEndCompat="@drawable/ic_icon_up_down"
         app:layout_constraintBottom_toBottomOf="@id/tvBalance"

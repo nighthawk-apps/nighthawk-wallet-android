@@ -93,6 +93,10 @@ class SendViewModel @Inject constructor() : ViewModel() {
         )
     }
 
+    fun getSelectedFiatUnit(): FiatCurrencyViewModel.FiatUnit {
+        return FiatCurrencyViewModel.FiatUnit.getFiatUnit(lockBox[Const.AppConstants.KEY_LOCAL_UNIT] ?: "")
+    }
+
     fun setSendZecDeepLinkData(data: DeepLinkUtil.SendDeepLinkData?) {
         _sendZecDeepLinkData.value = data
     }
