@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import cash.z.ecc.android.sdk.exception.LightWalletException
 import cash.z.ecc.android.sdk.ext.collectWith
+import com.jakewharton.processphoenix.ProcessPhoenix
 import com.nighthawkapps.wallet.android.NighthawkWalletApp
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentUpdateServerBinding
@@ -118,8 +119,7 @@ class UpdateServerFragment : BaseFragment<FragmentUpdateServerBinding>() {
             if (uiModel.complete) {
                 binding.groupLoading.gone()
                 mainActivity?.showMessage(getString(R.string.settings_toast_change_server_success))
-                mainActivity?.safeNavigate(R.id.nav_home)
-                true
+                ProcessPhoenix.triggerRebirth(context)
             }
             false
         }
@@ -131,8 +131,7 @@ class UpdateServerFragment : BaseFragment<FragmentUpdateServerBinding>() {
         } else {
             error.javaClass.simpleName
         }
-        val message = "An error occured while changing servers. Please verify the info" +
-                " and try again.\n\nError: $details"
+        val message = getString(R.string.settings_toast_change_server_failure_message) + " $details"
         twig(message)
         Toast.makeText(NighthawkWalletApp.instance, getString(R.string.settings_toast_change_server_failure), Toast.LENGTH_SHORT).show()
         context?.showUpdateServerCriticalError(message)

@@ -1,0 +1,4 @@
+- Add translations for Korean, Spanish & Ukrainian!
+- Upgrade SDK & dependencies.
+- Minor UI fixes.
+- Fix bug when changing server.
