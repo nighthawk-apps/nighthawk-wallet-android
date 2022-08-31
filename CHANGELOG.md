@@ -1,9 +1,11 @@
 Change Log
 ==========
 
-Version 2.0.04 BETA *(2022-08-26)*
+Version 2.0.04 BETA *(2022-08-31)*
 ------------------------------------
+- Add translations for Korean, Spanish & Ukrainian!
 - Upgrade SDK & dependencies.
+- Minor UI fixes.
 - Fix bug when changing server.
 
 Version 2.0.03 BETA *(2022-08-01)*
