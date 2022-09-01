@@ -396,8 +396,9 @@
     <string name="settings_reset">Reiniciar</string>
     <string name="settings_server_address">Host</string>
     <string name="settings_server_port">Puerto</string>
+    <string name="settings_toast_change_server_failure_message">An error occurred while changing servers. Please verify the info and try again. \n\nError:</string>
     <string name="settings_toast_change_server_failure">¡No se pudo conectar con el servidor!</string>
-    <string name="settings_toast_change_server_success">¡Servidor cambiado exitosamente!</string>
+    <string name="settings_toast_change_server_success">Successfully changed server! Restarting Nighthawk.</string>
     <string name="settings_update">Actualizar</string>
     <string name="enter_six_digit_pin_code">Introduzca el código Pin de seis dígitos</string>
     <string name="choose_six_digit_pin_code">Elige un código Pin de seis dígitos</string>
