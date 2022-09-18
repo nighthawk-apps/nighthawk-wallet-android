@@ -190,3 +190,8 @@ inline fun BigDecimal?.convertedUnitToZatoshi(fiatUnit: FiatCurrencyViewModel.Fi
     val a = bigDecimal.multiply(BigDecimal(fiatUnit.zatoshiPerUnit, MathContext.DECIMAL128), MathContext.DECIMAL128)
     return Zatoshi(a.toLong())
 }
+
+inline fun String?.sanitizeInputValue(): String {
+    if (this.isNullOrBlank()) return ""
+    return this.filter { it.isDigit() || it == '.' }
+}

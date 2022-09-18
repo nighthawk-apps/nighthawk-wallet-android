@@ -19,6 +19,7 @@ import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.Utils
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
@@ -37,6 +38,7 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             homeViewModel.uiModels
                 .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+                .distinctUntilChanged()
                 .collect { homeUiModel ->
                     updateUI(balanceViewModel.getBalanceUIModel(sectionType, homeUiModel))
                 }

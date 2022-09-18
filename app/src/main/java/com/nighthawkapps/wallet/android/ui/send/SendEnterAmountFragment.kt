@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import cash.z.ecc.android.sdk.ext.ZcashSdk
 import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.ext.safelyConvertToBigDecimal
 import cash.z.ecc.android.sdk.model.WalletBalance
 import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
@@ -19,6 +20,7 @@ import com.nighthawkapps.wallet.android.databinding.FragmentSendEnterAmountBindi
 import com.nighthawkapps.wallet.android.di.viewmodel.activityViewModel
 import com.nighthawkapps.wallet.android.ext.convertZatoshiToSelectedUnit
 import com.nighthawkapps.wallet.android.ext.convertedUnitToZatoshi
+import com.nighthawkapps.wallet.android.ext.sanitizeInputValue
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.onClickNavBack
 import com.nighthawkapps.wallet.android.ext.twig
@@ -26,7 +28,6 @@ import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.util.DeepLinkUtil
 import com.nighthawkapps.wallet.android.ui.util.Utils
 import kotlinx.coroutines.launch
-import java.math.MathContext
 
 class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
 
@@ -126,18 +127,18 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
         }
     }
 
-    private fun onAmountValueUpdated(newValue: String) {
+    private fun onAmountValueUpdated(inputValue: String) {
+        val newValue = inputValue.sanitizeInputValue()
         binding.tvBalance.let {
             it.text = newValue
             val selectedFiatUnit = sendViewModel.getSelectedFiatUnit()
             if (sendViewModel.isZecAmountState) {
-                newValue.toBigDecimalOrNull(MathContext.DECIMAL128).convertedUnitToZatoshi(selectedFiatUnit).let { zatoshi ->
+                newValue.safelyConvertToBigDecimal().convertedUnitToZatoshi(selectedFiatUnit).let { zatoshi ->
                     sendViewModel.zatoshiAmount = zatoshi
                 }
             } else {
                 sendViewModel.getZecMarketPrice()?.let { marketPrice ->
-                    sendViewModel.zatoshiAmount = Zatoshi(Utils.calculateLocalCurrencyToZatoshi(marketPrice,
-                        newValue.toBigDecimalOrNull(MathContext.DECIMAL128).convertedUnitToZatoshi(selectedFiatUnit).convertZatoshiToZecString()) ?: 0)
+                    sendViewModel.zatoshiAmount = Zatoshi(Utils.calculateLocalCurrencyToZatoshi(marketPrice, newValue) ?: 0)
                 }
             }
             calculateZecConvertedAmount(sendViewModel.zatoshiAmount)
@@ -195,9 +196,8 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
             val convertedValue = if (sendViewModel.isZecAmountState) {
                 Utils.calculateZecToOtherCurrencyValue(enteredZec, it)
             } else {
-                Utils.calculateOtherCurrencyToZec(binding.tvBalance.text.toString(), it)
-                    .toBigDecimalOrNull(MathContext.DECIMAL128).convertedUnitToZatoshi(sendViewModel.getSelectedFiatUnit())
-                    .convertZatoshiToZecString()
+                WalletZecFormmatter.toZatoshi(Utils.calculateOtherCurrencyToZec(binding.tvBalance.text.toString(), it)).value
+                    .convertZatoshiToSelectedUnit(sendViewModel.getSelectedFiatUnit())
             }
             sendViewModel.isZecAmountState = sendViewModel.isZecAmountState.not()
             if (convertedValue == "0" && binding.tvBalance.text == "0.") { // This handle a corner case. If user type 0.[dot] and then try to switch the currency and add again .[dot]
@@ -211,11 +211,10 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
     private fun getEnteredAmountInZatoshi(): Long {
         val enteredAmount = binding.tvBalance
         return if (sendViewModel.isZecAmountState) {
-            enteredAmount.text.toString().toBigDecimalOrNull(MathContext.DECIMAL128).convertedUnitToZatoshi(sendViewModel.getSelectedFiatUnit()).value
+            enteredAmount.text.toString().safelyConvertToBigDecimal().convertedUnitToZatoshi(sendViewModel.getSelectedFiatUnit()).value
         } else {
             sendViewModel.getZecMarketPrice()?.let {
-                Utils.calculateLocalCurrencyToZatoshi(it,
-                    enteredAmount.text.toString().toBigDecimalOrNull(MathContext.DECIMAL128).convertedUnitToZatoshi(sendViewModel.getSelectedFiatUnit()).convertZatoshiToZecString())
+                Utils.calculateLocalCurrencyToZatoshi(it, enteredAmount.text.toString())
             } ?: -1
         }
     }
