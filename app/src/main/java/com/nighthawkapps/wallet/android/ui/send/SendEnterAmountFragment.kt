@@ -115,7 +115,7 @@ class SendEnterAmountFragment : BaseFragment<FragmentSendEnterAmountBinding>() {
                 sendViewModel.zatoshiAmount = Zatoshi(it)
             }
             val newValue = if (sendViewModel.isZecAmountState) {
-                sendViewModel.zatoshiAmount.convertZatoshiToZecString()
+                sendViewModel.zatoshiAmount?.value.convertZatoshiToSelectedUnit(sendViewModel.getSelectedFiatUnit())
             } else {
                 Utils.calculateZecToOtherCurrencyValue(sendViewModel.zatoshiAmount.convertZatoshiToZecString(), sendViewModel.getZecMarketPrice() ?: "0")
             }
