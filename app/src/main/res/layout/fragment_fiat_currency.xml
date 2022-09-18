@@ -78,33 +78,33 @@
                             app:layout_constraintStart_toEndOf="@id/guideLineStart"
                             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-        <RadioGroup
-            android:id="@+id/radioGroupCurrencyTypes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
-            app:layout_constraintTop_toBottomOf="@id/tvBody" />
+                        <RadioGroup
+                            android:id="@+id/radioGroupCurrencyTypes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+                            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+                            app:layout_constraintTop_toBottomOf="@id/tvBody" />
 
-        <View
-            android:id="@+id/dividerCurrency"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/ns_navy"
-            app:layout_constraintEnd_toEndOf="@id/guideLineEnd"
-            app:layout_constraintStart_toStartOf="@id/guideLineStart"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupCurrencyTypes" />
+                        <View
+                            android:id="@+id/dividerCurrency"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/ns_navy"
+                            app:layout_constraintEnd_toEndOf="@id/guideLineEnd"
+                            app:layout_constraintStart_toStartOf="@id/guideLineStart"
+                            app:layout_constraintTop_toBottomOf="@id/radioGroupCurrencyTypes" />
 
-        <RadioGroup
-            android:id="@+id/radioGroupUnitTypes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
-            app:layout_constraintStart_toEndOf="@id/guideLineStart"
-            app:layout_constraintTop_toBottomOf="@id/dividerCurrency" />
+                        <RadioGroup
+                            android:id="@+id/radioGroupUnitTypes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            app:layout_constraintEnd_toStartOf="@id/guideLineEnd"
+                            app:layout_constraintStart_toEndOf="@id/guideLineStart"
+                            app:layout_constraintTop_toBottomOf="@id/dividerCurrency" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
