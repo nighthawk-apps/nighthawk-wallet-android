@@ -26,8 +26,8 @@ data class TLD(
 class UnsUtil {
     private var supportedTLDs = emptyList<String>()
     private val client = OkHttpClient()
-    private val token: String = "bKmEKAC4HJUEDNlnoYITvXYuhrIshFsa"
-    private val resolutionService = "https://unstoppabledomains.g.alchemy.com/domains/"
+    private val token: String = "ba92f79f-8bde-444e-9b69-a1ff8723519c"
+    private val resolutionService = "https://resolve.unstoppabledomains.com/domains/"
     private val tldAPI = "https://resolve.unstoppabledomains.com/supported_tlds"
     suspend fun isValidUNSAddress(address: String): String? {
         val domain = prepareDomain(address)

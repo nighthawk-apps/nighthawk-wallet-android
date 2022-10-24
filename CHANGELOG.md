@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 2.0.05 BETA *(2022-10-24)*
+------------------------------------
+- Transition Unstoppable Domain Name Service endpoint from Alchemy to a self-hosted.
+- Upgrade SDK & dependencies.
+
 Version 2.0.04 BETA *(2022-08-31)*
 ------------------------------------
 - Add translations for Korean, Spanish & Ukrainian!

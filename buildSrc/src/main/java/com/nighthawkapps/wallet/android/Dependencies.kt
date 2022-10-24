@@ -3,23 +3,23 @@ package com.nighthawkapps.wallet.android
 object Deps {
     // For use in the top-level build.gradle which gives an error when provided
     // `Deps.Kotlin.version` directly
-    const val kotlinVersion = "1.7.10"
-    const val navigationVersion = "2.5.1"
+    const val kotlinVersion = "1.7.20"
+    const val navigationVersion = "2.5.2"
     const val aboutLibrariesVersion = "10.4.0"
     const val compileSdkVersion = 33
     const val minSdkVersion = 23
     const val targetSdkVersion = 33
-    const val versionName = "2.0.04"
-    const val versionCode = 2_00_04_200 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
+    const val versionName = "2.0.05"
+    const val versionCode = 2_00_05_200 // last digits are alpha(0XX) beta(2XX) rc(4XX) release(8XX). Ex: 1_08_04_401 is an release candidate build of version 1.8.4 and 1_08_04_800 would be the final release.
     const val packageName = "com.nighthawkapps.wallet.android"
 
     object AndroidX {
         const val ANNOTATION = "androidx.annotation:annotation:1.4.0"
-        const val APPCOMPAT = "androidx.appcompat:appcompat:1.5.0"
-        const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha04"
+        const val APPCOMPAT = "androidx.appcompat:appcompat:1.5.1"
+        const val BIOMETRICS = "androidx.biometric:biometric:1.2.0-alpha05"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
-        const val CORE_KTX = "androidx.core:core-ktx:1.9.0-beta01"
-        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.5.2"
+        const val CORE_KTX = "androidx.core:core-ktx:1.9.0"
+        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:1.5.3"
         const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
         const val MULTIDEX = "androidx.multidex:multidex:2.0.1"
         const val PAGING = "androidx.paging:paging-runtime-ktx:3.1.1"
@@ -28,15 +28,15 @@ object Deps {
         const val DESUGAR_JDK = "com.android.tools:desugar_jdk_libs:1.1.5"
         const val CUSTOM_CHROME_TABS = "androidx.browser:browser:1.4.0"
         const val SPLASH_SCREEN = "androidx.core:core-splashscreen:1.0.0"
-        const val OSS_LICENCE = "com.mikepenz:aboutlibraries:10.4.0"
+        const val OSS_LICENCE = "com.mikepenz:aboutlibraries:10.5.1"
         const val WORK_MANAGER_KTX = "androidx.work:work-runtime-ktx:2.7.1"
 
-        object CameraX : Version("1.2.0-alpha04") {
+        object CameraX : Version("1.2.0-beta02") {
             val CAMERA2 = "androidx.camera:camera-camera2:$version"
             val CORE = "androidx.camera:camera-core:$version"
             val LIFECYCLE = "androidx.camera:camera-lifecycle:$version"
 
-            object View : Version("1.2.0-alpha04") {
+            object View : Version("1.2.0-beta02") {
                 val EXT = "androidx.camera:camera-extensions:$version"
                 val VIEW = "androidx.camera:camera-view:$version"
             }
@@ -57,7 +57,7 @@ object Deps {
         }
     }
 
-    object Dagger : Version("2.43.2") {
+    object Dagger : Version("2.44") {
         val ANDROID_SUPPORT = "com.google.dagger:dagger-android-support:$version"
         val ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor:$version"
         val COMPILER = "com.google.dagger:dagger-compiler:$version"
@@ -93,7 +93,7 @@ object Deps {
         val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         val REFLECT = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
-        object Coroutines : Version("1.6.1") {
+        object Coroutines : Version("1.6.4") {
             val ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             val TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -103,7 +103,7 @@ object Deps {
     object Zcash {
         const val ANDROID_WALLET_PLUGINS = "cash.z.ecc.android:zcash-android-wallet-plugins:1.0.0"
         const val KOTLIN_BIP39 = "cash.z.ecc.android:kotlin-bip39:1.0.4"
-        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.9.0-beta03"
+        const val SDK = "cash.z.ecc.android:zcash-android-sdk:1.9.0-beta04"
     }
 
     object Misc {
@@ -131,7 +131,7 @@ object Deps {
             const val FRAGMENT = "androidx.fragment:fragment-testing:1.5.1"
             const val ESPRESSO = "androidx.test.espresso:espresso-core:3.4.0"
             const val ESPRESSO_INTENTS = "androidx.test.espresso:espresso-intents:3.4.0"
-            const val NAVIGATION = "androidx.navigation:navigation-testing:2.5.1"
+            const val NAVIGATION = "androidx.navigation:navigation-testing:2.5.2"
         }
     }
 }
