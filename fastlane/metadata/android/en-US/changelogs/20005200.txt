@@ -1,0 +1,2 @@
+- Transition Unstoppable Domain Name Service endpoint from Alchemy to a self-hosted.
+- Upgrade SDK & dependencies.
