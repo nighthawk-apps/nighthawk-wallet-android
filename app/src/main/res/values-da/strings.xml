@@ -157,7 +157,7 @@
     <string name="ns_scan_payment_request">Scan a Payment Request</string>
     <string name="ns_scan_payment_request_text">If you have a payment request, you can scan the QR code here to auto-fill all the details.</string>
     <string name="ns_choose_send">Choose how much to send</string>
-    <string name="ns_spendable_balance">Spendable balance (incl. tx fee) is %1s ZEC</string>
+    <string name="ns_spendable_balance">Spendable balance (incl. tx fee) is %1s %2s</string>
     <string name="ns_scan_payment_code">Scan a payment code</string>
     <string name="ns_top_up_wallet">Top up wallet</string>
     <string name="ns_not_enough_zcash">Not enough Zcash</string>

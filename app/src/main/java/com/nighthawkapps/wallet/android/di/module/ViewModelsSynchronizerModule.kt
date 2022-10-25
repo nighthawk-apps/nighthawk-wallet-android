@@ -9,6 +9,7 @@ import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ui.MainViewModel
 import com.nighthawkapps.wallet.android.ui.history.HistoryViewModel
 import com.nighthawkapps.wallet.android.ui.home.BalanceDetailViewModel
+import com.nighthawkapps.wallet.android.ui.home.BalanceViewModel
 import com.nighthawkapps.wallet.android.ui.home.HomeViewModel
 import com.nighthawkapps.wallet.android.ui.profile.ProfileViewModel
 import com.nighthawkapps.wallet.android.ui.receive.ReceiveViewModel
@@ -108,6 +109,12 @@ abstract class ViewModelsSynchronizerModule {
     @IntoMap
     @ViewModelKey(SyncNotificationViewModel::class)
     abstract fun bindSyncNotificationViewModel(implementation: SyncNotificationViewModel): ViewModel
+
+    @SynchronizerScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(BalanceViewModel::class)
+    abstract fun bindBalanceViewModel(implementation: BalanceViewModel): ViewModel
 
     @SynchronizerScope
     @Binds

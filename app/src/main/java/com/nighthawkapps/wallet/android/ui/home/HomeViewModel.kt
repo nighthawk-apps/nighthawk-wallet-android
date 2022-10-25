@@ -16,6 +16,7 @@ import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.ext.Const
+import com.nighthawkapps.wallet.android.ext.convertZatoshiToSelectedUnit
 import com.nighthawkapps.wallet.android.ext.twig
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.lockbox.LockBox
@@ -280,30 +281,20 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
     suspend fun getRecentUIModel(transactionList: List<ConfirmedTransaction>): List<RecentActivityUiModel> {
-        val transactions =
-            if (transactionList.size > 2) transactionList.subList(0, 2) else transactionList
+        val transactions = if (transactionList.size > 2) transactionList.subList(0, 2) else transactionList
         return transactions.map { confirmedTransaction ->
-            val transactionType =
-                if (confirmedTransaction.toAddress.isNullOrEmpty()) RecentActivityUiModel.TransactionType.RECEIVED else RecentActivityUiModel.TransactionType.SENT
-            val address =
-                if (transactionType == RecentActivityUiModel.TransactionType.RECEIVED) getSender(
-                    confirmedTransaction
-                ) else confirmedTransaction.toAddress
-            val toZecStringShort =
-                WalletZecFormmatter.toZecStringShort(Zatoshi(confirmedTransaction.value))
+            val transactionType = if (confirmedTransaction.toAddress.isNullOrEmpty()) RecentActivityUiModel.TransactionType.RECEIVED else RecentActivityUiModel.TransactionType.SENT
+            val address = if (transactionType == RecentActivityUiModel.TransactionType.RECEIVED) getSender(confirmedTransaction) else confirmedTransaction.toAddress
+            val toZecStringShort = WalletZecFormmatter.toZecStringShort(Zatoshi(confirmedTransaction.value))
+            val selectedUnit = getSelectedFiatUnit()
+            val amount = confirmedTransaction.value.convertZatoshiToSelectedUnit(selectedUnit)
             RecentActivityUiModel(
                 transactionType = transactionType,
                 transactionTime = formatter.format(confirmedTransaction.blockTimeInSeconds * 1000L),
-                isTransactionShielded = address?.equals(
-                    R.string.unknown.toAppString(),
-                    true
-                ) == true || address.isShielded(),
-                amount = toZecStringShort,
+                isTransactionShielded = address?.equals(R.string.unknown.toAppString(), true) == true || address.isShielded(),
+                amountText = "$amount ${selectedUnit.unit}",
                 isMemoAvailable = confirmedTransaction.memo?.toUtf8Memo()?.isNotBlank() == true,
-                zecConvertedValueText = Utils.getZecConvertedAmountText(
-                    toZecStringShort,
-                    zcashPriceApiData.value
-                ),
+                zecConvertedValueText = Utils.getZecConvertedAmountText(toZecStringShort, zcashPriceApiData.value),
                 confirmedTransaction = confirmedTransaction
             )
         }
@@ -313,7 +304,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         var transactionType: TransactionType? = null,
         var transactionTime: String? = null,
         var isTransactionShielded: Boolean = false,
-        var amount: String = "---",
+        var amountText: String = "--- ZEC",
         var isMemoAvailable: Boolean = false,
         var zecConvertedValueText: String? = null,
         val confirmedTransaction: ConfirmedTransaction
@@ -355,5 +346,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 lockBox[Const.AppConstants.KEY_SYNC_NOTIFICATION] ?: ""
             )
         WorkManagerUtils.cancelSyncAppNotificationAndReRegister(syncNotificationPref)
+    }
+
+    fun getSelectedFiatUnit(): FiatCurrencyViewModel.FiatUnit {
+        return FiatCurrencyViewModel.FiatUnit.getFiatUnit(lockBox[Const.AppConstants.KEY_LOCAL_UNIT] ?: "")
     }
 }

@@ -18,6 +18,7 @@ import com.nighthawkapps.wallet.android.ext.Const
 import com.nighthawkapps.wallet.android.ext.toAppString
 import com.nighthawkapps.wallet.android.ext.toAppStringFormatted
 import com.nighthawkapps.wallet.android.ext.twig
+import com.nighthawkapps.wallet.android.ext.convertZatoshiToSelectedUnit
 import com.nighthawkapps.wallet.android.ext.WalletZecFormmatter
 import com.nighthawkapps.wallet.android.lockbox.LockBox
 import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
@@ -155,6 +156,7 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
 
     data class TransactionDetailsUIModel(
         var transactionAmount: String = "",
+        var selectedUnit: String = "ZEC",
         var convertedAmount: String = "",
         var transactionStatus: String = "",
         @DrawableRes var transactionStatusStartDrawableId: Int = R.drawable.ic_icon_finalizing,
@@ -184,7 +186,9 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
                 else -> null
             }
             isMined = tx?.minedHeight != null && tx.minedHeight > synchronizer.network.saplingActivationHeight.value
-            transactionAmount = WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi)
+            val selectedFiatUnit = getSelectedFiatUnit()
+            transactionAmount = tx?.valueInZatoshi?.value.convertZatoshiToSelectedUnit(selectedFiatUnit)
+            selectedUnit = selectedFiatUnit.unit
             convertedAmount = calculateZecConvertedAmount(tx?.value ?: 0L) ?: ""
             blockId = String.format("%,d", tx?.minedHeight ?: 0)
             val flags =
@@ -235,17 +239,17 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
 
             when (isInbound) {
                 true -> {
-                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi)
+                    totalAmount = tx?.valueInZatoshi?.value.convertZatoshiToSelectedUnit(selectedFiatUnit)
                     subTotal = totalAmount
                     iconRotation = 0f
                     toAddress = MemoUtil.findAddressInMemo(tx, (synchronizer as SdkSynchronizer)::isValidAddress) ?: getString(R.string.unknown)
                     recipientAddressType = getString(if (toAddress.isShielded() || toAddress.equals(getString(R.string.unknown), true)) R.string.ns_shielded else R.string.ns_transparent)
                 }
                 false -> {
-                    totalAmount = WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi?.plus(ZcashSdk.MINERS_FEE))
-                    subTotal = WalletZecFormmatter.toZecStringFull(tx?.valueInZatoshi)
+                    totalAmount = (tx?.valueInZatoshi?.plus(ZcashSdk.MINERS_FEE))?.value.convertZatoshiToSelectedUnit(getSelectedFiatUnit())
+                    subTotal = tx?.valueInZatoshi?.value.convertZatoshiToSelectedUnit(selectedFiatUnit)
                     iconRotation = 180f
-                    networkFees = "0.00001"
+                    networkFees = ZcashSdk.MINERS_FEE.value.convertZatoshiToSelectedUnit(getSelectedFiatUnit())
                     toAddress = tx?.toAddress ?: ""
                     recipientAddressType = getString(if (toAddress.isShielded() || toAddress.equals(getString(R.string.unknown), true)) R.string.ns_shielded else R.string.ns_transparent)
                 }
@@ -266,6 +270,10 @@ class HistoryViewModel @Inject constructor() : ViewModel() {
 
     private fun getZecMarketPrice(): String? {
         return prefs[Const.AppConstants.KEY_ZEC_AMOUNT]
+    }
+
+    fun getSelectedFiatUnit(): FiatCurrencyViewModel.FiatUnit {
+        return FiatCurrencyViewModel.FiatUnit.getFiatUnit(prefs[Const.AppConstants.KEY_LOCAL_UNIT] ?: "")
     }
 
     private fun getString(@StringRes id: Int) = id.toAppString()

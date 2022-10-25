@@ -57,6 +57,7 @@ class FragmentTransactionDetails : BaseFragment<FragmentTransactionDetailsBindin
         uiModel.let {
             with(binding) {
                 ivTransactionStatusIcon.rotation = it.iconRotation
+                tvZec.text = it.selectedUnit
                 tvBalance.text = it.transactionAmount
                 tvConvertedAmount.apply {
                     text = getString(R.string.ns_around, it.convertedAmount)

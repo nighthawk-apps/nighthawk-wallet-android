@@ -6,6 +6,7 @@ import cash.z.ecc.android.sdk.ext.toZec
 import com.nighthawkapps.wallet.android.ext.ConversionsUniform.FULL_FORMATTER
 import com.nighthawkapps.wallet.android.ext.ConversionsUniform.LONG_SCALE
 import com.nighthawkapps.wallet.android.ext.ConversionsUniform.SHORT_FORMATTER
+import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
@@ -158,4 +159,39 @@ inline fun currencyFormatterUniform(maxDecimals: Int, minDecimals: Int): Decimal
  */
 inline fun String.endsWithDecimalSeparator(): Boolean {
     return this.endsWith(ConversionsUniform.ZEC_FORMATTER.decimalFormatSymbols.toString())
+}
+
+object UnitConversion {
+    val ZATOSHI_PER_ZEC = Zatoshi.ZATOSHI_PER_ZEC
+    val ZATOSHI_PER_DECIZ = ZATOSHI_PER_ZEC / 10
+    val ZATOSHI_PER_CENTZ = ZATOSHI_PER_ZEC / 100
+    val ZATOSHI_PER_MILLIZ = ZATOSHI_PER_ZEC / 1000
+    val ZATOSHI_PER_ZED = ZATOSHI_PER_ZEC / 1000
+    val ZATOSHI_PER_MICROS = ZATOSHI_PER_ZEC / 10000
+}
+
+inline fun Long?.convertZatoshiToSelectedUnit(fiatUnit: FiatCurrencyViewModel.FiatUnit): String {
+    val bigDecimal = BigDecimal(this ?: 0L, MathContext.DECIMAL128).divide(
+        BigDecimal(fiatUnit.zatoshiPerUnit, MathContext.DECIMAL128),
+        MathContext.DECIMAL128
+    ).setScale(Conversions.ZEC_FORMATTER.maximumFractionDigits, Conversions.ZEC_FORMATTER.roundingMode)
+    return WalletZecFormmatter.formatFull(bigDecimal)
+}
+
+inline fun BigDecimal?.convertedUnitToZatoshi(fiatUnit: FiatCurrencyViewModel.FiatUnit): Zatoshi {
+    if (this == null) return Zatoshi(0)
+    val bigDecimal = this
+    if (bigDecimal < BigDecimal.ZERO) {
+        throw IllegalArgumentException(
+            "Invalid ZEC value: $this. ZEC is represented by notes and" +
+                    " cannot be negative"
+        )
+    }
+    val a = bigDecimal.multiply(BigDecimal(fiatUnit.zatoshiPerUnit, MathContext.DECIMAL128), MathContext.DECIMAL128)
+    return Zatoshi(a.toLong())
+}
+
+inline fun String?.sanitizeInputValue(): String {
+    if (this.isNullOrBlank()) return ""
+    return this.filter { it.isDigit() || it == '.' }
 }

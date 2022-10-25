@@ -10,18 +10,22 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import cash.z.ecc.android.sdk.ext.convertZatoshiToZecString
+import cash.z.ecc.android.sdk.model.Zatoshi
 import com.nighthawkapps.wallet.android.R
 import com.nighthawkapps.wallet.android.databinding.FragmentBalanceBinding
+import com.nighthawkapps.wallet.android.di.viewmodel.viewModel
 import com.nighthawkapps.wallet.android.ext.toColoredSpan
 import com.nighthawkapps.wallet.android.ui.base.BaseFragment
 import com.nighthawkapps.wallet.android.ui.setup.FiatCurrencyViewModel
 import com.nighthawkapps.wallet.android.ui.util.Utils
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
 
     private lateinit var sectionType: SectionType
-    private val balanceViewModel: BalanceViewModel by viewModels()
+    private val balanceViewModel: BalanceViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModels({ requireParentFragment() })
 
     override fun inflate(inflater: LayoutInflater): FragmentBalanceBinding {
@@ -34,6 +38,7 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             homeViewModel.uiModels
                 .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+                .distinctUntilChanged()
                 .collect { homeUiModel ->
                     updateUI(balanceViewModel.getBalanceUIModel(sectionType, homeUiModel))
                 }
@@ -70,9 +75,10 @@ class BalanceFragment : BaseFragment<FragmentBalanceBinding>() {
         }
         binding.tvBalance.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawableEnd, null)
         if (balanceViewModel.isZecAmountState) {
-            binding.tvBalance.text = getString(R.string.ns_zec_amount, balanceViewModel.balanceAmountZec).toColoredSpan(R.color.ns_peach_100, "ZEC")
+            val fiatUnit = balanceViewModel.getSelectedFiatUnit()
+            binding.tvBalance.text = getString(R.string.ns_amount_with_unit, balanceViewModel.getConvertedBalanceAmount(), fiatUnit.unit).toColoredSpan(R.color.ns_peach_100, fiatUnit.unit)
         } else {
-            val convertedAmount = Utils.getZecConvertedAmountText(balanceViewModel.balanceAmountZec, homeViewModel.zcashPriceApiData.value)
+            val convertedAmount = Utils.getZecConvertedAmountText(Zatoshi(balanceViewModel.balanceAmountZatoshi).convertZatoshiToZecString(), homeViewModel.zcashPriceApiData.value)
             binding.tvBalance.text = convertedAmount?.toColoredSpan(R.color.ns_peach_100,
                 FiatCurrencyViewModel.FiatCurrency.getFiatCurrencyByMarket(homeViewModel.zcashPriceApiData.value?.data?.keys?.firstOrNull() ?: "").currencyName)
         }

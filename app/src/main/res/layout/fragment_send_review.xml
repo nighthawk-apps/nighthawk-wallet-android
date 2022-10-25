@@ -91,7 +91,6 @@
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:text="@string/ns_zec"
-                android:textAllCaps="true"
                 android:textColor="@color/ns_parmaviolet"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="@id/tvBalance"
