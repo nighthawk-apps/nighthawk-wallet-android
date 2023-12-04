@@ -1,19 +1,7 @@
-# Nighthawk Wallet
-Shielded ZEC wallet using the Zcash Android SDK, maintained by nighthawk apps.
-
-### Download
-
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/com.nighthawkapps.wallet.android/)
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
-     alt="Get it on Google Play"
-     height="80">](https://play.google.com/store/apps/details?id=com.nighthawkapps.wallet.android)
+This project is no longer maintained, Nighthawk v2 repository is at https://github.com/nighthawk-apps/nighthawk-android-wallet
 
 ### Setup
-To run, clone the repo, open it in Android Studio and press play. It should just work.™
-
-[![Build Status](https://app.bitrise.io/app/f41058ec24e805c8/status.svg?token=4RbH2IZITmTCvom22WGQRg&branch=master)](https://app.bitrise.io/app/f41058ec24e805c8) 
+To run, clone the repo, open it in Android Studio and press play. It should just work.
 
 #### Requirements
 - [The code](https://github.com/nighthawk-apps/nighthawk-wallet-android)
