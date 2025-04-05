@@ -67,7 +67,7 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "MOON_PAY_KEY", '"pk_test_2biYUwnJvOdHFel9jbvvUHorZlYg3dio"'
-            buildConfigField "String", "MOON_PAY_BASE_URL", '"https://buy-staging.moonpay.com/"'
+            buildConfigField "String", "MOON_PAY_BASE_URL", '"https://buy-sandbox.moonpay.com/"'
         }
     }
 
